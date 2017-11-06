@@ -6,7 +6,9 @@
         </mt-header>
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
-        <div class="page-wrap"></div>
+        <div class="page-wrap">
+
+        </div>
     </div>
 </template>
 <script>
