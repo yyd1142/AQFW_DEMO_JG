@@ -3,10 +3,10 @@ import Router from 'vue-router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 NProgress.configure({
-  showSpinner: false,
-  easing: 'ease',
-  speed: 1000,
-  template: '<div class="page-progress-bar" role="bar"><div class="peg"></div></div><div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'
+    showSpinner: false,
+    easing: 'ease',
+    speed: 1000,
+    template: '<div class="page-progress-bar" role="bar"><div class="peg"></div></div><div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'
 }); //进度条配置
 
 //登陆
@@ -75,275 +75,293 @@ const statisticsNotice = resolve => require(['./views/notice/statistics.vue'], r
 const appNotification = resolve => require(['./views/enter/appNotification.vue'], resolve)
 const noticeReplyList = resolve => require(['./views/notice/reply.vue'], resolve)
 const noticeReplyDetail = resolve => require(['./views/notice/replyDetail.vue'], resolve)
+const FireRecord = resolve => require(['./views/QYData/Record/FireRecord.vue'], resolve)
+const JGZFRecord = resolve => require(['./views/QYData/Record/JGZFRecord.vue'], resolve)
+const QYComment = resolve => require(['./views/QYData/QYComment.vue'], resolve)
 Vue.use(Router)
 
 const routers = {
-  // mode: 'history',
-  routes: [
-    //登陆
-    {
-      path: '/login',
-      name: 'login',
-      component: login
-    },
-    //首页
-    {
-      path: '/',
-      redirect: '/enter',
-      component: login
-    },
-    {
-      path: '/enter',
-      component: enter,
-      title: '首页-TAB',
-      redirect: '/enter/home',
-      children: [
+    // mode: 'history',
+    routes: [
+        //登陆
         {
-          path: 'home',
-          component: home,
-          title: '首页',
-          name: 'home'
+            path: '/login',
+            name: 'login',
+            component: login
+        },
+        //首页
+        {
+            path: '/',
+            redirect: '/enter',
+            component: login
         },
         {
-          path: 'mail_list',
-          component: mailList,
-          title: '通讯录',
-          name: 'mailList'
+            path: '/enter',
+            component: enter,
+            title: '首页-TAB',
+            redirect: '/enter/home',
+            children: [
+                {
+                    path: 'home',
+                    component: home,
+                    title: '首页',
+                    name: 'home'
+                },
+                {
+                    path: 'mail_list',
+                    component: mailList,
+                    title: '通讯录',
+                    name: 'mailList'
+                },
+                {
+                    path: 'my',
+                    component: my,
+                    title: '我的',
+                    name: 'my'
+                },
+            ]
+        },
+        //新闻
+        {
+            path: '/news_info/:pid',
+            component: newsInfo,
+            name: "newsInfo"
+        },
+        //消息
+        {
+            path: '/message',
+            component: message,
+            title: '消息'
         },
         {
-          path: 'my',
-          component: my,
-          title: '我的',
-          name: 'my'
+            path: '/message/:pid',
+            component: messageDetail,
+            title: '消息详情'
         },
-      ]
-    },
-    //新闻
-    {
-      path: '/news_info/:pid',
-      component: newsInfo,
-      name: "newsInfo"
-    },
-    //消息
-    {
-      path: '/message',
-      component: message,
-      title: '消息'
-    },
-    {
-      path: '/message/:pid',
-      component: messageDetail,
-      title: '消息详情'
-    },
-    //通知公告
-    {
-      path: '/notice',
-      component: noticeList
-    },
-    {
-      path: '/notice/:pid',
-      component: noticeDetail
-    },
-    //通讯录
-    {
-      path: '/address_detail/:pid',
-      component: addressDetail
-    },
-    {
-      path: '/add_user',
-      component: addUser
-    },
-    {
-      path: '/add_user_succ',
-      component: addUserSucc
-    },
-    //个人信息
-    {
-      path: '/person_data',
-      component: personData
-    },
-    //设置
-    {
-      path: '/config',
-      component: config,
-    },
-    {
-      path: '/config/pwd',
-      component: configPwd
-    },
-    //社会单位信息
-    {
-      path: '/qy_list',
-      component: QYList
-    },
-    {
-      path: '/qy_info/:id',
-      component: QYInfo
-    },
-    {
-      path: '/build_list/:id',
-      component: buildList
-    },
-    {
-      path: '/build_info/:id',
-      component: buildInfo
-    },
-    {
-      path: '/xfzr_list/:id',
-      component: XFZRUnitList
-    },
-    {
-      path: '/unit_list/:id',
-      component: unitList
-    },
-    {
-      path: '/unit_info/:id',
-      component: unitInfo
-    },
-    //安全活动
-    {
-      path: '/safe_activity_list/:id',
-      component: safeActivityList
-    },
-    {
-      path: '/safe_activity_info/:id',
-      component: safeActivityInfo
-    },
-    //服务单位信息
-    {
-      path: '/fw_list',
-      component: FWList
-    },
-    {
-      path: '/fw_info/:id',
-      component: FWInfo
-    },
-    {
-      path: '/customer_list/:id',
-      component: CustomerList
-    },
-    {
-      path: '/customer_info/:qyId/:fwId',
-      component: CustomerInfo
-    },
-    //安全得分
-    {
-      path: '/score/:id',
-      component: score,
-      name: 'scoreDetail'
-    },
-    {
-      path: '/score_list',
-      component: scoreList
-    },
-    //数据统计
-    {
-      path: '/data_count_list',
-      component: DataCountList
-    },
-    {
-      path: '/count_score',
-      component: CountScore
-    },
-    {
-      path: '/count_tasks',
-      component: CountTasks
-    },
-    {
-      path: '/admin_count_info',
-      component: AdminCountInfo
-    },
-    //考试
-    {
-      path: '/train',
-      component: trainList,
-      name: 'trainList'
-    },
-    {
-      path: '/exam/:pid',
-      component: exam,
-      name: 'exam'
-    },
-    {
-      path: '/simulation_exam/:pid',
-      component: simulationExam
-    },
-    {
-      path: '/exam_rule',
-      component: examRule
-    },
-    {
-      path: '/exam_result',
-      component: examResult
-    },
-    {
-      path: '/past_score',
-      component: pastScore,
-      name: 'pastScore'
-    },
-    {
-      path: '/score_info/:pid',
-      component: scoreInfo,
-      name: 'scoreInfo'
-    },
-    //风险管理
-    {
-      path: '/hidden_danger/:id',
-      component: hiddenDangerList
-    },
-    {
-      path: '/hidden_danger_info/:pid',
-      component: hiddenDangerDetail
-    },
-    {
-      path: '/hidden_danger_check',
-      component: hiddenDangerCheck
-    },
-    {
-      path: '/jgDetail/:pid',
-      component: jgDetail,
-      name: 'jgDetail'
-    },
-    {
-      path: '/personDetail',
-      component: personDetail,
-      name: 'personDetail'
-    },
-    {
-      path: '/statisticsNotice',
-      name: 'statisticsNotice',
-      component: statisticsNotice
-    },
-    {
-      path: '/appNotification',
-      name: 'appNotification',
-      component: appNotification
-    },
-    {
-      path: '/noticeReplyList/:pid',
-      name: 'noticeReplyList',
-      component: noticeReplyList
-    },
-    {
-      path: '/noticeReplyDetail',
-      name: 'noticeReplyDetail',
-      component: noticeReplyDetail
-    }
-  ]
+        //通知公告
+        {
+            path: '/notice',
+            component: noticeList
+        },
+        {
+            path: '/notice/:pid',
+            component: noticeDetail
+        },
+        //通讯录
+        {
+            path: '/address_detail/:pid',
+            component: addressDetail
+        },
+        {
+            path: '/add_user',
+            component: addUser
+        },
+        {
+            path: '/add_user_succ',
+            component: addUserSucc
+        },
+        //个人信息
+        {
+            path: '/person_data',
+            component: personData
+        },
+        //设置
+        {
+            path: '/config',
+            component: config,
+        },
+        {
+            path: '/config/pwd',
+            component: configPwd
+        },
+        //社会单位信息
+        {
+            path: '/qy_list',
+            component: QYList
+        },
+        {
+            path: '/qy_info/:id',
+            component: QYInfo
+        },
+        {
+            path: '/build_list/:id',
+            component: buildList
+        },
+        {
+            path: '/build_info/:id',
+            component: buildInfo
+        },
+        {
+            path: '/xfzr_list/:id',
+            component: XFZRUnitList
+        },
+        {
+            path: '/unit_list/:id',
+            component: unitList
+        },
+        {
+            path: '/unit_info/:id',
+            component: unitInfo
+        },
+        //安全活动
+        {
+            path: '/safe_activity_list/:id',
+            component: safeActivityList
+        },
+        {
+            path: '/safe_activity_info/:id',
+            component: safeActivityInfo
+        },
+        //服务单位信息
+        {
+            path: '/fw_list',
+            component: FWList
+        },
+        {
+            path: '/fw_info/:id',
+            component: FWInfo
+        },
+        {
+            path: '/customer_list/:id',
+            component: CustomerList
+        },
+        {
+            path: '/customer_info/:qyId/:fwId',
+            component: CustomerInfo
+        },
+        //安全得分
+        {
+            path: '/score/:id',
+            component: score,
+            name: 'scoreDetail'
+        },
+        {
+            path: '/score_list',
+            component: scoreList
+        },
+        //数据统计
+        {
+            path: '/data_count_list',
+            component: DataCountList
+        },
+        {
+            path: '/count_score',
+            component: CountScore
+        },
+        {
+            path: '/count_tasks',
+            component: CountTasks
+        },
+        {
+            path: '/admin_count_info',
+            component: AdminCountInfo
+        },
+        //考试
+        {
+            path: '/train',
+            component: trainList,
+            name: 'trainList'
+        },
+        {
+            path: '/exam/:pid',
+            component: exam,
+            name: 'exam'
+        },
+        {
+            path: '/simulation_exam/:pid',
+            component: simulationExam
+        },
+        {
+            path: '/exam_rule',
+            component: examRule
+        },
+        {
+            path: '/exam_result',
+            component: examResult
+        },
+        {
+            path: '/past_score',
+            component: pastScore,
+            name: 'pastScore'
+        },
+        {
+            path: '/score_info/:pid',
+            component: scoreInfo,
+            name: 'scoreInfo'
+        },
+        //风险管理
+        {
+            path: '/hidden_danger/:id',
+            component: hiddenDangerList
+        },
+        {
+            path: '/hidden_danger_info/:pid',
+            component: hiddenDangerDetail
+        },
+        {
+            path: '/hidden_danger_check',
+            component: hiddenDangerCheck
+        },
+        {
+            path: '/jgDetail/:pid',
+            component: jgDetail,
+            name: 'jgDetail'
+        },
+        {
+            path: '/personDetail',
+            component: personDetail,
+            name: 'personDetail'
+        },
+        {
+            path: '/statisticsNotice',
+            name: 'statisticsNotice',
+            component: statisticsNotice
+        },
+        {
+            path: '/appNotification',
+            name: 'appNotification',
+            component: appNotification
+        },
+        {
+            path: '/noticeReplyList/:pid',
+            name: 'noticeReplyList',
+            component: noticeReplyList
+        },
+        {
+            path: '/noticeReplyDetail',
+            name: 'noticeReplyDetail',
+            component: noticeReplyDetail
+        },
+        {
+            path: '/fire_record/:id',
+            name: 'FireRecord',
+            component: FireRecord
+        },
+        {
+            path: '/jgzf_record/:id',
+            name: 'JGZFRecord',
+            component: JGZFRecord
+        },
+        {
+            path: '/qy_comment/:id',
+            name: 'QYComment',
+            component: QYComment
+        }
+    ]
 };
 
 const router = new Router(routers);
 
 router.beforeEach((to, from, next) => {
-  if (to.name == 'home' || to.name == 'score' || to.name == 'jgDetail' || to.name == 'login' || to.name == 'scoreDetail') {
-    NProgress.remove();
-  } else {
-    NProgress.start();
-  }
-  next();
+    if (to.name == 'home' || to.name == 'score' || to.name == 'jgDetail' || to.name == 'login' || to.name == 'scoreDetail') {
+        NProgress.remove();
+    } else {
+        NProgress.start();
+    }
+    next();
 })
 router.afterEach(transition => {
-  NProgress.done();
+    NProgress.done();
 });
 
 export default router;
