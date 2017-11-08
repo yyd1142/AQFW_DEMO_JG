@@ -219,7 +219,7 @@ export default {
       }, 1500);
     },
     routerLink(item) {
-      if (item.url == '/count_score' || item.url == '/fw_list') {
+      if (item.url == '/count_score') {
         Toast({
           message: '功能未开放',
           duration: 1000

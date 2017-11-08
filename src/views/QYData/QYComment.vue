@@ -8,8 +8,12 @@
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
         <div class="page-wrap">
-            <div class="label-wrap">
-                <span class="label" :class="label.color" v-for="label in myLabels">{{label.name}}</span>
+            <div class="label-wrap" v-if="!isEdit">
+                <span class="label" :class="label.active ? label.color : null" v-for="label, index in labelsDatas" v-if="label.active">{{label.name}}</span>
+            </div>
+            <div class="label-wrap" v-else>
+                <span class="label" :class="label.active ? label.color : null" v-for="label, index in labelsDatas"
+                      @click="choose(label, index)">{{label.name}}</span>
             </div>
             <div class="tips" v-text="tips"></div>
         </div>
@@ -17,6 +21,7 @@
 </template>
 <script>
     import {NoData, ResError} from 'components';
+    import {MessageBox} from 'mint-ui';
     export default {
         data() {
             return {
@@ -24,62 +29,82 @@
                 noData: false,
                 tips: '温馨提示：点击「编辑」进行新增/删除评价',
                 text: '编辑',
-                myLabels: [],
-                labels: [{
+                labelsDatas: [],
+                isEdit: false
+            }
+        },
+        activated() {
+            this.setBackButton();
+            this.getLabels();
+        },
+        methods: {
+            back(){
+                if(this.isEdit) {
+                   this.isEdit = false;
+                    this.text = '编辑';
+                   this.labelsDatas = JSON.parse(sessionStorage.getItem('labelsDatas'));
+                } else {
+                    this.$MKOPop();
+                }
+            },
+            action() {
+                if (this.text === '编辑') {
+                    this.text = '完成';
+                    this.isEdit = true;
+                    sessionStorage.setItem('labelsDatas', JSON.stringify(this.labelsDatas))
+                } else {
+                    MessageBox({
+                        title: '确认保存当前修改？',
+                        showCancelButton: true
+                    }).then(action => {
+                        if (action === 'confirm') {
+                            this.text = '编辑';
+                            this.isEdit = false;
+                        }
+                    });
+                }
+            },
+            choose(item, index) {
+                if (this.isEdit) {
+                    this.labelsDatas[index].active = !item.active;
+                }
+            },
+            getLabels() {
+                let labels = [{
                     name: '高危单位',
                     color: 'red',
                 }, {
                     name: '不放心单位',
                     color: 'yellow',
-                }],
-                allLabels: [{
+                }]
+                let allLabels = [{
                     name: '高危单位',
                     color: 'red'
                 }, {
                     name: '不放心单位',
                     color: 'yellow'
-                },{
+                }, {
                     name: '放心单位',
                     color: 'green'
                 }, {
                     name: '安全单位',
                     color: 'blue'
-                }],
-                isEdit: false
-            }
-        },
-        watch: {
-
-        },
-        computed: {
-            qyLabels() {
-                let labels = this.allLabels;
-                for(let item of labels) {
-                    for(let subItem of this.labels) {
-                        if(item.name == subItem.name) {
+                }]
+                for (let item of allLabels) {
+                    item.active = false;
+                    for (let subItem of labels) {
+                        if (item.name == subItem.name) {
                             item.active = true;
                         }
                     }
                 }
-                return labels;
-            }
-        },
-        activated() {
-            this.myLabels = this.labels;
-        },
-        methods: {
-            back(){
-                this.$MKOPop();
+                this.labelsDatas = allLabels;
             },
-            action() {
-                if(this.text === '编辑') {
-                    this.text = '完成';
-                    this.isEdit = true;
-                    this.myLabels = this.qyLabels;
-                } else {
-                    this.text = '编辑';
-                    this.isEdit = false;
-                    this.myLabels = this.labels;
+            setBackButton() {
+                window.mkoBackButton = {};
+                window.mkoBackButton.bInputData = true;
+                if (window.mkoBackButton.bInputData) {
+                    window.mkoBackButton.callback = this.back;
                 }
             }
         },
@@ -98,8 +123,17 @@
                 height: 100px;
                 margin-top: 14px;
                 border-radius: 3px;
+                padding: 14px;
                 .label {
                     min-width: 150px;
+                    height: 34px;
+                    line-height: 34px;
+                    padding: 4px;
+                    border: 1px solid;
+                    border-radius: 3px;
+                    font-size: 14px;
+                    margin-right: 6px;
+                    color: #eaeaea;
                     &.red {
                         color: #ff0008;
                     }
