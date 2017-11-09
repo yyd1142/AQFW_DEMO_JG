@@ -47,6 +47,7 @@ const safeActivityInfo = resolve => require(['views/safeActivity/safeActivityInf
 //服务单位信息
 const FWList = resolve => require(['views/FWData/FWList.vue'], resolve);
 const FWInfo = resolve => require(['views/FWData/FWInfo.vue'], resolve);
+const FWScore = resolve => require(['views/FWData/FWScore.vue'], resolve);
 const CustomerList = resolve => require(['views/FWData/CustomerList.vue'], resolve);
 const CustomerInfo = resolve => require(['views/FWData/CustomerInfo.vue'], resolve);
 //安全得分
@@ -220,6 +221,10 @@ const routers = {
         {
             path: '/fw_info/:id',
             component: FWInfo
+        },
+        {
+            path: '/fw_score/:id',
+            component: FWScore
         },
         {
             path: '/customer_list/:id',
