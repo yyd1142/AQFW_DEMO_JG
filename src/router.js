@@ -48,6 +48,11 @@ const safeActivityInfo = resolve => require(['views/safeActivity/safeActivityInf
 const FWList = resolve => require(['views/FWData/FWList.vue'], resolve);
 const FWInfo = resolve => require(['views/FWData/FWInfo.vue'], resolve);
 const FWScore = resolve => require(['views/FWData/FWScore.vue'], resolve);
+const FWScoreDetail = resolve => require(['views/FWData/FWScoreDetail.vue'], resolve);
+const FWSafePersons = resolve => require(['views/FWData/FWSafePersons.vue'], resolve);
+const FWSafePersonDetail = resolve => require(['views/FWData/FWSafePersonDetail.vue'], resolve);
+const FWTaskHistory = resolve => require(['views/FWData/FWTaskHistory.vue'], resolve);
+const FWTaskHistoryDetail = resolve => require(['views/FWData/FWTaskHistoryDetail.vue'], resolve);
 const CustomerList = resolve => require(['views/FWData/CustomerList.vue'], resolve);
 const CustomerInfo = resolve => require(['views/FWData/CustomerInfo.vue'], resolve);
 //安全得分
@@ -227,12 +232,38 @@ const routers = {
             component: FWScore
         },
         {
+            path: '/fw_score_detail/:id',
+            component: FWScoreDetail,
+            name: 'FWScoreDetail'
+        },
+        {
+            path: '/fw_task_history/:id',
+            component: FWTaskHistory,
+            name: 'FWTaskHistory'
+        },
+        {
+            path: '/fw_task_history_detail/:id',
+            component: FWTaskHistoryDetail,
+            name: 'FWTaskHistoryDetail'
+        },
+        {
+            path: '/fw_safe_persons/:id',
+            component: FWSafePersons,
+            name: 'FWSafePersons'
+        },
+        {
+            path: '/fw_safe_persons/:id',
+            component: FWSafePersonDetail,
+            name: 'FWSafePersonDetail'
+        },
+        {
             path: '/customer_list/:id',
             component: CustomerList
         },
         {
-            path: '/customer_info/:qyId/:fwId',
-            component: CustomerInfo
+            path: '/customer_info/:id',
+            component: CustomerInfo,
+            name: 'CustomerInfo'
         },
         //安全得分
         {

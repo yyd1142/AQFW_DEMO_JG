@@ -8,9 +8,9 @@
         <no-data v-if="noData"></no-data>
         <div class="page-wrap fw-info-wrap" v-show="!noData&&!resError">
             <div class="data-wrap">
-                <mko-cell title="平均服务评分" val="10" @click="go('/fw_score/'+ fwInfo.groupId)" is-link></mko-cell>
-                <mko-cell title="任务执行记录" val="10" is-link></mko-cell>
-                <mko-cell title="消防安全人员" val="10" is-link></mko-cell>
+                <mko-cell title="平均服务评分" val="83" @click="go('/fw_score/'+ fwInfo.groupId)" is-link></mko-cell>
+                <mko-cell title="任务执行记录" val="5" @click="go('/fw_task_history/'+ fwInfo.groupId)" is-link></mko-cell>
+                <mko-cell title="消防安全人员" val="4" @click="go('/fw_safe_persons/'+ fwInfo.groupId)" is-link></mko-cell>
                 <mko-cell title="签约客户" val="10" @click="go('/customer_list/' + fwInfo.groupId)" is-link></mko-cell>
             </div>
             <mko-edit-card title="基础信息" :edit="false" mode="readOnly">

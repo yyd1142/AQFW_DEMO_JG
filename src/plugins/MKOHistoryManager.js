@@ -57,13 +57,16 @@ MKOHistoryManager.install = function(Vue, options){
         // console.log(`$MKOPush From: ${JSON.stringify(from)}`);
     }
 
-    Vue.prototype.$MKOPop = function(bHandle){
+    Vue.prototype.$MKOPop = function (count, bHandle) {
         let result = null;
-        if (history.length > 0){
-            result = history.pop();
-            if (!bHandle){
-                console.log(history);
-                // console.log(`$MKOPop ${JSON.stringify(result)}`);
+        if (history.length > 0) {
+            if (count) {
+                result = history[history.length - count];
+                history = history.splice(0, (history.length - count));
+            } else {
+                result = history.pop();
+            }
+            if (!bHandle) {
                 this.$router.replace(result.from);
             }
         }
