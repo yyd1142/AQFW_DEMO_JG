@@ -63,7 +63,7 @@ export default {
     getZRUnitList: httpGet('/dwInfo?m=info', Conf.msgDomain),
     getZRUnitInfo: httpGet('/dwInfo/ZRDW?m=info'),
     getQyType: httpGet('/dwlx?m=dwlxList', Conf.platformDomain),  //获得所有企业类型
-    addDWByZF: httpPost('/v2/dwInfo', Conf._platformDomain), //添加 社会单位
+    addDWByZF: httpPost('/v2/dwInfo?m=addDWByZF', Conf._platformDomain), //添加 社会单位
     //服务单位
     getFwList: httpGet('/fw/list', Conf.fwDomain),
     getFwInfo: httpGet('/fw/info', Conf.fwDomain),

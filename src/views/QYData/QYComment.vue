@@ -129,13 +129,8 @@
                 }
                 api.addDWByZF({
                     groupId: this.qyItem.groupId,
-                    dwSafeTypeID: this.qyItem.dwSafeTypeID,
-                    dwSafeSubTypeID: this.qyItem.dwSafeSubTypeID,
-                    dwSupervisor: this.qyItem.dwSupervisor,
                     gxDWID: this.qyItem.gxDWID,
-                    xzDWID: this.qyItem.xzDWID,
-                    xzDWName: this.qyItem.xzDWName,
-                    dwAttributeId: dwAttributeId
+                    dwAttributeId: JSON.stringify(dwAttributeId)
                 }).then(result => {
                     if (!result) return false;
                     if (result.code == 0) {
