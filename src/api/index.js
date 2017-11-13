@@ -64,7 +64,7 @@ export default {
     getZRUnitInfo: httpGet('/dwInfo/ZRDW?m=info'),
     getQyType: httpGet('/dwlx?m=dwlxList', Conf.platformDomain),  //获得所有企业类型
     addDWByZF: httpPost('/v2/dwInfo', Conf._platformDomain), //添加 社会单位
-    getQyRecord: httpGet('/dwInfo?m=enforceLowList'), //获取执法记录或火灾记录
+    getQyRecord: httpGet('/dwInfo?m=enforceLowList',Conf._pdomain), //获取执法记录或火灾记录
     //服务单位
     getFwList: httpGet('/fw/list', Conf.fwDomain),
     getFwInfo: httpGet('/fw/info', Conf.fwDomain),
