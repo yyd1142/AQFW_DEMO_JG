@@ -59,10 +59,11 @@ export default {
     getHistoryScoreDetail: httpGet('/dwScore', Conf.scoreDomain),
     //社会单位
     getQyList: httpGet('/jg/user/jurisdiction', Conf.qyDomain),
-    getQyInfo: httpGet('/dwInfo?m=info'),
+    getQyInfo: httpGet('/dwInfo?m=info', Conf._domain),
     getZRUnitList: httpGet('/dwInfo?m=info', Conf.msgDomain),
     getZRUnitInfo: httpGet('/dwInfo/ZRDW?m=info'),
     getQyType: httpGet('/dwlx?m=dwlxList', Conf.platformDomain),  //获得所有企业类型
+    addDWByZF: httpPost('/v2/dwInfo', Conf._platformDomain), //添加 社会单位
     getQyRecord: httpGet('/dwInfo?m=enforceLowList'), //获取执法记录或火灾记录
     //服务单位
     getFwList: httpGet('/fw/list', Conf.fwDomain),
@@ -81,6 +82,8 @@ export default {
     getPersonItem: httpGet('/jg/user/jurisdiction', Conf.fwDomain),
     getJGScoreTypes: httpGet('/dwScore', Conf.scoreDomain), //社会单位 分数等级模块
     getAppState: httpGet('/'), //获取APP状态
+
+    getAllLabels: httpGet('/label', Conf._platformDomain), //根据类型获取标签
     // PATH 形式访问
     getByPath: function (path) {
         return httpGet(path, Conf.resourcesDomain)

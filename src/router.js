@@ -88,6 +88,7 @@ const appNotification = resolve => require(['./views/enter/appNotification.vue']
 const noticeReplyList = resolve => require(['./views/notice/reply.vue'], resolve)
 const noticeReplyDetail = resolve => require(['./views/notice/replyDetail.vue'], resolve)
 const QYComment = resolve => require(['./views/QYData/QYComment.vue'], resolve)
+const QYAttributes = resolve => require(['./views/QYData/QYAttributes.vue'], resolve)
 Vue.use(Router)
 
 const routers = {
@@ -397,6 +398,11 @@ const routers = {
             path: '/qy_comment/:id',
             name: 'QYComment',
             component: QYComment
+        },
+        {
+            path: '/qy_attributes/:id',
+            name: 'QYAttributes',
+            component: QYAttributes
         }
     ]
 };

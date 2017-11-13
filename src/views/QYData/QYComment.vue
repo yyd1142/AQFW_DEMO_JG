@@ -6,22 +6,24 @@
             <mt-button class="header-item" @click="action" slot="right" v-text="text"></mt-button>
         </mt-header>
         <res-error v-if="resError"></res-error>
-        <no-data v-if="noData"></no-data>
+        <no-data v-if="labelsDatas.length == 0"></no-data>
         <div class="page-wrap">
             <div class="label-wrap" v-if="!isEdit">
-                <span class="label" :class="label.active ? label.color : null" v-for="label, index in labelsDatas" v-if="label.active">{{label.name}}</span>
+                <span class="label blue" v-for="label, index in labelsDatas"
+                      v-if="label.active">{{label.attributeName}}</span>
             </div>
             <div class="label-wrap" v-else>
-                <span class="label" :class="label.active ? label.color : null" v-for="label, index in labelsDatas"
-                      @click="choose(label, index)">{{label.name}}</span>
+                <span class="label" :class="label.active ? 'blue' : null" v-for="label, index in labelsDatas"
+                      @click="choose(label, index)">{{label.attributeName}}</span>
             </div>
             <div class="tips" v-text="tips"></div>
         </div>
     </div>
 </template>
 <script>
-    import {NoData, ResError} from 'components';
-    import {MessageBox} from 'mint-ui';
+    import api from 'api'
+    import {NoData, ResError} from 'components'
+    import {MessageBox} from 'mint-ui'
     export default {
         data() {
             return {
@@ -30,19 +32,20 @@
                 tips: '温馨提示：点击「编辑」进行新增/删除评价',
                 text: '编辑',
                 labelsDatas: [],
-                isEdit: false
+                isEdit: false,
+                qyItem: {}
             }
         },
         activated() {
             this.setBackButton();
-            this.getLabels();
+            this.getAllLabels();
         },
         methods: {
             back(){
-                if(this.isEdit) {
-                   this.isEdit = false;
+                if (this.isEdit) {
+                    this.isEdit = false;
                     this.text = '编辑';
-                   this.labelsDatas = JSON.parse(sessionStorage.getItem('labelsDatas'));
+                    this.labelsDatas = JSON.parse(sessionStorage.getItem('labelsDatas'));
                 } else {
                     this.$MKOPop();
                 }
@@ -58,6 +61,7 @@
                         showCancelButton: true
                     }).then(action => {
                         if (action === 'confirm') {
+                            this.updateLabel();
                             this.text = '编辑';
                             this.isEdit = false;
                         }
@@ -69,36 +73,45 @@
                     this.labelsDatas[index].active = !item.active;
                 }
             },
-            getLabels() {
-                let labels = [{
-                    name: '高危单位',
-                    color: 'red',
-                }, {
-                    name: '不放心单位',
-                    color: 'yellow',
-                }]
-                let allLabels = [{
-                    name: '高危单位',
-                    color: 'red'
-                }, {
-                    name: '不放心单位',
-                    color: 'yellow'
-                }, {
-                    name: '放心单位',
-                    color: 'green'
-                }, {
-                    name: '安全单位',
-                    color: 'blue'
-                }]
-                for (let item of allLabels) {
-                    item.active = false;
-                    for (let subItem of labels) {
-                        if (item.name == subItem.name) {
-                            item.active = true;
+            getLabels(datas) {
+                let labelsDatas = [];
+                api.getQyInfo({
+                    groupId: this.$route.params.id
+                }).then(result => {
+                    if (!result) return false;
+                    if (result.code === 0) {
+                        let attributes = result.response[0].attributes.filter(item => {
+                            return item.type == 1
+                        });
+                        this.qyItem = result.response[0];
+                        labelsDatas = attributes;
+                    } else {
+                        labelsDatas = [];
+                    }
+                    for (let item of datas) {
+                        item.active = false;
+                        for (let subItem of labelsDatas) {
+                            if (item.attributeName === subItem.attributeName) item.active = true;
                         }
                     }
-                }
-                this.labelsDatas = allLabels;
+                    this.labelsDatas = datas;
+                })
+            },
+            getAllLabels() {
+                let labelsDatas = [];
+                api.getAllLabels({
+                    m: 'attribute',
+                    dep: 1,
+                    type: 1
+                }).then(result => {
+                    if (!result) return false;
+                    if (result.code === 0) {
+                        labelsDatas = result.response;
+                    } else {
+                        labelsDatas = [];
+                    }
+                    this.getLabels(labelsDatas);
+                });
             },
             setBackButton() {
                 window.mkoBackButton = {};
@@ -106,6 +119,31 @@
                 if (window.mkoBackButton.bInputData) {
                     window.mkoBackButton.callback = this.back;
                 }
+            },
+            updateLabel() {
+                let dwAttributeId = [];
+                for(let item of this.labelsDatas) {
+                    if(item.active) {
+                        dwAttributeId.push(item.id);
+                    }
+                }
+                api.addDWByZF({
+                    groupId: this.qyItem.groupId,
+                    dwSafeTypeID: this.qyItem.dwSafeTypeID,
+                    dwSafeSubTypeID: this.qyItem.dwSafeSubTypeID,
+                    dwSupervisor: this.qyItem.dwSupervisor,
+                    gxDWID: this.qyItem.gxDWID,
+                    xzDWID: this.qyItem.xzDWID,
+                    xzDWName: this.qyItem.xzDWName,
+                    dwAttributeId: dwAttributeId
+                }).then(result => {
+                    if (!result) return false;
+                    if (result.code == 0) {
+
+                    } else {
+
+                    }
+                })
             }
         },
         components: {
@@ -120,7 +158,7 @@
             padding: 0 14px;
             .label-wrap {
                 background-color: #ffffff;
-                height: 100px;
+                min-height: 60px;
                 margin-top: 14px;
                 border-radius: 3px;
                 padding: 14px;
