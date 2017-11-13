@@ -20,6 +20,7 @@ export default {
     // scoreDomain:'http://10.0.1.11:8064',  //服务单位列表及相关
     allScoreDomain: 'http://10.0.1.11:8064',
     _platformDomain: 'http://10.0.1.11:3030',
-    _domain: 'http://10.0.1.11:3000'
+    _domain: 'http://10.0.1.11:3000',
+    _pdomain:'http://10.0.1.2:3000'
 }
 

@@ -41,6 +41,12 @@ const buildInfo = resolve => require(['views/QYData/buildInfo.vue'], resolve);
 const XFZRUnitList = resolve => require(['views/QYData/XFZRUnitList.vue'], resolve);
 const unitList = resolve => require(['views/QYData/unitList.vue'], resolve);
 const unitInfo = resolve => require(['views/QYData/unitInfo.vue'], resolve);
+//社会单位-历史记录模块
+const FireRecord = resolve => require(['./views/QYData/FireRecord/FireRecordList.vue'], resolve)
+const FireRecordDetail = resolve => require(['./views/QYData/FireRecord/FireRecordDetail.vue'], resolve)
+const JGZFRecord = resolve => require(['./views/QYData/JGZFRecord/Index.vue'], resolve)
+const JGZFRecordDetail = resolve => require(['./views/QYData/JGZFRecord/RecordDetail.vue'], resolve)
+
 //安全活动
 const safeActivityList = resolve => require(['views/safeActivity/safeActivityList.vue'], resolve);
 const safeActivityInfo = resolve => require(['views/safeActivity/safeActivityInfo.vue'], resolve);
@@ -81,8 +87,6 @@ const statisticsNotice = resolve => require(['./views/notice/statistics.vue'], r
 const appNotification = resolve => require(['./views/enter/appNotification.vue'], resolve)
 const noticeReplyList = resolve => require(['./views/notice/reply.vue'], resolve)
 const noticeReplyDetail = resolve => require(['./views/notice/replyDetail.vue'], resolve)
-const FireRecord = resolve => require(['./views/QYData/Record/FireRecord.vue'], resolve)
-const JGZFRecord = resolve => require(['./views/QYData/Record/JGZFRecord.vue'], resolve)
 const QYComment = resolve => require(['./views/QYData/QYComment.vue'], resolve)
 const QYAttributes = resolve => require(['./views/QYData/QYAttributes.vue'], resolve)
 Vue.use(Router)
@@ -209,6 +213,27 @@ const routers = {
         {
             path: '/unit_info/:id',
             component: unitInfo
+        },
+        //社会单位-历史记录模块
+        {
+            path: '/fire_record/:id',
+            name: 'FireRecord',
+            component: FireRecord
+        },
+        {
+            path: '/fire_record_detail/:id',
+            name: 'FireRecordDetail',
+            component: FireRecordDetail
+        },
+        {
+            path: '/jgzf_record/:id',
+            name: 'JGZFRecord',
+            component: JGZFRecord
+        },
+        {
+            path: '/jgzf_record_detail/:id',
+            name: 'JGZFRecordDetail',
+            component: JGZFRecordDetail
         },
         //安全活动
         {
@@ -368,16 +393,6 @@ const routers = {
             path: '/noticeReplyDetail',
             name: 'noticeReplyDetail',
             component: noticeReplyDetail
-        },
-        {
-            path: '/fire_record/:id',
-            name: 'FireRecord',
-            component: FireRecord
-        },
-        {
-            path: '/jgzf_record/:id',
-            name: 'JGZFRecord',
-            component: JGZFRecord
         },
         {
             path: '/qy_comment/:id',

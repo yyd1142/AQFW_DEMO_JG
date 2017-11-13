@@ -1,7 +1,7 @@
 /**
  * Created by enjoyzhou on 17-2-16.
  */
-import {httpGet, httpPost, httpPath, readFile} from './requestService'
+import { httpGet, httpPost, httpPath, readFile } from './requestService'
 import Conf from '../apiconf'
 
 export default {
@@ -64,6 +64,7 @@ export default {
     getZRUnitInfo: httpGet('/dwInfo/ZRDW?m=info'),
     getQyType: httpGet('/dwlx?m=dwlxList', Conf.platformDomain),  //获得所有企业类型
     addDWByZF: httpPost('/v2/dwInfo?m=addDWByZF', Conf._platformDomain), //添加 社会单位
+    getQyRecord: httpGet('/dwInfo?m=enforceLowList',Conf._pdomain), //获取执法记录或火灾记录
     //服务单位
     getFwList: httpGet('/fw/list', Conf.fwDomain),
     getFwInfo: httpGet('/fw/info', Conf.fwDomain),
@@ -81,9 +82,10 @@ export default {
     getPersonItem: httpGet('/jg/user/jurisdiction', Conf.fwDomain),
     getJGScoreTypes: httpGet('/dwScore', Conf.scoreDomain), //社会单位 分数等级模块
     getAppState: httpGet('/'), //获取APP状态
+
     getAllLabels: httpGet('/label', Conf._platformDomain), //根据类型获取标签
-        // PATH 形式访问
-        getByPath: function (path) {
+    // PATH 形式访问
+    getByPath: function (path) {
         return httpGet(path, Conf.resourcesDomain)
     }
 }
