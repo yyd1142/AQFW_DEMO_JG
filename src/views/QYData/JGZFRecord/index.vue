@@ -58,16 +58,10 @@
                     Indicator.close();
                     if (res && res.code == 0) {
                         this.list = res.response;
-                        let key = {
-                            1: '检查形式',
-                            2: '类别',
-                            3: '检查日期',
-                            4: '填发日期'
-                        };
+                        let key = {1: '检查形式', 2: '类别', 3: '检查日期', 4: '填发日期'};
                         this.list.forEach(item => {
-
                             item.desc = item.details[key[sub]];
-
+                            item.details.typeName = this.tabItems[this.tabI].text;
                         })
                     }
                 })

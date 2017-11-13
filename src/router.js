@@ -42,10 +42,10 @@ const XFZRUnitList = resolve => require(['views/QYData/XFZRUnitList.vue'], resol
 const unitList = resolve => require(['views/QYData/unitList.vue'], resolve);
 const unitInfo = resolve => require(['views/QYData/unitInfo.vue'], resolve);
 //社会单位-历史记录模块
-const FireRecord = resolve => require(['./views/QYData/FireRecord/FireRecordList'], resolve)
+const FireRecord = resolve => require(['./views/QYData/FireRecord/FireRecordList.vue'], resolve)
 const FireRecordDetail = resolve => require(['./views/QYData/FireRecord/FireRecordDetail.vue'], resolve)
-const JGZFRecord = resolve => require(['./views/QYData/JGZFRecord/index.vue'], resolve)
-const JGZFRecordDetail = resolve => require(['./views/QYData/JGZFRecord/JGZFRecordDetail.vue'], resolve)
+const JGZFRecord = resolve => require(['./views/QYData/JGZFRecord/Index.vue'], resolve)
+const JGZFRecordDetail = resolve => require(['./views/QYData/JGZFRecord/RecordDetail.vue'], resolve)
 
 //安全活动
 const safeActivityList = resolve => require(['views/safeActivity/safeActivityList.vue'], resolve);
