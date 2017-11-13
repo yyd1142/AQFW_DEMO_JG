@@ -1,5 +1,6 @@
 export default {
-  domain: 'http://61.177.139.223:20480/api/qy', // 社会端API
+  // domain: 'http://61.177.139.223:20480/api/qy', // 社会端API
+  domain: 'http://10.0.1.2:3000', // 社会端API
   taskDomain: 'http://61.177.139.223:20480/api/task',
   personDomain:'http://61.177.139.223:20480/api/jg',
   directoriesDomain:'http://61.177.139.223:20480/api/directories',
