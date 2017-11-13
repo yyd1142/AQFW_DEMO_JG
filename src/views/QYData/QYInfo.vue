@@ -36,9 +36,9 @@
                 <div @click="go('/qy_comment/'+$route.params.id)">
                     <mt-cell title="单位评价" is-link></mt-cell>
                 </div>
-                <!--<div @click="go('/safe_activity_list/'+$route.params.id)">-->
-                    <!--<mt-cell title="单位属性" is-link></mt-cell>-->
-                <!--</div>-->
+                <div @click="go('/qy_attributes/'+$route.params.id)">
+                    <mt-cell title="单位属性" is-link></mt-cell>
+                </div>
             </div>
 
             <div class="data-wrap">

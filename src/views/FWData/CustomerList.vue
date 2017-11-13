@@ -59,7 +59,7 @@
                         id: item.id
                     },
                     query: {
-                        customerDetail: item
+                        name: item.name
                     }
                 });
             },

@@ -84,6 +84,7 @@ const noticeReplyDetail = resolve => require(['./views/notice/replyDetail.vue'],
 const FireRecord = resolve => require(['./views/QYData/Record/FireRecord.vue'], resolve)
 const JGZFRecord = resolve => require(['./views/QYData/Record/JGZFRecord.vue'], resolve)
 const QYComment = resolve => require(['./views/QYData/QYComment.vue'], resolve)
+const QYAttributes = resolve => require(['./views/QYData/QYAttributes.vue'], resolve)
 Vue.use(Router)
 
 const routers = {
@@ -382,6 +383,11 @@ const routers = {
             path: '/qy_comment/:id',
             name: 'QYComment',
             component: QYComment
+        },
+        {
+            path: '/qy_attributes/:id',
+            name: 'QYAttributes',
+            component: QYAttributes
         }
     ]
 };

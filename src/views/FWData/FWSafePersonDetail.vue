@@ -8,18 +8,18 @@
         <no-data v-if="noData"></no-data>
         <div class="page-wrap fw-info-wrap" v-show="!noData&&!resError">
             <mko-edit-card title="基础信息" :edit="false" mode="readOnly">
-                <mko-form-cell title="人员编号" :val="$route.query.personDetail.number"></mko-form-cell>
-                <mko-form-cell title="姓名" :val="$route.query.personDetail.name"></mko-form-cell>
-                <mko-form-cell title="联系方式" :val="$route.query.personDetail.phone"></mko-form-cell>
-                <mko-form-cell title="职位" :val="$route.query.personDetail.office"></mko-form-cell>
-                <mko-form-cell title="权限" :val="$route.query.personDetail.role"></mko-form-cell>
-                <mko-form-cell title="证件类型" :val="$route.query.personDetail.credentialType"></mko-form-cell>
-                <mko-form-cell title="证件号码" :val="$route.query.personDetail.credentialsNumber"></mko-form-cell>
-                <mko-form-cell title="出生日期" :val="$route.query.personDetail.bornDate"></mko-form-cell>
-                <mko-form-cell title="性别" :val="$route.query.personDetail.gender"></mko-form-cell>
-                <mko-form-cell title="个人资质" :val="$route.query.personDetail.zz"></mko-form-cell>
+                <mko-form-cell title="人员编号" :val="personDetail.number"></mko-form-cell>
+                <mko-form-cell title="姓名" :val="personDetail.name"></mko-form-cell>
+                <mko-form-cell title="联系方式" :val="personDetail.phone"></mko-form-cell>
+                <mko-form-cell title="职位" :val="personDetail.office"></mko-form-cell>
+                <mko-form-cell title="权限" :val="personDetail.role"></mko-form-cell>
+                <mko-form-cell title="证件类型" :val="personDetail.credentialType"></mko-form-cell>
+                <mko-form-cell title="证件号码" :val="personDetail.credentialsNumber"></mko-form-cell>
+                <mko-form-cell title="出生日期" :val="personDetail.bornDate"></mko-form-cell>
+                <mko-form-cell title="性别" :val="personDetail.gender"></mko-form-cell>
+                <mko-form-cell title="个人资质" :val="personDetail.zz"></mko-form-cell>
                 <mko-form-cell title="资格证书" val="查看"></mko-form-cell>
-                <mko-form-cell title="工作时间" :val="$route.query.personDetail.jobTime"></mko-form-cell>
+                <mko-form-cell title="工作时间" :val="personDetail.jobTime"></mko-form-cell>
             </mko-edit-card>
         </div>
     </div>
@@ -41,6 +41,28 @@
                 //提示
                 resError: false,
                 noData: false
+            }
+        },
+        computed: {
+            personDetail() {
+                let item = {
+                    id: '',
+                    type: '',
+                    name: '',
+                    phone: '',
+                    zz: '',
+                    number: '',
+                    office: '',
+                    role: '',
+                    credentialType: '',
+                    credentialsNumber: '',
+                    bornDate: '',
+                    gender: '',
+                    zzBook: '',
+                    jobTime: ''
+                }
+                item = this.$route.query.personDetail ? this.$route.query.personDetail : item;
+                return item;
             }
         },
         methods: {

@@ -9,12 +9,12 @@
         <div class="page-wrap" v-show="!noData&&!resError">
             <div class="data-wrap">
                 <div class="qy-name">
-                    <span class="name" v-text="$route.query.details.qy_name"></span>
-                    <span class="type" v-text="$route.query.details.type"></span>
+                    <span class="name" v-text="details.qy_name"></span>
+                    <span class="type" v-text="details.type"></span>
                 </div>
-                <div class="zr-name" v-text="$route.query.details.zr_name"></div>
-                <div class="zx-name" v-text="$route.query.details.zx_name"></div>
-                <div class="time" v-text="$route.query.details.time"></div>
+                <div class="zr-name" v-text="details.zr_name"></div>
+                <div class="zx-name" v-text="details.zx_name"></div>
+                <div class="time" v-text="details.time"></div>
             </div>
             <div class="xuncha-type">
                 <div class="left">
@@ -310,6 +310,20 @@
                 },{
                     name: '消防电梯', status: 0, id: 6, value: false, description: '消防电梯故障', images: ['http://61.177.139.223:20680/fbb30c1015af46238809c6932e7bc6c008000000', 'http://61.177.139.223:20680/fbb30c1015af46238809c6932e7bc6c008000000']
                 }]
+            }
+        },
+        computed: {
+            details() {
+                let item = {
+                    id: '',
+                    qy_name: '',
+                    time: '',
+                    type: '',
+                    zr_name: '',
+                    zx_name: ''
+                }
+                item = this.$route.query.details ? this.$route.query.details : item;
+                return item;
             }
         },
         methods: {
