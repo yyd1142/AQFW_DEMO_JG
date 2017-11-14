@@ -80,10 +80,10 @@
                 }).then(result => {
                     if (!result) return false;
                     if (result.code === 0) {
-                        let attributes = result.response[0].attributes.filter(item => {
+                        let attributes = result.response.attributes.filter(item => {
                             return item.type == 1
                         });
-                        this.qyItem = result.response[0];
+                        this.qyItem = result.response;
                         labelsDatas = attributes;
                     } else {
                         labelsDatas = [];
