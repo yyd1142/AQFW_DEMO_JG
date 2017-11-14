@@ -116,7 +116,7 @@
 </template>
 
 <style lang="less" rel="stylesheet/less">
-  @import "../../config.less";
+  @import "../../../config.less";
 
   .scroll {
     position: absolute;

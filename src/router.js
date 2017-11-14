@@ -65,10 +65,17 @@ const CustomerInfo = resolve => require(['views/FWData/CustomerInfo.vue'], resol
 const score = resolve => require(['./views/score/score.vue'], resolve);
 const scoreList = resolve => require(['./views/score/scoreList.vue'], resolve);
 //数据统计
-const DataCountList = resolve => require(['views/DataCount/DataCountList.vue'], resolve);
-const CountScore = resolve => require(['views/DataCount/CountScore.vue'], resolve);
-const CountTasks = resolve => require(['views/DataCount/CountTasks.vue'], resolve);
-const AdminCountInfo = resolve => require(['views/DataCount/AdminCountInfo.vue'], resolve);
+const DataCountIndex = resolve => require(['./views/DataCount/index.vue'], resolve);
+const ProduceCountDetail = resolve => require(['./views/DataCount/ProduceCountDetail.vue'], resolve);
+const QYCountDetail = resolve => require(['./views/DataCount/QYCountDetail.vue'], resolve);
+const QYCountDetailList = resolve => require(['./views/DataCount/QYCountDetailList.vue'], resolve);
+const TaskCountDetail = resolve => require(['./views/DataCount/TaskCountDetail.vue'], resolve);
+const UserCountDetail = resolve => require(['./views/DataCount/UserCountDetail.vue'], resolve);
+//数据统计-安全评分
+const ScoreCountIndex = resolve => require(['./views/DataCount/Score/index.vue'], resolve);
+const ScoreCountDetail = resolve => require(['./views/DataCount/Score/ScoreDetail.vue'], resolve);
+const ScoreCountRank = resolve => require(['./views/DataCount/Score/ScoreRank.vue'], resolve);
+const ScoreCountRankVerAdmin = resolve => require(['./views/DataCount/Score/ScoreRankVerAdmin.vue'], resolve);
 //考试
 const trainList = resolve => require(['views/train/train.vue'], resolve);
 const pastScore = resolve => require(['views/train/pastScore.vue'], resolve);
@@ -303,20 +310,45 @@ const routers = {
         },
         //数据统计
         {
-            path: '/data_count_list',
-            component: DataCountList
+            path: '/data_count',
+            component: DataCountIndex
         },
         {
-            path: '/count_score',
-            component: CountScore
+            path: '/produce_count_detail',
+            component: ProduceCountDetail
         },
         {
-            path: '/count_tasks',
-            component: CountTasks
+            path: '/qy_count_detail',
+            component: QYCountDetail
         },
         {
-            path: '/admin_count_info',
-            component: AdminCountInfo
+            path: '/qy_count_detail_list',
+            component: QYCountDetailList
+        },
+        {
+            path: '/task_count_detail',
+            component:TaskCountDetail
+        },
+        {
+            path: '/user_count_detail',
+            component: UserCountDetail
+        },
+        //数据统计-安全评分
+        {
+            path: '/score_count',
+            component: ScoreCountIndex
+        },
+        {
+            path: '/score_count_detail',
+            component: ScoreCountDetail
+        },
+        {
+            path: '/score_count_rank',
+            component: ScoreCountRank
+        },
+        {
+            path: '/score_count_rank_admin',
+            component: ScoreCountRankVerAdmin
         },
         //考试
         {

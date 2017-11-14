@@ -1,5 +1,6 @@
 <template>
     <div class="jgzf-record-detail-wrap">
+        <div class="placeholder-item"></div>
         <mko-header :title="title" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
             <mko-cell :title="key" :val="item" v-for="(item,key) in data" non-text="无"></mko-cell>

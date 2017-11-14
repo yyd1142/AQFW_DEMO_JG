@@ -1,7 +1,7 @@
 /**
  * Created by enjoyzhou on 17-2-16.
  */
-import {httpGet, httpPost, httpPath, readFile} from './requestService'
+import { httpGet, httpPost, httpPath, readFile } from './requestService'
 import Conf from '../apiconf'
 
 export default {
@@ -12,6 +12,8 @@ export default {
     getXCTaskDeviceCheckRulesByUnitId: httpGet('/deviceCheckRules', Conf.taskDomain),
     //登陆
     login: httpGet('/auth?m=login', Conf.loginDomain, true),
+    //监管端单位信息
+    getJGDwInfo: httpGet('/jg/info', Conf.jgApiDomain), //获取本监管单位信息
     //个人资料
     getUserData: httpGet('/jg/user/info', Conf.jgApiDomain),
     getPersonInfo: httpGet('/jg/user/info', Conf.jgApiDomain),
