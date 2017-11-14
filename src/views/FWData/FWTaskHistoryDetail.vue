@@ -23,9 +23,9 @@
                 <div class="end-time">结果</div>
             </div>
             <ul class="device-table-view">
-                <li class="device-table-cell" :class="!item.value ? 'device-table-border' : null" v-for="(item, index) in deviceDatas">
+                <li class="device-table-cell" v-for="(item, index) in deviceDatas">
                     <div class="padding">
-                        <div class="device-item" :class="item.value ? 'border-bottom' : null">
+                        <div class="device-item">
                             <div class="dingding-icon" :class="!item.value ? 'yellow-icon' : 'green-icon'">
                                 <span></span>
                             </div>
@@ -37,7 +37,7 @@
                         <div class="text">
                             <div class="desc">{{item.description || '暂无描述'}}</div>
                         </div>
-                        <photo-box max="8" :read-only="true" :photo-list="item.images && item.images.length > 0 ? item.images : []" @onPopup="setBackButton()" v-if="item.images && item.images.length > 0"></photo-box>
+                        <photo-box max="8" :read-only="true" :photo-list="item.images" v-if="item.images && item.images.length > 0"></photo-box>
                     </div>
                 </li>
             </ul>
@@ -124,6 +124,7 @@
                         height: 44px;
                         line-height: 44px;
                         position: relative;
+                        border-bottom: 1px solid #eeeeee;
                         .dingding-icon {
                             width: 22px;
                             height: 22px;
@@ -269,7 +270,7 @@
                         .desc {
                             opacity: 0.72;
                             background: #f2f2f2;
-                            border: 1px solid #CCCCCC;
+                            border: 1px solid #eee;
                             border-radius: 4px;
                             height: 80px;
                             font-size: 14px;
@@ -281,7 +282,7 @@
                     }
                     .photo-wrap {
                         background: none;
-                        .border-btm(@borderGray);
+                        border: 1px solid #eee;
                     }
                 }
             }
@@ -302,13 +303,13 @@
                 },{
                     name: '灭火器', status: 1, id: 2, value: true, description: '', images: []
                 },{
-                    name: '灭火器', status: 1, id: 3, value: true, description: '灭火器已损坏', images: ['http://61.177.139.223:20680/fbb30c1015af46238809c6932e7bc6c008000000', 'http://61.177.139.223:20680/fbb30c1015af46238809c6932e7bc6c008000000']
+                    name: '灭火器', status: 1, id: 3, value: true, description: '灭火器已损坏', images: ['http://resources.aqfwy.com/c8c2e66d29fb4e3eb7172a626b74d12a05000000', 'http://resources.aqfwy.com/b13e14c3ea654a84bfd538abf9442e1908000000']
                 },{
                     name: '消防电梯', status: 1, id: 4, value: true, description: '', images: []
                 },{
-                    name: '消防电梯', status: 0, id: 5, value: false, description: '消防电梯故障', images: ['http://61.177.139.223:20680/fbb30c1015af46238809c6932e7bc6c008000000', 'http://61.177.139.223:20680/fbb30c1015af46238809c6932e7bc6c008000000']
+                    name: '消防电梯', status: 0, id: 5, value: false, description: '消防电梯故障', images: ['http://resources.aqfwy.com/a8f1e481805f448abf3e22a6e9533cc604000000', 'http://resources.aqfwy.com/22ec7ceae8af4c17b504c6c9b251f88900000000']
                 },{
-                    name: '消防电梯', status: 0, id: 6, value: false, description: '消防电梯故障', images: ['http://61.177.139.223:20680/fbb30c1015af46238809c6932e7bc6c008000000', 'http://61.177.139.223:20680/fbb30c1015af46238809c6932e7bc6c008000000']
+                    name: '消防电梯', status: 0, id: 6, value: false, description: '消防电梯故障', images: ['http://resources.aqfwy.com/3172ca6497564e9db9a2fee4bb88d6ca07000000', 'http://resources.aqfwy.com/3710ebed4ab646d9ad499242f2f584f605000000']
                 }]
             }
         },

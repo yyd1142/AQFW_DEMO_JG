@@ -4,33 +4,24 @@
         <mko-search-bar v-model="searchValue" is-header autofocus @onCancel="cancel">
         </mko-search-bar>
         <res-error v-if="resError"></res-error>
-        <no-data v-if="noData"></no-data>
+        <no-data v-if="searchValue ? (searchDatas.length == 0) : (fwList.length == 0) "></no-data>
         <div class="page-wrap fw-list-wrap" v-show="!resError && !noData">
             <!--<div class="selecetd" @click="popupShow = true">-->
             <!--<i class="selected-icon"></i>筛选-->
             <!--</div>-->
 
             <div ref="wrapper">
-                <mt-loadmore
-                    ref="loadmore"
-                    :top-method="loadTop"
-                    @top-status-change="handleTopChange"
-                    :bottom-method="loadBottom"
-                    @bottom-status-change="handleBottomChange"
-                    :bottom-all-loaded="bottomAllLoaded"
-                    :auto-fill="autoFill">
-                    <ul class="list" :style="{ height: wrapperHeight + 'px'}">
-                        <li class="item" @click="go(item.groupId)" v-for="(item,i) in fwList">
-                            <div class="info">
-                                <div class="title">{{item.dwName}}</div>
-                                <div class="desc">资质：{{item.zzInfoValue || '暂无'}}</div>
-                            </div>
-                            <div class="score">
-                                <star type="square" :score="item.score||5"></star>
-                            </div>
-                        </li>
-                    </ul>
-                </mt-loadmore>
+                <ul class="list">
+                    <li class="item" @click="go(item)" v-for="(item,i) in (searchValue ? searchDatas : fwList)">
+                        <div class="info">
+                            <div class="title">{{item.dwName}}</div>
+                            <div class="desc">资质：{{item.zzInfo || '暂无'}}</div>
+                        </div>
+                        <div class="score">
+                            <star type="square" :score="item.score||5"></star>
+                        </div>
+                    </li>
+                </ul>
             </div>
             <div class="popup-wrap">
                 <mt-popup v-model="popupShow" position="right">
@@ -86,6 +77,7 @@
             }
         }
         .list {
+            margin-top: 5px;
             .item {
                 position: relative;
                 display: block;
@@ -277,7 +269,8 @@
                     level: '',
                     score: ''
                 },
-                searchValue: ''
+                searchValue: '',
+                searchDatas: []
             }
         },
         created() {
@@ -286,39 +279,79 @@
         mounted() {
             this.wrapperHeight = Math.max(document.documentElement.clientHeight, document.body.clientHeight) - this.$refs.wrapper.getBoundingClientRect().top;
         },
+        watch: {
+            searchValue: function () {
+                this.searchData();
+            }
+        },
         methods: {
 //      ctrlPopupShow(e){
 //        e.preventDefault();
 //        this.popupShow = true;
 //      },
             getData(){
-                this.noData = false;
-                Indicator.open({spinnerType: 'fading-circle'});
-                let parmas = {
-                    page: this.page,
-                    zzInfo: this.formData.level
-                };
-                api.getFwList(parmas).then(res => {
-                    this.$refs.loadmore.onTopLoaded();
-                    this.$refs.loadmore.onBottomLoaded();
-                    if (!res) {
-                        Indicator.close();
-                        if (this.page === 1)
-                            this.resError = true;
-                        return;
-                    }
-                    if (res.response.datas.length === 0) {
-                        this.bottomAllLoaded = true;
-                        if (this.page === 1)
-                            this.noData = true;
-                    } else {
-                        res.response.datas.forEach(item => {
-                            this.fwList.push(item);
-                        });
-                    }
-//          this.fwList = this.fwList.concat(sim);
-                    Indicator.close();
-                });
+                let fwList = [{
+                    userId: 'xawb',
+                    groupId: 'QYWX050040',
+                    dwName: '无锡兴安维保',
+                    dwCode: '91320200780272823W',
+                    dwAddress: '无锡市清扬路32号',
+                    dwXZArea: '江苏省,无锡市,梁溪区',
+                    business: '维修,保养,检测',
+                    zzInfo: '消防设施维护保养检测机构一级资质',
+                    zzProve: ['http://resources.aqfwy.com/00a003a65814457ab10ad60051ab89b105000000'],
+                    issuedDepartment: '江苏省公安厅',
+                    zsStartTime: '2010-02-21',
+                    zsEndTime: '2020-02-21',
+                    dwManager: '张德华',
+                    dwManagerPhone: '15873239898',
+                    dwPhone: '051087323376',
+                    dwFax: '051087323376',
+                    postalcode: '214000',
+                    dwEmail: 'allenzhang@xawb.com',
+                    score: 3
+                },{
+                    userId: 'ljwb',
+                    groupId: 'QYWX053218',
+                    dwName: '无锡力界维保',
+                    dwCode: '93120200780564823W',
+                    dwAddress: '无锡市大同路184号',
+                    dwXZArea: '江苏省,无锡市,新吴区',
+                    business: '维修,保养,检测',
+                    zzInfo: '消防设施维护保养检测机构一级资质',
+                    zzProve: ['http://resources.aqfwy.com/b68df58988f64e0496042b444c119ce000000000'],
+                    issuedDepartment: '江苏省公安厅',
+                    zsStartTime: '2011-12-14',
+                    zsEndTime: '2020-12-14',
+                    dwManager: '刘明',
+                    dwManagerPhone: '13693228866',
+                    dwPhone: '051022329876',
+                    dwFax: '051022329876',
+                    postalcode: '214000',
+                    dwEmail: 'jcakliu@ljwb.com',
+                    score: 4
+                },{
+                    userId: 'snwb',
+                    groupId: 'QYWX051220',
+                    dwName: '无锡世宁维保',
+                    dwCode: '91332020078029347S',
+                    dwAddress: '无锡市珠江路89号',
+                    dwXZArea: '江苏省,无锡市,新吴区',
+                    business: '维修,保养,检测',
+                    zzInfo: '消防设施维护保养检测机构二级资质',
+                    zzProve: ['http://resources.aqfwy.com/0f04424c27c94ec6889a7c44b72c601c08000000'],
+                    issuedDepartment: '江苏省公安厅',
+                    zsStartTime: '2008-11-04',
+                    zsEndTime: '2019-11-04',
+                    dwManager: '李建义',
+                    dwManagerPhone: '15367824545',
+                    dwPhone: '051032108432',
+                    dwFax: '051032108432',
+                    postalcode: '214000',
+                    dwEmail: 'markli@snwb.com',
+                    score: 2
+                }];
+                this.fwList = fwList
             },
             loadTop(){
                 this.page = 1;
@@ -347,10 +380,14 @@
                     data[key] = "";
                 }
             },
-            go(id){
-                console.log(this.bottomStatus);
+            go(item){
                 if (this.bottomStatus != 'loading' && this.topStatus != 'loading')
-                    this.$MKOPush('/fw_info/' + id);
+                    this.$MKOPush({
+                        path: '/fw_info/' + item.groupId,
+                        query: {
+                            fwDetail: item
+                        }
+                    });
             },
             back(){
                 this.$MKOPop();
@@ -358,6 +395,14 @@
             },
             cancel() {
                 this.back()
+            },
+            searchData() {
+                let search = this.searchValue;
+                if (search) {
+                    this.searchDatas = this.fwList.filter(item => {
+                        return item.dwName.indexOf(search) > -1;
+                    })
+                }
             }
         },
         components: {
