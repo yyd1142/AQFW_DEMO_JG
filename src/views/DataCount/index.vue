@@ -11,7 +11,7 @@
             </div>
             <div class="chart-wrap" ref="lineChart"></div>
             <div class="btn-wrap">
-                <mko-button size="large" no-radius>评分详情</mko-button>
+                <mko-button size="large" no-radius @click="goScore">评分详情</mko-button>
             </div>
         </div>
     </div>
@@ -61,8 +61,8 @@
                     if (res && res.code == 0) {
                         let data = res.response;
                         let path = data.path.split('/');
-//                        this.type = path[1] == data.id ? 0 : 1;
-                        this.type = path[1] != data.id ? 0 : 1;
+                        this.type = path[1] == data.id ? 0 : 1;
+//                        this.type = path[1] != data.id ? 0 : 1;
                         sessionStorage.setItem(`jgDwType${gId}`, this.type);
                         this.DrawChart1(echarts);
                     }
@@ -70,6 +70,9 @@
             },
             goDetail(path){
                 this.$MKOPush(path)
+            },
+            goScore(){
+                this.$MKOPush('/score_count');
             },
             DrawChart1(ec){
                 let scores = [
