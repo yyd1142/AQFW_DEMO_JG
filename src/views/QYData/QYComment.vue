@@ -6,13 +6,12 @@
             <mt-button class="header-item" @click="action" slot="right" v-text="text"></mt-button>
         </mt-header>
         <res-error v-if="resError"></res-error>
-        <no-data v-if="labelsDatas.length == 0"></no-data>
         <div class="page-wrap">
             <div class="label-wrap" v-if="!isEdit">
                 <span class="label blue" v-for="label, index in labelsDatas"
                       v-if="label.active">{{label.attributeName}}</span>
             </div>
-            <div class="label-wrap" v-else>
+            <div class="label-wrap" v-if="isEdit">
                 <span class="label" :class="label.active ? 'blue' : null" v-for="label, index in labelsDatas"
                       @click="choose(label, index)">{{label.attributeName}}</span>
             </div>
@@ -139,6 +138,14 @@
 
                     }
                 })
+            },
+            getLabelsDatasEmpty(datas) {
+                let emptyDatas = datas.filter(item => { return item.active === false; });
+                if(emptyDatas.length === datas.length) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         },
         components: {

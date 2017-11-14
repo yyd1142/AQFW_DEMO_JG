@@ -18,8 +18,9 @@
                 <mko-form-cell title="出生日期" :val="personDetail.bornDate"></mko-form-cell>
                 <mko-form-cell title="性别" :val="personDetail.gender"></mko-form-cell>
                 <mko-form-cell title="个人资质" :val="personDetail.zz"></mko-form-cell>
-                <mko-form-cell title="资格证书" val="查看"></mko-form-cell>
                 <mko-form-cell title="工作时间" :val="personDetail.jobTime"></mko-form-cell>
+                <mko-form-cell title="资格证书"></mko-form-cell>
+                <photo-box max="8" :read-only="true" :photo-list="images"></photo-box>
             </mko-edit-card>
         </div>
     </div>
@@ -34,13 +35,14 @@
 </style>
 
 <script>
-    import { NoData, ResError } from 'components'
+    import { NoData, ResError, PhotoBox } from 'components'
     export default{
         data() {
             return {
                 //提示
                 resError: false,
-                noData: false
+                noData: false,
+                images: ['http://resources.aqfwy.com/44102aa778bd48a7baf00e1452aed32100000000']
             }
         },
         computed: {
@@ -72,7 +74,8 @@
         },
         components: {
             NoData,
-            ResError
+            ResError,
+            PhotoBox
         }
     }
 </script>

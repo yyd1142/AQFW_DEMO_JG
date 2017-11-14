@@ -14,25 +14,26 @@
                 <mko-cell title="签约客户" val="10" @click="go('/customer_list/' + fwInfo.groupId)" is-link></mko-cell>
             </div>
             <mko-edit-card title="基础信息" :edit="false" mode="readOnly">
-                <mko-form-cell title="账号" val="wuxidg"></mko-form-cell>
-                <mko-form-cell title="单位编码" val="00100"></mko-form-cell>
-                <mko-form-cell title="单位名称" val="无锡大观"></mko-form-cell>
-                <mko-form-cell title="组织机构代码" val="xxx"></mko-form-cell>
-                <mko-form-cell title="单位地址" val="xxx"></mko-form-cell>
-                <mko-form-cell title="行政区域" val="xxx"></mko-form-cell>
-                <mko-form-cell title="业务范围" val="xxx"></mko-form-cell>
-                <mko-form-cell title="资质信息" val="xxx"></mko-form-cell>
-                <mko-form-cell title="资质证书" val="xxx"></mko-form-cell>
-                <mko-form-cell title="发证部门" val="xxx"></mko-form-cell>
-                <mko-form-cell title="有效期" val="xxx"></mko-form-cell>
+                <mko-form-cell title="账号" :val="fwInfo.userId"></mko-form-cell>
+                <mko-form-cell title="单位编码" :val="fwInfo.groupId"></mko-form-cell>
+                <mko-form-cell title="单位名称" :val="fwInfo.dwName"></mko-form-cell>
+                <mko-form-cell title="组织机构代码" :val="fwInfo.dwCode"></mko-form-cell>
+                <mko-form-cell title="单位地址" :val="fwInfo.dwAddress"></mko-form-cell>
+                <mko-form-cell title="行政区域" :val="fwInfo.dwXZArea"></mko-form-cell>
+                <mko-form-cell title="业务范围" :val="fwInfo.business"></mko-form-cell>
+                <mko-form-cell title="资质信息" :val="fwInfo.zzInfo"></mko-form-cell>
+                <mko-form-cell title="资质证书"></mko-form-cell>
+                <photo-box max="8" :read-only="true" :photo-list="fwInfo.zzProve"></photo-box>
+                <mko-form-cell title="发证部门" :val="fwInfo.issuedDepartment"></mko-form-cell>
+                <mko-form-cell title="有效期" :val="fwInfo.zsStartTime + '至' + fwInfo.zsEndTime"></mko-form-cell>
             </mko-edit-card>
             <mko-edit-card title="联系信息" :edit="false" mode="readOnly">
-                <mko-form-cell title="管理员" val="xxx"></mko-form-cell>
-                <mko-form-cell title="联系电话" val="xxx"></mko-form-cell>
-                <mko-form-cell title="单位电话" val="xxx"></mko-form-cell>
-                <mko-form-cell title="单位传真" val="xxx"></mko-form-cell>
-                <mko-form-cell title="邮政编码" val="xxx"></mko-form-cell>
-                <mko-form-cell title="E-Mail" val="xxx"></mko-form-cell>
+                <mko-form-cell title="管理员" :val="fwInfo.dwManager"></mko-form-cell>
+                <mko-form-cell title="联系电话" :val="fwInfo.dwManagerPhone"></mko-form-cell>
+                <mko-form-cell title="单位电话" :val="fwInfo.dwPhone"></mko-form-cell>
+                <mko-form-cell title="单位传真" :val="fwInfo.dwFax"></mko-form-cell>
+                <mko-form-cell title="邮政编码" :val="fwInfo.postalcode"></mko-form-cell>
+                <mko-form-cell title="E-Mail" :val="fwInfo.dwEmail"></mko-form-cell>
             </mko-edit-card>
         </div>
     </div>
@@ -122,52 +123,53 @@
 
 <script>
     import api from 'api'
-    import NoData from 'components/NoData/NoData.vue';
-    import ResError from 'components/ResError/ResError.vue';
-    import Star from 'components/Star/Star.vue'
-    import {Indicator} from 'mint-ui';
+    import { NoData, ResError, PhotoBox } from 'components'
     export default{
         data() {
             return {
                 //提示
                 resError: false,
-                noData: false,
-                //数据
-                fwInfo: {}
+                noData: false
             }
         },
-        created() {
-            Indicator.open({spinnerType: 'fading-circle'});
-            this.getData();
+        computed: {
+            fwInfo() {
+                let item = {
+                    groupId: '',
+                    dwName: '',
+                    dwCode: '',
+                    dwAddress: '',
+                    dwXZArea: '',
+                    business: '',
+                    zzInfo: '',
+                    zzProve: [],
+                    issuedDepartment: '',
+                    zsStartTime: '',
+                    zsEndTime: '',
+                    dwManager: '',
+                    dwManagerPhone: '',
+                    dwPhone: '',
+                    dwFax: '',
+                    postalcode: '',
+                    dwEmail: '',
+                    score: ''
+                }
+                item = this.$route.query.fwDetail ? this.$route.query.fwDetail : item;
+                return item;
+            }
         },
         methods: {
-            getData(){
-                let params = {
-                    groupId: this.$route.params.id
-                };
-                api.getFwInfo(params).then(res => {
-                    Indicator.close();
-                    if (!res) {
-                        this.resError = true;
-                        return;
-                    }
-                    this.fwInfo = res.response || '';
-                    if (!this.fwInfo)
-                        this.noData = true;
-                })
-            },
             go(path){
                 this.$MKOPush(path);
             },
             back(){
                 this.$MKOPop();
-                Indicator.close();
             }
         },
         components: {
             NoData,
             ResError,
-            Star
+            PhotoBox
         }
     }
 </script>

@@ -8,19 +8,17 @@
         <no-data v-if="noData"></no-data>
         <div class="page-wrap" v-show="!noData||!resError">
             <div class="data-wrap">
-                <mko-cell title="联系人" val="杨子康"></mko-cell>
-                <mko-cell title="联系电话" val="134444333333"></mko-cell>
-                <mko-cell title="合同签订日期" val="2015年10月11日"></mko-cell>
-                <mko-cell title="合同起止日期" val="2015年10月11日-2018年10月11日"></mko-cell>
-            </div>
-            <div class="data-wrap">
+                <mko-cell title="联系人" :val="customerDetail.legalPerson"></mko-cell>
+                <mko-cell title="联系电话" :val="customerDetail.phone"></mko-cell>
+                <mko-cell title="合同签订日期" :val="customerDetail.contractSignTime"></mko-cell>
+                <mko-cell title="合同生效日期" :val="customerDetail.contractStartTime"></mko-cell>
+                <mko-cell title="合同失效日期" :val="customerDetail.contractEndTime"></mko-cell>
                 <mko-cell title="合同文件"></mko-cell>
-                <mko-cell title="xxx服务合同文件.pdf" val="查看"></mko-cell>
+                <photo-box max="8" :read-only="true" :photo-list="images"></photo-box>
             </div>
-            <div class="data-wrap">
+            <div class="data-wrap" v-if="customerDetail.devices.length > 0">
                 <mko-cell title="委托管理设备"></mko-cell>
-                <mko-cell title="消防水系统" val="维修"></mko-cell>
-                <mko-cell title="电气火灾监控系统" val="维修,保养"></mko-cell>
+                <mko-cell :title="item.name" :val="typeFilter(item.type)" v-for="item in customerDetail.devices"></mko-cell>
             </div>
         </div>
     </div>
@@ -36,23 +34,57 @@
 </style>
 
 <script>
-    import {NoData, ResError} from 'components'
+    import {NoData, ResError, PhotoBox} from 'components'
     export default{
         data() {
             return {
                 //提示
                 resError: false,
                 noData: false,
+                images: ['http://resources.aqfwy.com/e21db97b2ab44f608505d96a3c47f27e02000000', 'http://resources.aqfwy.com/44f8ab192e7349e68bd5c1180cc7632b05000000']
+            }
+        },
+        computed: {
+            customerDetail() {
+                let item = {
+                    id: '',
+                    name: '',
+                    legalPerson: '',
+                    phone: '',
+                    contractSignTime: '',
+                    contractStartTime: '',
+                    contractEndTime: '',
+                    attachment: [],
+                    devices: []
+                }
+                item = this.$route.query.customerDetail ? this.$route.query.customerDetail : item;
+                return item;
             }
         },
         methods: {
             back(){
                 this.$MKOPop();
+            },
+            typeFilter(type) {
+                let text = [];
+                type.map(item => {
+                    if(item == 1) {
+                        text.push('维修')
+                    } else if(item == 2){
+                        text.push('保养')
+                    } else {
+                        text.push('其他')
+                    }
+                    return text;
+                });
+                text = text.join(',');
+                return text;
             }
         },
         components: {
             NoData,
-            ResError
+            ResError,
+            PhotoBox
         }
     }
 </script>
