@@ -65,10 +65,7 @@ const CustomerInfo = resolve => require(['views/FWData/CustomerInfo.vue'], resol
 const score = resolve => require(['./views/score/score.vue'], resolve);
 const scoreList = resolve => require(['./views/score/scoreList.vue'], resolve);
 //数据统计
-const DataCountList = resolve => require(['views/DataCount/DataCountList.vue'], resolve);
-const CountScore = resolve => require(['views/DataCount/CountScore.vue'], resolve);
-const CountTasks = resolve => require(['views/DataCount/CountTasks.vue'], resolve);
-const AdminCountInfo = resolve => require(['views/DataCount/AdminCountInfo.vue'], resolve);
+const DataCountIndex = resolve => require(['./views/DataCount/index.vue'], resolve);
 //考试
 const trainList = resolve => require(['views/train/train.vue'], resolve);
 const pastScore = resolve => require(['views/train/pastScore.vue'], resolve);
@@ -303,20 +300,8 @@ const routers = {
         },
         //数据统计
         {
-            path: '/data_count_list',
-            component: DataCountList
-        },
-        {
-            path: '/count_score',
-            component: CountScore
-        },
-        {
-            path: '/count_tasks',
-            component: CountTasks
-        },
-        {
-            path: '/admin_count_info',
-            component: AdminCountInfo
+            path: '/data_count',
+            component: DataCountIndex
         },
         //考试
         {

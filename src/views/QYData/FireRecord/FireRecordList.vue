@@ -1,5 +1,6 @@
 <template>
     <div class="fire-record-list-wrap">
+        <div class="placeholder-item"></div>
         <mko-header title="火灾记录" left-icon="icon-back" @handleLeftClick="back" ></mko-header>
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>

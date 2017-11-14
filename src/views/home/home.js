@@ -28,7 +28,7 @@ export default {
             actions: [
                 {class: 'qy-icon', text: '社会单位', url: '/qy_list'},
                 {class: 'fw-icon', text: '服务单位', url: '/fw_list'},
-                {class: 'datacount-icon', text: '数据统计', url: '/count_score'},
+                {class: 'datacount-icon', text: '数据统计', url: '/data_count'},
                 {class: 'notice-icon', text: '通知公告', url: '/notice'},
                 {class: 'peixun-icon', text: '教育培训', url: '/train'},
                 {class: 'yinhuan-icon', text: '风险管理', url: `/hidden_danger/${this.$store.getters.groupId}?is_jg=1`},
