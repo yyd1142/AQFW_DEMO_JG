@@ -14,6 +14,7 @@ import MKOHistoryManager from './plugins/MKOHistoryManager'
 import MKOAPPState from './plugins/MKOAPPState'
 import MKOUITools from './plugins/MKOUITools'
 import store from './store'
+import MkoUI from 'mko-ui'
 var canExitApp = false;
 FastClick.attach(document.body)
 
@@ -35,6 +36,7 @@ const config = {
 
 Vue.use(VeeValidate, config);
 Vue.use(MintUI);
+Vue.use(MkoUI);
 Vue.use(MKOMessagePlugin)
 Vue.use(MKOHistoryManager)
 Vue.use(MKOAPPState)
