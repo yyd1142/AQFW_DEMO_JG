@@ -4,9 +4,9 @@
         <mko-header title="数据统计" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
             <div class="count-block-wrap clear">
-                <div class="count-block" v-for="(item,key) in counts[type]">
-                    <div class="num">{{item}}</div>
-                    <div class="label">{{key}}</div>
+                <div class="count-block" @click="goDetail(item.path)" v-for="item in counts[type]">
+                    <div class="num">{{item.num}}</div>
+                    <div class="label">{{item.label}}</div>
                 </div>
             </div>
             <div class="chart-wrap" ref="lineChart"></div>
@@ -21,22 +21,22 @@
     import api from 'api';
     import echarts from 'echarts';
     let theme = 'macarons';
-
+    let gId = '';
     export default {
         data () {
             return {
                 type: 0,
                 counts: [
-                    {
-                        '社会单位数量': 3746,
-                        '累积执行任务数量': 826852,
-                        '用户数量': 7325,
-                        '生成数据总量': 1511926
-                    },
-                    {
-                        '社会单位数量': 546,
-                        '累积执行任务数量': 68904,
-                    }
+                    [
+                        {label: '社会单位数量', num: 3746, path: '/qy_count_detail'},
+                        {label: '累积执行任务数量', num: 826852, path: '/task_count_detail'},
+                        {label: '用户数量', num: 7325, path: '/user_count_detail'},
+                        {label: '生成数据总量', num: 1511926, path: '/produce_count_detail'}
+                    ],
+                    [
+                        {label: '社会单位数量', num: 546, path: '/qy_count_detail'},
+                        {label: '累积执行任务数量', num: 68904, path: '/task_count_detail'},
+                    ],
                 ]
             }
         },
@@ -53,18 +53,23 @@
         },
         methods: {
             getDwData(){
+                gId = this.$store.getters.groupId;
                 let params = {
-                    groupId: this.$store.getters.groupId
+                    groupId: gId
                 };
                 api.getJGDwInfo(params).then(res => {
                     if (res && res.code == 0) {
                         let data = res.response;
                         let path = data.path.split('/');
-                        this.type = path[1] == data.id ? 0 : 1;
-//                        this.type = path[1] != data.id ? 0 : 1;
+//                        this.type = path[1] == data.id ? 0 : 1;
+                        this.type = path[1] != data.id ? 0 : 1;
+                        sessionStorage.setItem(`jgDwType${gId}`, this.type);
                         this.DrawChart1(echarts);
                     }
                 })
+            },
+            goDetail(path){
+                this.$MKOPush(path)
             },
             DrawChart1(ec){
                 let scores = [
@@ -127,6 +132,7 @@
                 })
             },
             back(){
+                sessionStorage.removeItem(`jgDwType${gId}`);
                 this.$MKOPop();
             }
         },
@@ -140,10 +146,11 @@
     .data-count-wrap {
         .count-block-wrap {
             margin: 8px;
+            margin-bottom: 0;
             .count-block {
                 float: left;
-                width: 48%;
-                margin-bottom: 14px;
+                width: 49%;
+                margin-bottom: 8px;
                 background-color: #fff;
                 &:nth-child(even) {
                     float: right;
