@@ -199,7 +199,8 @@ const routers = {
         },
         {
             path: '/qy_info/:id',
-            component: QYInfo
+            component: QYInfo,
+            name: 'QYInfo'
         },
         {
             path: '/build_list/:id',
@@ -442,7 +443,7 @@ const routers = {
 const router = new Router(routers);
 
 router.beforeEach((to, from, next) => {
-    if (to.name == 'home' || to.name == 'score' || to.name == 'jgDetail' || to.name == 'login' || to.name == 'scoreDetail') {
+    if (to.name == 'home' || to.name == 'score' || to.name == 'jgDetail' || to.name == 'login' || to.name == 'scoreDetail' || to.name == 'QYInfo' || to.name == 'QYComment') {
         NProgress.remove();
     } else {
         NProgress.start();

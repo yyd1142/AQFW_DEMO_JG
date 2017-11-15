@@ -3,41 +3,32 @@
         <div class="placeholder-item"></div>
         <mt-header class="header-wrap" title="社会单位" fixed>
             <mt-button class="header-item" slot="left" icon="back" @click="$MKOPop()"></mt-button>
-            <div class="icon-search" slot="right" @click="searchBarShow=!searchBarShow"></div>
+            <!--<div class="icon-search" slot="right" @click="searchBarShow=!searchBarShow"></div>-->
+            <div class="header-item" slot="right" @click="selecteEvent">筛选</div>
         </mt-header>
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
         <div class="page-wrap qy-list-wrap" v-show="!resError" id="pageWrapper">
-            <!--头部按钮-->
-            <div class="header-btn-wrap">
-                <div class="header-btn" :class="{active:listType==item.type}" @click="ctrlListType(item.type)"
-                     v-for="item in headerBtn">{{item.text}}
-                </div>
-            </div>
-            <!--搜索-->
-            <search-bar v-model="search" hint-text="请输入单位名或监督部门" v-show="searchBarShow" ref="search-bar"></search-bar>
-            <!--筛选按钮-->
-            <div class="selected" @click="selecteEvent">
-                <i class="selected-icon"></i>筛选
-                <span class="count" v-show="dwListSum">({{dwListSum}}家)</span>
-            </div>
-            <!--列表-->
+            <search-bar v-model="search" hint-text="请输入单位名称" ref="search-bar"></search-bar>
+            <mko-nav-bar border-bottom>
+                <mko-tab-item :label="item.text" :activied="listType == item.type"
+                              @handleTabClick="ctrlListType(item.type)" v-for="item in headerBtn"></mko-tab-item>
+            </mko-nav-bar>
             <div ref="wrapper">
                 <mt-loadmore ref="loadmore" :bottom-method="loadBottom" @bottom-status-change="handleBottomChange"
                              :auto-fill="autoFill" :bottom-all-loaded="bottomAllLoaded">
                     <ul class="list">
                         <li class="item" @click="go(item.groupId,item.dwName,item.dwSafeScore)"
                             v-for="(item,n) in dwList">
-                            <div class="score" :class="{'score-null':!item.dwSafeScore}"
-                                 :style="{color:calcScoreStyle(item.dwSafeScore)}">
+                            <div class="score" :class="scoreColorStyle(item.dwSafeScore)">
                                 {{parseInt(item.dwSafeScore) || '暂无'}}
                             </div>
                             <div class="info">
                                 <div class="title no-overflow">{{item.dwName}}</div>
-                                <div class="desc no-overflow">监督部门：{{item.gxDWName || '暂无名称'}}</div>
                                 <div class="dw-attribute">
-                                    <span class="attr-item"
-                                          v-for="attr in item.dwAttributes">{{attr.attributeName}}</span>
+                                    <span class="attr-item" :class="scoreColorStyle(item.dwSafeScore)"
+                                          v-for="attr, index in item.dwAttributes" v-if="index <= 2">{{attributesFilter(attr.attributeName)}}</span>
+                                    <!--<span class="attr-item" :class="scoreColorStyle(item.dwSafeScore)" v-else>...</span>-->
                                 </div>
                             </div>
                         </li>
@@ -146,7 +137,8 @@
                 //搜索
                 search: '',
                 searchBarShow: false,
-                searchReset: false
+                searchReset: false,
+                tabI: 0
             }
         },
         watch: {
@@ -381,6 +373,29 @@
                     let scrollBottom = totalHeight - scrollTop - clientHeight;
                     this.bottomAllLoaded = scrollBottom <= 0 ? false : true;
                 })
+            },
+            scoreColorStyle(score) {
+                let val = parseFloat(score);
+                if (!val)
+                    return 'gradients90';
+                if (val >= 90) {
+                    return 'gradients90'
+                } else if (val >= 80) {
+                    return 'gradients80'
+                } else if (val >= 70) {
+                    return 'gradients70'
+                } else if (val >= 60) {
+                    return 'gradients60'
+                } else {
+                    return 'gradients50'
+                }
+            },
+            attributesFilter(item) {
+                if(item.length >= 7) {
+                    return `${item.substring(0, 4)}...`;
+                } else {
+                    return item;
+                }
             }
         },
         components: {
@@ -468,37 +483,41 @@
             .item {
                 position: relative;
                 box-sizing: border-box;
-                height: 70px;
-                padding: 6px 14px;
+                height: 60px;
+                padding: 0 14px;
                 background: #fff;
                 overflow: hidden;
                 & + .item {
                     .border-top(#E0E0E0);
                 }
                 .score {
-                    float: left;
-                    width: 14.5%;
-                    height: 38px;
+                    width: 34px;
+                    height: 34px;
                     line-height: 38px;
-                    font-size: 40px;
-                    color: #57D4E7;
+                    font-size: 20px;
+                    color: #ffffff;
                     letter-spacing: 0;
                     text-align: center;
+                    position: absolute;
+                    left: 14px;
+                    margin: auto;
+                    top: 0;
+                    bottom: 0;
+                    border-radius: 2px;
                     &.score-null {
                         font-size: 20px;
                     }
                 }
                 .info {
                     float: left;
-                    padding: 0 2%;
-                    width: 85.5%;
+                    width: 100%;
+                    padding: 13px 0 0 48px;
                     letter-spacing: 0;
                     .title {
-                        width: 100%;
-                        height: 20px;
-                        line-height: 20px;
                         font-size: 14px;
-                        color: #232323;
+                        color: #333333;
+                        letter-spacing: 0;
+                        line-height: 14px;
                     }
                     .desc {
                         height: 17px;
@@ -607,14 +626,19 @@
             }
         }
         .dw-attribute {
-            position: absolute;
-            right: 14px;
-            bottom: 10px;
-            padding: 3px;
+            width: 100%;
+            padding: 6px 0 0 0;
             .attr-item {
+                height: 18px;
                 font-size: 12px;
-                color: #0398ff;
-                border-radius: 3px;
+                color: #ffffff;
+                border-radius: 2px;
+                text-align: center;
+                display: inline-block;
+                line-height: 14px;
+                padding: 2px;
+                box-sizing: border-box;
+                margin-right: 4px;
             }
         }
     }

@@ -1,7 +1,7 @@
 <template>
     <div>
         <mt-header class="header-wrap qy-info-header"
-                   :style="{backgroundColor:calcHeadColor($route.query.score||dwScore.totalScore)}"
+                   :style="{backgroundColor:scoreHeadColor($route.query.score || dwScore.totalScore)}"
                    :title="this.$route.query.name || '社会单位'"
                    fixed>
             <mt-button class="header-item" @click="back" slot="left" icon="back"></mt-button>
@@ -9,12 +9,18 @@
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
         <div class="page-wrap qy-info-wrap" v-if="!noData&&!resError">
-            <div @click="$MKOPush(`/score/${$route.params.id}?name=${$route.query.name}`)">
-                <score-banner :unit-info="$route.query.name||dwInfo.dwName"
-                              :unit-score="$route.query.score||dwScore.totalScore"></score-banner>
+            <!--<div @click="$MKOPush(`/score/${$route.params.id}?name=${$route.query.name}`)">-->
+                <!--<score-banner :unit-info="$route.query.name||dwInfo.dwName"-->
+                              <!--:unit-score="$route.query.score||dwScore.totalScore"></score-banner>-->
+            <!--</div>-->
+            <div class="label-wrap" :style="{backgroundColor:scoreHeadColor($route.query.score || dwScore.totalScore)}" @click="$MKOPush(`/score/${$route.params.id}?name=${$route.query.name}`)">
+                <div class="label-item">
+                    <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" :style="{ marginRight: index === (dwInfo.attributes.length - 1) ? 0 : '4px' }" v-for="item, index in dwInfo.attributes" v-if="!noAttributes"><span>{{attributesFilter(item.attributeName)}}</span></div>
+                    <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" v-if="noAttributes"><span>暂无评价</span></div>
+                    <i class="icon icon-link-arrow"></i>
+                </div>
             </div>
-
-            <div class="data-wrap">
+            <div class="data-wrap" style="margin-top: 48px;">
                 <div @click="go('/hidden_danger/'+$route.params.id)">
                     <mt-cell title="企业风险管理" is-link></mt-cell>
                 </div>
@@ -33,7 +39,7 @@
                 <div @click="go('/jgzf_record/'+$route.params.id)">
                     <mt-cell title="监督执法记录" is-link></mt-cell>
                 </div>
-                <div @click="go('/qy_comment/'+$route.params.id)">
+                <div @click="goQYComment">
                     <mt-cell title="单位评价" is-link></mt-cell>
                 </div>
                 <div @click="go('/qy_attributes/'+$route.params.id)">
@@ -89,7 +95,7 @@
 <script>
     import api from 'api'
     import {NoData, ResError, ScoreBanner} from 'components';
-    import {dwJJSYZ, calcScoreText, calcHeadColor, calcBannerCircle, calcBannerBg} from 'filters'
+    import {dwJJSYZ, calcScoreText, calcBannerCircle, calcBannerBg} from 'filters'
     import {Indicator} from 'mint-ui';
     var _id = '';
     export default{
@@ -99,18 +105,18 @@
                 resError: false,
                 noData: false,
                 //数据
-                dwInfo: {},
-                dwScore: ''
+                dwInfo: {
+                    attributes: []
+                },
+                dwScore: '',
+                noAttributes: false
             }
         },
         mounted() {
 
         },
         activated(){
-            if (_id != this.$route.params.id) {
-                scrollTo(0, 0);
-                this.getData();
-            }
+            this.getData();
         },
         methods: {
             dwJJSYZ,
@@ -130,6 +136,11 @@
                         return;
                     }
                     this.dwInfo = res.response || "";
+                    if(res.response.attributes.length <= 0) {
+                        this.noAttributes = true;
+                    } else {
+                        this.noAttributes = false;
+                    }
                     if (!this.dwInfo)
                         this.noData = true;
                 });
@@ -139,11 +150,10 @@
                     }
                     this.dwScore = res.msg.length ? res.msg[res.msg.length - 1] : {};
                     if (!this.dwScore.totalScore)
-                        this.dwScore.totalScore = 0
+                        this.dwScore.totalScore = 0;
                 });
             },
             calcScoreText,
-            calcHeadColor,
             calcBannerCircle,
             calcBannerBg,
             go(path){
@@ -152,6 +162,53 @@
             back(){
                 this.$MKOPop();
                 Indicator.close();
+            },
+            scoreHeadColor(val) {
+                val = parseFloat(val);
+                if (!val)
+                    return '#8988FF';
+                if (val >= 90) {
+                    return '#8988FF'
+                } else if (val >= 80) {
+                    return '#52B0FE'
+                } else if (val >= 70) {
+                    return '#34D986'
+                } else if (val >= 60) {
+                    return '#FFC128'
+                } else {
+                    return '#FF8383'
+                }
+            },
+            scoreColorStyle(score) {
+                let val = parseFloat(score);
+                if (!val)
+                    return 'gradients90';
+                if (val >= 90) {
+                    return 'gradients90'
+                } else if (val >= 80) {
+                    return 'gradients80'
+                } else if (val >= 70) {
+                    return 'gradients70'
+                } else if (val >= 60) {
+                    return 'gradients60'
+                } else {
+                    return 'gradients50'
+                }
+            },
+            attributesFilter(item) {
+                if(item.length >= 7) {
+                    return `${item.substring(0, 4)}...`;
+                } else {
+                    return item;
+                }
+            },
+            goQYComment() {
+                this.$MKOPush({
+                    path: `/qy_comment/${this.$route.params.id}`,
+                    query: {
+                        score: this.$route.query.score
+                    }
+                })
             }
         },
         components: {
@@ -171,6 +228,43 @@
     }
 
     .qy-info-wrap {
+        .label-wrap {
+            width: 100%;
+            height: 32px;
+            margin-bottom: 10px;
+            position: fixed;
+            z-index: 22;
+            .label-item {
+                background: rgba(255, 255, 255, 0.50);
+                border-radius: 4px;
+                text-align: center;
+                display: table;
+                margin: 0 auto;
+                padding: 3px 4px;
+                position: relative;
+                .main {
+                    height: 18px;
+                    border-radius: 2px;
+                    text-align: center;
+                    display: inline-block;
+                    line-height: 12px;
+                    padding: 2px;
+                    box-sizing: border-box;
+                    margin-right: 4px;
+                    span {
+                        color: #ffffff;
+                        font-size: 12px;
+                    }
+                }
+                .icon {
+                    position: absolute;
+                    right: -14px;
+                    top: 0;
+                    bottom: 0;
+                    margin: auto;
+                }
+            }
+        }
         .data-wrap {
             & + .data-wrap {
                 margin-top: 14px;

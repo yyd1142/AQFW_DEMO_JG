@@ -66,12 +66,12 @@ const Http = (path, method, domain, bHandleError, mode) => {
 }
 
 export function httpGet(path, domain, bHandleError) {
-    let mode = (domain == 'http://www.aqfwy.com/api/qy' || domain == 'http://www.aqfwy.com/api/platform') ? 'DEMO' : 'TEST';
+    let mode = (domain == 'http://www.aqfwy.com/api/qy' || domain == 'http://www.aqfwy.com/api/platform' || domain == 'http://www.aqfwy.com/api/jg') ? 'DEMO' : 'TEST';
     return Http(path, 'get', domain, bHandleError, mode)
 }
 
 export function httpPost(path, domain, bHandleError) {
-    let mode = (domain == 'http://www.aqfwy.com/api/qy' || domain == 'http://www.aqfwy.com/api/platform') ? 'DEMO' : 'TEST';
+    let mode = (domain == 'http://www.aqfwy.com/api/qy' || domain == 'http://www.aqfwy.com/api/platform' || domain == 'http://www.aqfwy.com/api/jg') ? 'DEMO' : 'TEST';
     return Http(path, 'post', domain, bHandleError, mode)
 }
 
