@@ -60,7 +60,7 @@ export default {
     getHistoryScoreList: httpGet('/dwScore', Conf.scoreDomain),
     getHistoryScoreDetail: httpGet('/dwScore', Conf.scoreDomain),
     //社会单位
-    getQyList: httpGet('/jg/user/jurisdiction', Conf.jgApiDomain),
+    getQyList: httpGet('/jg/user/jurisdiction', Conf._jgApiDomain),
     getQyInfo: httpGet('/dwInfo?m=info', Conf.domain),
     getZRUnitList: httpGet('/dwInfo?m=info', Conf.qyApiDomain),
     getZRUnitInfo: httpGet('/dwInfo/ZRDW?m=info'),

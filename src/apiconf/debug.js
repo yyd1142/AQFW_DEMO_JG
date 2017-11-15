@@ -11,6 +11,7 @@ export default {
     resourcesDomain: 'http://resources.aqfwy.com', // 资源服务
     scoreDomain: 'http://www.aqfwy.com/api/scoresystem', //安全评分系统
     // scoreDomain:'http://10.0.1.11:8064',  //服务单位列表及相关
-    allScoreDomain: 'http://10.0.1.11:8064'
+    allScoreDomain: 'http://10.0.1.11:8064',
+    _jgApiDomain: 'http://10.0.1.11:5873'
 }
 
