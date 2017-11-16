@@ -7,6 +7,9 @@
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
         <div class="page-wrap fw-info-wrap" v-show="!noData&&!resError">
+            <div class="score-banner">
+                <star type="square" :score="fwInfo.score||5"></star>
+            </div>
             <div class="data-wrap">
                 <mko-cell title="平均服务评分" val="82.2" @click="go('/fw_score/'+ fwInfo.groupId)" is-link></mko-cell>
                 <mko-cell title="任务执行记录" val="5" @click="go('/fw_task_history/'+ fwInfo.groupId)" is-link></mko-cell>
@@ -45,6 +48,9 @@
     .fw-info-wrap {
         > div {
             background: #fff;
+        }
+        .score-banner {
+            width: 100%;
         }
         .info-wrap {
             position: relative;
@@ -123,7 +129,7 @@
 
 <script>
     import api from 'api'
-    import { NoData, ResError, PhotoBox } from 'components'
+    import { NoData, ResError, PhotoBox, Star } from 'components'
     export default{
         data() {
             return {
@@ -169,7 +175,8 @@
         components: {
             NoData,
             ResError,
-            PhotoBox
+            PhotoBox,
+            Star
         }
     }
 </script>

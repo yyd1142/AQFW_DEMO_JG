@@ -54,6 +54,7 @@
                 let params = {
                     type: 2,
                     subType: sub,
+                    groupId: this.$route.params.id
                 };
                 api.getQyRecord(params).then(res => {
                     Indicator.close();

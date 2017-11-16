@@ -9,7 +9,7 @@
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
         <div class="page-wrap qy-list-wrap" v-show="!resError" id="pageWrapper">
-            <search-bar v-model="search" hint-text="请输入单位名称" ref="search-bar"></search-bar>
+            <search-bar v-model="search" hint-text="搜索单位名称" ref="search-bar"></search-bar>
             <mko-nav-bar border-bottom>
                 <mko-tab-item :label="item.text" :activied="listType == item.type"
                               @handleTabClick="ctrlListType(item.type)" v-for="item in headerBtn"></mko-tab-item>
@@ -28,7 +28,7 @@
                                 <div class="dw-attribute">
                                     <span class="attr-item" :class="scoreColorStyle(item.dwSafeScore)"
                                           v-for="attr, index in item.dwAttributes" v-if="index <= 2">{{attributesFilter(attr.attributeName)}}</span>
-                                    <span class="attr-item" :class="scoreColorStyle(item.dwSafeScore)" v-if="!item.dwAttributes || (item.dwAttributes && item.dwAttributes.length <= 0)">暂无标签</span>
+                                    <span class="attr-item disabled" v-if="!item.dwAttributes || (item.dwAttributes && item.dwAttributes.length <= 0)">暂无标签</span>
                                 </div>
                             </div>
                         </li>
@@ -639,6 +639,9 @@
                 padding: 2px;
                 box-sizing: border-box;
                 margin-right: 4px;
+                &.disabled {
+                    color: #888;
+                }
             }
         }
     }

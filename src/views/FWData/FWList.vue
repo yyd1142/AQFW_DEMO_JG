@@ -1,28 +1,25 @@
 <template>
     <div>
         <div class="placeholder-item"></div>
-        <!--<mko-search-bar v-model="searchValue" is-header autofocus @onCancel="cancel">-->
-        <!--</mko-search-bar>-->
         <mt-header class="header-wrap" title="服务单位" fixed>
             <mt-button class="header-item" icon="back" slot="left" @click="back"></mt-button>
         </mt-header>
         <res-error v-if="resError"></res-error>
         <no-data v-if="searchValue ? (searchDatas.length == 0) : (fwList.length == 0) "></no-data>
         <div class="page-wrap fw-list-wrap" v-show="!resError && !noData">
-            <!--<div class="selecetd" @click="popupShow = true">-->
-            <!--<i class="selected-icon"></i>筛选-->
-            <!--</div>-->
+            <search-bar v-model="searchValue" hint-text="搜索公司名称" ref="search-bar"></search-bar>
 
             <div ref="wrapper">
                 <ul class="list">
                     <li class="item" @click="go(item)" v-for="(item,i) in (searchValue ? searchDatas : fwList)">
                         <div class="info">
                             <div class="title">{{item.dwName}}</div>
-                            <div class="desc">资质：{{item.zzInfo || '暂无'}}</div>
+                            <!--<div class="desc">资质：{{item.zzInfo || '暂无'}}</div>-->
                         </div>
                         <div class="score">
-                            <star type="square" :score="item.score||5"></star>
+                            <i class="icon-star icon-star-9"></i>
                         </div>
+                        <i class="icon icon-link-arrow"></i>
                     </li>
                 </ul>
             </div>
@@ -80,19 +77,22 @@
             }
         }
         .list {
-            margin-top: 5px;
             .item {
                 position: relative;
                 display: block;
                 box-sizing: border-box;
-                height: 50px;
+                height: 60px;
                 padding: 6px 14px 5px;
                 .border-btm(#E0E0E0);
                 background: #fff;
                 .score {
                     position: absolute;
-                    top: 6px;
-                    right: 8px;
+                    margin-top: 6px;
+                    left: 14px;
+                    .icon-star {
+                        position: absolute;
+                        left: 0;
+                    }
                 }
                 .info {
                     letter-spacing: 0;
@@ -100,7 +100,7 @@
                         height: 20px;
                         line-height: 20px;
                         font-size: 14px;
-                        color: #232323;
+                        color: #333333;
                     }
                     .desc {
                         height: 17px;
@@ -108,6 +108,13 @@
                         font-size: 12px;
                         color: #B7B7B7;
                     }
+                }
+                .icon {
+                    position: absolute;
+                    right: 14px;
+                    margin: auto;
+                    top: 0;
+                    bottom: 0;
                 }
             }
         }
@@ -234,8 +241,7 @@
     ];
     import {Indicator, Toast} from 'mint-ui';
     import api from 'api'
-    import {NoData, ResError} from 'components';
-    import Star from 'components/Star/Star.vue'
+    import {NoData, ResError, SearchBar, Star } from 'components';
     export default{
         data() {
             return {
@@ -411,7 +417,8 @@
         components: {
             NoData,
             ResError,
-            Star
+            Star,
+            SearchBar
         }
     }
 </script>
