@@ -17,7 +17,7 @@
                             <!--<div class="desc">资质：{{item.zzInfo || '暂无'}}</div>-->
                         </div>
                         <div class="score">
-                            <i class="icon-star icon-star-9"></i>
+                            <i class="icon-star" :class="'icon-star-' + item.score"></i>
                         </div>
                         <i class="icon icon-link-arrow"></i>
                     </li>
@@ -318,7 +318,7 @@
                     dwFax: '051087323376',
                     postalcode: '214000',
                     dwEmail: 'allenzhang@xawb.com',
-                    score: 3
+                    score: 4
                 },{
                     userId: 'ljwb',
                     groupId: 'QYWX053218',
@@ -338,7 +338,7 @@
                     dwFax: '051022329876',
                     postalcode: '214000',
                     dwEmail: 'jcakliu@ljwb.com',
-                    score: 4
+                    score: 6
                 },{
                     userId: 'snwb',
                     groupId: 'QYWX051220',
@@ -358,7 +358,7 @@
                     dwFax: '051032108432',
                     postalcode: '214000',
                     dwEmail: 'markli@snwb.com',
-                    score: 2
+                    score: 9
                 }];
                 this.fwList = fwList
             },

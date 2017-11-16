@@ -9,15 +9,22 @@
         <div class="page-wrap" v-show="!noData&&!resError">
             <ul class="table-view">
                 <li class="table-cell" v-for="item in personDatas" @click="goInfo(item)">
-                    <div class="title">
-                        <span class="number">{{item.type}}</span>
-                        <span class="score">编号：{{item.number}}</span>
+                    <div class="info person">
+                        <i class="header-image icon-header-image"></i>
+                        <div class="name">{{item.name}}<i class="icon icon-link-arrow"></i></div>
+                        <div class="phone">{{item.phone}}</div>
                     </div>
-                    <div class="name">
-                        <span class="item">{{item.name}}</span>
-                        <span class="item right">{{item.phone}}</span>
+                    <div class="info type">
+                        <div class="info-cell">
+                            <span class="gradients">职</span>{{item.type}}
+                        </div>
+                        <div class="info-cell">
+                            <span class="gradients">编</span>{{item.number}}
+                        </div>
+                        <div class="info-cell">
+                            <span class="gradients">资</span>{{item.zz}}
+                        </div>
                     </div>
-                    <div class="zz">资质：{{item.zz}}</div>
                 </li>
             </ul>
         </div>
@@ -29,31 +36,74 @@
     .FWSafePersons {
         .table-view {
             width: 100%;
+            padding: 14px;
+            box-sizing: border-box;
             .table-cell {
-                width: 100%;
-                background-color: #ffffff;
-                height: 88px;
-                .border-btm(@borderColor);
-                .title {
+                background: #FFFFFF;
+                box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
+                min-height: 132px;
+                margin-bottom: 10px;
+                .info {
                     width: 100%;
-                    .number {
-                        font-size: 14px;
+                    position: relative;
+                    &.person {
+                        padding: 10px 0 0 54px;
                     }
-                    .score {
-                        font-size: 14px;
+                    &.type {
+                        padding: 20px 0 0 14px;
                     }
-                }
-                .name {
-                    width: 100%;
-                    .item {
-                        font-size: 14px;
-                        &.right {
-                            text-align: right;
+                    .header-image{
+                        position: absolute;
+                        top: 10px;
+                        left: 10px;
+                        border-radius: 2px;
+                    }
+                    .name {
+                        width: 100%;
+                        font-size: 16px;
+                        color: #333333;
+                        letter-spacing: 0;
+                        position: relative;
+                        .icon {
+                            position: absolute;
+                            top:0;
+                            bottom: 0;
+                            margin: auto;
+                            margin-left: 6px;
                         }
                     }
-                }
-                .zz {
-                    width: 100%;
+                    .phone {
+                        width: 100%;
+                        font-size: 14px;
+                        color: #333333;
+                        letter-spacing: 0;
+                        line-height: 14px;
+                        margin-top: 6px;
+                    }
+                    .info-cell {
+                        width: 100%;
+                        font-size: 14px;
+                        color: #666666;
+                        letter-spacing: 0;
+                        padding-left: 24px;
+                        margin-top: 8px;
+                        &:first-child {
+                            margin-top: 0;
+                        }
+                        .gradients {
+                            background: -prefix-linear-gradient(left top, #8988FF, #88B1FF);
+                            background: linear-gradient(to bottom right, #8988FF, #88B1FF);
+                            width: 14px;
+                            height: 14px;
+                            position: absolute;
+                            font-size: 12px;
+                            color: #FFFFFF;
+                            letter-spacing: 0;
+                            left: 14px;
+                            text-align: center;
+                            line-height: 14px;
+                        }
+                    }
                 }
             }
         }

@@ -10,7 +10,7 @@
             <span class="link-arrow" :class="linkIcon||(fr(active)?'icon-arrow-right':'icon-link-arrow')" v-if="fr(isLink)"></span>
             <div class="value fr no-overflow" :class="{'is-link':fr(isLink),'is-active':fr(active)}">
                 <slot>
-                    <span v-if="!fr(phone)||!val">{{val || nonText}}</span>
+                    <span v-if="!fr(phone)||!val" :class="valStyle">{{val || nonText}}</span>
                     <a class="phone" :href="'tel:' + val" v-if="fr(phone)&&val">{{val || nonText}}</a>
                 </slot>
             </div>
@@ -20,7 +20,7 @@
 
 <script>
     export default {
-        props: ['icon', 'title', 'val', 'is-link', 'link-icon', 'active', 'non-text', 'phone'],
+        props: ['icon', 'title', 'val', 'is-link', 'link-icon', 'active', 'non-text', 'phone', 'val-style'],
         data () {
             return {}
         },
