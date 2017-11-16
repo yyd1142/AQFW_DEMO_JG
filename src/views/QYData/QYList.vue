@@ -28,7 +28,7 @@
                                 <div class="dw-attribute">
                                     <span class="attr-item" :class="scoreColorStyle(item.dwSafeScore)"
                                           v-for="attr, index in item.dwAttributes" v-if="index <= 2">{{attributesFilter(attr.attributeName)}}</span>
-                                    <!--<span class="attr-item" :class="scoreColorStyle(item.dwSafeScore)" v-else>...</span>-->
+                                    <span class="attr-item" :class="scoreColorStyle(item.dwSafeScore)" v-if="!item.dwAttributes || (item.dwAttributes && item.dwAttributes.length <= 0)">暂无标签</span>
                                 </div>
                             </div>
                         </li>

@@ -2,12 +2,12 @@
     <div class="qy-comment">
         <div class="placeholder-item"></div>
         <mt-header class="header-wrap" :style="{backgroundColor: scoreHeadColor($route.query.score)}" fixed
-                   title="单位评价">
+                   title="单位标签">
             <mt-button class="header-item" @click="back" slot="left" icon="back"></mt-button>
         </mt-header>
         <res-error v-if="resError"></res-error>
         <div class="page-wrap">
-            <div class="comment-title"><span>单位评价</span></div>
+            <div class="comment-title"><span>单位标签</span></div>
             <div class="label-wrap">
                 <span class="label" :class="label.active ? scoreColorStyle($route.query.score) : 'no-active'"
                       v-for="label, index in labelsDatas"
@@ -28,7 +28,6 @@
             return {
                 resError: false,
                 noData: false,
-                tips: '温馨提示：点击「编辑」进行新增/删除评价',
                 text: '编辑',
                 labelsDatas: [],
                 qyItem: {}
@@ -118,12 +117,12 @@
                 }).then(result => {
                     if (!result) return false;
                     if (result.code == 0) {
-                        Toast({ message: '评价成功', duration: 1500 });
+                        Toast({ message: '保存成功', duration: 1500 });
                         setTimeout(() => {
                             this.back()
                         }, 1500);
                     } else {
-                        Toast({ message: '评价失败', duration: 1500 });
+                        Toast({ message: '保存失败', duration: 1500 });
                     }
                 })
             },
@@ -148,7 +147,7 @@
                 } else if (val >= 70) {
                     return '#34D986'
                 } else if (val >= 60) {
-                    return '#FFC128'
+                    return '#FF9744'
                 } else {
                     return '#FF8383'
                 }

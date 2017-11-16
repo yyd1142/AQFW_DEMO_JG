@@ -13,16 +13,33 @@
                 <!--<score-banner :unit-info="$route.query.name||dwInfo.dwName"-->
                               <!--:unit-score="$route.query.score||dwScore.totalScore"></score-banner>-->
             <!--</div>-->
-            <div class="label-wrap" :style="{backgroundColor:scoreHeadColor($route.query.score || dwScore.totalScore)}" @click="$MKOPush(`/score/${$route.params.id}?name=${$route.query.name}`)">
+            <div class="score-banner" :style="{backgroundColor:scoreHeadColor($route.query.score || dwScore.totalScore)}" @click="$MKOPush(`/score/${$route.params.id}?name=${$route.query.name}`)">
+                <span>{{$route.query.score || dwScore.totalScore}}</span>
+            </div>
+            <div class="label-wrap" :style="{backgroundColor:scoreHeadColor($route.query.score || dwScore.totalScore)}" @click="goQYComment">
                 <div class="label-item">
                     <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" :style="{ marginRight: index === (dwInfo.attributes.length - 1) ? 0 : '4px' }" v-for="item, index in dwInfo.attributes" v-if="!noAttributes"><span>{{attributesFilter(item.attributeName)}}</span></div>
                     <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" v-if="noAttributes"><span>暂无评价</span></div>
                     <i class="icon icon-link-arrow"></i>
                 </div>
             </div>
-            <div class="data-wrap" style="margin-top: 48px;">
+            <div class="data-wrap">
+                <div @click="go('/fire_record/'+$route.params.id)">
+                    <mt-cell title="火灾记录" is-link></mt-cell>
+                </div>
+                <div @click="go('/jgzf_record/'+$route.params.id)">
+                    <mt-cell title="监督执法记录" is-link></mt-cell>
+                </div>
+                <div @click="goQYComment">
+                    <mt-cell title="单位标签" is-link></mt-cell>
+                </div>
+                <div @click="go('/qy_attributes/'+$route.params.id)">
+                    <mt-cell title="单位属性" is-link></mt-cell>
+                </div>
+            </div>
+            <div class="data-wrap">
                 <div @click="go('/hidden_danger/'+$route.params.id)">
-                    <mt-cell title="企业风险管理" is-link></mt-cell>
+                    <mt-cell title="风险管理" is-link></mt-cell>
                 </div>
                 <div @click="go('/build_list/'+$route.params.id)">
                     <mt-cell title="建筑信息" is-link></mt-cell>
@@ -33,25 +50,15 @@
                 <div @click="go('/safe_activity_list/'+$route.params.id)">
                     <mt-cell title="安全活动" is-link></mt-cell>
                 </div>
-                <div @click="go('/fire_record/'+$route.params.id)">
-                    <mt-cell title="火灾记录" is-link></mt-cell>
-                </div>
-                <div @click="go('/jgzf_record/'+$route.params.id)">
-                    <mt-cell title="监督执法记录" is-link></mt-cell>
-                </div>
-                <div @click="goQYComment">
-                    <mt-cell title="单位评价" is-link></mt-cell>
-                </div>
-                <div @click="go('/qy_attributes/'+$route.params.id)">
-                    <mt-cell title="单位属性" is-link></mt-cell>
-                </div>
             </div>
 
             <div class="data-wrap">
-                <mt-cell title="账号信息" :value="dwInfo.userName||'暂无'"></mt-cell>
+                <div class="title-wrap"><span>账号信息</span></div>
+                <mt-cell title="账号" :value="dwInfo.userName||'暂无'"></mt-cell>
                 <mt-cell title="单位编码" :value="dwInfo.groupId||'暂无'"></mt-cell>
             </div>
             <div class="data-wrap">
+                <div class="title-wrap"><span>基本信息</span></div>
                 <mt-cell title="单位名称" :value="dwInfo.dwName||'暂无'"></mt-cell>
                 <mt-cell title="单位简称" :value="dwInfo.dwShortName||'暂无'"></mt-cell>
                 <mt-cell title="组织机构代码" :value="dwInfo.dwCode||'暂无'"></mt-cell>
@@ -67,6 +74,7 @@
                 <mt-cell title="监督员" :value="dwInfo.jgName||'暂无'"></mt-cell>
             </div>
             <div class="data-wrap">
+                <div class="title-wrap"><span>联系方式</span></div>
                 <mt-cell title="消防安全管理人" :value="dwInfo.dwManager||'暂无'"></mt-cell>
                 <mt-cell title="联系电话" :value="dwInfo.dwManagerPhone||'暂无'">
                     <a class="phone" :href="'tel:' + dwInfo.dwManagerPhone"
@@ -135,14 +143,15 @@
                         this.resError = true;
                         return;
                     }
-                    this.dwInfo = res.response || "";
-                    if(res.response.attributes.length <= 0) {
+                    if(!res.response.attributes || (res.response.attributes && res.response.attributes.length <= 0)) {
                         this.noAttributes = true;
                     } else {
+                        res.response.attributes = res.response.attributes.splice(0, 4);
                         this.noAttributes = false;
                     }
                     if (!this.dwInfo)
                         this.noData = true;
+                    this.dwInfo = res.response || "";
                 });
                 api.getScoreList(params).then(res => {
                     if (!res) {
@@ -174,7 +183,7 @@
                 } else if (val >= 70) {
                     return '#34D986'
                 } else if (val >= 60) {
-                    return '#FFC128'
+                    return '#FF9744'
                 } else {
                     return '#FF8383'
                 }
@@ -228,12 +237,24 @@
     }
 
     .qy-info-wrap {
+        .score-banner {
+            height: 120px;
+            width: 100%;
+            display: table;
+            text-align: center;
+            span{
+                display: table-cell;
+                vertical-align: middle;
+                line-height: 120px;
+                margin: 10px auto;
+                font-size: 60px;
+                color: #ffffff;
+            }
+        }
         .label-wrap {
             width: 100%;
             height: 32px;
             margin-bottom: 10px;
-            position: fixed;
-            z-index: 22;
             .label-item {
                 background: rgba(255, 255, 255, 0.50);
                 border-radius: 4px;
@@ -292,6 +313,21 @@
                         text-overflow: ellipsis;
                         white-space: nowrap;
                     }
+                }
+            }
+            .title-wrap {
+                height: 50px;
+                width: 100%;
+                padding-left: 14px;
+                display: table;
+                background-color: #ffffff;
+                span {
+                    display: table-cell;
+                    vertical-align: middle;
+                    line-height: 50px;
+                    font-size: 16px;
+                    color: #333333;
+                    letter-spacing: 0;
                 }
             }
         }

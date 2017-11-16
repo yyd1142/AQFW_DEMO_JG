@@ -35,12 +35,21 @@
                 Indicator.open({spinnerType: 'fading-circle'});
                 let params = {
                     type: 1,
-                    subType: 0
+                    subType: 0,
+                    groupId: this.$route.params.id
                 };
                 api.getQyRecord(params).then(res => {
                     Indicator.close();
                     if (res && res.code == 0) {
                         this.list = res.response;
+                        if(res.response.length <= 0) {
+                            this.noData = true;
+                        } else {
+                            this.noData = false;
+                        }
+
+                    } else {
+                        this.noData = true;
                     }
                 })
             },
