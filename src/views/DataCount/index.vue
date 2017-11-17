@@ -28,14 +28,14 @@
                 type: 0,
                 counts: [
                     [
-                        {label: '社会单位数量', num: 3746, path: '/qy_count_detail'},
-                        {label: '累积执行任务数量', num: 826852, path: '/task_count_detail'},
-                        {label: '用户数量', num: 7325, path: '/user_count_detail'},
-                        {label: '生成数据总量', num: 1511926, path: '/produce_count_detail'}
+                        {label: '社会单位数量(家)', num: 3746, path: '/qy_count_detail'},
+                        {label: '累积执行任务数量(个)', num: 826852, path: '/task_count_detail'},
+                        {label: '用户数量(人)', num: 7325, path: '/user_count_detail'},
+                        {label: '生成数据总量(次)', num: 1511926, path: '/produce_count_detail'}
                     ],
                     [
-                        {label: '社会单位数量', num: 546, path: '/qy_count_detail'},
-                        {label: '累积执行任务数量', num: 68904, path: '/task_count_detail'},
+                        {label: '社会单位数量(家)', num: 546, path: '/qy_count_detail'},
+                        {label: '累积执行任务数量(个)', num: 68904, path: '/task_count_detail'},
                     ],
                 ]
             }
@@ -161,11 +161,11 @@
                 padding: 10px;
                 .num {
                     color: @mainBlue;
-                    font-size: 18px;
+                    font-size: 32px;
                     margin-bottom: 14px;
                 }
                 .label {
-                    font-size: 16px;
+                    font-size: 14px;
                     margin-bottom: 14px;
                 }
             }
