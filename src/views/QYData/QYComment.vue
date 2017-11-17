@@ -1,37 +1,35 @@
 <template>
     <div class="qy-comment">
         <div class="placeholder-item"></div>
-        <mt-header class="header-wrap" fixed title="单位评价">
+        <mt-header class="header-wrap" :style="{backgroundColor: scoreHeadColor($route.query.score)}" fixed
+                   title="单位标签">
             <mt-button class="header-item" @click="back" slot="left" icon="back"></mt-button>
-            <mt-button class="header-item" @click="action" slot="right" v-text="text"></mt-button>
         </mt-header>
         <res-error v-if="resError"></res-error>
         <div class="page-wrap">
-            <div class="label-wrap" v-if="!isEdit">
-                <span class="label blue" v-for="label, index in labelsDatas"
-                      v-if="label.active">{{label.attributeName}}</span>
-            </div>
-            <div class="label-wrap" v-if="isEdit">
-                <span class="label" :class="label.active ? 'blue' : null" v-for="label, index in labelsDatas"
+            <div class="comment-title"><span>单位标签</span></div>
+            <div class="label-wrap">
+                <span class="label" :class="label.active ? scoreColorStyle($route.query.score) : 'no-active'"
+                      v-for="label, index in labelsDatas"
                       @click="choose(label, index)">{{label.attributeName}}</span>
             </div>
-            <div class="tips" v-text="tips"></div>
+            <div class="btn">
+                <mko-button size="large" no-radius @click="action">保存</mko-button>
+            </div>
         </div>
     </div>
 </template>
 <script>
     import api from 'api'
     import {NoData, ResError} from 'components'
-    import {MessageBox} from 'mint-ui'
+    import {MessageBox, Toast} from 'mint-ui'
     export default {
         data() {
             return {
                 resError: false,
                 noData: false,
-                tips: '温馨提示：点击「编辑」进行新增/删除评价',
                 text: '编辑',
                 labelsDatas: [],
-                isEdit: false,
                 qyItem: {}
             }
         },
@@ -41,36 +39,22 @@
         },
         methods: {
             back(){
-                if (this.isEdit) {
-                    this.isEdit = false;
-                    this.text = '编辑';
-                    this.labelsDatas = JSON.parse(sessionStorage.getItem('labelsDatas'));
-                } else {
-                    this.$MKOPop();
-                }
+                this.$MKOPop();
             },
             action() {
-                if (this.text === '编辑') {
-                    this.text = '完成';
-                    this.isEdit = true;
-                    sessionStorage.setItem('labelsDatas', JSON.stringify(this.labelsDatas))
-                } else {
-                    MessageBox({
-                        title: '确认保存当前修改？',
-                        showCancelButton: true
-                    }).then(action => {
-                        if (action === 'confirm') {
-                            this.updateLabel();
-                            this.text = '编辑';
-                            this.isEdit = false;
-                        }
-                    });
-                }
+                MessageBox({
+                    title: '确认保存当前修改？',
+                    showCancelButton: true
+                }).then(action => {
+                    if (action === 'confirm') {
+                        this.updateLabel();
+                        this.text = '编辑';
+                        this.isEdit = false;
+                    }
+                });
             },
             choose(item, index) {
-                if (this.isEdit) {
-                    this.labelsDatas[index].active = !item.active;
-                }
+                this.labelsDatas[index].active = !item.active;
             },
             getLabels(datas) {
                 let labelsDatas = [];
@@ -121,8 +105,8 @@
             },
             updateLabel() {
                 let dwAttributeId = [];
-                for(let item of this.labelsDatas) {
-                    if(item.active) {
+                for (let item of this.labelsDatas) {
+                    if (item.active) {
                         dwAttributeId.push(item.id);
                     }
                 }
@@ -133,18 +117,55 @@
                 }).then(result => {
                     if (!result) return false;
                     if (result.code == 0) {
-
+                        Toast({ message: '保存成功', duration: 1500 });
+                        setTimeout(() => {
+                            this.back()
+                        }, 1500);
                     } else {
-
+                        Toast({ message: '保存失败', duration: 1500 });
                     }
                 })
             },
             getLabelsDatasEmpty(datas) {
-                let emptyDatas = datas.filter(item => { return item.active === false; });
-                if(emptyDatas.length === datas.length) {
+                let emptyDatas = datas.filter(item => {
+                    return item.active === false;
+                });
+                if (emptyDatas.length === datas.length) {
                     return true;
                 } else {
                     return false;
+                }
+            },
+            scoreHeadColor(val) {
+                val = parseFloat(val);
+                if (!val)
+                    return '#8988FF';
+                if (val >= 90) {
+                    return '#8988FF'
+                } else if (val >= 80) {
+                    return '#52B0FE'
+                } else if (val >= 70) {
+                    return '#34D986'
+                } else if (val >= 60) {
+                    return '#FF9744'
+                } else {
+                    return '#FF8383'
+                }
+            },
+            scoreColorStyle(score) {
+                let val = parseFloat(score);
+                if (!val)
+                    return 'gradients90';
+                if (val >= 90) {
+                    return 'gradients90'
+                } else if (val >= 80) {
+                    return 'gradients80'
+                } else if (val >= 70) {
+                    return 'gradients70'
+                } else if (val >= 60) {
+                    return 'gradients60'
+                } else {
+                    return 'gradients50'
                 }
             }
         },
@@ -157,34 +178,29 @@
 <style lang="less">
     .qy-comment {
         .page-wrap {
-            padding: 0 14px;
             .label-wrap {
                 background-color: #ffffff;
                 min-height: 60px;
-                margin-top: 14px;
-                border-radius: 3px;
-                padding: 14px;
+                border-radius: 2px;
+                padding: 0 14px;
                 .label {
-                    min-width: 150px;
-                    height: 34px;
-                    line-height: 34px;
-                    padding: 4px;
-                    border: 1px solid;
-                    border-radius: 3px;
+                    height: 30px;
                     font-size: 14px;
-                    margin-right: 6px;
-                    color: #eaeaea;
-                    &.red {
-                        color: #ff0008;
-                    }
-                    &.yellow {
-                        color: #fff345;
-                    }
-                    &.green {
-                        color: #19ff56;
-                    }
-                    &.blue {
-                        color: #2CABFF;
+                    color: #ffffff;
+                    border-radius: 2px;
+                    text-align: center;
+                    display: inline-block;
+                    line-height: 14px;
+                    padding: 8px;
+                    box-sizing: border-box;
+                    margin-right: 10px;
+                    margin-bottom: 10px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    &.no-active {
+                        color: #666666;
+                        border: 1px solid #dddddd;
                     }
                 }
             }
@@ -194,6 +210,27 @@
                 color: #ccc;
                 margin-top: 10px;
             }
+        }
+        .comment-title {
+            font-size: 16px;
+            color: #333333;
+            letter-spacing: 0;
+            width: 100%;
+            background-color: #ffffff;
+            height: 50px;
+            display: table;
+            padding-left: 14px;
+            span {
+                line-height: 50px;
+                vertical-align: middle;
+                display: table-cell;
+            }
+        }
+        .btn {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 22;
         }
     }
 </style>

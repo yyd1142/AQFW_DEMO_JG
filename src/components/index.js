@@ -12,20 +12,22 @@ import SearchBar from './SearchBar/SearchBar.vue'
 import Star from './Star/Star.vue'
 import XunChaStatus from './xunchaStatusNavbar/xunchaStatus.vue'
 import Tabs from './Tabs/Tabs.vue'
+import TaskSummary from './TaskSummary/index.vue'
 
 export {
-  CountTimer,
-  DateNavbar,
-  NoData,
-  DialogBox,
-  PhotoBox,
-  PhotoPreview,
-  PopupPicker,
-  ResError,
-  ScoreBanner,
-  ScoreBannerJg,
-  SearchBar,
-  Star,
-  XunChaStatus,
-  Tabs
+    CountTimer,
+    DateNavbar,
+    NoData,
+    DialogBox,
+    PhotoBox,
+    PhotoPreview,
+    PopupPicker,
+    ResError,
+    ScoreBanner,
+    ScoreBannerJg,
+    SearchBar,
+    Star,
+    XunChaStatus,
+    Tabs,
+    TaskSummary
 }

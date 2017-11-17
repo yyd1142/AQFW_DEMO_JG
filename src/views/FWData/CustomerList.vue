@@ -69,7 +69,7 @@
                     contractSignTime: '2004-11-30',
                     contractStartTime: '2004-11-30',
                     contractEndTime: '2040-11-30',
-                    attachment: ['http://resources.aqfwy.com/e21db97b2ab44f608505d96a3c47f27e02000000', 'http://resources.aqfwy.com/44f8ab192e7349e68bd5c1180cc7632b05000000'],
+                    attachment: ['http://resources.aqfwy.com/cafdbd3419c24ed5820d2a3b054b94e000000000'],
                     devices: [{
                         id: 1,
                         name: '消防水系统',
@@ -88,7 +88,7 @@
                     contractSignTime: '2009-09-11',
                     contractStartTime: '2009-09-11',
                     contractEndTime: '2021-09-12',
-                    attachment: ['http://resources.aqfwy.com/e21db97b2ab44f608505d96a3c47f27e02000000', 'http://resources.aqfwy.com/44f8ab192e7349e68bd5c1180cc7632b05000000'],
+                    attachment: ['http://resources.aqfwy.com/addca85c6f8d446ea0dab1f7b823d10c01000000', 'http://resources.aqfwy.com/378336c34aab476296999dfb0e9e2e0f02000000'],
                     devices: []
 
                 }]

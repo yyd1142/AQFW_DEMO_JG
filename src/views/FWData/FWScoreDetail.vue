@@ -8,14 +8,14 @@
         <no-data v-if="noData"></no-data>
         <div class="page-wrap" v-show="!noData&&!resError">
             <ul class="table-view">
-                <li class="table-cell" v-for="item in 5">
+                <li class="table-cell" v-for="item in scoreValue">
                     <div class="title">
-                        <span class="number">任务编号：201921</span>
-                        <span class="score">客户评分：74分</span>
+                        <span class="number">任务编号：{{item.taskId}}</span>
+                        <span class="score">客户评分：{{item.score}}分</span>
                     </div>
-                    <div class="qy-name">深圳大观信息科技有限公司</div>
-                    <div class="zr-name">吴佳怡</div>
-                    <div class="zx-name">杨子康,黄哄哄,德德</div>
+                    <div class="qy-name">{{item.dwName}}</div>
+                    <div class="zr-name">{{fzNameFilter(item.fzName)}}</div>
+                    <div class="zx-name">{{fzNameFilter(item.zxName)}}</div>
                 </li>
             </ul>
         </div>
@@ -68,6 +68,16 @@
         methods: {
             back() {
                 this.$MKOPop();
+            },
+            fzNameFilter(name) {
+                return name.join(',');
+            }
+        },
+        computed: {
+            scoreValue() {
+                let item = [];
+                item = this.$route.query.scoreValue ? this.$route.query.scoreValue : item;
+                return item;
             }
         },
         components: {

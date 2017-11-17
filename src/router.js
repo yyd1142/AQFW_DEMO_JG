@@ -96,6 +96,7 @@ const noticeReplyList = resolve => require(['./views/notice/reply.vue'], resolve
 const noticeReplyDetail = resolve => require(['./views/notice/replyDetail.vue'], resolve)
 const QYComment = resolve => require(['./views/QYData/QYComment.vue'], resolve)
 const QYAttributes = resolve => require(['./views/QYData/QYAttributes.vue'], resolve)
+const PhotoViewer = resolve => require(['./components/PhotoViewer/index.vue'], resolve)
 Vue.use(Router)
 
 const routers = {
@@ -199,7 +200,8 @@ const routers = {
         },
         {
             path: '/qy_info/:id',
-            component: QYInfo
+            component: QYInfo,
+            name: 'QYInfo'
         },
         {
             path: '/build_list/:id',
@@ -258,7 +260,8 @@ const routers = {
         },
         {
             path: '/fw_info/:id',
-            component: FWInfo
+            component: FWInfo,
+            name: 'FWInfo'
         },
         {
             path: '/fw_score/:id',
@@ -435,6 +438,11 @@ const routers = {
             path: '/qy_attributes/:id',
             name: 'QYAttributes',
             component: QYAttributes
+        },
+        {
+            path: '/photo_viewer',
+            name: 'PhotoViewer',
+            component: PhotoViewer
         }
     ]
 };
@@ -442,7 +450,7 @@ const routers = {
 const router = new Router(routers);
 
 router.beforeEach((to, from, next) => {
-    if (to.name == 'home' || to.name == 'score' || to.name == 'jgDetail' || to.name == 'login' || to.name == 'scoreDetail') {
+    if (to.name == 'home' || to.name == 'score' || to.name == 'jgDetail' || to.name == 'login' || to.name == 'scoreDetail' || to.name == 'QYInfo' || to.name == 'QYComment' || to.name == 'FWInfo') {
         NProgress.remove();
     } else {
         NProgress.start();

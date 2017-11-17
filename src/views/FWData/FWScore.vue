@@ -10,11 +10,11 @@
             <div class="score-wrap">
                 <div class="score-item">
                     <span class="title">评分总次数</span>
-                    <span class="value">125</span>
+                    <span class="value">{{totalScoreCount}}</span>
                 </div>
                 <div class="score-item">
                     <span class="title">平均服务得分</span>
-                    <span class="value">83</span>
+                    <span class="value">{{averageScore}}</span>
                 </div>
             </div>
             <div class="score-title">
@@ -108,24 +108,118 @@
                 scoreDatas: [{
                     id: 1,
                     time: '2017年11月',
-                    count: 13,
-                    score: 90
+                    count: 3,
+                    score: 87.3,
+                    scoreValue: [{
+                        id: 1,
+                        taskId: '5f224',
+                        score: 89,
+                        dwName: '华润新鸿基地产（无锡）有限公司',
+                        fzName: ['唐勇'],
+                        zxName: ['唐勇', '周康', '徐志康', '叶赏']
+                    },{
+                        id: 2,
+                        taskId: 'sf233',
+                        score: 82,
+                        dwName: '鸿伟达科技有限公司',
+                        fzName: ['张庆帅'],
+                        zxName: ['周庆桑', '刘天健', '曾维勇']
+                    },{
+                        id: 3,
+                        taskId: 'w2436',
+                        score: 91,
+                        dwName: '金马房地产（江苏）有限公司',
+                        fzName: ['冯地'],
+                        zxName: ['刘晓彤', '冯娜娜', '叶腾飞']
+                    }]
                 },{
                     id: 2,
                     time: '2017年10月',
-                    count: 9,
-                    score: 84
+                    count: 3,
+                    score: 81.3,
+                    scoreValue: [{
+                        id: 1,
+                        taskId: '77d22',
+                        score: 78,
+                        dwName: '华润新鸿基地产（无锡）有限公司',
+                        fzName: ['唐勇'],
+                        zxName: ['唐勇', '周康', '徐志康', '叶赏']
+                    },{
+                        id: 2,
+                        taskId: 'wx255',
+                        score: 79,
+                        dwName: '鸿伟达科技有限公司',
+                        fzName: ['张庆帅'],
+                        zxName: ['周庆桑', '刘天健', '曾维勇']
+                    },{
+                        id: 3,
+                        taskId: 'fu881',
+                        score: 87,
+                        dwName: '金马房地产（江苏）有限公司',
+                        fzName: ['冯地'],
+                        zxName: ['刘晓彤', '冯娜娜', '叶腾飞']
+                    }]
                 },{
                     id: 3,
                     time: '2017年09月',
-                    count: 10,
-                    score: 74
+                    count: 2,
+                    score: 78,
+                    scoreValue: [{
+                        id: 1,
+                        taskId: '8s23',
+                        score: 75.5,
+                        dwName: '华润新鸿基地产（无锡）有限公司',
+                        fzName: ['唐勇'],
+                        zxName: ['唐勇', '周康', '徐志康', '叶赏']
+                    },{
+                        id: 3,
+                        taskId: 'fd242',
+                        score: 80.5,
+                        dwName: '金马房地产（江苏）有限公司',
+                        fzName: ['冯地'],
+                        zxName: ['刘晓彤', '冯娜娜', '叶腾飞']
+                    }]
                 },{
                     id: 4,
                     time: '2017年08月',
-                    count: 12,
-                    score: 65
+                    count: 2,
+                    score: 82,
+                    scoreValue: [{
+                        id: 1,
+                        taskId: '78df',
+                        score: 84,
+                        dwName: '华润新鸿基地产（无锡）有限公司',
+                        fzName: ['唐勇'],
+                        zxName: ['唐勇', '周康', '徐志康', '叶赏']
+                    },{
+                        id: 3,
+                        taskId: 'f923',
+                        score: 80,
+                        dwName: '金马房地产（江苏）有限公司',
+                        fzName: ['冯地'],
+                        zxName: ['刘晓彤', '冯娜娜', '叶腾飞']
+                    }]
                 }]
+            }
+        },
+        computed: {
+            totalScoreCount() {
+                let arr = [];
+                let total = 0;
+                for(let item of this.scoreDatas) {
+                    arr.push(item.scoreValue.length);
+                }
+                total = eval(arr.join('+'));
+                return total;
+            },
+            averageScore() {
+                let arr = [];
+                let averageScore = 0;
+                for(let item of this.scoreDatas) {
+                    arr.push(item.score);
+                }
+                averageScore = eval(arr.join('+')) / this.scoreDatas.length;
+                return averageScore.toFixed(1);
             }
         },
         methods: {
@@ -139,7 +233,8 @@
                         id: item.id
                     },
                     query: {
-                        time: item.time
+                        time: item.time,
+                        scoreValue: item.scoreValue
                     }
                 })
             }

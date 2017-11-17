@@ -14,7 +14,7 @@
                 <mko-cell title="合同生效日期" :val="customerDetail.contractStartTime"></mko-cell>
                 <mko-cell title="合同失效日期" :val="customerDetail.contractEndTime"></mko-cell>
                 <mko-cell title="合同文件"></mko-cell>
-                <photo-box max="8" :read-only="true" :photo-list="images"></photo-box>
+                <photo-box max="8" :read-only="true" :photo-list="customerDetail.attachment"></photo-box>
             </div>
             <div class="data-wrap" v-if="customerDetail.devices.length > 0">
                 <mko-cell title="委托管理设备"></mko-cell>
@@ -40,8 +40,7 @@
             return {
                 //提示
                 resError: false,
-                noData: false,
-                images: ['http://resources.aqfwy.com/e21db97b2ab44f608505d96a3c47f27e02000000', 'http://resources.aqfwy.com/44f8ab192e7349e68bd5c1180cc7632b05000000']
+                noData: false
             }
         },
         computed: {

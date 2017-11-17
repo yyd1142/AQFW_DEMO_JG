@@ -7,30 +7,19 @@
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
         <div class="page-wrap" v-show="!noData&&!resError">
-            <div class="data-wrap">
-                <div class="qy-name">
-                    <span class="name" v-text="details.qy_name"></span>
-                    <span class="type" v-text="details.type"></span>
-                </div>
-                <div class="zr-name" v-text="details.zr_name"></div>
-                <div class="zx-name" v-text="details.zx_name"></div>
-                <div class="time" v-text="details.time"></div>
-            </div>
+            <task-summary :task-info="taskInfo"></task-summary>
             <div class="xuncha-type">
-                <div class="left">
-                    <div class="title">巡查设备列表</div>
-                </div>
-                <div class="end-time">结果</div>
+                <div class="title">设备列表</div>
             </div>
             <ul class="device-table-view">
                 <li class="device-table-cell" v-for="(item, index) in deviceDatas">
                     <div class="padding">
-                        <div class="device-item">
+                        <div class="device-item" :style="{ borderBottom: !item.value ? 'none' : null }">
                             <div class="dingding-icon" :class="!item.value ? 'yellow-icon' : 'green-icon'">
                                 <span></span>
                             </div>
                             <span class="title" v-text="item.name"></span>
-                            <span class="value" :class="!item.value ? 'red-font' : null">{{item.value ? '正常' : '故障'}}</span>
+                            <span class="value" :class="!item.value ? 'yellow-font' : null">{{item.value ? '正常' : '故障'}}</span>
                         </div>
                     </div>
                     <div class="desc-wrap jiantou" v-if="!item.value">
@@ -77,37 +66,17 @@
         }
         .xuncha-type {
             width: 100%;
-            height: 44px;
+            height: 50px;
             padding: 0 14px;
-            .left {
-                width: 200px;
-                float: left;
-                .title,
-                .all-checked {
-                    display: inline;
-                    font-size: 12px;
-                    letter-spacing: 0px;
-                    line-height: 44px;
-                    height: 44px;
-                }
-                .title {
-                    margin-right: 14px;
-                    color: #999999;
-                }
-                .all-checked {
-                    color: #3399FF;
-                }
-            }
-            .end-time {
-                float: right;
-                font-size: 12px;
-                color: #999999;
-                letter-spacing: 0px;
-                line-height: 44px;
-                height: 44px;
-                &.red {
-                    color: #FF6666;
-                }
+            display: table;
+            background-color: #ffffff;
+            .title {
+                display: table-cell;
+                vertical-align: middle;
+                line-height: 50px;
+                font-size: 16px;
+                color: #333333;
+                letter-spacing: 0;
             }
         }
         .device-table-view {
@@ -135,8 +104,8 @@
                             bottom: 0;
                             margin: AUTO;
                             span {
-                                width: 14px;
-                                height: 14px;
+                                width: 10px;
+                                height: 10px;
                                 border-radius: 50%;
                                 position: absolute;
                                 top: 0;
@@ -291,7 +260,7 @@
 </style>
 
 <script>
-    import {NoData, ResError, PhotoBox} from 'components'
+    import {NoData, ResError, PhotoBox, TaskSummary} from 'components'
     export default{
         data() {
             return {
@@ -301,15 +270,11 @@
                 deviceDatas: [{
                     name: '灭火器', status: 1, id: 1, value: true, description: '', images: []
                 },{
-                    name: '灭火器', status: 1, id: 2, value: true, description: '', images: []
-                },{
                     name: '灭火器', status: 1, id: 3, value: true, description: '灭火器已损坏', images: ['http://resources.aqfwy.com/c8c2e66d29fb4e3eb7172a626b74d12a05000000', 'http://resources.aqfwy.com/b13e14c3ea654a84bfd538abf9442e1908000000']
                 },{
                     name: '消防电梯', status: 1, id: 4, value: true, description: '', images: []
                 },{
                     name: '消防电梯', status: 0, id: 5, value: false, description: '消防电梯故障', images: ['http://resources.aqfwy.com/a8f1e481805f448abf3e22a6e9533cc604000000', 'http://resources.aqfwy.com/22ec7ceae8af4c17b504c6c9b251f88900000000']
-                },{
-                    name: '消防电梯', status: 0, id: 6, value: false, description: '消防电梯故障', images: ['http://resources.aqfwy.com/3172ca6497564e9db9a2fee4bb88d6ca07000000', 'http://resources.aqfwy.com/3710ebed4ab646d9ad499242f2f584f605000000']
                 }]
             }
         },
@@ -325,6 +290,20 @@
                 }
                 item = this.$route.query.details ? this.$route.query.details : item;
                 return item;
+            },
+            taskInfo() {
+                let taskInfo = [{
+                    key: '责任单位', value: this.details.qy_name || '暂无'
+                }, {
+                    key: '任务类型', value: this.details.type
+                }, {
+                    key: '负责人员', value: this.details.zr_name || '暂无'
+                }, {
+                    key: '执行人员', value: this.details.zx_name || '暂无'
+                }, {
+                    key: '执行日期', value: this.details.time || '暂无'
+                }]
+                return taskInfo;
             }
         },
         methods: {
@@ -344,7 +323,8 @@
         components: {
             NoData,
             ResError,
-            PhotoBox
+            PhotoBox,
+            TaskSummary
         }
     }
 </script>
