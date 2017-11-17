@@ -2,10 +2,19 @@
     <div class="score-count-wrap">
         <div class="placeholder-item"></div>
         <mko-header title="安全评分"
-                    :right-icon-text="type==1?'明细':'排名'" @handleRightClick="goDetail(type)"
+                    :right-icon-text="type==1?'查看明细':'单位排名'" @handleRightClick="goDetail(type)"
                     left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
-            <mko-cell :title="item.name" :val="`${item.score} (满分${item.total})`" v-for="item in counts[type]"></mko-cell>
+            <!--<mko-cell :title="item.name" :val="`${item.score} (满分${item.total})`" v-for="item in counts[type]"></mko-cell>-->
+
+            <div class="count-block-wrap clear">
+                <div class="count-block" v-for="item in counts[type]">
+                    <div class="title abs-middle">{{item.name}}</div>
+                    <div class="desc abs-middle">满分{{item.total}}</div>
+                    <div class="value abs-middle">{{item.score}}</div>
+                </div>
+            </div>
+
             <div class="chart-wrap">
                 <mko-nav-bar>
                     <mko-tab-item :activied="tabI==i" :label="t" @handleTabClick="tabFn(i)" v-for="(t,i) in tabItems"></mko-tab-item>
@@ -49,6 +58,7 @@
         },
         activated(){
             this.type = sessionStorage.getItem(`jgDwType${this.$store.getters.groupId}`) || 0;
+            this.tabI = 0;
             this.DrawChart();
         },
         deactivated() {
@@ -194,8 +204,38 @@
     @import "../../../config.less";
 
     .score-count-wrap {
+        .page-wrap {
+            margin-top: @headerHeight + @headerTop - 1px;
+        }
+        .count-block-wrap {
+            background-color: #3091F2;
+            .count-block {
+                position: relative;
+                float: left;
+                width: 33.3%;
+                height: 100px;
+                letter-spacing: 0;
+                color: #fff;
+                background-color: #3091F2;
+                font-family: STHeitiSC-Light;
+                .title {
+                    top: 14px;
+                    min-width: 84px;
+                    font-size: 14px;
+                }
+                .desc {
+                    top: 33px;
+                    font-size: 12px;
+                }
+                .value {
+                    top: 55px;
+                    font-size: 30px;
+                    font-family: HelveticaNeue;
+                }
+            }
+        }
         .chart-wrap {
-            margin-top: 14px;
+            /*margin-top: 14px;*/
             .chart {
                 padding-top: 14px;
                 height: 300px;

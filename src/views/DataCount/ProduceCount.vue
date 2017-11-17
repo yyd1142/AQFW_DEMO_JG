@@ -1,9 +1,12 @@
 <template>
-    <div class="produce-count-detail-wrap">
+    <div class="produce-count-wrap">
         <div class="placeholder-item"></div>
-        <mko-header title="数据分析" left-icon="icon-back" @handleLeftClick="back"></mko-header>
+        <mko-header title="生成数据总量" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
-            <mko-cell title="生成数据总量" val="1511926"></mko-cell>
+            <div class="info-bar">
+                1511926
+            </div>
+            <mko-cell class="title-cell" title="数据分析"></mko-cell>
             <div class="chart-wrap" ref="chart">
 
             </div>
@@ -36,7 +39,7 @@
                 let myChart = ec.init(this.$refs['chart'], theme);
                 myChart.setOption({
                     title: {
-                        text: '生成数据总量',
+                        text: '',
                         x: 'center'
                     },
                     tooltip: {
@@ -44,9 +47,9 @@
                         formatter: "{a} <br/>{b} : {c} ({d}%)"
                     },
                     legend: {
-                        orient: 'vertical',
-                        x: 'left',
-                        data: ['任务', '图片', '通知公告']
+//                        orient: 'vertical',
+//                        x: 'left',
+//                        data: ['任务', '图片', '通知公告']
                     },
                     toolbox: {
                         show: true,
@@ -58,7 +61,7 @@
                             name: '生成数据总量',
                             type: 'pie',
                             radius: '55%',
-                            center: ['50%', '60%'],
+                            center: ['50%', '50%'],
                             data: [
                                 {value: 826852, name: '任务'},
                                 {value: 521798, name: '图片'},
@@ -79,11 +82,36 @@
 <style lang="less" rel="stylesheet/less">
     @import "../../config.less";
 
-    .produce-count-detail-wrap {
+    .produce-count-wrap {
+        .page-wrap {
+            margin-top: @headerHeight + @headerTop - 1px;
+        }
+        .info-bar {
+            height: 44px;
+            line-height: 44px;
+            font-size: 30px;
+            text-align: center;
+            color: #fff;
+            background-color: @mainBlue;
+        }
+        .mko-basic-cell {
+            &.title-cell {
+                height: 50px;
+                .cell {
+                    height: 50px;
+                    box-shadow: none;
+                    .title {
+                        flex: 0 0 160px;
+                        -webkit-flex: 0 0 160px;
+                        width: 160px;
+                    }
+                }
+            }
+        }
         .chart-wrap {
-            margin-top: 14px;
             padding-top: 14px;
-            height: 300px;
+            height: 270px;
+            border-top: 1px solid @baseBorder;
             background-color: #fff !important;
         }
     }

@@ -66,11 +66,12 @@ const score = resolve => require(['./views/score/score.vue'], resolve);
 const scoreList = resolve => require(['./views/score/scoreList.vue'], resolve);
 //数据统计
 const DataCountIndex = resolve => require(['./views/DataCount/index.vue'], resolve);
-const ProduceCountDetail = resolve => require(['./views/DataCount/ProduceCountDetail.vue'], resolve);
+const ProduceCount = resolve => require(['./views/DataCount/ProduceCount.vue'], resolve);
+const QYCount = resolve => require(['./views/DataCount/QYCount.vue'], resolve);
+const QYCountList = resolve => require(['./views/DataCount/QYCountList.vue'], resolve);
 const QYCountDetail = resolve => require(['./views/DataCount/QYCountDetail.vue'], resolve);
-const QYCountDetailList = resolve => require(['./views/DataCount/QYCountDetailList.vue'], resolve);
-const TaskCountDetail = resolve => require(['./views/DataCount/TaskCountDetail.vue'], resolve);
-const UserCountDetail = resolve => require(['./views/DataCount/UserCountDetail.vue'], resolve);
+const TaskCount = resolve => require(['./views/DataCount/TaskCount.vue'], resolve);
+const UserCount = resolve => require(['./views/DataCount/UserCount.vue'], resolve);
 //数据统计-安全评分
 const ScoreCountIndex = resolve => require(['./views/DataCount/Score/index.vue'], resolve);
 const ScoreCountDetail = resolve => require(['./views/DataCount/Score/ScoreDetail.vue'], resolve);
@@ -317,24 +318,28 @@ const routers = {
             component: DataCountIndex
         },
         {
-            path: '/produce_count_detail',
-            component: ProduceCountDetail
+            path: '/produce_count',
+            component: ProduceCount
         },
         {
-            path: '/qy_count_detail',
+            path: '/qy_count',
+            component: QYCount
+        },
+        {
+            path: '/qy_count_list',
+            component: QYCountList
+        },
+        {
+            path: '/qy_count_detail/:id',
             component: QYCountDetail
         },
         {
-            path: '/qy_count_detail_list',
-            component: QYCountDetailList
+            path: '/task_count',
+            component:TaskCount
         },
         {
-            path: '/task_count_detail',
-            component:TaskCountDetail
-        },
-        {
-            path: '/user_count_detail',
-            component: UserCountDetail
+            path: '/user_count',
+            component: UserCount
         },
         //数据统计-安全评分
         {

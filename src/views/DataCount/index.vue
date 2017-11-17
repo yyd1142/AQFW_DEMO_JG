@@ -3,16 +3,16 @@
         <div class="placeholder-item"></div>
         <mko-header title="数据统计" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
-            <div class="count-block-wrap clear">
-                <div class="count-block" @click="goDetail(item.path)" v-for="item in counts[type]">
-                    <div class="num">{{item.num}}</div>
-                    <div class="label">{{item.label}}</div>
-                </div>
+            <div class="count-block-wrap">
+                <mko-cell :title="item.label" :val="item.num"
+                          @click="goDetail(item.path)" is-link
+                          v-for="item in counts[type]"></mko-cell>
             </div>
             <div class="chart-wrap" ref="lineChart"></div>
-            <div class="btn-wrap">
-                <mko-button size="large" no-radius @click="goScore">评分详情</mko-button>
-            </div>
+            <mko-cell title="评分详情" is-link @click="goScore"></mko-cell>
+            <!--<div class="btn-wrap">-->
+                <!--<mko-button size="large" no-radius @click="goScore">评分详情</mko-button>-->
+            <!--</div>-->
         </div>
     </div>
 </template>
@@ -28,14 +28,14 @@
                 type: 0,
                 counts: [
                     [
-                        {label: '社会单位数量(家)', num: 3746, path: '/qy_count_detail'},
-                        {label: '累积执行任务数量(个)', num: 826852, path: '/task_count_detail'},
-                        {label: '用户数量(人)', num: 7325, path: '/user_count_detail'},
-                        {label: '生成数据总量(次)', num: 1511926, path: '/produce_count_detail'}
+                        {label: '社会单位数量(家)', num: 3746, path: '/qy_count'},
+                        {label: '累积执行任务数量(个)', num: 826852, path: '/task_count'},
+                        {label: '用户数量(人)', num: 7325, path: '/user_count'},
+                        {label: '生成数据总量(次)', num: 1511926, path: '/produce_count'}
                     ],
                     [
-                        {label: '社会单位数量(家)', num: 546, path: '/qy_count_detail'},
-                        {label: '累积执行任务数量(个)', num: 68904, path: '/task_count_detail'},
+                        {label: '社会单位数量(家)', num: 546, path: '/qy_count'},
+                        {label: '累积执行任务数量(个)', num: 68904, path: '/task_count'},
                     ],
                 ]
             }
@@ -148,31 +148,19 @@
 
     .data-count-wrap {
         .count-block-wrap {
-            margin: 8px;
-            margin-bottom: 0;
-            .count-block {
-                float: left;
-                width: 49%;
-                margin-bottom: 8px;
-                background-color: #fff;
-                &:nth-child(even) {
-                    float: right;
-                }
-                padding: 10px;
-                .num {
-                    color: @mainBlue;
-                    font-size: 32px;
-                    margin-bottom: 14px;
-                }
-                .label {
-                    font-size: 14px;
-                    margin-bottom: 14px;
+            margin: 10px 0;
+            .mko-basic-cell {
+                .title {
+                    flex: 0 0 160px;
+                    -webkit-flex: 0 0 160px;
+                    width: 160px;
                 }
             }
         }
         .chart-wrap {
             height: 300px;
             padding-top: 10px;
+            border-bottom: 1px solid @baseBorder;
             background-color: #fff !important;
         }
         .btn-wrap {

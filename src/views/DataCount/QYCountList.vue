@@ -1,5 +1,5 @@
 <template>
-    <div class="qy-count-detail-list-wrap">
+    <div class="qy-count-list-wrap">
         <div class="placeholder-item"></div>
         <mko-header title="数据列表" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
@@ -7,9 +7,10 @@
                 <mko-tab-item :activied="tabI==i" :label="t" @handleTabClick="tabFn(i)" v-for="(t,i) in tabItems"></mko-tab-item>
             </mko-nav-bar>
             <div class="list-wrap">
-                <mko-double-cell :title="item.name" :label="item.desc"
-                                 :val="`${item.person} ${item.number}`"
-                                 v-for="item in list[tabI]"></mko-double-cell>
+                <!--<mko-double-cell :title="item.name" :label="item.desc"-->
+                <!--:val="`${item.person} ${item.number}`"-->
+                <!--v-for="item in list[tabI]"></mko-double-cell>-->
+                <mko-cell :title="item.name" is-link @click="goDetail(item)" v-for="item in list[tabI]"></mko-cell>
             </div>
         </div>
     </div>
@@ -70,6 +71,11 @@
             tabFn(i){
                 this.tabI = i;
             },
+            goDetail(data){
+                let json = JSON.stringify(data);
+                sessionStorage.setItem('QYCountDetail', json);
+
+            },
             back(){
                 this.$MKOPop();
             }
@@ -81,9 +87,15 @@
 <style lang="less" rel="stylesheet/less">
     @import "../../config.less";
 
-    .qy-count-detail-list-wrap {
+    .qy-count-list-wrap {
         .list-wrap {
-            margin-top: 8px;
+            .mko-basic-cell {
+                .title {
+                    flex: auto;
+                    -webkit-flex: auto;
+                    width: 90%;
+                }
+            }
         }
     }
 </style>

@@ -1,9 +1,12 @@
 <template>
-    <div class="user-count-detail-wrap">
+    <div class="user-count-wrap">
         <div class="placeholder-item"></div>
-        <mko-header title="数据分析" left-icon="icon-back" @handleLeftClick="back"></mko-header>
+        <mko-header title="用户数量" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
-            <mko-cell title="用户数量" val="7325"></mko-cell>
+            <div class="info-bar">
+                7325
+            </div>
+            <mko-cell title="数据分析"></mko-cell>
 
             <div class="chart-wrap">
                 <mko-nav-bar>
@@ -52,7 +55,7 @@
                 let myChart = ec.init(this.$refs['chart'], theme);
                 myChart.setOption({
                     title: {
-                        text: '区域分布情况',
+//                        text: '区域分布情况',
                         x: 'center'
                     },
                     tooltip: {
@@ -74,7 +77,7 @@
                             name: '',
                             type: 'pie',
                             radius: '55%',
-                            center: ['50%', '55%'],
+                            center: ['50%', '50%'],
                             data: [
                                 {value: 1334, name: '宜兴市'},
                                 {value: 612, name: '惠山区'},
@@ -92,7 +95,7 @@
                 let myChart = ec.init(this.$refs['chart'], theme);
                 myChart.setOption({
                     title: {
-                        text: '单位类型占比',
+//                        text: '单位类型占比',
                         x: 'center'
                     },
                     tooltip: {
@@ -114,7 +117,7 @@
                             name: '',
                             type: 'pie',
                             radius: '55%',
-                            center: ['50%', '55%'],
+                            center: ['50%', '50%'],
                             data: [
                                 {value: 2382, name: '一级重点单位'},
                                 {value: 1872, name: '二级重点单位'},
@@ -130,7 +133,7 @@
                 let myChart = ec.init(this.$refs['chart'], theme);
                 myChart.setOption({
                     title: {
-                        text: '用户类型占比',
+                        text: '',
                         x: 'center'
                     },
                     tooltip: {
@@ -152,7 +155,7 @@
                             name: '',
                             type: 'pie',
                             radius: '55%',
-                            center: ['50%', '55%'],
+                            center: ['50%', '50%'],
                             data: [
                                 {value: 504, name: '政府监管人员'},
                                 {value: 1063, name: '单位安全责任人'},
@@ -168,7 +171,7 @@
                 let myChart = ec.init(this.$refs['chart'], theme);
                 myChart.setOption({
                     title: {
-                        text: '行业占比',
+//                        text: '行业占比',
                         x: 'center'
                     },
                     tooltip: {
@@ -190,7 +193,7 @@
                             name: '',
                             type: 'pie',
                             radius: '55%',
-                            center: ['50%', '55%'],
+                            center: ['50%', '50%'],
                             data: [
                                 {value: 196, name: '交通'},
                                 {value: 215, name: '公安'},
@@ -216,9 +219,34 @@
 <style lang="less" rel="stylesheet/less">
     @import "../../config.less";
 
-    .user-count-detail-wrap {
+    .user-count-wrap {
+        .page-wrap {
+            margin-top: @headerHeight + @headerTop - 1px;
+        }
+        .info-bar {
+            height: 44px;
+            line-height: 44px;
+            font-size: 30px;
+            text-align: center;
+            color: #fff;
+            background-color: @mainBlue;
+        }
+        .mko-basic-cell {
+            &.title-cell {
+                height: 50px;
+                .cell {
+                    height: 50px;
+                    box-shadow: none;
+                    .title {
+                        flex: 0 0 160px;
+                        -webkit-flex: 0 0 160px;
+                        width: 160px;
+                    }
+                }
+            }
+        }
         .chart-wrap {
-            margin-top: 14px;
+            /*margin-top: 14px;*/
             .chart {
                 height: 300px;
                 background-color: #fff !important;

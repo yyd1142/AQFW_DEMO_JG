@@ -9,8 +9,10 @@
                 <mko-tab-item :activied="tabI==i" :label="t" @handleTabClick="tabFn(i)" v-for="(t,i) in tabItems"></mko-tab-item>
             </mko-nav-bar>
             <div class="list-wrap">
-                <mko-double-cell :title="item.title" :label="`得分率：${item.rate}`"
-                                 :val="`${item.score}分 (满分${item.total})`"
+                <mko-cell class="title-cell" title="子项信息" val="得分率"></mko-cell>
+                <mko-double-cell :title="item.title"
+                                 :label="`得分${item.score} , 满分${item.total}`"
+                                 :val="item.rate"
                                  v-for="item in list[tabI]"></mko-double-cell>
             </div>
         </div>
@@ -43,9 +45,7 @@
                 ]
             }
         },
-        watch: {
-
-        },
+        watch: {},
         computed: {},
         mounted() {
         },
@@ -74,6 +74,18 @@
     @import "../../../config.less";
 
     .score-count-detail-wrap {
-
+        .mkotabs {
+            height: 58px;
+            padding: 14px 14px;
+        }
+        .list-wrap {
+            margin-top: 10px;
+            .title-cell {
+                height: 50px;
+                .cell {
+                    height: 50px;
+                }
+            }
+        }
     }
 </style>
