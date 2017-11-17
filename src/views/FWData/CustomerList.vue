@@ -7,7 +7,8 @@
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
         <div class="page-wrap customer-list-wrap" v-show="!resError">
-            <mko-cell :title="item.name" @click="goInfo(item)" v-for="item in customerDatas" is-link></mko-cell>
+            <search-bar v-model="searchValue" hint-text="搜索公司名称" ref="search-bar"></search-bar>
+            <mko-cell :title="item.name" @click="goInfo(item)" v-for="item in (searchValue ? searchDatas : customerDatas)" is-link></mko-cell>
         </div>
     </div>
 </template>
@@ -33,7 +34,7 @@
 
 <script>
     import api from 'api'
-    import {NoData, ResError} from 'components'
+    import {NoData, ResError, SearchBar} from 'components'
     import {Indicator} from 'mint-ui';
     export default{
         data() {
@@ -41,6 +42,8 @@
                 //提示
                 resError: false,
                 noData: false,
+                searchValue: '',
+                searchDatas: [],
                 //数据
                 customerDatas: [{
                     id: 1,
@@ -50,7 +53,13 @@
                     contractSignTime: '2010-10-11',
                     contractStartTime: '2010-10-11',
                     contractEndTime: '2020-10-11',
-                    attachment: ['http://resources.aqfwy.com/e21db97b2ab44f608505d96a3c47f27e02000000', 'http://resources.aqfwy.com/44f8ab192e7349e68bd5c1180cc7632b05000000'],
+                    attachment: [{
+                        fileName: '建筑工程设计合同',
+                        url: 'http://resources.aqfwy.com/e21db97b2ab44f608505d96a3c47f27e02000000'
+                    }, {
+                        fileName: '设备维保服务合同',
+                        url: 'http://resources.aqfwy.com/44f8ab192e7349e68bd5c1180cc7632b05000000'
+                    }],
                     devices: [{
                         id: 1,
                         name: '消防水系统',
@@ -69,7 +78,10 @@
                     contractSignTime: '2004-11-30',
                     contractStartTime: '2004-11-30',
                     contractEndTime: '2040-11-30',
-                    attachment: ['http://resources.aqfwy.com/cafdbd3419c24ed5820d2a3b054b94e000000000'],
+                    attachment: [{
+                        fileName: '设备维保服务合同',
+                        url: 'http://resources.aqfwy.com/cafdbd3419c24ed5820d2a3b054b94e000000000'
+                    }],
                     devices: [{
                         id: 1,
                         name: '消防水系统',
@@ -88,10 +100,21 @@
                     contractSignTime: '2009-09-11',
                     contractStartTime: '2009-09-11',
                     contractEndTime: '2021-09-12',
-                    attachment: ['http://resources.aqfwy.com/addca85c6f8d446ea0dab1f7b823d10c01000000', 'http://resources.aqfwy.com/378336c34aab476296999dfb0e9e2e0f02000000'],
+                    attachment: [{
+                        fileName: '技术处服务器及储存设备维保服务合同',
+                        url: 'http://resources.aqfwy.com/addca85c6f8d446ea0dab1f7b823d10c01000000'
+                    }, {
+                        fileName: '设备维保服务合同',
+                        url: 'http://resources.aqfwy.com/378336c34aab476296999dfb0e9e2e0f02000000'
+                    }],
                     devices: []
 
                 }]
+            }
+        },
+        watch: {
+            searchValue: function () {
+                this.searchData();
             }
         },
         methods: {
@@ -110,11 +133,20 @@
             back(){
                 this.$MKOPop();
                 Indicator.close();
+            },
+            searchData() {
+                let search = this.searchValue;
+                if (search) {
+                    this.searchDatas = this.customerDatas.filter(item => {
+                        return item.name.indexOf(search) > -1;
+                    })
+                }
             }
         },
         components: {
             NoData,
-            ResError
+            ResError,
+            SearchBar
         }
     }
 </script>
