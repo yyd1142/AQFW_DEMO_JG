@@ -21,16 +21,20 @@
                     <div class="score-progress"><span class="percent value-1"></span></div>
                 </div>
                 <div class="score-cell">
-                    <i class="icon-star icon-star-6"></i>
+                    <i class="icon-star icon-star-7"></i>
                     <div class="score-progress"><span class="percent value-2"></span></div>
                 </div>
                 <div class="score-cell">
-                    <i class="icon-star icon-star-4"></i>
+                    <i class="icon-star icon-star-6"></i>
                     <div class="score-progress"><span class="percent value-4"></span></div>
+                </div>
+                <div class="score-cell">
+                    <i class="icon-star icon-star-3"></i>
+                    <div class="score-progress"><span class="percent value-2"></span></div>
                 </div>
                 <div class="score-cell last">
                     <i class="icon-star icon-star-1"></i>
-                    <div class="score-progress"><span class="percent value-2"></span></div>
+                    <div class="score-progress"><span class="percent value-0"></span></div>
                 </div>
             </div>
             <div class="score-wrap" v-for="item in comments">

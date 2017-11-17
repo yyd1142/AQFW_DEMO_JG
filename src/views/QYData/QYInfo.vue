@@ -24,77 +24,61 @@
                 </div>
             </div>
             <div class="data-wrap">
-                <div @click="go('/fire_record/'+$route.params.id)">
-                    <mt-cell title="火灾记录" is-link></mt-cell>
-                </div>
-                <div @click="go('/jgzf_record/'+$route.params.id)">
-                    <mt-cell title="监督执法记录" is-link></mt-cell>
-                </div>
-                <div @click="goQYComment">
-                    <mt-cell title="单位标签" is-link></mt-cell>
-                </div>
-                <div @click="go('/qy_attributes/'+$route.params.id)">
-                    <mt-cell title="单位属性" is-link></mt-cell>
-                </div>
+                <mko-cell title="火灾记录" is-link @click="go('/fire_record/'+$route.params.id)"></mko-cell>
+                <mko-cell title="监督执法记录" is-link @click="go('/jgzf_record/'+$route.params.id)"></mko-cell>
+                <mko-cell title="单位标签" is-link @click="goQYComment" ></mko-cell>
+                <mko-cell title="单位属性" is-link @click="go('/qy_attributes/'+$route.params.id)"></mko-cell>
             </div>
             <div class="data-wrap">
-                <div @click="go('/hidden_danger/'+$route.params.id)">
-                    <mt-cell title="风险管理" is-link></mt-cell>
-                </div>
-                <div @click="go('/build_list/'+$route.params.id)">
-                    <mt-cell title="建筑信息" is-link></mt-cell>
-                </div>
-                <div @click="go('/xfzr_list/'+$route.params.id)">
-                    <mt-cell title="消防安全责任单位" is-link></mt-cell>
-                </div>
-                <div @click="go('/safe_activity_list/'+$route.params.id)">
-                    <mt-cell title="安全活动" is-link></mt-cell>
-                </div>
+                <mko-cell title="风险管理" is-link @click="go('/hidden_danger/'+$route.params.id)"></mko-cell>
+                <mko-cell title="建筑信息" is-link @click="go('/build_list/'+$route.params.id)"></mko-cell>
+                <mko-cell title="消防安全责任单位" is-link @click="go('/xfzr_list/'+$route.params.id)"></mko-cell>
+                <mko-cell title="安全活动" is-link @click="go('/safe_activity_list/'+$route.params.id)"></mko-cell>
             </div>
 
             <div class="data-wrap">
                 <div class="title-wrap"><span>账号信息</span></div>
-                <mt-cell title="账号" :value="dwInfo.userName||'暂无'"></mt-cell>
-                <mt-cell title="单位编码" :value="dwInfo.groupId||'暂无'"></mt-cell>
+                <mko-cell title="账号" :val="dwInfo.userName||'暂无'"></mko-cell>
+                <mko-cell title="单位编码" :val="dwInfo.groupId||'暂无'"></mko-cell>
             </div>
             <div class="data-wrap">
                 <div class="title-wrap"><span>基本信息</span></div>
-                <mt-cell title="单位名称" :value="dwInfo.dwName||'暂无'"></mt-cell>
-                <mt-cell title="单位简称" :value="dwInfo.dwShortName||'暂无'"></mt-cell>
-                <mt-cell title="组织机构代码" :value="dwInfo.dwCode||'暂无'"></mt-cell>
-                <mt-cell title="单位地址"
-                         :value="(dwInfo.dwProvinceName||'未知')+'-'+(dwInfo.dwCityName||'未知')+'-'+(dwInfo.dwAreaName||'未知')"></mt-cell>
-                <mt-cell title="详细地址" :value="dwInfo.dwAddress||'暂无'"></mt-cell>
-                <!--<mt-cell title="行政区域"-->
-                <!--:value="(dwInfo.dwXZProvinceName+dwInfo.dwXZCityName+dwInfo.dwXZAreaName)||'暂无'"></mt-cell>-->
-                <mt-cell title="单位类型" :value="(dwInfo.dwTypeName+dwInfo.dwSubTypeName)||'暂无'"></mt-cell>
-                <mt-cell title="经济所有制" :value="dwJJSYZ(dwInfo.dwJJSYZ)"></mt-cell>
-                <mt-cell title="单位其他属性" :value="dwInfo.dwAttribute||'暂无'"></mt-cell>
-                <mt-cell title="消防管辖" :value="dwInfo.gxDWName ? dwInfo.gxDWName : '暂无'"></mt-cell>
-                <mt-cell title="监督员" :value="dwInfo.jgName||'暂无'"></mt-cell>
+                <mko-cell title="单位名称" :val="dwInfo.dwName||'暂无'"></mko-cell>
+                <mko-cell title="单位简称" :val="dwInfo.dwShortName||'暂无'"></mko-cell>
+                <mko-cell title="组织机构代码" :val="dwInfo.dwCode||'暂无'"></mko-cell>
+                <mko-cell title="单位地址"
+                         :val="(dwInfo.dwProvinceName||'未知')+'-'+(dwInfo.dwCityName||'未知')+'-'+(dwInfo.dwAreaName||'未知')"></mko-cell>
+                <mko-cell title="详细地址" :val="dwInfo.dwAddress||'暂无'"></mko-cell>
+                <!--<mko-cell title="行政区域"-->
+                <!--:val="(dwInfo.dwXZProvinceName+dwInfo.dwXZCityName+dwInfo.dwXZAreaName)||'暂无'"></mko-cell>-->
+                <mko-cell title="单位类型" :val="(dwInfo.dwTypeName+dwInfo.dwSubTypeName)||'暂无'"></mko-cell>
+                <mko-cell title="经济所有制" :val="dwJJSYZ(dwInfo.dwJJSYZ)"></mko-cell>
+                <mko-cell title="单位其他属性" :val="dwInfo.dwAttribute||'暂无'"></mko-cell>
+                <mko-cell title="消防管辖" :val="dwInfo.gxDWName ? dwInfo.gxDWName : '暂无'"></mko-cell>
+                <mko-cell title="监督员" :val="dwInfo.jgName||'暂无'"></mko-cell>
             </div>
             <div class="data-wrap">
                 <div class="title-wrap"><span>联系方式</span></div>
-                <mt-cell title="消防安全管理人" :value="dwInfo.dwManager||'暂无'"></mt-cell>
-                <mt-cell title="联系电话" :value="dwInfo.dwManagerPhone||'暂无'">
+                <mko-cell title="消防安全管理人" :val="dwInfo.dwManager||'暂无'"></mko-cell>
+                <mko-cell title="联系电话" :val="dwInfo.dwManagerPhone||'暂无'">
                     <a class="phone" :href="'tel:' + dwInfo.dwManagerPhone"
                        v-if="dwInfo.dwManagerPhone">{{dwInfo.dwManagerPhone}}</a>
-                </mt-cell>
-                <mt-cell title="消防安全责任人" :value="dwInfo.dwZRPerson||'暂无'"></mt-cell>
-                <mt-cell title="联系电话" :value="dwInfo.dwZRPhone||'暂无'">
+                </mko-cell>
+                <mko-cell title="消防安全责任人" :val="dwInfo.dwZRPerson||'暂无'"></mko-cell>
+                <mko-cell title="联系电话" :val="dwInfo.dwZRPhone||'暂无'">
                     <a class="phone" :href="'tel:' + dwInfo.dwZRPhone" v-if="dwInfo.dwZRPhone">{{dwInfo.dwZRPhone}}</a>
-                </mt-cell>
-                <mt-cell title="企业法人" :value="dwInfo.dwFaRen||'暂无'"></mt-cell>
-                <mt-cell title="联系电话" :value="dwInfo.dwFaRenPhone||'暂无'">
+                </mko-cell>
+                <mko-cell title="企业法人" :val="dwInfo.dwFaRen||'暂无'"></mko-cell>
+                <mko-cell title="联系电话" :val="dwInfo.dwFaRenPhone||'暂无'">
                     <a class="phone" :href="'tel:' + dwInfo.dwFaRenPhone"
                        v-if="dwInfo.dwFaRenPhone">{{dwInfo.dwFaRenPhone}}</a>
-                </mt-cell>
-                <mt-cell title="法人证件号" :value="dwInfo.dwFaRenID||'暂无'"></mt-cell>
-                <mt-cell title="单位电话" :value="dwInfo.dwPhone||'暂无'">
+                </mko-cell>
+                <mko-cell title="法人证件号" :val="dwInfo.dwFaRenID||'暂无'"></mko-cell>
+                <mko-cell title="单位电话" :val="dwInfo.dwPhone||'暂无'">
                     <a class="phone" :href="'tel:' + dwInfo.dwPhone" v-if="dwInfo.dwPhone">{{dwInfo.dwPhone}}</a>
-                </mt-cell>
-                <mt-cell title="单位传真" :value="dwInfo.dwFax||'暂无'"></mt-cell>
-                <mt-cell title="邮政编码" :value="dwInfo.dwPostcode||'暂无'"></mt-cell>
+                </mko-cell>
+                <mko-cell title="单位传真" :val="dwInfo.dwFax||'暂无'"></mko-cell>
+                <mko-cell title="邮政编码" :val="dwInfo.dwPostcode||'暂无'"></mko-cell>
             </div>
         </div>
     </div>
