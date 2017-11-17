@@ -8,7 +8,7 @@
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
         <div class="page-wrap fw-info-wrap" v-show="!noData&&!resError">
-            <div class="label-wrap" :style="{backgroundColor: scoreHeadColor(fwInfo.score)}">
+            <div class="label-wrap" :style="{backgroundColor: scoreHeadColor(fwInfo.score)}" @click="goScoreInfo">
                 <div class="label-item">
                     <div class="score-banner">
                         <i class="icon-star" :class="'icon-star-' + fwInfo.score"></i>
@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="data-wrap">
-                <mko-cell title="平均服务评分" val="82.2" @click="go('/fw_score/'+ fwInfo.groupId)" is-link></mko-cell>
+                <!--<mko-cell title="平均服务评分" val="82.2" @click="go('/fw_score/'+ fwInfo.groupId)" is-link></mko-cell>-->
                 <mko-cell title="任务执行记录" val="5" @click="go('/fw_task_history/'+ fwInfo.groupId)" is-link></mko-cell>
                 <mko-cell title="消防安全人员" val="4" @click="go('/fw_safe_persons/'+ fwInfo.groupId)" is-link></mko-cell>
                 <mko-cell title="签约客户" val="3" @click="go('/customer_list/' + fwInfo.groupId)" is-link></mko-cell>
@@ -255,6 +255,14 @@
                     query: {
                         title: '资格证书',
                         url: this.fwInfo.zzProve[0]
+                    }
+                })
+            },
+            goScoreInfo() {
+                this.$MKOPush({
+                    path: `/fw_score_detail/${this.$route.params.id}`,
+                    query: {
+                        fwDetail: this.fwInfo
                     }
                 })
             }

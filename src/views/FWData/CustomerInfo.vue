@@ -8,16 +8,19 @@
         <no-data v-if="noData"></no-data>
         <div class="page-wrap" v-show="!noData||!resError">
             <div class="data-wrap">
+                <div class="title-wrap"><span>基本信息</span></div>
                 <mko-cell title="联系人" :val="customerDetail.legalPerson"></mko-cell>
                 <mko-cell title="联系电话" :val="customerDetail.phone"></mko-cell>
                 <mko-cell title="合同签订日期" :val="customerDetail.contractSignTime"></mko-cell>
-                <mko-cell title="合同生效日期" :val="customerDetail.contractStartTime"></mko-cell>
-                <mko-cell title="合同失效日期" :val="customerDetail.contractEndTime"></mko-cell>
-                <mko-cell title="合同文件"></mko-cell>
-                <photo-box max="8" :read-only="true" :photo-list="customerDetail.attachment"></photo-box>
+                <mko-cell title="合同截止日期" :val="customerDetail.contractEndTime"></mko-cell>
+                <!--<photo-box max="8" :read-only="true" :photo-list="customerDetail.attachment"></photo-box>-->
+            </div>
+            <div class="data-wrap">
+                <div class="title-wrap"><span>合同文件</span></div>
+                <mko-cell :title="item.fileName" val="查看" val-style="blue-font" is-link @click="goPhotoViewer(item)" v-for="item in customerDetail.attachment"></mko-cell>
             </div>
             <div class="data-wrap" v-if="customerDetail.devices.length > 0">
-                <mko-cell title="委托管理设备"></mko-cell>
+                <div class="title-wrap"><span>委托管理设备</span></div>
                 <mko-cell :title="item.name" :val="typeFilter(item.type)" v-for="item in customerDetail.devices"></mko-cell>
             </div>
         </div>
@@ -28,8 +31,36 @@
     @import "../../config.less";
 
     .data-wrap {
-        width: 100%;
-        margin-bottom: 14px;
+        margin-bottom: 10px;
+        .title-wrap {
+            height: 50px;
+            width: 100%;
+            padding-left: 14px;
+            display: table;
+            background-color: #ffffff;
+            span {
+                display: table-cell;
+                vertical-align: middle;
+                line-height: 50px;
+                font-size: 16px;
+                color: #333333;
+                letter-spacing: 0;
+            }
+        }
+        .mint-cell {
+            min-height: 44px;
+            .mint-cell-wrapper {
+                padding: @cellPadding;
+                font-size: 14px;
+                letter-spacing: 0;
+                color: #232323;
+            }
+        }
+        .blue-font {
+            font-size: 14px;
+            color: #3399FF;
+            letter-spacing: 0;
+        }
     }
 </style>
 
@@ -78,6 +109,15 @@
                 });
                 text = text.join(',');
                 return text;
+            },
+            goPhotoViewer(item) {
+                this.$MKOPush({
+                    path: '/photo_viewer',
+                    query: {
+                        title: item.fileName,
+                        url: item.url
+                    }
+                })
             }
         },
         components: {
