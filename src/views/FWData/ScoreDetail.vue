@@ -37,7 +37,7 @@
                     <div class="score-progress"><span class="percent value-0"></span></div>
                 </div>
             </div>
-            <div class="score-wrap" v-for="item in comments">
+            <div class="score-wrap comment-wrap" v-for="item in comments">
                 <div class="header">
                     <div class="comment-title">
                         <div class="title">{{item.title}}</div>
@@ -48,7 +48,9 @@
                         <div class="name">{{item.name}}</div>
                     </div>
                 </div>
-                <div class="desc">{{item.desc}}</div>
+                <div class="padding">
+                    <div class="desc">{{item.desc}}</div>
+                </div>
             </div>
         </div>
     </div>
@@ -63,6 +65,12 @@
             background-color: #ffffff;
             padding: 14px;
             margin-bottom: 10px;
+            &.comment-wrap {
+                padding: 14px 0 14px 14px;
+                .header {
+                    padding-right: 14px;
+                }
+            }
             .total-score-wrap {
                 width: 100%;
                 height: 40px;
@@ -192,16 +200,20 @@
                     }
                 }
             }
-            .desc {
-                font-size: 14px;
-                color: #666666;
-                letter-spacing: 0;
-                line-height: 18px;
-                background: #F8F8F8;
-                border: 1px solid #EEEEEE;
-                border-radius: 4px;
-                padding: 12px;
-                margin-top: 14px;
+            .padding {
+                width: 100%;
+                padding-right: 14px;
+                .desc {
+                    font-size: 14px;
+                    color: #666666;
+                    letter-spacing: 0;
+                    line-height: 18px;
+                    background: #F8F8F8;
+                    border: 1px solid #EEEEEE;
+                    border-radius: 4px;
+                    padding: 12px;
+                    margin-top: 14px;
+                }
             }
         }
     }

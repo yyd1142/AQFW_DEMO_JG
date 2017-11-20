@@ -9,10 +9,6 @@
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
         <div class="page-wrap qy-info-wrap" v-if="!noData&&!resError">
-            <!--<div @click="$MKOPush(`/score/${$route.params.id}?name=${$route.query.name}`)">-->
-                <!--<score-banner :unit-info="$route.query.name||dwInfo.dwName"-->
-                              <!--:unit-score="$route.query.score||dwScore.totalScore"></score-banner>-->
-            <!--</div>-->
             <div class="score-banner" :style="{backgroundColor:scoreHeadColor($route.query.score || dwScore.totalScore)}" @click="$MKOPush(`/score/${$route.params.id}?name=${$route.query.name}`)">
                 <span>{{$route.query.score || dwScore.totalScore}}</span>
             </div>
