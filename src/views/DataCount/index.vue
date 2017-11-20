@@ -25,7 +25,7 @@
     export default {
         data () {
             return {
-                type: 0,
+                type: -1,
                 counts: [
                     [
                         {label: '社会单位数量(家)', num: 3746, path: '/qy_count'},
