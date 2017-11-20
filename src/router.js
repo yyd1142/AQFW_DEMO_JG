@@ -321,11 +321,13 @@ const routers = {
         },
         {
             path: '/produce_count',
-            component: ProduceCount
+            component: ProduceCount,
+            name: 'ProduceCount'
         },
         {
             path: '/qy_count',
-            component: QYCount
+            component: QYCount,
+            name: 'QYCount'
         },
         {
             path: '/qy_count_list',
@@ -337,11 +339,13 @@ const routers = {
         },
         {
             path: '/task_count',
-            component:TaskCount
+            component:TaskCount,
+            name: 'TaskCount'
         },
         {
             path: '/user_count',
-            component: UserCount
+            component: UserCount,
+            name: 'UserCount'
         },
         //数据统计-安全评分
         {
@@ -457,7 +461,7 @@ const routers = {
 const router = new Router(routers);
 
 router.beforeEach((to, from, next) => {
-    if (to.name == 'home' || to.name == 'score' || to.name == 'jgDetail' || to.name == 'login' || to.name == 'scoreDetail' || to.name == 'QYInfo' || to.name == 'QYComment' || to.name == 'FWInfo' || to.name == 'FWList' || to.name == 'CustomerList') {
+    if (to.name == 'home' || to.name == 'score' || to.name == 'jgDetail' || to.name == 'login' || to.name == 'scoreDetail' || to.name == 'QYInfo' || to.name == 'QYComment' || to.name == 'FWInfo' || to.name == 'FWList' || to.name == 'CustomerList' || to.name == 'QYCount' || to.name == 'TaskCount' || to.name == 'UserCount' || to.name == 'ProduceCount') {
         NProgress.remove();
     } else {
         NProgress.start();
