@@ -1,11 +1,7 @@
 <template>
     <div>
         <div class="placeholder-item"></div>
-        <mt-header class="header-wrap" fixed :title="newsTitles[$route.query.type]">
-            <div @click="back()" slot="left">
-                <mt-button class="header-item" icon="back"></mt-button>
-            </div>
-        </mt-header>
+        <mko-header :title="newsTitles[$route.query.type]" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap message-detail-wrap" v-if="newsInfoShow">
             <div class="main-msg">
                 <div class="message-title">

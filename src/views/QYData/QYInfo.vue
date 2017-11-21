@@ -1,11 +1,7 @@
 <template>
     <div>
-        <mt-header class="header-wrap qy-info-header"
-                   :style="{backgroundColor:scoreHeadColor($route.query.score || dwScore.totalScore)}"
-                   :title="this.$route.query.name || '社会单位'"
-                   fixed>
-            <mt-button class="header-item" @click="back" slot="left" icon="back"></mt-button>
-        </mt-header>
+        <div class="placeholder-item"></div>
+        <mko-header :title="this.$route.query.name || '社会单位'" :background-color="scoreHeadColor($route.query.score || dwScore.totalScore)" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
         <div class="page-wrap qy-info-wrap" v-if="!noData&&!resError">
@@ -16,7 +12,7 @@
                 <div class="label-item">
                     <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" :style="{ marginRight: index === (dwInfo.attributes.length - 1) ? 0 : '4px' }" v-for="item, index in dwInfo.attributes" v-if="!noAttributes"><span>{{attributesFilter(item.attributeName)}}</span></div>
                     <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" v-if="noAttributes"><span>暂无评价</span></div>
-                    <i class="icon icon-link-arrow"></i>
+                    <i class="icon icon-arrow-right-white"></i>
                 </div>
             </div>
             <div class="data-wrap">
@@ -47,7 +43,7 @@
                 <mko-cell title="详细地址" :val="dwInfo.dwAddress||'暂无'"></mko-cell>
                 <!--<mko-cell title="行政区域"-->
                 <!--:val="(dwInfo.dwXZProvinceName+dwInfo.dwXZCityName+dwInfo.dwXZAreaName)||'暂无'"></mko-cell>-->
-                <mko-cell title="单位类型" :val="(dwInfo.dwTypeName+dwInfo.dwSubTypeName)||'暂无'"></mko-cell>
+                <mko-cell title="单位类型" :val="(dwInfo.dwTypeName+dwInfo.dwSubTypeName)||'暂无'" @click="showAllContent(dwInfo.dwTypeName+dwInfo.dwSubTypeName)"></mko-cell>
                 <mko-cell title="经济所有制" :val="dwJJSYZ(dwInfo.dwJJSYZ)"></mko-cell>
                 <mko-cell title="单位其他属性" :val="dwInfo.dwAttribute||'暂无'"></mko-cell>
                 <mko-cell title="消防管辖" :val="dwInfo.gxDWName ? dwInfo.gxDWName : '暂无'"></mko-cell>
@@ -198,6 +194,9 @@
                         score: this.$route.query.score
                     }
                 })
+            },
+            showAllContent(text) {
+                this.$MKODialog({ msg: text });
             }
         },
         components: {

@@ -1,9 +1,7 @@
 <template>
     <div class="qy-attributes">
         <div class="placeholder-item"></div>
-        <mt-header class="header-wrap" fixed title="单位属性">
-            <mt-button class="header-item" @click="back" slot="left" icon="back"></mt-button>
-        </mt-header>
+        <mko-header title="单位属性" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
         <div class="page-wrap">

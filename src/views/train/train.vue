@@ -1,12 +1,7 @@
 <template>
     <div>
         <div class="placeholder-item"></div>
-        <mt-header class="header-wrap" fixed title="教育培训">
-            <mt-button class="header-item" icon="back" @click="back()" slot="left"></mt-button>
-            <div slot="right" @click="historyRecord">
-                <mt-button class="header-item">往期成绩</mt-button>
-            </div>
-        </mt-header>
+        <mko-header title="教育培训" left-icon="icon-back" @handleLeftClick="back" right-icon-text="往期成绩" @handleRightClick="historyRecord"></mko-header>
         <div class="page-wrap train-wrap">
             <ul class="notice-table-view">
                 <li class="notice-table-cell"  v-for="item in trains" @click="goExamRuleView(item)">
@@ -28,7 +23,7 @@
     import { Indicator } from 'mint-ui'
     import { formatDate } from 'filters'
     import { NoData } from 'components'
-    
+
     export default {
         data() {
             return {
@@ -63,7 +58,7 @@
             goExamRuleView(item) {
                 this.examPageItem = item;
                 this.examPageItem.title = item.examTitle;
-                this.$MKOPush({ 
+                this.$MKOPush({
                     path: '/exam_rule',
                     query: {
                         examPageItem: this.examPageItem
@@ -132,23 +127,23 @@
             }
         }
     }
-    
+
     .train-wrap {
         padding: 0 !important;
     }
-    
+
     .page-wrap {
         box-sizing: border-box;
         padding: 0 10px;
     }
-    
+
     .exam-wrap {
         background-color: #ffffff;
         height: 100vh;
         margin: 0;
         padding-top: 40px + @headerTop;
     }
-    
+
     .exam-title {
         width: 100%;
         text-align: CENTER;
@@ -156,7 +151,7 @@
         color: @blueColor;
         margin-top: 14px;
     }
-    
+
     .exam-main {
         width: 100%;
         box-sizing: border-box;
@@ -181,7 +176,7 @@
             }
         }
     }
-    
+
     .footer-bar {
         width: 100%;
         height: 40px;

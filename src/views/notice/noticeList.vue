@@ -1,10 +1,7 @@
 <template>
     <div>
         <div class="placeholder-item"></div>
-        <mt-header class="header-wrap" fixed title="通知公告">
-            <mt-button class="header-item" icon="back" slot="left" @click="back"></mt-button>
-            <mt-button class="header-item" slot="right" @click="$MKOPush('/statisticsNotice')">统计</mt-button>
-        </mt-header>
+        <mko-header title="通知公告" left-icon="icon-back" @handleLeftClick="back" right-icon-text="统计" @handleRightClick="$MKOPush('/statisticsNotice')"></mko-header>
         <div class="page-wrap" id="pageWrapper">
             <mt-loadmore :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="bottomAllLoaded" ref="loadmore" :auto-fill="autoFill">
                 <ul class="notice-table-view">

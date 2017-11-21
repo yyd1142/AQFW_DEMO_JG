@@ -1,9 +1,7 @@
 <template>
     <div class="FWSafePersons">
         <div class="placeholder-item"></div>
-        <mt-header class="header-wrap" title="消防安全人员" fixed>
-            <mt-button class="header-item" icon="back" slot="left" @click="back"></mt-button>
-        </mt-header>
+        <mko-header title="消防安全人员" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
         <div class="page-wrap" v-show="!noData&&!resError">

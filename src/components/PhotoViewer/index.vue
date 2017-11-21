@@ -1,11 +1,12 @@
 <template>
     <div class="photo-viewer">
         <div class="placeholder-item"></div>
-        <mt-header class="header-wrap" :title="$route.query.title" fixed>
-            <mt-button class="header-item" icon="back" slot="left" @click="back"></mt-button>
-        </mt-header>
+        <mko-header :title="$route.query.title" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
-            <img :src="$route.query.url" />
+            <img :src="$route.query.url" v-if="!isArray"/>
+            <ul class="photo-list" v-else>
+                <li class="cell" v-for="item in $route.query.url"><img :src="item"/></li>
+            </ul>
         </div>
     </div>
 </template>
@@ -17,6 +18,14 @@
         img {
             width: 100%;
         }
+        .photo-list {
+            .cell {
+                margin-bottom: 14px;
+                img {
+                    width: 100%;
+                }
+            }
+        }
     }
 </style>
 
@@ -25,6 +34,15 @@
         methods: {
             back(){
                 this.$MKOPop();
+            }
+        },
+        computed: {
+            isArray() {
+                if(Array.isArray(this.$route.url)) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
     }

@@ -1,9 +1,7 @@
 <template>
     <div>
         <div class="placeholder-item"></div>
-        <mt-header class="header-wrap" fixed title="往期成绩">
-            <mt-button class="header-item" icon="back" slot="left" @click="back"></mt-button>
-        </mt-header>
+        <mko-header title="往期成绩" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
             <div @click="linkPath('/score_info/' + item.id)"  v-for="item in scores">
                 <mt-cell :title="item.examTitle" :value="item.score" is-link></mt-cell>
@@ -58,5 +56,5 @@
 </script>
 
 <style lang="less" scoped>
-    
+
 </style>

@@ -1,10 +1,7 @@
 <template>
     <div id="reply">
         <div class="placeholder-item"></div>
-        <mt-header class="header-wrap" fixed title="回复列表">
-            <mt-button class="header-item" icon="back" slot="left" @click="back"></mt-button>
-            <mt-button class="header-item" slot="right" @click="refresh">刷新</mt-button>
-        </mt-header>
+        <mko-header title="回复列表" left-icon="icon-back" @handleLeftClick="back" right-icon-text="刷新" @handleRightClick="refresh"></mko-header>
         <div id="replyPage" class="page-wrap">
             <div class="device-selecetd" @click="popupShow = true">
                 <i class="selected-icon"></i>

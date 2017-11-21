@@ -1,9 +1,7 @@
 <template>
     <div class="fw-task-history-detail">
         <div class="placeholder-item"></div>
-        <mt-header class="header-wrap" title="执行记录详情" fixed>
-            <mt-button class="header-item" icon="back" slot="left" @click="back"></mt-button>
-        </mt-header>
+        <mko-header title="执行记录详情" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
         <div class="page-wrap" v-show="!noData&&!resError">
@@ -251,7 +249,6 @@
                     }
                     .photo-wrap {
                         background: none;
-                        border: 1px solid #eee;
                     }
                 }
             }

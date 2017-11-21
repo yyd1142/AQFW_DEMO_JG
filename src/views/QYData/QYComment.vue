@@ -1,10 +1,7 @@
 <template>
     <div class="qy-comment">
         <div class="placeholder-item"></div>
-        <mt-header class="header-wrap" :style="{backgroundColor: scoreHeadColor($route.query.score)}" fixed
-                   title="单位标签">
-            <mt-button class="header-item" @click="back" slot="left" icon="back"></mt-button>
-        </mt-header>
+        <mko-header title="单位标签" :background-color="scoreHeadColor($route.query.score)" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <res-error v-if="resError"></res-error>
         <div class="page-wrap">
             <div class="comment-title"><span>单位标签</span></div>

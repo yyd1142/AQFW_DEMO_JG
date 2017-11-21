@@ -1,9 +1,7 @@
 <template>
     <div id="reply">
         <div class="placeholder-item"></div>
-        <mt-header class="header-wrap" fixed title="回复详情">
-            <mt-button class="header-item" icon="back" slot="left" @click="back"></mt-button>
-        </mt-header>
+        <mko-header title="回复详情" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap reply-detail-wrap">
             <div class="reply-cell">
                 <span class="left">{{replyItem.dwName}}</span>

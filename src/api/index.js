@@ -24,7 +24,7 @@ export default {
     //通讯录
     getUuid: httpGet('/uuid', Conf.directoriesDomain),
     getAddressList: httpGet('/list', Conf.directoriesDomain),
-    getAddressInfo: httpGet('/info', Conf.directoriesDomain),
+    getAddressInfo: httpGet('/detail', Conf.directoriesDomain),
     //消息
     getMsgList: httpGet('/message?m=list', Conf.qyApiDomain),
     getMsgInfo: httpGet('/message?m=info', Conf.qyApiDomain),

@@ -1,9 +1,7 @@
 <template>
     <div>
         <div class="placeholder-item"></div>
-        <mt-header class="header-wrap" fixed :title="examItem.examTitle">
-            <mt-button class="header-item" icon="back" slot="left" @click="back"></mt-button>
-        </mt-header>
+        <mko-header :title="examItem.examTitle" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap exam-wrap">
             <div class="score-wrap">
                 <span class="score-value">{{examItem.score}}</span>
@@ -100,14 +98,14 @@
         box-sizing: border-box;
         padding: 0 10px;
     }
-    
+
     .exam-wrap {
         background-color: #ffffff;
         height: 100vh;
         margin: 0;
         padding-top: 40px + @headerTop;
     }
-    
+
     .exam-title {
         width: 100%;
         text-align: CENTER;
@@ -115,7 +113,7 @@
         color: @blueColor;
         margin-top: 14px;
     }
-    
+
     .exam-main {
         width: 100%;
         box-sizing: border-box;
@@ -135,7 +133,7 @@
             color: #333333;
         }
     }
-    
+
     .footer-bar {
         width: 100%;
         height: 40px;
@@ -174,7 +172,7 @@
             width: 40%;
         }
     }
-    
+
     .score-wrap {
         width: 100%;
         margin: 0 auto 0 auto;
@@ -195,7 +193,7 @@
             font-size: 50px;
         }
     }
-    
+
     .tips {
         width: 100%;
         text-align: center;
@@ -203,7 +201,7 @@
         color: #333333;
         margin-top: 8px;
     }
-    
+
     .exam-table-view {
         width: 100%;
         .exam-table-cell {
@@ -246,7 +244,7 @@
             }
         }
     }
-    
+
     .time-up {
         color: @redColor !important;
     }

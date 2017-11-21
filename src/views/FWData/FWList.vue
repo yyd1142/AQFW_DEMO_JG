@@ -1,9 +1,7 @@
 <template>
     <div>
         <div class="placeholder-item"></div>
-        <mt-header class="header-wrap" title="服务单位" fixed>
-            <mt-button class="header-item" icon="back" slot="left" @click="back"></mt-button>
-        </mt-header>
+        <mko-header title="服务单位" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <res-error v-if="resError"></res-error>
         <no-data v-if="searchValue ? (searchDatas.length == 0) : (fwList.length == 0) "></no-data>
         <div class="page-wrap fw-list-wrap" v-show="!resError && !noData">
