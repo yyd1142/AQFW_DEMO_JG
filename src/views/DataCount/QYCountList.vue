@@ -50,7 +50,7 @@
         data () {
             return {
                 tabI: 0,
-                tabItems: ['未激活单位列表', '不活跃单位列表'],
+                tabItems: ['未激活单位', '不活跃单位'],
                 list: [],
                 type: 0
             }
@@ -72,9 +72,10 @@
                 this.tabI = i;
             },
             goDetail(data){
+                let id = 1;
                 let json = JSON.stringify(data);
                 sessionStorage.setItem('QYCountDetail', json);
-
+                this.$MKOPush('/qy_count_detail/'+id)
             },
             back(){
                 this.$MKOPop();

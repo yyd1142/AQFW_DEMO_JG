@@ -58,9 +58,13 @@
                     normal: {
                         label: {
                             show: false,
-                            position: 'center',
-                            formatter: '{b}',
-                            textStyle: {}
+//                            position: 'center',
+//                            formatter: '{b}',
+                            textStyle: {
+                                baseline: 'bottom',
+                                color: '#3399ff',
+                                fontSize: 12
+                            }
                         },
                         labelLine: {
                             show: false

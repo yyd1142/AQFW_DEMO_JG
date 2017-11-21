@@ -14,6 +14,9 @@
                 </mko-nav-bar>
                 <div class="chart" ref="chart"></div>
             </div>
+            <div>
+                <mko-cell :title="item.name" :val="item.value" v-for="item in datas[tabI]"></mko-cell>
+            </div>
         </div>
     </div>
 </template>
@@ -21,11 +24,64 @@
 <script>
     import echarts from 'echarts';
     let theme = 'macarons';
+    let color = ['#3399FF', '#55DD66', '#F5A623', '#50E3C2 ', '#AD6DFF', '#F8E71C', '#FF336B','#7E80FF'];
+    let itemStyle = {
+        normal: {
+            label: {
+                formatter: "{b} ({d}%)",
+                textStyle: {
+                    color: '#666',
+                    fontSize: '12px'
+                }
+            },
+            labelLine: {
+                length: 30,
+                lineStyle: {
+                    color: '#ddd',
+                }
+            }
+        },
+    };
     export default {
         data () {
             return {
                 tabI: 0,
-                tabItems: ['区域分布', '单位占比', '用户占比', '行业占比']
+                tabItems: ['区域分布', '单位占比', '用户占比', '行业占比'],
+                datas: [
+                    [
+                        {value: 1334, name: '宜兴市'},
+                        {value: 612, name: '惠山区'},
+                        {value: 817, name: '新吴区'},
+                        {value: 1036, name: '梁溪区'},
+                        {value: 1763, name: '江阴市'},
+                        {value: 998, name: '滨湖区'},
+                        {value: 765, name: '锡山区'},
+                    ],
+                    [
+                        {value: 2382, name: '一级重点单位'},
+                        {value: 1872, name: '二级重点单位'},
+                        {value: 1236, name: '三级重点单位'},
+                        {value: 1067, name: '一般重点单位'},
+                        {value: 768, name: '九小场所'},
+                    ],
+                    [
+                        {value: 504, name: '政府监管人员'},
+                        {value: 1063, name: '单位安全责任人'},
+                        {value: 2154, name: '单位安全管理人员'},
+                        {value: 3318, name: '单位安全员'},
+                        {value: 286, name: '第三方服务人员'},
+                    ],
+                    [
+                        {value: 196, name: '交通'},
+                        {value: 215, name: '公安'},
+                        {value: 314, name: '国资'},
+                        {value: 1154, name: '安监'},
+                        {value: 726, name: '工商'},
+                        {value: 335, name: '市政'},
+                        {value: 637, name: '教育'},
+                        {value: 3748, name: '消防'},
+                    ]
+                ]
             }
         },
         watch: {
@@ -72,21 +128,15 @@
                         feature: {}
                     },
                     calculable: true,
+                    color: color,
                     series: [
                         {
                             name: '',
                             type: 'pie',
                             radius: '55%',
                             center: ['50%', '50%'],
-                            data: [
-                                {value: 1334, name: '宜兴市'},
-                                {value: 612, name: '惠山区'},
-                                {value: 817, name: '新吴区'},
-                                {value: 1036, name: '梁溪区'},
-                                {value: 1763, name: '江阴市'},
-                                {value: 998, name: '滨湖区'},
-                                {value: 765, name: '锡山区'},
-                            ]
+                            data: this.datas[0],
+                            itemStyle: itemStyle
                         }
                     ]
                 })
@@ -112,19 +162,15 @@
                         feature: {}
                     },
                     calculable: true,
+                    color: color,
                     series: [
                         {
                             name: '',
                             type: 'pie',
                             radius: '55%',
                             center: ['50%', '50%'],
-                            data: [
-                                {value: 2382, name: '一级重点单位'},
-                                {value: 1872, name: '二级重点单位'},
-                                {value: 1236, name: '三级重点单位'},
-                                {value: 1067, name: '一般重点单位'},
-                                {value: 768, name: '九小场所'},
-                            ]
+                            data: this.datas[1],
+                            itemStyle: itemStyle
                         }
                     ]
                 })
@@ -150,19 +196,15 @@
                         feature: {}
                     },
                     calculable: true,
+                    color: color,
                     series: [
                         {
                             name: '',
                             type: 'pie',
                             radius: '55%',
                             center: ['50%', '50%'],
-                            data: [
-                                {value: 504, name: '政府监管人员'},
-                                {value: 1063, name: '单位安全责任人'},
-                                {value: 2154, name: '单位安全管理人员'},
-                                {value: 3318, name: '单位安全员'},
-                                {value: 286, name: '第三方服务人员'},
-                            ]
+                            data: this.datas[2],
+                            itemStyle: itemStyle
                         }
                     ]
                 })
@@ -188,22 +230,15 @@
                         feature: {}
                     },
                     calculable: true,
+                    color: color,
                     series: [
                         {
                             name: '',
                             type: 'pie',
                             radius: '55%',
                             center: ['50%', '50%'],
-                            data: [
-                                {value: 196, name: '交通'},
-                                {value: 215, name: '公安'},
-                                {value: 314, name: '国资'},
-                                {value: 1154, name: '安监'},
-                                {value: 726, name: '工商'},
-                                {value: 335, name: '市政'},
-                                {value: 637, name: '教育'},
-                                {value: 3748, name: '消防'},
-                            ]
+                            data: this.datas[3],
+                            itemStyle: itemStyle
                         }
                     ]
                 })
@@ -246,7 +281,7 @@
             }
         }
         .chart-wrap {
-            /*margin-top: 14px;*/
+            margin-bottom: 10px;
             .chart {
                 height: 300px;
                 background-color: #fff !important;

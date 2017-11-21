@@ -11,7 +11,7 @@
             <div class="chart-wrap" ref="lineChart"></div>
             <mko-cell title="评分详情" is-link @click="goScore"></mko-cell>
             <!--<div class="btn-wrap">-->
-                <!--<mko-button size="large" no-radius @click="goScore">评分详情</mko-button>-->
+            <!--<mko-button size="large" no-radius @click="goScore">评分详情</mko-button>-->
             <!--</div>-->
         </div>
     </div>
@@ -61,8 +61,8 @@
                     if (res && res.code == 0) {
                         let data = res.response;
                         let path = data.path.split('/');
-                        this.type = path[1] == data.id ? 0 : 1;
-//                        this.type = path[1] != data.id ? 0 : 1;
+//                        this.type = path[1] == data.id ? 0 : 1;
+                        this.type = path[1] != data.id ? 0 : 1;
                         sessionStorage.setItem(`jgDwType${gId}`, this.type);
                         this.DrawChart1(echarts);
                     }
@@ -86,33 +86,55 @@
                         trigger: 'axis'
                     },
                     legend: {
-                        data: ['安全评分趋势',]
+//                        data: ['安全评分趋势',]
                     },
                     toolbox: {
                         show: true,
                         feature: {}
                     },
                     calculable: true,
+                    color: ['#3399ff'],
                     xAxis: [
                         {
                             type: 'category',
-                            boundaryGap: false,
-                            data: ['2017年5月', '2017年6月', '2017年7月', '2017年8月', '2017年9月', '2017年10月'],
-                            axisLabel: {
-//                                interval: 0,
-                                textStyle: {
-                                    fontSize: 1,
-                                    fontWeight: 100
+                            boundaryGap: true,
+                            data: ['2017.5', '2017.6', '2017.7', '2017.8', '2017.9', '2017.10'],
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#979797'
                                 }
                             },
-//                            axisTick: {
-//                                interval: 0
-//                            },
+                            axisTick: {
+                                show: false,
+                            },
+                            axisLabel: {
+                                interval: 0,
+                                textStyle: {
+                                    fontSize: 10,
+                                    fontWeight: 100,
+                                    color: '#999'
+                                }
+                            },
                         }
                     ],
                     yAxis: [
                         {
-                            type: 'value'
+                            type: 'value',
+                            axisTick: {
+                                show: false,
+                            },
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#979797'
+                                }
+                            },
+                            axisLabel: {
+                                textStyle: {
+                                    fontSize: 10,
+                                    fontWeight: 100,
+                                    color: '#999'
+                                }
+                            },
                         }
                     ],
                     series: [
@@ -159,7 +181,7 @@
         }
         .chart-wrap {
             height: 300px;
-            padding-top: 10px;
+            /*padding-top: 10px;*/
             border-bottom: 1px solid @baseBorder;
             background-color: #fff !important;
         }

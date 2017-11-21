@@ -7,8 +7,9 @@
                 1511926
             </div>
             <mko-cell class="title-cell" title="数据分析"></mko-cell>
-            <div class="chart-wrap" ref="chart">
-
+            <div class="chart-wrap" ref="chart"></div>
+            <div class="list-wrap">
+                <mko-cell :title="item.name" :val="item.value" v-for="item in datas"></mko-cell>
             </div>
         </div>
     </div>
@@ -19,7 +20,13 @@
     let theme = 'macarons';
     export default {
         data () {
-            return {}
+            return {
+                datas: [
+                    {value: 826852, name: '任务'},
+                    {value: 521798, name: '图片'},
+                    {value: 163276, name: '通知公告'},
+                ]
+            }
         },
         watch: {},
         computed: {},
@@ -56,17 +63,31 @@
                         feature: {}
                     },
                     calculable: true,
+                    color: ['#3399FF', '#55DD66', '#F5A623', '#50E3C2 ', '#F8E71C', '#FF336B'],
                     series: [
                         {
                             name: '生成数据总量',
                             type: 'pie',
                             radius: '55%',
                             center: ['50%', '50%'],
-                            data: [
-                                {value: 826852, name: '任务'},
-                                {value: 521798, name: '图片'},
-                                {value: 163276, name: '通知公告'},
-                            ]
+                            data: this.datas,
+                            itemStyle: {
+                                normal: {
+                                    label: {
+                                        formatter: "{b} ({d}%)",
+                                        textStyle: {
+                                            color: '#666',
+                                            fontSize: '12px'
+                                        }
+                                    },
+                                    labelLine: {
+                                        length: 40,
+                                        lineStyle: {
+                                            color: '#ddd',
+                                        }
+                                    }
+                                },
+                            },
                         }
                     ]
                 })
@@ -93,6 +114,9 @@
             text-align: center;
             color: #fff;
             background-color: @mainBlue;
+        }
+        .list-wrap {
+            margin-top: 10px;
         }
         .mko-basic-cell {
             &.title-cell {
