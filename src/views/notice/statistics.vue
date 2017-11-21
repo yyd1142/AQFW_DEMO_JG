@@ -1,10 +1,7 @@
 <template>
     <div>
         <div class="placeholder-item"></div>
-        <mt-header class="header-wrap" fixed title="统计情况">
-            <mt-button class="header-item" icon="back" slot="left" @click="back"></mt-button>
-            <mt-button class="header-item" slot="right" @click="refresh">刷新</mt-button>
-        </mt-header>
+        <mko-header title="统计情况" left-icon="icon-back" @handleLeftClick="back" right-icon-text="刷新" @handleRightClick="refresh"></mko-header>
         <div class="page-wrap" id="pageWrapper">
             <mt-loadmore :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="bottomAllLoaded" ref="loadmore" :auto-fill="autoFill">
                 <ul class="notice-table-view">

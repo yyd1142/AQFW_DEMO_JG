@@ -1,9 +1,7 @@
 <template>
     <div class="main">
         <div class="placeholder-item"></div>
-        <mt-header class="header-wrap" :title="person.name || '暂无'" fixed>
-            <mt-button class="header-item" slot="left" icon="back" @click="back"></mt-button>
-        </mt-header>
+        <mko-header :title="person.name || '暂无'" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap address-detail-wrap">
             <div class="card-wrap">
                 <div class="avatar-wrap">

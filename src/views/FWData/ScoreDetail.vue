@@ -1,10 +1,7 @@
 <template>
     <div class="fw-score-detail">
         <div class="placeholder-item"></div>
-        <mt-header class="header-wrap" :title="fwInfo.dwName" fixed
-                   :style="{backgroundColor: scoreHeadColor(fwInfo.score)}">
-            <mt-button class="header-item" icon="back" slot="left" @click="back"></mt-button>
-        </mt-header>
+        <mko-header :title="fwInfo.dwName" :background-color="scoreHeadColor(fwInfo.score)" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
         <div class="page-wrap" v-show="!noData&&!resError">

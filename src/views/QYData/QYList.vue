@@ -1,11 +1,7 @@
 <template>
     <div>
         <div class="placeholder-item"></div>
-        <mt-header class="header-wrap" title="社会单位" fixed>
-            <mt-button class="header-item" slot="left" icon="back" @click="$MKOPop()"></mt-button>
-            <!--<div class="icon-search" slot="right" @click="searchBarShow=!searchBarShow"></div>-->
-            <div class="header-item" slot="right" @click="selecteEvent">筛选</div>
-        </mt-header>
+        <mko-header title="社会单位" left-icon="icon-back" @handleLeftClick="$MKOPop()" right-icon-text="筛选" @handleRightClick="selecteEvent"></mko-header>
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
         <div class="page-wrap qy-list-wrap" v-show="!resError" id="pageWrapper">

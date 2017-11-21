@@ -1,198 +1,194 @@
 <template>
-  <div>
-    <div class="placeholder-item"></div>
-    <mt-header class="header-wrap" title="风险单位" fixed>
-      <mt-button class="header-item" slot="left" icon="back" @click="changePage"></mt-button>
-      <div slot="right" @click="showSearchBar = !showSearchBar">
-        <span class="icon-search fr"></span>
-      </div>
-    </mt-header>
-    <res-error  v-if="resError"></res-error>
-    <no-data  v-if="noData"></no-data>
-    <div class="page-wrap hdc-sel-wrap" v-show="!resError">
-      <search-bar v-model="searchValue" v-show="showSearchBar"></search-bar>
-      <div v-show="!noData">
-        <mt-loadmore ref="loadmore" :top-method="loadTop" @top-status-change="handleTopChange"
-                     @bottom-status-change="handleBottomChange" :bottom-method="loadBottom"
-                     :bottom-all-loaded="bottomAllLoaded" :auto-fill="autoFill">
-          <div class="data-wrap" ref="wrapper" :style="{minHeight:wrapperHeight+'px'}">
-            <div @click="selData(item)"  v-for="item in dwList">
-              <mt-cell :title="item.dwName"></mt-cell>
+    <div>
+        <div class="placeholder-item"></div>
+        <mko-header title="风险单位" left-icon="icon-back" @handleLeftClick="changePage" right-icon="icon-search"
+                    @handleRightClick="showSearchBar = !showSearchBar"></mko-header>
+        <res-error v-if="resError"></res-error>
+        <no-data v-if="noData"></no-data>
+        <div class="page-wrap hdc-sel-wrap" v-show="!resError">
+            <search-bar v-model="searchValue" v-show="showSearchBar"></search-bar>
+            <div v-show="!noData">
+                <mt-loadmore ref="loadmore" :top-method="loadTop" @top-status-change="handleTopChange"
+                             @bottom-status-change="handleBottomChange" :bottom-method="loadBottom"
+                             :bottom-all-loaded="bottomAllLoaded" :auto-fill="autoFill">
+                    <div class="data-wrap" ref="wrapper" :style="{minHeight:wrapperHeight+'px'}">
+                        <div @click="selData(item)" v-for="item in dwList">
+                            <mt-cell :title="item.dwName"></mt-cell>
+                        </div>
+                    </div>
+                </mt-loadmore>
             </div>
-          </div>
-        </mt-loadmore>
-      </div>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
-  import {Indicator, Toast} from 'mint-ui';
-  import api from 'api'
-  import {NoData, ResError, SearchBar} from 'components';
-  let req_count = 20;
-  let req_page = 1;
-  export default{
-    data() {
-      return {
-        //提示
-        resError: false,
-        noData: false,
-        //loadMore
-        wrapperHeight: 0,
-        autoFill: false,
-        topStatus: '',
-        bottomStatus: '',
-        bottomAllLoaded: false,
-        //数据
-        page: 1,
-        dwList: [],
-        //搜索
-        showSearchBar: false,
-        searchValue: '',
-      }
-    },
-    watch: {
-      searchValue: function () {
-        this.getData();
-      }
-    },
-    created() {
-    },
-    mounted(){
-      this.$nextTick(() => {
-        req_page = 1;
-        this.getData();
-        this.wrapperHeight = Math.max(document.documentElement.clientHeight, document.body.clientHeight) - this.$refs.wrapper.getBoundingClientRect().top;
-      });
-    },
-    activated(){
-      //
-    },
-    destroyed() {
-      this.searchValue = '';
-    },
-    methods: {
-      getData(){
-        this.noData = false;
-        Indicator.open({spinnerType: 'fading-circle'});
-        let params = {
-          type: 1,
-          page: req_page,
-          count: req_count,
-          userName: this.$store.getters.userName,
-          search: this.searchValue
-        };
-        api.getQyList(params).then(res => {
-          this.$refs.loadmore.onTopLoaded();
-          this.$refs.loadmore.onBottomLoaded();
-          if (!res) {
-            this.resError = true;
-            Indicator.close();
-            return;
-          }
-          if (res.response && res.response.datas) {
-            let length = res.response.datas.length;
-            if (req_page == 1) {
-              this.dwList.length = 0;
-              if (length == 0)
-                this.noData = true;
+    import {Indicator, Toast} from 'mint-ui';
+    import api from 'api'
+    import {NoData, ResError, SearchBar} from 'components';
+    let req_count = 20;
+    let req_page = 1;
+    export default{
+        data() {
+            return {
+                //提示
+                resError: false,
+                noData: false,
+                //loadMore
+                wrapperHeight: 0,
+                autoFill: false,
+                topStatus: '',
+                bottomStatus: '',
+                bottomAllLoaded: false,
+                //数据
+                page: 1,
+                dwList: [],
+                //搜索
+                showSearchBar: false,
+                searchValue: '',
             }
-            res.response.datas.forEach(item => {
-              this.dwList.push(item);
+        },
+        watch: {
+            searchValue: function () {
+                this.getData();
+            }
+        },
+        created() {
+        },
+        mounted(){
+            this.$nextTick(() => {
+                req_page = 1;
+                this.getData();
+                this.wrapperHeight = Math.max(document.documentElement.clientHeight, document.body.clientHeight) - this.$refs.wrapper.getBoundingClientRect().top;
             });
-            if (length < req_count) {
-              this.bottomAllLoaded = true;
-              if (req_page != 1)
-                Toast({message: '暂无更多数据', position: 'middle', duration: 1500});
-            }
-          }
-          Indicator.close();
-        });
-      },
-      loadTop(){
-        req_page = 1;
-        this.bottomAllLoaded = false;
-        setTimeout(this.getData, 1000);
-      },
-      handleTopChange(status) {
-        this.topStatus = status;
-      },
-      loadBottom() {
-        req_page++;
-        this.getData();
-      },
-      handleBottomChange(status) {
-        this.bottomStatus = status;
-      },
-      selData(val){
-        if (this.topStatus != 'drop' && this.topStatus != 'loading' && this.bottomStatus != 'drop' && this.bottomStatus != 'loading') {
-          let obj = {
-            groupId: val.groupId,
-            dwName: val.dwName
-          };
-          this.$emit('sel', obj);
-          this.changePage();
-        }
-      },
-      changePage(){
-        this.$MKOPop();
+        },
+        activated(){
+            //
+        },
+        destroyed() {
+            this.searchValue = '';
+        },
+        methods: {
+            getData(){
+                this.noData = false;
+                Indicator.open({spinnerType: 'fading-circle'});
+                let params = {
+                    type: 1,
+                    page: req_page,
+                    count: req_count,
+                    userName: this.$store.getters.userName,
+                    search: this.searchValue
+                };
+                api.getQyList(params).then(res => {
+                    this.$refs.loadmore.onTopLoaded();
+                    this.$refs.loadmore.onBottomLoaded();
+                    if (!res) {
+                        this.resError = true;
+                        Indicator.close();
+                        return;
+                    }
+                    if (res.response && res.response.datas) {
+                        let length = res.response.datas.length;
+                        if (req_page == 1) {
+                            this.dwList.length = 0;
+                            if (length == 0)
+                                this.noData = true;
+                        }
+                        res.response.datas.forEach(item => {
+                            this.dwList.push(item);
+                        });
+                        if (length < req_count) {
+                            this.bottomAllLoaded = true;
+                            if (req_page != 1)
+                                Toast({message: '暂无更多数据', position: 'middle', duration: 1500});
+                        }
+                    }
+                    Indicator.close();
+                });
+            },
+            loadTop(){
+                req_page = 1;
+                this.bottomAllLoaded = false;
+                setTimeout(this.getData, 1000);
+            },
+            handleTopChange(status) {
+                this.topStatus = status;
+            },
+            loadBottom() {
+                req_page++;
+                this.getData();
+            },
+            handleBottomChange(status) {
+                this.bottomStatus = status;
+            },
+            selData(val){
+                if (this.topStatus != 'drop' && this.topStatus != 'loading' && this.bottomStatus != 'drop' && this.bottomStatus != 'loading') {
+                    let obj = {
+                        groupId: val.groupId,
+                        dwName: val.dwName
+                    };
+                    this.$emit('sel', obj);
+                    this.changePage();
+                }
+            },
+            changePage(){
+                this.$MKOPop();
 //        this.$emit('changePage', 'main');
-        Indicator.close();
-      }
-    },
-    components: {
-      NoData,
-      ResError, SearchBar
+                Indicator.close();
+            }
+        },
+        components: {
+            NoData,
+            ResError, SearchBar
+        }
     }
-  }
 </script>
 
 <style lang="less" rel="stylesheet/less">
-  @import "../../config.less";
+    @import "../../config.less";
 
-  .hdc-sel-wrap {
-    padding: 0;
-    .search-wrap {
-      height: auto;
-      .mint-searchbar {
-        z-index: 0;
-      }
-    }
-    .data-wrap {
-      /*margin-bottom: 14px;*/
-      .mint-cell {
-        min-height: 44px;
-        .mint-cell-wrapper {
-          padding: @cellPadding;
-          font-size: 14px;
-          letter-spacing: 0;
-          color: #232323;
-          background-image: none;
+    .hdc-sel-wrap {
+        padding: 0;
+        .search-wrap {
+            height: auto;
+            .mint-searchbar {
+                z-index: 0;
+            }
         }
-        .sign-checked {
-          display: inline-block;
-          position: relative;
-          top: 1px;
-          right: 5px;
-          padding: 9px 12px 0 0;
-          background: url(/static/icons/resource.png) -44px -61px no-repeat;
-          background-size: 356px auto;
+        .data-wrap {
+            /*margin-bottom: 14px;*/
+            .mint-cell {
+                min-height: 44px;
+                .mint-cell-wrapper {
+                    padding: @cellPadding;
+                    font-size: 14px;
+                    letter-spacing: 0;
+                    color: #232323;
+                    background-image: none;
+                }
+                .sign-checked {
+                    display: inline-block;
+                    position: relative;
+                    top: 1px;
+                    right: 5px;
+                    padding: 9px 12px 0 0;
+                    background: url(/static/icons/resource.png) -44px -61px no-repeat;
+                    background-size: 356px auto;
+                }
+            }
         }
-      }
-    }
-    .footer-wrap {
-      position: fixed;
-      width: 100%;
-      bottom: 0;
-      .btn {
-        background: @mainBlue;
-        color: @bgWhite;
-        &.is-disabled {
-          background: lighten(@mainBlue, 10%);
-          opacity: 1;
+        .footer-wrap {
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            .btn {
+                background: @mainBlue;
+                color: @bgWhite;
+                &.is-disabled {
+                    background: lighten(@mainBlue, 10%);
+                    opacity: 1;
+                }
+            }
         }
-      }
     }
-  }
 </style>

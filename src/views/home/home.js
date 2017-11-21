@@ -252,7 +252,7 @@ export default {
                 if (result.code == 0) {
                     let data = result.response;
                     this.actions[3].class = data.notice > 0 ? 'has-notice-icon' : 'notice-icon'
-                    this.hasMessageDataClass = data.message > 0 ? 'has-message-data' : ''
+                    this.hasMessageDataClass = data.message > 0 ? true : false
                 } else {
                     this.resError = true;
                 }
