@@ -53,16 +53,14 @@
                 let hy = datas[_t].hy;
 
                 let myChart = ec.init(this.$refs['chart'], theme);
-                let radius = [40, 55];
+                let radius = [72, 75];
                 let labelTop = {
                     normal: {
                         label: {
-                            show: true,
+                            show: false,
                             position: 'center',
                             formatter: '{b}',
-                            textStyle: {
-                                baseline: 'bottom'
-                            }
+                            textStyle: {}
                         },
                         labelLine: {
                             show: false
@@ -76,7 +74,9 @@
                                 return ((total - params.value) / total * 100).toFixed(2) + '%'
                             },
                             textStyle: {
-                                baseline: 'top'
+                                baseline: 'bottom',
+                                color: '#333',
+                                fontSize: 28
                             }
                         }
                     },
@@ -98,16 +98,21 @@
                 };
                 myChart.setOption({
                     legend: {
+                        orient: 'vertical',
                         x: 'center',
-                        y: 190,
-                        itemGap: 40,
+                        y: 195,
+                        itemGap: 217,
                         formatter: function (name) {
                             let val = name == '激活单位数' ? jh : hy;
                             return `${name}：${val}`
                         },
                         data: [
                             '激活单位数', '活跃单位数'
-                        ]
+                        ],
+                        textStyle: {
+                            color: '#666',
+                            fontSize: 18
+                        }
                     },
                     title: {
 //                        text: '社会单位数据',
@@ -117,10 +122,12 @@
                         show: false,
                         feature: {}
                     },
+                    color: ['#2CABFF', ' #2CABFF'],
+                    categories: {},
                     series: [
                         {
                             type: 'pie',
-                            center: ['25%', '30%'],
+                            center: ['50%', '20%'],
                             radius: radius,
                             x: '0%', // for funnel
                             itemStyle: labelFromatter,
@@ -131,7 +138,7 @@
                         },
                         {
                             type: 'pie',
-                            center: ['75%', '30%'],
+                            center: ['50%', '70%'],
                             radius: radius,
                             x: '20%', // for funnel
                             itemStyle: labelFromatter,
@@ -179,7 +186,7 @@
         }
         .chart-wrap {
             /*padding-top: 14px;*/
-            height: 260px;
+            height: 487px;
             border-top: 1px solid @baseBorder;
             border-bottom: 1px solid @baseBorder;
             background-color: #fff !important;

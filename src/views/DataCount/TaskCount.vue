@@ -7,8 +7,9 @@
                 {{counts[type]}}
             </div>
             <mko-cell class="title-cell" title="数据分析"></mko-cell>
-            <div class="chart-wrap" ref="chart">
-
+            <div class="chart-wrap" ref="chart"></div>
+            <div class="list-wrap">
+                <mko-cell :title="item.name" :val="item.value" v-for="item in datas[type]"></mko-cell>
             </div>
         </div>
     </div>
@@ -21,24 +22,8 @@
         data () {
             return {
                 type: 0,
-                counts: ['826852', '68904']
-            }
-        },
-        watch: {},
-        computed: {},
-        mounted() {
-        },
-        activated(){
-            this.type = sessionStorage.getItem(`jgDwType${this.$store.getters.groupId}`) || 0;
-            this.DrawChart1(echarts);
-        },
-        deactivated() {
-        },
-        destroyed(){
-        },
-        methods: {
-            DrawChart1(ec){
-                let datas = [
+                counts: ['826852', '68904'],
+                datas: [
                     [
                         {value: 170136, name: '值班'},
                         {value: 340366, name: '巡查'},
@@ -56,7 +41,24 @@
                         {value: 2886, name: '检查'},
                     ],
 
-                ];
+                ]
+            }
+        },
+        watch: {},
+        computed: {},
+        mounted() {
+        },
+        activated(){
+            this.type = sessionStorage.getItem(`jgDwType${this.$store.getters.groupId}`) || 0;
+            this.DrawChart1(echarts);
+        },
+        deactivated() {
+        },
+        destroyed(){
+        },
+        methods: {
+            DrawChart1(ec){
+                let datas = this.datas;
                 let myChart = ec.init(this.$refs['chart'], theme);
                 myChart.setOption({
                     title: {
@@ -67,23 +69,42 @@
                         trigger: 'item',
                         formatter: "{a} <br/>{b} : {c} ({d}%)"
                     },
-                    legend: {
-                        orient: 'vertical',
-                        x: 'left',
-                        data: ['任务', '图片', '通知公告']
-                    },
+//                    legend: {
+//                        orient: 'vertical',
+//                        x: 'left',
+//                        data: ['任务', '图片', '通知公告']
+//                    },
                     toolbox: {
                         show: true,
                         feature: {}
                     },
+
                     calculable: true,
+                    color: ['#3399FF', '#55DD66', '#F5A623', '#50E3C2 ', '#F8E71C', '#FF336B'],
                     series: [
                         {
                             name: '累积执行任务数量',
                             type: 'pie',
                             radius: '55%',
                             center: ['50%', '50%'],
-                            data: datas[this.type]
+                            data: datas[this.type],
+                            itemStyle: {
+                                normal: {
+                                    label: {
+                                        formatter: "{b} ({d}%)",
+                                        textStyle: {
+                                            color: '#666',
+                                            fontSize: '12px'
+                                        }
+                                    },
+                                    labelLine: {
+                                        length: 40,
+                                        lineStyle: {
+                                            color: '#ddd',
+                                        }
+                                    }
+                                },
+                            },
                         }
                     ]
                 })
@@ -110,6 +131,9 @@
             text-align: center;
             color: #fff;
             background-color: @mainBlue;
+        }
+        .list-wrap {
+            margin-top: 10px;
         }
         .mko-basic-cell {
             &.title-cell {
