@@ -28,7 +28,7 @@
                 <mko-cell title="单位地址" :val="fwInfo.dwAddress"></mko-cell>
                 <mko-cell title="行政区域" :val="fwInfo.dwXZArea"></mko-cell>
                 <mko-cell title="业务范围" :val="fwInfo.business"></mko-cell>
-                <mko-cell title="资质信息" :val="fwInfo.zzInfo"></mko-cell>
+                <mko-cell title="资质信息" :val="fwInfo.zzInfo" @click="showAllContent(fwInfo.zzInfo)"></mko-cell>
                 <mko-cell title="资质证书" val="查看" val-style="blue-font" is-link @click="goPhotoViewer"></mko-cell>
                 <!--<photo-box max="8" :read-only="true" :photo-list="fwInfo.zzProve"></photo-box>-->
                 <mko-cell title="发证部门" :val="fwInfo.issuedDepartment"></mko-cell>
@@ -262,6 +262,9 @@
                         fwDetail: this.fwInfo
                     }
                 })
+            },
+            showAllContent(text) {
+                this.$MKODialog({ msg: text });
             }
         },
         components: {

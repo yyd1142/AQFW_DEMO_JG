@@ -15,15 +15,12 @@
     @import "../../config.less";
 
     .customer-list-wrap {
-        .data-wrap {
-            margin-bottom: 14px;
-            .mint-cell {
-                min-height: 44px;
-                .mint-cell-wrapper {
-                    padding: @cellPadding;
-                    font-size: 14px;
-                    letter-spacing: 0;
-                    color: #232323;
+        .mko-basic-cell {
+            .cell {
+                .title {
+                    flex: 0 0 260px;
+                    -webkit-flex: 0 0 260px;
+                    width: 260px;
                 }
             }
         }
