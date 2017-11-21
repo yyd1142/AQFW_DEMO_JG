@@ -14,6 +14,7 @@
                     <div class="value abs-middle">{{item.score}}</div>
                 </div>
             </div>
+            <!--<week-nav-bar></week-nav-bar>-->
 
             <div class="chart-wrap">
                 <mko-nav-bar v-if="type==0">
@@ -26,6 +27,8 @@
 </template>
 
 <script>
+    import { WeekNavBar } from 'components'
+
     import echarts from 'echarts';
     let theme = 'macarons';
     export default {
@@ -246,7 +249,9 @@
                 this.$MKOPop();
             }
         },
-        components: {}
+        components: {
+            WeekNavBar
+        }
     }
 </script>
 

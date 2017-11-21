@@ -13,6 +13,7 @@ import Star from './Star/Star.vue'
 import XunChaStatus from './xunchaStatusNavbar/xunchaStatus.vue'
 import Tabs from './Tabs/Tabs.vue'
 import TaskSummary from './TaskSummary/index.vue'
+import WeekNavBar from './WeekNavBar/WeekNavBar.vue'
 
 export {
     CountTimer,
@@ -29,5 +30,6 @@ export {
     Star,
     XunChaStatus,
     Tabs,
-    TaskSummary
+    TaskSummary,
+    WeekNavBar
 }

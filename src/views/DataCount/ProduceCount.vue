@@ -6,6 +6,8 @@
             <div class="info-bar">
                 1511926
             </div>
+            <week-nav-bar></week-nav-bar>
+
             <mko-cell class="title-cell" title="数据分析"></mko-cell>
             <div class="chart-wrap" ref="chart"></div>
             <div class="list-wrap">
@@ -16,6 +18,8 @@
 </template>
 
 <script>
+    import { WeekNavBar } from 'components'
+
     import echarts from 'echarts';
     let theme = 'macarons';
     export default {
@@ -96,7 +100,9 @@
                 this.$MKOPop();
             }
         },
-        components: {}
+        components: {
+            WeekNavBar
+        }
     }
 </script>
 

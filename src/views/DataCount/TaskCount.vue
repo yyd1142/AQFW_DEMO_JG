@@ -6,6 +6,7 @@
             <div class="info-bar">
                 {{counts[type]}}
             </div>
+            <week-nav-bar></week-nav-bar>
             <mko-cell class="title-cell" title="数据分析"></mko-cell>
             <div class="chart-wrap" ref="chart"></div>
             <div class="list-wrap">
@@ -16,11 +17,13 @@
 </template>
 
 <script>
+    import { WeekNavBar } from 'components'
     import echarts from 'echarts';
     let theme = 'macarons';
     export default {
         data () {
             return {
+
                 type: 0,
                 counts: ['826852', '68904'],
                 datas: [
@@ -113,7 +116,9 @@
                 this.$MKOPop();
             }
         },
-        components: {}
+        components: {
+            WeekNavBar
+        }
     }
 </script>
 
@@ -132,6 +137,7 @@
             color: #fff;
             background-color: @mainBlue;
         }
+
         .list-wrap {
             margin-top: 10px;
         }
