@@ -2,7 +2,7 @@
     <div class="score-count-wrap">
         <div class="placeholder-item"></div>
         <mko-header title="安全评分"
-                    :right-icon-text="type==1?'查看明细':'单位排名'" @handleRightClick="goDetail(type)"
+                    :right-icon-text="type==1?'查看明细':''" @handleRightClick="goDetail(type)"
                     left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
             <!--<mko-cell :title="item.name" :val="`${item.score} (满分${item.total})`" v-for="item in counts[type]"></mko-cell>-->
@@ -16,7 +16,7 @@
             </div>
 
             <div class="chart-wrap">
-                <mko-nav-bar>
+                <mko-nav-bar v-if="type==0">
                     <mko-tab-item :activied="tabI==i" :label="t" @handleTabClick="tabFn(i)" v-for="(t,i) in tabItems"></mko-tab-item>
                 </mko-nav-bar>
                 <div class="chart" ref="chart"></div>
@@ -32,7 +32,7 @@
         data () {
             return {
                 tabI: 0,
-                tabItems: ['安全评级分布', '安全评分趋势'],
+                tabItems: ['安全评级分布', '区域排名', '行业排名', '单位类型排名'],
                 type: 0,
                 counts: [
                     {
@@ -77,8 +77,9 @@
                 this.$MKOPush(paths[type]);
             },
             DrawChart(){
-                if (this[`DrawChart${this.tabI}`])
-                    this[`DrawChart${this.tabI}`](echarts);
+                let tab = this.tabI > 1 ? 1 : this.tabI;
+                if (this[`DrawChart${tab}`])
+                    this[`DrawChart${tab}`](echarts);
             },
             DrawChart0(ec){
                 let _t = this.type;
@@ -99,6 +100,7 @@
                         feature: {}
                     },
                     calculable: true,
+                    color: ['#3399ff'],
                     polar: [
                         {
                             indicator: [
@@ -108,9 +110,19 @@
                                 {text: '一般', max: 100},
                                 {text: '良好', max: 100},
                             ],
-                            radius: 110
+                            radius: 110,
+                            splitLine: {
+                                show: true,
+                                lineStyle: {
+//                                    color: '#ddd'
+                                }
+                            }
                         }
                     ],
+                    textStyle: {
+                        color: '#666',
+                        fontSize: 14
+                    },
                     series: [
                         {
                             name: '',
@@ -118,14 +130,27 @@
                             itemStyle: {
                                 normal: {
                                     areaStyle: {
-                                        type: 'default'
+                                        type: 'default',
+                                        color: '#70BBFE'
+                                    },
+                                    lineStyle: {
+                                        color: '#3399ff'
+                                    },
+                                    borderColor: '#3399ff',
+                                    nodeStyle: {
+//                                        color: '#ff6666'
                                     }
                                 }
                             },
                             data: [
                                 {
                                     value: datas[_t],
-                                    name: '单位数量'
+                                    name: '单位数量',
+                                    itemStyle: {
+                                        normal: {
+                                            color: '#ff6666'
+                                        }
+                                    },
                                 }
                             ]
                         }
@@ -133,62 +158,87 @@
                 })
             },
             DrawChart1(ec){
-                let scores = [
-                    [65.7, 72.8, 76.2, 83.4, 87.5, 85.6],
-                    [68.5, 77.8, 79.2, 86.4, 86.4, 87.3],
+
+                let y = [
+                    [],
+                    ['宜兴市', '滨湖区', '新吴区', '锡山区', '江阴市', '惠山区', '梁溪区'],
+                    ['交通', '公安', '国资', '安监', '工商', '市政', '教育', '消防'],
+                    ['一级重点单位', '二级重点单位', '三级重点单位', '一般重点单位', '九小场所'],
+                ];
+                let x = [
+                    [],
+                    [1334, 612, 817, 1036, 1763, 998, 765],
+                    [196, 215, 314, 1154, 726, 335, 637, 3748],
+                    [2382, 1872, 1236, 1067, 768],
                 ];
 
                 let myChart = ec.init(this.$refs['chart'], theme);
                 myChart.setOption({
+//                    title: {
+//                        text: this.tabItems[this.tabI],
+//                    },
                     tooltip: {
                         trigger: 'axis'
                     },
-                    legend: {
-                        data: ['安全评分趋势',]
-                    },
+//                    legend: {
+//                        data:['2011年', '2012年']
+//                    },
                     toolbox: {
-                        show: true,
+                        show: false,
                         feature: {}
                     },
                     calculable: true,
+                    color: ['#70BBFE'],
                     xAxis: [
                         {
-                            type: 'category',
-                            boundaryGap: false,
-                            data: ['2017年5月', '2017年6月', '2017年7月', '2017年8月', '2017年9月', '2017年10月'],
-                            axisLabel: {
-//                                interval: 0,
-                                textStyle: {
-                                    fontSize: 1,
-                                    fontWeight: 100
-                                }
+                            type: 'value',
+                            boundaryGap: [0, 1],
+                            axisLine: {
+                                show: false,
                             },
-//                            axisTick: {
-//                                interval: 0
-//                            },
+                            axisTick: {
+                                show: false,
+                            },
+                            splitLine: {
+                                show: true,
+                            },
+                            axisLabel: {
+                                textStyle:{
+                                    color:'#666'
+                                }
+                            }
                         }
                     ],
                     yAxis: [
                         {
-                            type: 'value'
+                            type: 'category',
+                            data: y[this.tabI],
+                            axisLine: {
+                                show: false,
+                            },
+                            axisTick: {
+                                show: false,
+                            },
+                            axisLabel: {
+                                textStyle:{
+                                  color:'#666'
+                                }
+                            }
                         }
                     ],
                     series: [
                         {
-                            name: '安全评分趋势',
-                            type: 'line',
-                            stack: '分数',
-                            data: scores[this.type],
-                            markPoint: {
-                                data: [
-//                                    {type: 'max', name: '最大值'},
-                                    {
-                                        xAxis: 5,
-                                        yAxis: scores[this.type][scores[this.type].length - 1]
-                                    },
-                                ]
+                            name: '区域排名',
+                            type: 'bar',
+                            data: x[this.tabI],
+                            itemStyle: {
+                                normal: {
+                                    barBorderColor: '#3399ff'
+                                }
                             },
-                        }
+
+                        },
+
                     ]
                 })
             },
@@ -235,9 +285,9 @@
             }
         }
         .chart-wrap {
-            /*margin-top: 14px;*/
             .chart {
-                padding-top: 14px;
+                /*padding-top: 14px;*/
+                padding-left: 14px;
                 height: 300px;
                 background-color: #fff !important;
             }
