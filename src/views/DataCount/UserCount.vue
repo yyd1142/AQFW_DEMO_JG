@@ -4,9 +4,9 @@
         <mko-header title="用户数量" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
             <div class="info-bar">
-                7325
+                {{total[weekIndex]}}
             </div>
-            <week-nav-bar></week-nav-bar>
+            <week-nav-bar @get="getWeekIndex"></week-nav-bar>
             <mko-cell title="数据分析"></mko-cell>
 
             <div class="chart-wrap">
@@ -16,7 +16,7 @@
                 <div class="chart" ref="chart"></div>
             </div>
             <div>
-                <mko-cell :title="item.name" :val="item.value" v-for="item in datas[tabI]"></mko-cell>
+                <mko-cell :title="item.name" :val="item.value" v-for="item in datas[tabI][weekIndex]"></mko-cell>
             </div>
         </div>
     </div>
@@ -27,7 +27,7 @@
 
     import echarts from 'echarts';
     let theme = 'macarons';
-    let color = ['#3399FF', '#55DD66', '#F5A623', '#50E3C2 ', '#AD6DFF', '#F8E71C', '#FF336B','#7E80FF'];
+    let color = ['#3399FF', '#55DD66', '#F5A623', '#50E3C2 ', '#AD6DFF', '#F8E71C', '#FF336B', '#7E80FF'];
     let itemStyle = {
         normal: {
             label: {
@@ -48,41 +48,85 @@
     export default {
         data () {
             return {
+                weekIndex: 0,
                 tabI: 0,
                 tabItems: ['区域分布', '单位占比', '用户占比', '行业占比'],
+                total:[7046,6765],
                 datas: [
                     [
-                        {value: 1334, name: '宜兴市'},
-                        {value: 612, name: '惠山区'},
-                        {value: 817, name: '新吴区'},
-                        {value: 1036, name: '梁溪区'},
-                        {value: 1763, name: '江阴市'},
-                        {value: 998, name: '滨湖区'},
-                        {value: 765, name: '锡山区'},
+                        [
+                            {value: 1234, name: '宜兴市'},
+                            {value: 672, name: '惠山区'},
+                            {value: 857, name: '新吴区'},
+                            {value: 1006, name: '梁溪区'},
+                            {value: 1463, name: '江阴市'},
+                            {value: 1098, name: '滨湖区'},
+                            {value: 716, name: '锡山区'},
+                        ],
+                        [
+                            {value: 1253, name: '宜兴市'},
+                            {value: 682, name: '惠山区'},
+                            {value: 847, name: '新吴区'},
+                            {value: 816, name: '梁溪区'},
+                            {value: 1463, name: '江阴市'},
+                            {value: 998, name: '滨湖区'},
+                            {value: 706, name: '锡山区'},
+                        ],
+
                     ],
                     [
-                        {value: 2382, name: '一级重点单位'},
-                        {value: 1872, name: '二级重点单位'},
-                        {value: 1236, name: '三级重点单位'},
-                        {value: 1067, name: '一般重点单位'},
-                        {value: 768, name: '九小场所'},
+                        [
+                            {value: 2187, name: '一级重点单位'},
+                            {value: 1776, name: '二级重点单位'},
+                            {value: 1458, name: '三级重点单位'},
+                            {value: 1057, name: '一般重点单位'},
+                            {value: 568, name: '九小场所'},
+                        ],
+                        [
+                            {value: 2387, name: '一级重点单位'},
+                            {value: 1576, name: '二级重点单位'},
+                            {value: 1278, name: '三级重点单位'},
+                            {value: 957, name: '一般重点单位'},
+                            {value: 567, name: '九小场所'},
+                        ],
                     ],
                     [
-                        {value: 504, name: '政府监管人员'},
-                        {value: 1063, name: '单位安全责任人'},
-                        {value: 2154, name: '单位安全管理人员'},
-                        {value: 3318, name: '单位安全员'},
-                        {value: 286, name: '第三方服务人员'},
+                        [
+                            {value: 522, name: '政府监管人员'},
+                            {value: 936, name: '单位安全责任人'},
+                            {value: 2054, name: '单位安全管理人员'},
+                            {value: 3148, name: '单位安全员'},
+                            {value: 386, name: '第三方服务人员'},
+                        ],
+                        [
+                            {value: 506, name: '政府监管人员'},
+                            {value: 908, name: '单位安全责任人'},
+                            {value: 1897, name: '单位安全管理人员'},
+                            {value: 3088, name: '单位安全员'},
+                            {value: 366, name: '第三方服务人员'},
+                        ],
                     ],
                     [
-                        {value: 196, name: '交通'},
-                        {value: 215, name: '公安'},
-                        {value: 314, name: '国资'},
-                        {value: 1154, name: '安监'},
-                        {value: 726, name: '工商'},
-                        {value: 335, name: '市政'},
-                        {value: 637, name: '教育'},
-                        {value: 3748, name: '消防'},
+                        [
+                            {value: 296, name: '交通'},
+                            {value: 315, name: '公安'},
+                            {value: 414, name: '国资'},
+                            {value: 1354, name: '安监'},
+                            {value: 926, name: '工商'},
+                            {value: 435, name: '市政'},
+                            {value: 837, name: '教育'},
+                            {value: 2469, name: '消防'},
+                        ],
+                        [
+                            {value: 256, name: '交通'},
+                            {value: 307, name: '公安'},
+                            {value: 389, name: '国资'},
+                            {value: 1196, name: '安监'},
+                            {value: 916, name: '工商'},
+                            {value: 405, name: '市政'},
+                            {value: 827, name: '教育'},
+                            {value: 2469, name: '消防'},
+                        ],
                     ]
                 ]
             }
@@ -105,6 +149,12 @@
         methods: {
             tabFn(i){
                 this.tabI = i;
+            },
+            getWeekIndex(index){
+                this.weekIndex = Math.abs(index);
+                if (this.weekIndex > 1)
+                    this.weekIndex = 1;
+                this.DrawChart();
             },
             DrawChart(){
                 if (this[`DrawChart${this.tabI}`])
@@ -138,7 +188,7 @@
                             type: 'pie',
                             radius: '55%',
                             center: ['50%', '50%'],
-                            data: this.datas[0],
+                            data: this.datas[0][this.weekIndex],
                             itemStyle: itemStyle
                         }
                     ]
@@ -172,7 +222,7 @@
                             type: 'pie',
                             radius: '55%',
                             center: ['50%', '50%'],
-                            data: this.datas[1],
+                            data: this.datas[1][this.weekIndex],
                             itemStyle: itemStyle
                         }
                     ]
@@ -206,7 +256,7 @@
                             type: 'pie',
                             radius: '55%',
                             center: ['50%', '50%'],
-                            data: this.datas[2],
+                            data: this.datas[2][this.weekIndex],
                             itemStyle: itemStyle
                         }
                     ]
@@ -240,7 +290,7 @@
                             type: 'pie',
                             radius: '55%',
                             center: ['50%', '50%'],
-                            data: this.datas[3],
+                            data: this.datas[3][this.weekIndex],
                             itemStyle: itemStyle
                         }
                     ]

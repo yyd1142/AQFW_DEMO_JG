@@ -1,11 +1,12 @@
 <template>
     <div class="week-nav-bar-wrap">
-        <div class="btn btn-left fl" :class="{'disable':!all&&weekIndex<=-1}" @click="handleBtn(-1)">
+        <div class="btn btn-left fl" :class="{'disable':weekIndex<=-1}" @click="getWeek(-1)">
             <span class="icon-arrow-left"></span>
         </div>
-        <div class="abs-middle text" v-show="all">按周筛选数据</div>
-        <div class="abs-middle text" v-show="!all">{{weekStart}} - {{weekEnd}}</div>
-        <div class="btn btn-right fr" :class="{'disable':!all&&weekIndex>=0}" @click="handleBtn(1)">
+        <!--<div class="abs-middle text" v-show="all">按周筛选数据</div>-->
+        <div class="abs-middle text">{{weekStart | formatDate('YYYY/MM/DD')}} - {{weekEnd | formatDate('YYYY/MM/DD')}}
+        </div>
+        <div class="btn btn-right fr" :class="{'disable':weekIndex>=0}" @click="getWeek(1)">
             <span class="icon-arrow-right"></span>
         </div>
     </div>
@@ -15,19 +16,24 @@
     export default {
         data () {
             return {
-                all: true,
+//                all: true,
                 weekIndex: 0,
                 weekStart: '',
                 weekEnd: '',
             }
         },
-        watch: {},
+        watch: {
+            weekIndex(){
+                this.sendData();
+            }
+        },
         computed: {},
         mounted() {
         },
         activated(){
-            this.all = true;
+//            this.all = true;
             this.weekIndex = 0;
+            this.getWeek(0);
         },
         deactivated() {
         },
@@ -73,13 +79,17 @@
                     month = now.getMonth() + 1;
                     date = now.getDate();
 
-                    return year + "/" + (month < 10 ? ('0' + month) : month) + "/" + (date < 10 ? ('0' + date) : date);
+//                    return year + "/" + (month < 10 ? ('0' + month) : month) + "/" + (date < 10 ? ('0' + date) : date);
+                    return new Date(year, month - 1, date);
                 };
 
                 this.weekStart = fns(index * 7);
                 this.weekEnd = fns(index * 7 - 6);
-                this.all = false;
+//                this.all = false;
             },
+            sendData(){
+                this.$emit('get', this.weekIndex)
+            }
         },
         components: {}
     }

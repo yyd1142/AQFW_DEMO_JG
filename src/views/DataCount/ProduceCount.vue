@@ -4,14 +4,14 @@
         <mko-header title="生成数据总量" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
             <div class="info-bar">
-                1511926
+                {{total[weekIndex]}}
             </div>
-            <week-nav-bar></week-nav-bar>
+            <week-nav-bar @get="getWeekIndex"></week-nav-bar>
 
             <mko-cell class="title-cell" title="数据分析"></mko-cell>
             <div class="chart-wrap" ref="chart"></div>
             <div class="list-wrap">
-                <mko-cell :title="item.name" :val="item.value" v-for="item in datas"></mko-cell>
+                <mko-cell :title="item.name" :val="item.value" v-for="item in datas[weekIndex]"></mko-cell>
             </div>
         </div>
     </div>
@@ -25,10 +25,20 @@
     export default {
         data () {
             return {
+                weekIndex: 0,
+                total: [121926, 107429],
                 datas: [
-                    {value: 826852, name: '任务'},
-                    {value: 521798, name: '图片'},
-                    {value: 163276, name: '通知公告'},
+                    [
+                        {value: 71852, name: '任务'},
+                        {value: 41798, name: '图片'},
+                        {value: 8276, name: '通知公告'},
+                    ],
+                    [
+                        {value: 64946, name: '任务'},
+                        {value: 36751, name: '图片'},
+                        {value: 5732, name: '通知公告'},
+                    ],
+
                 ]
             }
         },
@@ -38,13 +48,18 @@
         },
         activated(){
             this.DrawChart1(echarts);
-
         },
         deactivated() {
         },
         destroyed(){
         },
         methods: {
+            getWeekIndex(index){
+                this.weekIndex = Math.abs(index);
+                if (this.weekIndex > 1)
+                    this.weekIndex = 1;
+                this.DrawChart1(echarts)
+            },
             DrawChart1(ec){
 
                 let myChart = ec.init(this.$refs['chart'], theme);
@@ -74,7 +89,7 @@
                             type: 'pie',
                             radius: '55%',
                             center: ['50%', '50%'],
-                            data: this.datas,
+                            data: this.datas[this.weekIndex],
                             itemStyle: {
                                 normal: {
                                     label: {
