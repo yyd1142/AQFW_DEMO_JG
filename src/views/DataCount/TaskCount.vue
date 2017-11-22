@@ -4,13 +4,13 @@
         <mko-header title="累积执行任务数量" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
             <div class="info-bar">
-                {{counts[type]}}
+                {{counts[type][weekIndex]}}
             </div>
-            <week-nav-bar></week-nav-bar>
+            <week-nav-bar @get="getWeekIndex"></week-nav-bar>
             <mko-cell class="title-cell" title="数据分析"></mko-cell>
             <div class="chart-wrap" ref="chart"></div>
             <div class="list-wrap">
-                <mko-cell :title="item.name" :val="item.value" v-for="item in datas[type]"></mko-cell>
+                <mko-cell :title="item.name" :val="item.value" v-for="item in datas[type][weekIndex]"></mko-cell>
             </div>
         </div>
     </div>
@@ -23,27 +23,49 @@
     export default {
         data () {
             return {
-
+                weekIndex: 0,
                 type: 0,
-                counts: ['826852', '68904'],
+                counts: [
+                    [56852, 54687],
+                    [9512, 9187]
+                ],
                 datas: [
                     [
-                        {value: 170136, name: '值班'},
-                        {value: 340366, name: '巡查'},
-                        {value: 136870, name: '维修'},
-                        {value: 97314, name: '保养'},
-                        {value: 47528, name: '检测'},
-                        {value: 34638, name: '检查'},
+                        [
+                            {value: 11136, name: '值班'},
+                            {value: 20366, name: '巡查'},
+                            {value: 7870, name: '维修'},
+                            {value: 9314, name: '保养'},
+                            {value: 2528, name: '检测'},
+                            {value: 5638, name: '检查'},
+                        ],
+                        [
+                            {value: 10846, name: '值班'},
+                            {value: 19325, name: '巡查'},
+                            {value: 7576, name: '维修'},
+                            {value: 9487, name: '保养'},
+                            {value: 2369, name: '检测'},
+                            {value: 5264, name: '检查'},
+                        ]
                     ],
                     [
-                        {value: 13278, name: '值班'},
-                        {value: 29364, name: '巡查'},
-                        {value: 10706, name: '维修'},
-                        {value: 8309, name: '保养'},
-                        {value: 4361, name: '检测'},
-                        {value: 2886, name: '检查'},
+                        [
+                            {value: 2378, name: '值班'},
+                            {value: 3464, name: '巡查'},
+                            {value: 1259, name: '维修'},
+                            {value: 1164, name: '保养'},
+                            {value: 761, name: '检测'},
+                            {value: 486, name: '检查'},
+                        ],
+                        [
+                            {value: 2247, name: '值班'},
+                            {value: 3526, name: '巡查'},
+                            {value: 1135, name: '维修'},
+                            {value: 1093, name: '保养'},
+                            {value: 649, name: '检测'},
+                            {value: 528, name: '检查'},
+                        ]
                     ],
-
                 ]
             }
         },
@@ -60,8 +82,14 @@
         destroyed(){
         },
         methods: {
+            getWeekIndex(index){
+                this.weekIndex = Math.abs(index);
+                if (this.weekIndex > 1)
+                    this.weekIndex = 1;
+                this.DrawChart1(echarts)
+            },
             DrawChart1(ec){
-                let datas = this.datas;
+                let datas = this.datas[this.type][this.weekIndex];
                 let myChart = ec.init(this.$refs['chart'], theme);
                 myChart.setOption({
                     title: {
@@ -90,7 +118,7 @@
                             type: 'pie',
                             radius: '55%',
                             center: ['50%', '50%'],
-                            data: datas[this.type],
+                            data: datas,
                             itemStyle: {
                                 normal: {
                                     label: {
