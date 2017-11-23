@@ -473,6 +473,7 @@ router.beforeEach((to, from, next) => {
 })
 router.afterEach(transition => {
     NProgress.done();
+    window.scrollTo(0, 0);
 });
 
 export default router;
