@@ -13,15 +13,15 @@
                 <li class="device-table-cell" v-for="(item, index) in deviceDatas">
                     <div class="padding">
                         <div class="device-item" :style="{ borderBottom: !item.value ? 'none' : null }">
-                            <div class="dingding-icon" :class="!item.value ? 'yellow-icon' : 'green-icon'">
+                            <div class="dingding-icon" :class="item.status == 1 ? 'yellow-icon' : 'green-icon'">
                                 <span></span>
                             </div>
                             <span class="title" v-text="item.name"></span>
                             <span class="value"
-                                  :class="!item.value ? 'yellow-font' : null">{{item.value ? '正常' : '故障'}}</span>
+                                  :class="item.status == 1 ? 'yellow-font' : null">{{item.status == 0 ? '正常' : '故障'}}</span>
                         </div>
                     </div>
-                    <div class="desc-wrap jiantou" v-if="!item.value">
+                    <div class="desc-wrap jiantou" v-if="item.description">
                         <div class="text">
                             <div class="desc">{{item.description || '暂无描述'}}</div>
                         </div>
@@ -283,11 +283,9 @@
             },
             taskInfo() {
                 let taskInfo = [{
-                    key: '责任单位', value: this.details.qy_name || '暂无'
+                    key: '执行单位', value: this.details.qy_name || '暂无'
                 }, {
                     key: '任务类型', value: this.details.type
-                }, {
-                    key: '负责人员', value: this.details.zr_name || '暂无'
                 }, {
                     key: '执行人员', value: this.details.zx_name || '暂无'
                 }, {
@@ -300,14 +298,14 @@
                 if (this.$route.params.id === 1) {
                     deviceDatas = [{
                         name: '室内消火栓001',
-                        status: 0,
+                        status: 1,
                         id: 1,
                         value: false,
                         description: '水枪腐蚀，已更换',
                         images: ['http://resources.aqfwy.com/67e7982a07ab4a6883a05f7b2cd3f95c03000000']
                     }, {
                         name: '室内消火栓002',
-                        status: 0,
+                        status: 1,
                         id: 1,
                         value: false,
                         description: '水龙带缺货，已补齐',
@@ -318,7 +316,7 @@
                 } else if (this.$route.params.id === 2) {
                     deviceDatas = [{
                         name: '室内消火栓001',
-                        status: 0,
+                        status: 1,
                         id: 1,
                         value: false,
                         description: '水枪腐蚀，已更换',
@@ -327,7 +325,7 @@
                         name: '室内消火栓002', status: 0, id: 1, value: true, description: '', images: []
                     }, {
                         name: '室外消火栓001',
-                        status: 0,
+                        status: 1,
                         id: 1,
                         value: false,
                         description: '水龙带缺货，已补齐',
@@ -351,7 +349,7 @@
                 } else if (this.$route.params.id === 4) {
                     deviceDatas = [{
                         name: '室内消火栓001',
-                        status: 0,
+                        status: 1,
                         id: 1,
                         value: false,
                         description: '水枪腐蚀，已更换',
@@ -360,7 +358,7 @@
                         name: '室内消火栓002', status: 0, id: 1, value: true, description: '', images: []
                     }, {
                         name: '室外消火栓001',
-                        status: 0,
+                        status: 1,
                         id: 1,
                         value: false,
                         description: '水龙带缺货，已补齐',

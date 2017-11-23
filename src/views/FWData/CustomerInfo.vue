@@ -39,6 +39,8 @@
                 padding-left: 14px;
                 display: table;
                 background-color: #ffffff;
+                font-weight: bold;
+                border-bottom: 1px solid #eee;
                 span {
                     display: table-cell;
                     vertical-align: middle;

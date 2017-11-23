@@ -48,7 +48,7 @@
                         padding: 10px 0 0 54px;
                     }
                     &.type {
-                        padding: 20px 0 0 14px;
+                        padding: 20px 0 10px 14px;
                     }
                     .header-image{
                         position: absolute;
