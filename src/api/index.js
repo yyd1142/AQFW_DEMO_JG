@@ -67,6 +67,7 @@ export default {
     getQyType: httpGet('/dwlx?m=dwlxList', Conf.platformDomain),  //获得所有企业类型
     addDWByZF: httpPost('/v2/dwInfo?m=addDWByZF', Conf.platformDomain), //添加 社会单位
     getQyRecord: httpGet('/dwInfo?m=enforceLowList', Conf.domain), //获取执法记录或火灾记录
+    getQyRecordCount: httpGet('/dwInfo', Conf.domain),
     //服务单位
     getFwList: httpGet('/fw/list', Conf.jgApiDomain),
     getFwInfo: httpGet('/fw/info', Conf.jgApiDomain),

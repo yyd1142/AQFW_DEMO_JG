@@ -18,10 +18,10 @@
                 </div>
             </div>
             <div class="data-wrap">
-                <mko-cell title="火灾记录" is-link @click="go('/fire_record/'+$route.params.id)"></mko-cell>
-                <mko-cell title="监督执法记录" is-link @click="go('/jgzf_record/'+$route.params.id)"></mko-cell>
-                <mko-cell title="单位标签" is-link @click="goQYComment"></mko-cell>
-                <mko-cell title="单位属性" is-link @click="go('/qy_attributes/'+$route.params.id)"></mko-cell>
+                <mko-cell title="火灾记录" val-style="gray-font" :val="`${recoredCount.hzResult}条记录`" is-link @click="go('/fire_record/'+$route.params.id)"></mko-cell>
+                <mko-cell title="监督执法记录"valStyle="gray-font" :val="`${recoredCount.jdResult}条记录`" is-link @click="go('/jgzf_record/'+$route.params.id)"></mko-cell>
+                <!--<mko-cell title="单位标签" is-link @click="goQYComment" ></mko-cell>-->
+                <!--<mko-cell title="单位属性" is-link @click="go('/qy_attributes/'+$route.params.id)"></mko-cell>-->
             </div>
             <div class="data-wrap">
                 <mko-cell title="风险管理" is-link @click="go('/hidden_danger/'+$route.params.id)"></mko-cell>
@@ -56,9 +56,11 @@
                     <!--:val="(dwInfo.dwXZProvinceName+dwInfo.dwXZCityName+dwInfo.dwXZAreaName)||'暂无'"></mko-cell>-->
                     <mko-cell title="单位类型" :val="(dwInfo.dwTypeName+dwInfo.dwSubTypeName)||'暂无'" @click="showAllContent(dwInfo.dwTypeName+dwInfo.dwSubTypeName)"></mko-cell>
                     <mko-cell title="经济所有制" :val="dwJJSYZ(dwInfo.dwJJSYZ)"></mko-cell>
-                    <mko-cell title="单位其他属性" :val="dwInfo.dwAttribute||'暂无'"></mko-cell>
+                    <!--<mko-cell title="单位其他属性" :val="dwInfo.dwAttribute||'暂无'"></mko-cell>-->
                     <mko-cell title="消防管辖" :val="dwInfo.gxDWName ? dwInfo.gxDWName : '暂无'"></mko-cell>
                     <mko-cell title="监督员" :val="dwInfo.jgName||'暂无'"></mko-cell>
+                    <mko-cell title="行业" val="国家机关"></mko-cell>
+                    <mko-cell title="已连接设备" val="电气监测"></mko-cell>
                 </div>
 
             </div>
@@ -112,6 +114,7 @@
                 },
                 dwScore: '',
                 noAttributes: false,
+                recoredCount: '',
                 show: {
                     user: false,
                     basic: false,
@@ -129,6 +132,7 @@
                 basic: false,
                 contact: false
             }
+            this.getRecords()
         },
         methods: {
             dwJJSYZ,
@@ -227,7 +231,23 @@
                 })
             },
             showAllContent(text) {
-                this.$MKODialog({msg: text});
+                this.$MKODialog({ msg: text });
+            },
+            getRecords() {
+                api.getQyRecordCount({
+                    m: 'enforceLowNumber',
+                    groupId: this.$route.params.id
+                }).then(result => {
+                    if(!result) return false;
+                    if(result.code == 0) {
+                        this.recoredCount = result.response;
+                    } else {
+                        this.recoredCount = {
+                            hzResult: 0,
+                            jdResult: 0
+                        }
+                    }
+                })
             }
         },
         components: {
@@ -347,6 +367,9 @@
                     transition: transform 0.3s;
                     -webkit-transition: transform 0.3s;
                 }
+            }
+            .gray-font {
+                color: @textGray;
             }
         }
     }

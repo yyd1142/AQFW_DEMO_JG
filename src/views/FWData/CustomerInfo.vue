@@ -8,7 +8,7 @@
             <div class="data-wrap">
                 <div class="title-wrap"><span>基本信息</span></div>
                 <mko-cell title="联系人" :val="customerDetail.legalPerson"></mko-cell>
-                <mko-cell title="联系电话" :val="customerDetail.phone"></mko-cell>
+                <mko-cell title="联系电话" :val="customerDetail.phone" phone></mko-cell>
                 <mko-cell title="合同签订日期" :val="customerDetail.contractSignTime"></mko-cell>
                 <mko-cell title="合同截止日期" :val="customerDetail.contractEndTime"></mko-cell>
                 <!--<photo-box max="8" :read-only="true" :photo-list="customerDetail.attachment"></photo-box>-->

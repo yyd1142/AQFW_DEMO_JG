@@ -9,7 +9,7 @@
                 <div class="title-wrap"><span>基础信息</span></div>
                 <mko-cell title="姓名" :val="personDetail.name"></mko-cell>
                 <mko-cell title="编号" :val="personDetail.number"></mko-cell>
-                <mko-cell title="电话" :val="personDetail.phone"></mko-cell>
+                <mko-cell title="电话" :val="personDetail.phone" phone></mko-cell>
                 <mko-cell title="性别" :val="personDetail.gender"></mko-cell>
                 <mko-cell title="职位" :val="personDetail.office"></mko-cell>
                 <mko-cell title="权限" :val="personDetail.role"></mko-cell>
@@ -20,7 +20,7 @@
                 <mko-cell title="证件类型" :val="personDetail.credentialType"></mko-cell>
                 <mko-cell title="证件号码" :val="personDetail.credentialsNumber"></mko-cell>
                 <mko-cell title="出生日期" :val="personDetail.bornDate"></mko-cell>
-                <mko-cell title="个人资质" :val="personDetail.zz"></mko-cell>
+                <mko-cell title="个人资质" :val="personDetail.zz" @click="showAllContent(personDetail.zz)"></mko-cell>
                 <mko-cell title="资格证书" val="查看" val-style="blue-font" is-link @click="goPhotoViewer"></mko-cell>
                 <mko-cell title="工作时间" :val="personDetail.jobTime"></mko-cell>
             </div>
@@ -112,6 +112,9 @@
                         url: this.images[0]
                     }
                 })
+            },
+            showAllContent(text) {
+                this.$MKODialog({ msg: text });
             }
         },
         components: {
