@@ -3,7 +3,7 @@
         <div class="btn btn-left fl" :class="{'disable':monthIndex<=-1}" @click="getMonth(-1)">
             <span class="icon-arrow-left"></span>
         </div>
-        <div class="abs-middle text">{{monthStart | formatDate('MM月')}}</div>
+        <div class="abs-middle text">{{monthStart | formatDate('YYYY年MM月')}}</div>
         <div class="btn btn-right fr" :class="{'disable':monthIndex>=0}" @click="getMonth(1)">
             <span class="icon-arrow-right"></span>
         </div>

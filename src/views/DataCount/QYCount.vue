@@ -210,7 +210,8 @@
             DrawChart(ec){
                 let myChart = ec.init(this.$refs['chart'], theme);
                 let data = JSON.parse(JSON.stringify(this.datas[this.type][this.monthIndex][this.tabI]));
-                data.splice(7, data.length - 8);
+                let length = [8, 6];
+                data.splice(length[this.type] - 1, data.length - length[this.type]);
                 myChart.setOption({
                     title: {
                         x: 'center'

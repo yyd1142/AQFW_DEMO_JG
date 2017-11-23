@@ -20,7 +20,7 @@
                 <mko-nav-bar v-if="type==0">
                     <mko-tab-item :activied="tabI==i" :label="t" @handleTabClick="tabFn(i)" v-for="(t,i) in tabItems"></mko-tab-item>
                 </mko-nav-bar>
-                <div class="chart" ref="chart"></div>
+                <div class="chart" :class="tabI==2?'big':''" ref="chart"></div>
             </div>
         </div>
     </div>
@@ -40,14 +40,14 @@
                 type: 0,
                 counts: [
                     {
-                        aqgl: {name: '消防安全管理', score: [48.9,46.5], total: 60},
-                        sbgl: {name: '消防设备管理', score: [14.2,15.6], total: 20},
-                        hzfx: {name: '建筑火灾风险', score: [15.5,13.7], total: 20},
+                        aqgl: {name: '消防安全管理', score: [48.9, 46.5], total: 60},
+                        sbgl: {name: '消防设备管理', score: [14.2, 15.6], total: 20},
+                        hzfx: {name: '建筑火灾风险', score: [15.5, 13.7], total: 20},
                     },
                     {
-                        aqgl: {name: '消防安全管理', score: [50.5,46.7], total: 60},
-                        sbgl: {name: '消防设备管理', score: [13.6,12.6], total: 20},
-                        hzfx: {name: '建筑火灾风险', score: [14.8,16.5], total: 20},
+                        aqgl: {name: '消防安全管理', score: [50.5, 46.7], total: 60},
+                        sbgl: {name: '消防设备管理', score: [13.6, 12.6], total: 20},
+                        hzfx: {name: '建筑火灾风险', score: [14.8, 16.5], total: 20},
                     },
                 ]
             }
@@ -151,12 +151,12 @@
                 })
             },
             DrawChart1(ec){
-                let fontSize = [12, 10, 12, 12];
+                let fontSize = [12, 10, 12, 10];
                 let y = [
                     [],
                     ['宜兴市', '惠山区', '江阴市', '锡山区', '滨湖区', '梁溪区', '新吴区'],
                     ['公安', '教育', '新闻', '安监', '住建', '民政', '工商', '文化', '卫计', '交通', '规划', '人社', '质监'],
-                    ['一级\n单位', '二级\n单位', '三级\n单位', '一般\n单位'],
+                    ['一级\n重点单位', '二级\n重点单位', '三级\n重点单位', '一般\n单位'],
                 ];
                 let x = [
                     [],
@@ -193,6 +193,8 @@
                         {
                             type: 'value',
                             boundaryGap: [0, 1],
+                            min: 0,
+                            max: 100,
                             axisLine: {
                                 show: false,
                             },
@@ -238,7 +240,7 @@
                                     barBorderColor: '#3399ff'
                                 }
                             },
-
+                            barMaxWidth: 30
                         },
 
                     ]
@@ -292,8 +294,11 @@
             .chart {
                 /*padding-top: 14px;*/
                 padding-left: 14px;
-                height: 320px;
+                height: 500px;
                 background-color: #fff !important;
+                /*&.big {*/
+                    /*height: 600px;*/
+                /*}*/
             }
 
         }

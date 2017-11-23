@@ -1,7 +1,7 @@
 <template>
     <div class="task-count-wrap">
         <div class="placeholder-item"></div>
-        <mko-header title="累积执行任务数量" left-icon="icon-back" @handleLeftClick="back"></mko-header>
+        <mko-header title="累积执行任务数量(个)" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
             <div class="info-bar">
                 {{counts[type][monthIndex]}}
