@@ -61,7 +61,7 @@
         },
         activated(){
             this.type = sessionStorage.getItem(`jgDwType${this.$store.getters.groupId}`) || 0;
-            this.tabI = 1;
+            this.tabI = 0;
             this.DrawChart();
         },
         deactivated() {
