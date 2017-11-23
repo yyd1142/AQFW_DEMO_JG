@@ -86,7 +86,8 @@
                         trigger: 'axis'
                     },
                     legend: {
-                        data: ['安全评分趋势',]
+                        data: ['安全评分趋势'],
+                        selectedMode: false
                     },
                     toolbox: {
                         show: true,
@@ -140,6 +141,7 @@
                     series: [
                         {
                             name: '安全评分趋势',
+                            clickable: false,
                             type: 'line',
                             stack: '分数',
                             data: scores[this.type],
