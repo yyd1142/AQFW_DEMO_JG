@@ -230,7 +230,8 @@
                     dwFax: '',
                     postalcode: '',
                     dwEmail: '',
-                    score: ''
+                    score: '',
+                    starCount: ''
                 }
                 item = this.$route.query.fwDetail ? this.$route.query.fwDetail : item;
                 return item;

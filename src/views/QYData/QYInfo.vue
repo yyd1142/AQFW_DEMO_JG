@@ -13,7 +13,7 @@
                     <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" :style="{ marginRight: index === (dwInfo.attributes.length - 1) ? 0 : '4px' }" v-for="item, index in dwInfo.attributes" v-if="!noAttributes">
                         <span>{{attributesFilter(item.attributeName)}}</span></div>
                     <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" v-if="noAttributes">
-                        <span>暂无评价</span></div>
+                        <span>暂无标签</span></div>
                     <i class="icon icon-arrow-right-white"></i>
                 </div>
             </div>

@@ -1,7 +1,8 @@
 <template>
     <div class="fw-score-detail">
         <div class="placeholder-item"></div>
-        <mko-header :title="fwInfo.dwName" :background-color="scoreHeadColor(fwInfo.score)" left-icon="icon-back" @handleLeftClick="back"></mko-header>
+        <mko-header :title="fwInfo.dwName" :background-color="scoreHeadColor(fwInfo.score)" left-icon="icon-back"
+                    @handleLeftClick="back"></mko-header>
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
         <div class="page-wrap" v-show="!noData&&!resError">
@@ -11,30 +12,15 @@
                         <span>{{(fwInfo.score / 2).toFixed(1)}}</span>
                         <span>满星5星</span>
                     </div>
-                    <div class="star-total-count">3个评星</div>
+                    <div class="star-total-count">{{fwInfo.starCount}}次评星</div>
                 </div>
-                <div class="score-cell first">
-                    <i class="icon-star icon-star-10"></i>
-                    <div class="score-progress"><span class="percent value-1"></span></div>
-                </div>
-                <div class="score-cell">
-                    <i class="icon-star icon-star-7"></i>
-                    <div class="score-progress"><span class="percent value-2"></span></div>
-                </div>
-                <div class="score-cell">
-                    <i class="icon-star icon-star-6"></i>
-                    <div class="score-progress"><span class="percent value-4"></span></div>
-                </div>
-                <div class="score-cell">
-                    <i class="icon-star icon-star-3"></i>
-                    <div class="score-progress"><span class="percent value-2"></span></div>
-                </div>
-                <div class="score-cell last">
-                    <i class="icon-star icon-star-1"></i>
-                    <div class="score-progress"><span class="percent value-0"></span></div>
+                <div class="score-cell" :class="index == 0 ? 'first' : null" v-for="item, index in totalStarInfo.totalStars">
+                    <i class="icon-star" :class="`icon-star-${item.star}`"></i>
+                    <div class="score-progress"><span class="percent" :style="{ width: `${item.totalCount != 0 ? ((item.totalCount / fwInfo.starCount) * 100) : 0}%` }"></span></div>
+                    <div class="comment-count">{{item.totalCount}}次</div>
                 </div>
             </div>
-            <div class="score-wrap comment-wrap" v-for="item in comments">
+            <div class="score-wrap comment-wrap" v-for="item in totalStarInfo.comments">
                 <div class="header">
                     <div class="comment-title">
                         <div class="title">{{item.title}}</div>
@@ -108,7 +94,7 @@
                 position: relative;
                 height: 14px;
                 margin-bottom: 4px;
-                padding: 6px 0 0 96px;
+                padding: 6px 30px 0 96px;
                 &.first {
                     margin-top: 14px;
                 }
@@ -130,28 +116,30 @@
                     border-radius: 4px;
                     .percent {
                         position: absolute;
+                        height: 4px;
+                        background-color: #dddddd;
+                        left: 0;
+                        border-radius: 4px 0 0 4px;
                         &.value-4 {
                             width: 25%;
-                            height: 4px;
-                            background-color: #dddddd;
-                            left: 0;
-                            border-radius: 4px 0 0 4px;
                         }
                         &.value-2 {
                             width: 50%;
-                            height: 4px;
-                            background-color: #dddddd;
-                            left: 0;
-                            border-radius: 4px 0 0 4px;
                         }
                         &.value-1 {
                             width: 100%;
-                            height: 4px;
-                            background-color: #dddddd;
-                            left: 0;
-                            border-radius: 4px 0 0 4px;
                         }
                     }
+                }
+                .comment-count {
+                    color: #dddddd;
+                    position: absolute;
+                    right: 0;
+                    font-size: 12px;
+                    height: 14px;
+                    line-height: 14px;
+                    top: 0;
+                    margin: auto;
                 }
             }
             .header {
@@ -224,26 +212,7 @@
             return {
                 //提示
                 resError: false,
-                noData: false,
-                comments: [{
-                    title: '服务很周到',
-                    name: '周海燕',
-                    time: '2017-10-19',
-                    score: 8,
-                    desc: '真的是专业的一家维保公司，公司购买了一些新的消防设备，维护和维修很费人力，于是就决定找到这家维保公司，只要设备出现短路、损坏都可以免费修复。并且还有后期的一些系统检测以及维修。24小时在线客服，他们公司还承诺24小时内来到现场解决。这个值得推荐。'
-                },{
-                    title: '有时候不能当天到现场解决',
-                    name: '方舟',
-                    time: '2017-11-08',
-                    score: 5,
-                    desc: '有时候不能当天到现场解决，只能等到第二天，但是后来客服很有耐心的给我们讲明了原因。所以还是会选择这家维保公司'
-                },{
-                    title: '还行吧',
-                    name: '田震',
-                    time: '2017-11-19',
-                    score: 5,
-                    desc: '真的是专业的一家维保公司，公司购买了一些新的消防设备，维护和维修很费人力，于是就决定找到这家维保公司，只要设备出现短路、损坏都可以免费修复。并且还有后期的一些系统检测以及维修。24小时在线客服，他们公司还承诺24小时内来到现场解决。这个值得推荐。'
-                }]
+                noData: false
             }
         },
         computed: {
@@ -266,10 +235,151 @@
                     dwFax: '',
                     postalcode: '',
                     dwEmail: '',
-                    score: ''
+                    score: '',
+                    starCount: ''
                 }
                 item = this.$route.query.fwDetail ? this.$route.query.fwDetail : item;
                 return item;
+            },
+            totalStarInfo() {
+                let totalStarInfo = {}
+                if (this.$route.params.id === 'QYWX050040') {
+                    totalStarInfo = {
+                        totalStars: [{
+                            star: 10, totalCount: 1
+                        }, {
+                            star: 8, totalCount: 0
+                        }, {
+                            star: 6, totalCount: 2
+                        }, {
+                            star: 4, totalCount: 2
+                        }, {
+                            star: 2, totalCount: 0
+                        }],
+                        comments: [{
+                            title: '服务很周到',
+                            name: '周海燕',
+                            time: '2017-10-19',
+                            score: 10,
+                            desc: '真的是专业的一家维保公司，公司购买了一些新的消防设备，维护和维修很费人力，于是就决定找到这家维保公司，只要设备出现短路、损坏都可以免费修复。并且还有后期的一些系统检测以及维修。24小时在线客服，他们公司还承诺24小时内来到现场解决。这个值得推荐。'
+                        }, {
+                            title: '有时候不能当天到现场解决',
+                            name: '方舟',
+                            time: '2017-11-08',
+                            score: 6,
+                            desc: '有时候不能当天到现场解决，只能等到第二天，但是后来客服很有耐心的给我们讲明了原因。所以还是会选择这家维保公司'
+                        }, {
+                            title: '还行吧',
+                            name: '田震',
+                            time: '2017-11-19',
+                            score: 4,
+                            desc: '真的是专业的一家维保公司，公司购买了一些新的消防设备，维护和维修很费人力，于是就决定找到这家维保公司，只要设备出现短路、损坏都可以免费修复。并且还有后期的一些系统检测以及维修。24小时在线客服，他们公司还承诺24小时内来到现场解决。这个值得推荐。'
+                        },{
+                            title: '服务很周到',
+                            name: '周海燕',
+                            time: '2017-10-19',
+                            score: 6,
+                            desc: '真的是专业的一家维保公司，公司购买了一些新的消防设备，维护和维修很费人力，于是就决定找到这家维保公司，只要设备出现短路、损坏都可以免费修复。并且还有后期的一些系统检测以及维修。24小时在线客服，他们公司还承诺24小时内来到现场解决。这个值得推荐。'
+                        }, {
+                            title: '有时候不能当天到现场解决',
+                            name: '方舟',
+                            time: '2017-11-08',
+                            score: 4,
+                            desc: '有时候不能当天到现场解决，只能等到第二天，但是后来客服很有耐心的给我们讲明了原因。所以还是会选择这家维保公司'
+                        }]
+                    }
+                } else if (this.$route.params.id === 'QYWX053218') {
+                    totalStarInfo = {
+                        totalStars: [{
+                            star: 10, totalCount: 2
+                        }, {
+                            star: 8, totalCount: 2
+                        }, {
+                            star: 6, totalCount: 1
+                        }, {
+                            star: 4, totalCount: 1
+                        }, {
+                            star: 2, totalCount: 0
+                        }],
+                        comments: [{
+                            title: '服务很周到',
+                            name: '周海燕',
+                            time: '2017-10-19',
+                            score: 10,
+                            desc: '真的是专业的一家维保公司，公司购买了一些新的消防设备，维护和维修很费人力，于是就决定找到这家维保公司，只要设备出现短路、损坏都可以免费修复。并且还有后期的一些系统检测以及维修。24小时在线客服，他们公司还承诺24小时内来到现场解决。这个值得推荐。'
+                        }, {
+                            title: '有时候不能当天到现场解决',
+                            name: '方舟',
+                            time: '2017-11-08',
+                            score: 10,
+                            desc: '有时候不能当天到现场解决，只能等到第二天，但是后来客服很有耐心的给我们讲明了原因。所以还是会选择这家维保公司'
+                        }, {
+                            title: '还行吧',
+                            name: '田震',
+                            time: '2017-11-19',
+                            score: 8,
+                            desc: '真的是专业的一家维保公司，公司购买了一些新的消防设备，维护和维修很费人力，于是就决定找到这家维保公司，只要设备出现短路、损坏都可以免费修复。并且还有后期的一些系统检测以及维修。24小时在线客服，他们公司还承诺24小时内来到现场解决。这个值得推荐。'
+                        },{
+                            title: '服务很周到',
+                            name: '周海燕',
+                            time: '2017-10-19',
+                            score: 8,
+                            desc: '真的是专业的一家维保公司，公司购买了一些新的消防设备，维护和维修很费人力，于是就决定找到这家维保公司，只要设备出现短路、损坏都可以免费修复。并且还有后期的一些系统检测以及维修。24小时在线客服，他们公司还承诺24小时内来到现场解决。这个值得推荐。'
+                        }, {
+                            title: '有时候不能当天到现场解决',
+                            name: '方舟',
+                            time: '2017-11-08',
+                            score: 6,
+                            desc: '有时候不能当天到现场解决，只能等到第二天，但是后来客服很有耐心的给我们讲明了原因。所以还是会选择这家维保公司'
+                        },{
+                            title: '服务很周到',
+                            name: '周海燕',
+                            time: '2017-10-19',
+                            score: 4,
+                            desc: '真的是专业的一家维保公司，公司购买了一些新的消防设备，维护和维修很费人力，于是就决定找到这家维保公司，只要设备出现短路、损坏都可以免费修复。并且还有后期的一些系统检测以及维修。24小时在线客服，他们公司还承诺24小时内来到现场解决。这个值得推荐。'
+                        }]
+                    }
+                } else if (this.$route.params.id === 'QYWX051220') {
+                    totalStarInfo = {
+                        totalStars: [{
+                            star: 10, totalCount: 4
+                        }, {
+                            star: 8, totalCount: 0
+                        }, {
+                            star: 6, totalCount: 0
+                        }, {
+                            star: 4, totalCount: 0
+                        }, {
+                            star: 2, totalCount: 0
+                        }],
+                        comments: [{
+                            title: '服务很周到',
+                            name: '周海燕',
+                            time: '2017-10-19',
+                            score: 10,
+                            desc: '真的是专业的一家维保公司，公司购买了一些新的消防设备，维护和维修很费人力，于是就决定找到这家维保公司，只要设备出现短路、损坏都可以免费修复。并且还有后期的一些系统检测以及维修。24小时在线客服，他们公司还承诺24小时内来到现场解决。这个值得推荐。'
+                        }, {
+                            title: '有时候不能当天到现场解决',
+                            name: '方舟',
+                            time: '2017-11-08',
+                            score: 10,
+                            desc: '有时候不能当天到现场解决，只能等到第二天，但是后来客服很有耐心的给我们讲明了原因。所以还是会选择这家维保公司'
+                        }, {
+                            title: '还行吧',
+                            name: '田震',
+                            time: '2017-11-19',
+                            score: 10,
+                            desc: '真的是专业的一家维保公司，公司购买了一些新的消防设备，维护和维修很费人力，于是就决定找到这家维保公司，只要设备出现短路、损坏都可以免费修复。并且还有后期的一些系统检测以及维修。24小时在线客服，他们公司还承诺24小时内来到现场解决。这个值得推荐。'
+                        }, {
+                            title: '还行吧',
+                            name: '田震',
+                            time: '2017-11-19',
+                            score: 10,
+                            desc: '真的是专业的一家维保公司，公司购买了一些新的消防设备，维护和维修很费人力，于是就决定找到这家维保公司，只要设备出现短路、损坏都可以免费修复。并且还有后期的一些系统检测以及维修。24小时在线客服，他们公司还承诺24小时内来到现场解决。这个值得推荐。'
+                        }]
+                    }
+                }
+                return totalStarInfo;
             }
         },
         methods: {
