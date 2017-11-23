@@ -1,14 +1,20 @@
 <template>
     <div class="qy-count-wrap">
         <div class="placeholder-item"></div>
-        <mko-header title="社会单位数量" left-icon="icon-back" @handleLeftClick="back"></mko-header>
+        <mko-header title="社会单位数量(家)" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
             <div class="info-bar">
-                {{counts[type]}}
+                {{counts[type][monthIndex]}}
             </div>
             <mko-cell class="title-cell" title="数据分析"></mko-cell>
+            <mko-nav-bar>
+                <mko-tab-item :activied="tabI==i" :label="t" @handleTabClick="tabFn(i)" v-for="(t,i) in tabItems"></mko-tab-item>
+            </mko-nav-bar>
             <div class="chart-wrap" ref="chart"></div>
-            <mko-cell title="数据列表" is-link @click="goList"></mko-cell>
+            <div class="list-wrap">
+                <mko-cell :title="item.name" :val="item.value" v-for="item in datas[type][monthIndex][tabI]"></mko-cell>
+            </div>
+            <!--<mko-cell title="数据列表" is-link @click="goList"></mko-cell>-->
         </div>
     </div>
 </template>
@@ -16,23 +22,178 @@
 <script>
     import echarts from 'echarts';
     let theme = 'macarons';
-    let datas = [
-        {jh: 3468, hy: 2937},
-        {jh: 488, hy: 372},
-    ];
+    let color = ['#3399FF', '#55DD66', '#F5A623', '#50E3C2 ', '#AD6DFF', '#F8E71C', '#FF336B', '#7E80FF'];
+    let s = '#7E80FF'
+    let itemStyle = {
+        normal: {
+            label: {
+//                formatter: "{b} ({d}%)",
+                formatter: function (data) {
+                    return `${data.name}\n(${data.percent}%)`
+                },
+                textStyle: {
+                    color: '#666',
+                    fontSize: '12px'
+                }
+            },
+            labelLine: {
+                length: 20,
+                lineStyle: {
+                    color: '#ddd',
+                }
+            }
+        },
+    };
     export default {
         data () {
             return {
                 type: 0,
-                counts: [3746, 546]
+                tabI: 0,
+                tabItems: ['区域', '行业', '单位类型'],
+                monthIndex: 0,
+                counts: [
+                    [3544, 3533],
+                    [824, 823],
+                ],
+                datas: [
+                    [//支队
+                        [//本月
+                            [
+                                {value: 824, name: '江阴大队'},
+                                {value: 452, name: '宜兴大队'},
+                                {value: 421, name: '锡山大队'},
+                                {value: 389, name: '滨湖大队'},
+                                {value: 325, name: '惠山大队'},
+                                {value: 295, name: '新区大队'},
+                                {value: 275, name: '崇安大队'},
+                                {value: 208, name: '南长大队'},
+                                {value: 186, name: '北塘大队'},
+                                {value: 122, name: '无锡支队'},
+                                {value: 28, name: '公交大队'},
+                                {value: 19, name: '水上大队'}
+                            ],
+                            [
+                                {value: 1197, name: '安监'},
+                                {value: 935, name: '工商'},
+                                {value: 534, name: '公安'},
+                                {value: 509, name: '文化'},
+                                {value: 113, name: '教育'},
+                                {value: 85, name: '住建'},
+                                {value: 81, name: '卫计'},
+                                {value: 29, name: '民政'},
+                                {value: 19, name: '规划'},
+                                {value: 19, name: '交通'},
+                                {value: 11, name: '质监'},
+                                {value: 10, name: '人社'},
+                                {value: 2, name: '新闻'},
+                            ],
+                            [
+                                {value: 1845, name: '二级重点单位'},
+                                {value: 1564, name: '三级重点单位'},
+                                {value: 123, name: '一级重点单位'},
+                                {value: 12, name: '一般单位'},
+                            ]
+                        ],
+                        [//上个月
+                            [
+                                {value: 823, name: '江阴大队'},
+                                {value: 452, name: '宜兴大队'},
+                                {value: 421, name: '锡山大队'},
+                                {value: 387, name: '滨湖大队'},
+                                {value: 325, name: '惠山大队'},
+                                {value: 291, name: '新区大队'},
+                                {value: 274, name: '崇安大队'},
+                                {value: 208, name: '南长大队'},
+                                {value: 186, name: '北塘大队'},
+                                {value: 119, name: '无锡支队'},
+                                {value: 28, name: '公交大队'},
+                                {value: 19, name: '水上大队'}
+                            ],
+                            [
+                                {value: 1194, name: '安监'},
+                                {value: 933, name: '工商'},
+                                {value: 534, name: '公安'},
+                                {value: 507, name: '文化'},
+                                {value: 113, name: '教育'},
+                                {value: 83, name: '住建'},
+                                {value: 81, name: '卫计'},
+                                {value: 29, name: '民政'},
+                                {value: 19, name: '规划'},
+                                {value: 19, name: '交通'},
+                                {value: 11, name: '质监'},
+                                {value: 8, name: '人社'},
+                                {value: 2, name: '新闻'},
+                            ],
+                            [
+                                {value: 1842, name: '二级重点单位'},
+                                {value: 1559, name: '三级重点单位'},
+                                {value: 120, name: '一级重点单位'},
+                                {value: 12, name: '一般单位'},
+                            ]
+                        ],
+                    ],
+                    [//大队
+                        [//本月
+                            [
+                                {value: 284, name: '安监'},
+                                {value: 214, name: '工商'},
+                                {value: 136, name: '文化'},
+                                {value: 135, name: '公安'},
+                                {value: 16, name: '卫计'},
+                                {value: 13, name: '教育'},
+                                {value: 7, name: '质监'},
+                                {value: 5, name: '交通'},
+                                {value: 5, name: '住建'},
+                                {value: 4, name: '规划'},
+                                {value: 4, name: '民政'},
+                                {value: 1, name: '人社'},
+                            ],
+                            [
+                                {value: 515, name: '二级重点单位'},
+                                {value: 305, name: '三级重点单位'},
+                                {value: 3, name: '一级重点单位'},
+                                {value: 1, name: '一般单位'},
+                            ]
+                        ],
+                        [//上个月
+                            [
+                                {value: 283, name: '安监'},
+                                {value: 214, name: '工商'},
+                                {value: 136, name: '文化'},
+                                {value: 135, name: '公安'},
+                                {value: 16, name: '卫计'},
+                                {value: 13, name: '教育'},
+                                {value: 7, name: '质监'},
+                                {value: 5, name: '交通'},
+                                {value: 5, name: '住建'},
+                                {value: 4, name: '规划'},
+                                {value: 4, name: '民政'},
+                                {value: 1, name: '人社'},
+                            ],
+                            [
+                                {value: 514, name: '二级重点单位'},
+                                {value: 305, name: '三级重点单位'},
+                                {value: 3, name: '一级重点单位'},
+                                {value: 1, name: '一般单位'},
+                            ]
+                        ],
+                    ],
+                ]
             }
         },
-        watch: {},
+        watch: {
+            tabI(){
+                this.DrawChart(echarts);
+            }
+        },
         computed: {},
         mounted() {
         },
         activated(){
+            this.monthIndex = this.$route.query.month || 0;
             this.type = sessionStorage.getItem(`jgDwType${this.$store.getters.groupId}`) || 0;
+            this.tabI = 0;
+            this.tabItems = this.type == 0 ? ['区域', '行业', '单位类型'] : ['行业', '单位类型'];
             this.DrawChart(echarts);
         },
         deactivated() {
@@ -43,7 +204,40 @@
             goList(){
                 this.$MKOPush('/qy_count_list');
             },
+            tabFn(i){
+                this.tabI = i;
+            },
             DrawChart(ec){
+                let myChart = ec.init(this.$refs['chart'], theme);
+                let data = JSON.parse(JSON.stringify(this.datas[this.type][this.monthIndex][this.tabI]));
+                data.splice(7, data.length - 8);
+                myChart.setOption({
+                    title: {
+                        x: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {}
+                    },
+                    calculable: true,
+                    color: color,
+                    series: [
+                        {
+                            name: this.tabItems[this.tabI],
+                            type: 'pie',
+                            radius: '55%',
+                            center: ['50%', '50%'],
+                            data: data,
+                            itemStyle: itemStyle
+                        }
+                    ]
+                })
+            },
+            _DrawChart(ec){
                 let _t = this.type;
                 let total = this.counts[_t];
                 let jh = datas[_t].jh;
@@ -103,6 +297,7 @@
                         x: 'center',
                         y: 195,
                         itemGap: 217,
+                        selectedMode: false,
                         formatter: function (name) {
                             let val = name == '激活单位数' ? jh : hy;
                             return `${name}：${val}`
@@ -181,14 +376,11 @@
                     height: 50px;
                 }
             }
-            .cell {
-                box-shadow: none;
-            }
         }
         .chart-wrap {
             /*padding-top: 14px;*/
-            height: 487px;
-            border-top: 1px solid @baseBorder;
+            margin-bottom: 10px;
+            height: 300px;
             border-bottom: 1px solid @baseBorder;
             background-color: #fff !important;
         }

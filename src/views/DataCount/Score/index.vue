@@ -11,7 +11,7 @@
                 <div class="count-block" v-for="item in counts[type]">
                     <div class="title abs-middle">{{item.name}}</div>
                     <div class="desc abs-middle">满分{{item.total}}</div>
-                    <div class="value abs-middle">{{item.score}}</div>
+                    <div class="value abs-middle">{{item.score[monthIndex]}}</div>
                 </div>
             </div>
             <!--<week-nav-bar></week-nav-bar>-->
@@ -34,19 +34,20 @@
     export default {
         data () {
             return {
+                monthIndex: 0,
                 tabI: 0,
                 tabItems: ['安全评级分布', '区域排名', '行业排名', '单位类型排名'],
                 type: 0,
                 counts: [
                     {
-                        aqgl: {name: '消防安全管理', score: 52.9, total: 60},
-                        sbgl: {name: '消防设备管理', score: 12.7, total: 20},
-                        hzfx: {name: '建筑火灾风险', score: 20, total: 20},
+                        aqgl: {name: '消防安全管理', score: [48.9,46.5], total: 60},
+                        sbgl: {name: '消防设备管理', score: [14.2,15.6], total: 20},
+                        hzfx: {name: '建筑火灾风险', score: [15.5,13.7], total: 20},
                     },
                     {
-                        aqgl: {name: '消防安全管理', score: 53.7, total: 60},
-                        sbgl: {name: '消防设备管理', score: 13.6, total: 20},
-                        hzfx: {name: '建筑火灾风险', score: 20, total: 20},
+                        aqgl: {name: '消防安全管理', score: [50.5,46.7], total: 60},
+                        sbgl: {name: '消防设备管理', score: [13.6,12.6], total: 20},
+                        hzfx: {name: '建筑火灾风险', score: [14.8,16.5], total: 20},
                     },
                 ]
             }
@@ -60,6 +61,8 @@
         mounted() {
         },
         activated(){
+            this.monthIndex = this.$route.query.month || 0;
+
             this.type = sessionStorage.getItem(`jgDwType${this.$store.getters.groupId}`) || 0;
             this.tabI = 0;
             this.DrawChart();
@@ -85,10 +88,15 @@
                     this[`DrawChart${tab}`](echarts);
             },
             DrawChart0(ec){
-                let _t = this.type;
                 let datas = [
-                    [92.3, 84.5, 76.2, 64.7, 57.4],
-                    [91.2, 84.5, 75.4, 66.7, 54.6]
+                    [
+                        [90.6, 83.5, 74.2, 67.9, 58.6],
+                        [90.7, 82.3, 75.2, 68.5, 51.8],
+                    ],
+                    [
+                        [91.2, 84, 75.7, 68.1, 51.7],
+                        [90.7, 82.5, 75, 68.6, 52.1],
+                    ]
                 ];
                 let myChart = ec.init(this.$refs['chart'], theme);
                 myChart.setOption({
@@ -117,7 +125,7 @@
                             type: 'pie',
                             radius: '55%',
                             center: ['50%', '55%'],
-                            data: datas[_t],
+                            data: datas[this.type][this.monthIndex],
                             itemStyle: {
                                 normal: {
                                     label: {
@@ -143,18 +151,27 @@
                 })
             },
             DrawChart1(ec){
-                let fontSize = [12, 10, 12, 8];
+                let fontSize = [12, 10, 12, 12];
                 let y = [
                     [],
-                    ['宜兴市', '滨湖区', '新吴区', '锡山区', '江阴市', '惠山区', '梁溪区'],
-                    ['消防', '安监', '交通', '教育', '商务', '民政', '旅游', '经信', '文广', '建设'],
-                    ['一级\n重点单位', '二级\n重点单位', '三级\n重点单位', '一般\n重点单位', '九小\n场所'],
+                    ['宜兴市', '惠山区', '江阴市', '锡山区', '滨湖区', '梁溪区', '新吴区'],
+                    ['公安', '教育', '新闻', '安监', '住建', '民政', '工商', '文化', '卫计', '交通', '规划', '人社', '质监'],
+                    ['一级\n单位', '二级\n单位', '三级\n单位', '一般\n单位'],
                 ];
                 let x = [
                     [],
-                    [81.6, 85.2, 83.7, 80.4, 87.3, 78.8, 84.9],
-                    [93.4, 87.6, 86.9, 86.7, 85.8, 85.3, 84.5, 83.2, 80.1, 80.7],
-                    [91.6, 87.3, 83.7, 80.2, 75.4],
+                    [
+                        [79.4, 79.3, 78.9, 78.7, 78.5, 78, 77.9],
+                        [76.8, 76.6, 76, 75.8, 75.6, 75.4, 74.9],
+                    ],
+                    [
+                        [79.9, 79.8, 79.7, 78.8, 78.7, 78.5, 78.1, 78, 77.8, 77.2, 76.5, 76, 76],
+                        [77.6, 76.9, 76.6, 75.9, 75.6, 75.6, 75.5, 75.4, 74.8, 74.4, 74.3, 73.9, 72.4],
+                    ],
+                    [
+                        [76.9, 78.6, 78.9, 76.5],
+                        [75.1, 75.7, 75.9, 75.2],
+                    ],
                 ];
 
                 let myChart = ec.init(this.$refs['chart'], theme);
@@ -166,9 +183,6 @@
                     tooltip: {
                         trigger: 'axis'
                     },
-//                    legend: {
-//                        data:['2011年', '2012年']
-//                    },
                     toolbox: {
                         show: false,
                         feature: {}
@@ -206,7 +220,7 @@
                                 show: false,
                             },
                             axisLabel: {
-                                margin:2,
+                                margin: 2,
                                 textStyle: {
                                     color: '#666',
                                     fontSize: fontSize[this.tabI]
@@ -216,9 +230,9 @@
                     ],
                     series: [
                         {
-                            name: '区域排名',
+                            name: this.tabItems[this.tabI],
                             type: 'bar',
-                            data: x[this.tabI],
+                            data: x[this.tabI][this.monthIndex],
                             itemStyle: {
                                 normal: {
                                     barBorderColor: '#3399ff'
