@@ -6,7 +6,8 @@
         <no-data v-if="noData"></no-data>
         <div class="page-wrap customer-list-wrap" v-show="!resError">
             <search-bar v-model="searchValue" hint-text="搜索公司名称" ref="search-bar"></search-bar>
-            <mko-cell :title="item.name" @click="goInfo(item)" v-for="item in (searchValue ? searchDatas : customerDatas)" is-link></mko-cell>
+            <mko-cell :title="item.name" @click="goInfo(item)"
+                      v-for="item in (searchValue ? searchDatas : customerDatas)" is-link></mko-cell>
         </div>
     </div>
 </template>
@@ -42,9 +43,9 @@
                 //数据
                 customerDatas: [{
                     id: 1,
-                    name: '华润新鸿基地产（无锡）有限公司',
-                    legalPerson: '唐勇',
-                    phone: '051082722951',
+                    name: '无锡市第四人民医院',
+                    legalPerson: '罗庆丰',
+                    phone: '13000339821',
                     contractSignTime: '2010-10-11',
                     contractStartTime: '2010-10-11',
                     contractEndTime: '2020-10-11',
@@ -57,17 +58,17 @@
                     }],
                     devices: [{
                         id: 1,
-                        name: '消防水系统',
-                        type: [1]
+                        name: '灭火器',
+                        type: [1, 2]
                     }, {
                         id: 1,
-                        name: '电器火灾监控系统',
+                        name: '消防栓（消防炮）灭火系统',
                         type: [1, 2]
                     }]
 
                 }, {
                     id: 2,
-                    name: '鸿伟达科技有限公司',
+                    name: '无锡百丽宫影院有限公司',
                     legalPerson: '张庆帅',
                     phone: '051088150621',
                     contractSignTime: '2004-11-30',
@@ -79,19 +80,19 @@
                     }],
                     devices: [{
                         id: 1,
-                        name: '消防水系统',
-                        type: [1]
+                        name: '灭火器',
+                        type: [1, 2]
                     }, {
                         id: 1,
-                        name: '电器火灾监控系统',
+                        name: '消防栓（消防炮）灭火系统',
                         type: [1, 2]
                     }]
 
                 }, {
                     id: 3,
-                    name: '金马房地产（江苏）有限公司',
-                    legalPerson: '冯地',
-                    phone: '05105063888',
+                    name: '无锡三阳百盛广场有限公司',
+                    legalPerson: '张斯敏',
+                    phone: '13101996322',
                     contractSignTime: '2009-09-11',
                     contractStartTime: '2009-09-11',
                     contractEndTime: '2021-09-12',
@@ -102,9 +103,43 @@
                         fileName: '设备维保服务合同',
                         url: 'http://resources.aqfwy.com/378336c34aab476296999dfb0e9e2e0f02000000'
                     }],
-                    devices: []
+                    devices: [{
+                        id: 1,
+                        name: '灭火器',
+                        type: [1, 2]
+                    }, {
+                        id: 1,
+                        name: '消防栓（消防炮）灭火系统',
+                        type: [1, 2]
+                    }]
 
-                }]
+                },
+                    {
+                        id: 4,
+                        name: '海澜集团有限公司',
+                        legalPerson: '王建平',
+                        phone: '13601510709',
+                        contractSignTime: '2009-09-11',
+                        contractStartTime: '2009-09-11',
+                        contractEndTime: '2021-09-12',
+                        attachment: [{
+                            fileName: '技术处服务器及储存设备维保服务合同',
+                            url: 'http://resources.aqfwy.com/addca85c6f8d446ea0dab1f7b823d10c01000000'
+                        }, {
+                            fileName: '设备维保服务合同',
+                            url: 'http://resources.aqfwy.com/378336c34aab476296999dfb0e9e2e0f02000000'
+                        }],
+                        devices: [{
+                            id: 1,
+                            name: '灭火器',
+                            type: [1, 2]
+                        }, {
+                            id: 1,
+                            name: '消防栓（消防炮）灭火系统',
+                            type: [1, 2]
+                        }]
+
+                    }]
             }
         },
         watch: {

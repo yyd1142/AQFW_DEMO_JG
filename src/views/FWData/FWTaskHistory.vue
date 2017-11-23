@@ -18,7 +18,7 @@
 </style>
 
 <script>
-    import {NoData, ResError} from 'components'
+    import { NoData, ResError } from 'components'
     export default{
         data() {
             return {
@@ -27,39 +27,39 @@
                 noData: false,
                 taskHistoryDatas: [{
                     id: 1,
-                    qy_name: '深圳大观信息',
-                    time: '2017-10-19 16:33',
+                    qy_name: '无锡市第四人民医院',
+                    time: '2017-11-22 16:33',
                     type: '维修',
-                    zr_name: '德德',
-                    zx_name: '周大宝,黄罗洞,朱德德'
+                    zr_name: '罗庆丰',
+                    zx_name: '罗庆丰,张斯敏'
                 },{
                     id: 2,
-                    qy_name: '猫空大厦B座',
-                    time: '2017-11-22 13:30',
+                    qy_name: '无锡三阳百盛广场有限公司',
+                    time: '2017-11-03 13:30',
                     type: '维修',
-                    zr_name: '托尼',
-                    zx_name: '周大宝,黄罗洞,朱德德'
+                    zr_name: '刘江',
+                    zx_name: '刘江'
                 },{
                     id: 3,
-                    qy_name: '猫空大厦B座',
-                    time: '2017-09-04 16:50',
-                    type: '维修',
-                    zr_name: '徐志摩',
-                    zx_name: '黄罗洞,朱德德'
+                    qy_name: '无锡三阳百盛广场有限公司',
+                    time: '2017-10-23 16:50',
+                    type: '保养',
+                    zr_name: '罗庆丰',
+                    zx_name: '罗庆丰,张斯敏'
                 },{
                     id: 4,
-                    qy_name: '猫空大厦B座',
-                    time: '2017-08-19 12:48',
-                    type: '保养',
-                    zr_name: '曾维勇',
-                    zx_name: '周大宝,朱德德'
+                    qy_name: '海澜集团有限公司',
+                    time: '2017-09-19 12:48',
+                    type: '维修',
+                    zr_name: '王建平',
+                    zx_name: '王建平'
                 },{
                     id: 5,
-                    qy_name: '深圳大观信息',
-                    time: '2017-07-19 17:29',
+                    qy_name: '海澜集团有限公司',
+                    time: '2017-08-25 17:29',
                     type: '保养',
-                    zr_name: '周庆桑',
-                    zx_name: '周大宝,黄罗洞'
+                    zr_name: '王建平',
+                    zx_name: '王建平,刘江'
 
                 }]
             }

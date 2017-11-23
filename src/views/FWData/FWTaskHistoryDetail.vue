@@ -17,14 +17,16 @@
                                 <span></span>
                             </div>
                             <span class="title" v-text="item.name"></span>
-                            <span class="value" :class="!item.value ? 'yellow-font' : null">{{item.value ? '正常' : '故障'}}</span>
+                            <span class="value"
+                                  :class="!item.value ? 'yellow-font' : null">{{item.value ? '正常' : '故障'}}</span>
                         </div>
                     </div>
                     <div class="desc-wrap jiantou" v-if="!item.value">
                         <div class="text">
                             <div class="desc">{{item.description || '暂无描述'}}</div>
                         </div>
-                        <photo-box max="8" :read-only="true" :photo-list="item.images" v-if="item.images && item.images.length > 0"></photo-box>
+                        <photo-box max="8" :read-only="true" :photo-list="item.images"
+                                   v-if="item.images && item.images.length > 0"></photo-box>
                     </div>
                 </li>
             </ul>
@@ -263,16 +265,7 @@
             return {
                 //提示
                 resError: false,
-                noData: false,
-                deviceDatas: [{
-                    name: '灭火器', status: 1, id: 1, value: true, description: '', images: []
-                },{
-                    name: '灭火器', status: 1, id: 3, value: true, description: '灭火器已损坏', images: ['http://resources.aqfwy.com/c8c2e66d29fb4e3eb7172a626b74d12a05000000', 'http://resources.aqfwy.com/b13e14c3ea654a84bfd538abf9442e1908000000']
-                },{
-                    name: '消防电梯', status: 1, id: 4, value: true, description: '', images: []
-                },{
-                    name: '消防电梯', status: 0, id: 5, value: false, description: '消防电梯故障', images: ['http://resources.aqfwy.com/a8f1e481805f448abf3e22a6e9533cc604000000', 'http://resources.aqfwy.com/22ec7ceae8af4c17b504c6c9b251f88900000000']
-                }]
+                noData: false
             }
         },
         computed: {
@@ -301,6 +294,95 @@
                     key: '执行日期', value: this.details.time || '暂无'
                 }]
                 return taskInfo;
+            },
+            deviceDatas() {
+                let deviceDatas = []
+                if (this.$route.params.id === 1) {
+                    deviceDatas = [{
+                        name: '室内消火栓001',
+                        status: 0,
+                        id: 1,
+                        value: false,
+                        description: '水枪腐蚀，已更换',
+                        images: ['http://resources.aqfwy.com/67e7982a07ab4a6883a05f7b2cd3f95c03000000']
+                    }, {
+                        name: '室内消火栓002',
+                        status: 0,
+                        id: 1,
+                        value: false,
+                        description: '水龙带缺货，已补齐',
+                        images: ['http://resources.aqfwy.com/85e6bd02389a4ee8adf87410572c4c6a04000000']
+                    }, {
+                        name: '室外消火栓001', status: 0, id: 1, value: true, description: '', images: []
+                    }]
+                } else if (this.$route.params.id === 2) {
+                    deviceDatas = [{
+                        name: '室内消火栓001',
+                        status: 0,
+                        id: 1,
+                        value: false,
+                        description: '水枪腐蚀，已更换',
+                        images: ['http://resources.aqfwy.com/67e7982a07ab4a6883a05f7b2cd3f95c03000000']
+                    }, {
+                        name: '室内消火栓002', status: 0, id: 1, value: true, description: '', images: []
+                    }, {
+                        name: '室外消火栓001',
+                        status: 0,
+                        id: 1,
+                        value: false,
+                        description: '水龙带缺货，已补齐',
+                        images: ['http://resources.aqfwy.com/991a01c204aa47a0b4b9f93bd161635a08000000']
+                    }]
+                } else if (this.$route.params.id === 3) {
+                    deviceDatas = [{
+                        name: '灭火器021',
+                        status: 0,
+                        id: 1,
+                        value: false,
+                        description: '压力表针在绿色区,喷筒畅通，零部件完整，可见部防腐层完好，铅封完好',
+                        images: ['http://resources.aqfwy.com/6e5eec4f5c934d158596044d3c09dfba01000000']
+                    }, {
+                        name: '灭火器022', status: 0, id: 1, value: true, description: '', images: []
+                    }, {
+                        name: '灭火器032', status: 0, id: 1, value: true, description: '', images: []
+                    }, {
+                        name: '灭火器033', status: 0, id: 1, value: true, description: '', images: []
+                    }]
+                } else if (this.$route.params.id === 4) {
+                    deviceDatas = [{
+                        name: '室内消火栓001',
+                        status: 0,
+                        id: 1,
+                        value: false,
+                        description: '水枪腐蚀，已更换',
+                        images: ['http://resources.aqfwy.com/67e7982a07ab4a6883a05f7b2cd3f95c03000000']
+                    }, {
+                        name: '室内消火栓002', status: 0, id: 1, value: true, description: '', images: []
+                    }, {
+                        name: '室外消火栓001',
+                        status: 0,
+                        id: 1,
+                        value: false,
+                        description: '水龙带缺货，已补齐',
+                        images: ['http://resources.aqfwy.com/991a01c204aa47a0b4b9f93bd161635a08000000']
+                    }]
+                } else if (this.$route.params.id === 5) {
+                    deviceDatas = [{
+                        name: '灭火器021',
+                        status: 0,
+                        id: 1,
+                        value: false,
+                        description: '压力表针在绿色区,喷筒畅通，零部件完整，可见部防腐层完好，铅封完好',
+                        images: ['http://resources.aqfwy.com/6e5eec4f5c934d158596044d3c09dfba01000000']
+                    }, {
+                        name: '灭火器022', status: 0, id: 1, value: true, description: '', images: []
+                    }, {
+                        name: '灭火器032', status: 0, id: 1, value: true, description: '', images: []
+                    }, {
+                        name: '灭火器033', status: 0, id: 1, value: true, description: '', images: []
+                    }]
+                }
+                return deviceDatas;
             }
         },
         methods: {
@@ -311,7 +393,7 @@
                 let self = this
                 window.mkoBackButton = {}
                 window.mkoBackButton.bInputData = true
-                window.mkoBackButton.callback = function() {
+                window.mkoBackButton.callback = function () {
                     window.mkoBackButton.bInputData = false;
                     self.$MKOPop();
                 }
