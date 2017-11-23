@@ -150,6 +150,7 @@
                     series: [
                         {
                             name: '安全评分趋势',
+                            clickable: false,
                             type: 'line',
                             stack: '分数',
                             data: scores[this.type],

@@ -215,7 +215,6 @@
                         padding: 14px 14px 0 14px;
                         position: relative;
                         height: 94px;
-                        margin-bottom: 14px;
                         textarea {
                             width: 100%;
                             height: 80px;
@@ -251,6 +250,7 @@
                     }
                     .photo-wrap {
                         background: none;
+                        padding-bottom: 10px;
                     }
                 }
             }
@@ -336,8 +336,8 @@
                         name: '灭火器021',
                         status: 0,
                         id: 1,
-                        value: false,
-                        description: '压力表针在绿色区,喷筒畅通，零部件完整，可见部防腐层完好，铅封完好',
+                        value: true,
+                        description: '',
                         images: ['http://resources.aqfwy.com/6e5eec4f5c934d158596044d3c09dfba01000000']
                     }, {
                         name: '灭火器022', status: 0, id: 1, value: true, description: '', images: []
@@ -369,8 +369,8 @@
                         name: '灭火器021',
                         status: 0,
                         id: 1,
-                        value: false,
-                        description: '压力表针在绿色区,喷筒畅通，零部件完整，可见部防腐层完好，铅封完好',
+                        value: true,
+                        description: '', //压力表针在绿色区,喷筒畅通，零部件完整，可见部防腐层完好，铅封完好
                         images: ['http://resources.aqfwy.com/6e5eec4f5c934d158596044d3c09dfba01000000']
                     }, {
                         name: '灭火器022', status: 0, id: 1, value: true, description: '', images: []

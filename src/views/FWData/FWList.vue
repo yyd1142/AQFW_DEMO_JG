@@ -300,7 +300,7 @@
                 let fwList = [{
                     userId: 'xawb',
                     groupId: 'QYWX050040',
-                    dwName: '无锡兴安维保',
+                    dwName: '无锡市安达消防监控工程有限公司',
                     dwCode: '91320200780272823W',
                     dwAddress: '无锡市清扬路32号',
                     dwXZArea: '江苏省,无锡市,梁溪区',
@@ -321,7 +321,7 @@
                 },{
                     userId: 'ljwb',
                     groupId: 'QYWX053218',
-                    dwName: '无锡力界维保',
+                    dwName: '江阴市海鑫消防器材有限公司',
                     dwCode: '93120200780564823W',
                     dwAddress: '无锡市大同路184号',
                     dwXZArea: '江苏省,无锡市,新吴区',
@@ -342,7 +342,7 @@
                 },{
                     userId: 'snwb',
                     groupId: 'QYWX051220',
-                    dwName: '无锡世宁维保',
+                    dwName: '无锡市合众消防科技有限公司',
                     dwCode: '91332020078029347S',
                     dwAddress: '无锡市珠江路89号',
                     dwXZArea: '江苏省,无锡市,新吴区',
