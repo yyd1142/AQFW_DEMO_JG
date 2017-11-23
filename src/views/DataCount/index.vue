@@ -31,7 +31,7 @@
                         {label: '社会单位数量(家)', num: 3746, path: '/qy_count'},
                         {label: '累积执行任务数量(个)', num: 826852, path: '/task_count'},
                         {label: '用户数量(人)', num: 7325, path: '/user_count'},
-                        {label: '生成数据总量(次)', num: 1511926, path: '/produce_count'}
+                        {label: '生成数据总量(条)', num: 1511926, path: '/produce_count'}
                     ],
                     [
                         {label: '社会单位数量(家)', num: 546, path: '/qy_count'},
@@ -61,8 +61,8 @@
                     if (res && res.code == 0) {
                         let data = res.response;
                         let path = data.path.split('/');
-                        this.type = path[1] == data.id ? 0 : 1;
-//                        this.type = path[1] != data.id ? 0 : 1;
+//                        this.type = path[1] == data.id ? 0 : 1;
+                        this.type = path[1] != data.id ? 0 : 1;
                         sessionStorage.setItem(`jgDwType${gId}`, this.type);
                         this.DrawChart1(echarts);
                     }
