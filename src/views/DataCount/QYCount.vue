@@ -9,9 +9,6 @@
             <mko-cell class="title-cell" title="数据分析"></mko-cell>
             <div class="chart-wrap" ref="chart"></div>
             <mko-cell title="数据列表" is-link @click="goList"></mko-cell>
-            <!--<div class="btn-wrap">-->
-            <!--<mko-button size="large" no-radius @click="goList">数据列表</mko-button>-->
-            <!--</div>-->
         </div>
     </div>
 </template>

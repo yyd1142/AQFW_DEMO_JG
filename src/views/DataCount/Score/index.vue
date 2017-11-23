@@ -92,92 +92,75 @@
                 ];
                 let myChart = ec.init(this.$refs['chart'], theme);
                 myChart.setOption({
+
                     title: {
-                        text: '',
+                        show: this.type != 0,
+                        text: '安全评级分布',
+                        x: 'center',
+                        textStyle: {
+                            color: ' #3399ff',
+                            fontSize: 14,
+                        }
                     },
                     tooltip: {
                         trigger: 'axis'
                     },
                     toolbox: {
-                        show: true,
+                        show: false,
                         feature: {}
                     },
                     calculable: true,
-                    color: ['#3399ff'],
-                    polar: [
-                        {
-                            indicator: [
-                                {text: '优秀', max: 100},
-                                {text: '极差', max: 100},
-                                {text: '较差', max: 100},
-                                {text: '一般', max: 100},
-                                {text: '良好', max: 100},
-                            ],
-                            radius: 110,
-                            splitLine: {
-                                show: true,
-                                lineStyle: {
-//                                    color: '#ddd'
-                                }
-                            }
-                        }
-                    ],
-                    textStyle: {
-                        color: '#666',
-                        fontSize: 14
-                    },
+                    color: ['#3399FF', '#55DD66', '#F5A623', '#50E3C2 ', '#F8E71C', '#FF336B'],
                     series: [
                         {
-                            name: '',
-                            type: 'radar',
+                            name: '安全评级分布',
+                            type: 'pie',
+                            radius: '55%',
+                            center: ['50%', '55%'],
+                            data: datas[_t],
                             itemStyle: {
                                 normal: {
-                                    areaStyle: {
-                                        type: 'default',
-                                        color: '#70BBFE'
-                                    },
-                                    lineStyle: {
-                                        color: '#3399ff'
-                                    },
-                                    borderColor: '#3399ff',
-                                    nodeStyle: {
-//                                        color: '#ff6666'
-                                    }
-                                }
-                            },
-                            data: [
-                                {
-                                    value: datas[_t],
-                                    name: '单位数量',
-                                    itemStyle: {
-                                        normal: {
-                                            color: '#ff6666'
+                                    label: {
+                                        formatter: function (data) {
+                                            let label = ['优秀', '良好', '一般', '较差', '极差'];
+                                            return `${label[data.dataIndex]}\n(${data.percent})%`;
+                                        },
+                                        textStyle: {
+                                            color: '#666',
+                                            fontSize: '12px'
                                         }
                                     },
-                                }
-                            ]
+                                    labelLine: {
+                                        length: 20,
+                                        lineStyle: {
+                                            color: '#ddd',
+                                        }
+                                    }
+                                },
+                            },
                         }
-                    ]
+                    ],
                 })
             },
             DrawChart1(ec){
-
+                let fontSize = [12, 10, 12, 8];
                 let y = [
                     [],
                     ['宜兴市', '滨湖区', '新吴区', '锡山区', '江阴市', '惠山区', '梁溪区'],
-                    ['交通', '公安', '国资', '安监', '工商', '市政', '教育', '消防'],
-                    ['一级重点单位', '二级重点单位', '三级重点单位', '一般重点单位', '九小场所'],
+                    ['消防', '安监', '交通', '教育', '商务', '民政', '旅游', '经信', '文广', '建设'],
+                    ['一级\n重点单位', '二级\n重点单位', '三级\n重点单位', '一般\n重点单位', '九小\n场所'],
                 ];
                 let x = [
                     [],
-                    [1334, 612, 817, 1036, 1763, 998, 765],
-                    [196, 215, 314, 1154, 726, 335, 637, 3748],
-                    [2382, 1872, 1236, 1067, 768],
+                    [81.6, 85.2, 83.7, 80.4, 87.3, 78.8, 84.9],
+                    [93.4, 87.6, 86.9, 86.7, 85.8, 85.3, 84.5, 83.2, 80.1, 80.7],
+                    [91.6, 87.3, 83.7, 80.2, 75.4],
                 ];
 
                 let myChart = ec.init(this.$refs['chart'], theme);
                 myChart.setOption({
 //                    title: {
+//                        show: this.type != 0,
 //                        text: this.tabItems[this.tabI],
 //                    },
                     tooltip: {
@@ -206,8 +189,8 @@
                                 show: true,
                             },
                             axisLabel: {
-                                textStyle:{
-                                    color:'#666'
+                                textStyle: {
+                                    color: '#666',
                                 }
                             }
                         }
@@ -223,8 +206,10 @@
                                 show: false,
                             },
                             axisLabel: {
-                                textStyle:{
-                                  color:'#666'
+                                margin:2,
+                                textStyle: {
+                                    color: '#666',
+                                    fontSize: fontSize[this.tabI]
                                 }
                             }
                         }
@@ -293,7 +278,7 @@
             .chart {
                 /*padding-top: 14px;*/
                 padding-left: 14px;
-                height: 300px;
+                height: 320px;
                 background-color: #fff !important;
             }
 

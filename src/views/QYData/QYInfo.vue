@@ -10,8 +10,10 @@
             </div>
             <div class="label-wrap" :style="{backgroundColor:scoreHeadColor($route.query.score || dwScore.totalScore)}" @click="goQYComment">
                 <div class="label-item">
-                    <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" :style="{ marginRight: index === (dwInfo.attributes.length - 1) ? 0 : '4px' }" v-for="item, index in dwInfo.attributes" v-if="!noAttributes"><span>{{attributesFilter(item.attributeName)}}</span></div>
-                    <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" v-if="noAttributes"><span>暂无评价</span></div>
+                    <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" :style="{ marginRight: index === (dwInfo.attributes.length - 1) ? 0 : '4px' }" v-for="item, index in dwInfo.attributes" v-if="!noAttributes">
+                        <span>{{attributesFilter(item.attributeName)}}</span></div>
+                    <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" v-if="noAttributes">
+                        <span>暂无评价</span></div>
                     <i class="icon icon-arrow-right-white"></i>
                 </div>
             </div>
@@ -29,50 +31,66 @@
             </div>
 
             <div class="data-wrap">
-                <div class="title-wrap"><span>账号信息</span></div>
-                <mko-cell title="账号" :val="dwInfo.userName||'暂无'"></mko-cell>
-                <mko-cell title="单位编码" :val="dwInfo.groupId||'暂无'"></mko-cell>
+                <div class="title-wrap" @click="showInfo('user')">
+                    <span>账号信息</span>
+                    <span class="sign" :class="show.user?'icon-arrow-down':'icon-arrow-up'"></span>
+                </div>
+                <div v-show="show.user">
+                    <mko-cell title="账号" :val="dwInfo.userName||'暂无'"></mko-cell>
+                    <mko-cell title="单位编码" :val="dwInfo.groupId||'暂无'"></mko-cell>
+                </div>
             </div>
             <div class="data-wrap">
-                <div class="title-wrap"><span>基本信息</span></div>
-                <mko-cell title="单位名称" :val="dwInfo.dwName||'暂无'"></mko-cell>
-                <mko-cell title="单位简称" :val="dwInfo.dwShortName||'暂无'"></mko-cell>
-                <mko-cell title="组织机构代码" :val="dwInfo.dwCode||'暂无'"></mko-cell>
-                <mko-cell title="单位地址"
-                         :val="(dwInfo.dwProvinceName||'未知')+'-'+(dwInfo.dwCityName||'未知')+'-'+(dwInfo.dwAreaName||'未知')"></mko-cell>
-                <mko-cell title="详细地址" :val="dwInfo.dwAddress||'暂无'"></mko-cell>
-                <!--<mko-cell title="行政区域"-->
-                <!--:val="(dwInfo.dwXZProvinceName+dwInfo.dwXZCityName+dwInfo.dwXZAreaName)||'暂无'"></mko-cell>-->
-                <mko-cell title="单位类型" :val="(dwInfo.dwTypeName+dwInfo.dwSubTypeName)||'暂无'" @click="showAllContent(dwInfo.dwTypeName+dwInfo.dwSubTypeName)"></mko-cell>
-                <mko-cell title="经济所有制" :val="dwJJSYZ(dwInfo.dwJJSYZ)"></mko-cell>
-                <!--<mko-cell title="单位其他属性" :val="dwInfo.dwAttribute||'暂无'"></mko-cell>-->
-                <mko-cell title="消防管辖" :val="dwInfo.gxDWName ? dwInfo.gxDWName : '暂无'"></mko-cell>
-                <mko-cell title="监督员" :val="dwInfo.jgName||'暂无'"></mko-cell>
-                <mko-cell title="行业" val="国家机关"></mko-cell>
-                <mko-cell title="已连接设备" val="电气监测"></mko-cell>
+                <div class="title-wrap" @click="showInfo('basic')">
+                    <span>基本信息</span>
+                    <span class="sign" :class="show.basic?'icon-arrow-down':'icon-arrow-up'"></span>
+                </div>
+                <div v-show="show.basic">
+                    <mko-cell title="单位名称" :val="dwInfo.dwName||'暂无'"></mko-cell>
+                    <mko-cell title="单位简称" :val="dwInfo.dwShortName||'暂无'"></mko-cell>
+                    <mko-cell title="组织机构代码" :val="dwInfo.dwCode||'暂无'"></mko-cell>
+                    <mko-cell title="单位地址"
+                              :val="(dwInfo.dwProvinceName||'未知')+'-'+(dwInfo.dwCityName||'未知')+'-'+(dwInfo.dwAreaName||'未知')"></mko-cell>
+                    <mko-cell title="详细地址" :val="dwInfo.dwAddress||'暂无'"></mko-cell>
+                    <!--<mko-cell title="行政区域"-->
+                    <!--:val="(dwInfo.dwXZProvinceName+dwInfo.dwXZCityName+dwInfo.dwXZAreaName)||'暂无'"></mko-cell>-->
+                    <mko-cell title="单位类型" :val="(dwInfo.dwTypeName+dwInfo.dwSubTypeName)||'暂无'" @click="showAllContent(dwInfo.dwTypeName+dwInfo.dwSubTypeName)"></mko-cell>
+                    <mko-cell title="经济所有制" :val="dwJJSYZ(dwInfo.dwJJSYZ)"></mko-cell>
+                    <!--<mko-cell title="单位其他属性" :val="dwInfo.dwAttribute||'暂无'"></mko-cell>-->
+                    <mko-cell title="消防管辖" :val="dwInfo.gxDWName ? dwInfo.gxDWName : '暂无'"></mko-cell>
+                    <mko-cell title="监督员" :val="dwInfo.jgName||'暂无'"></mko-cell>
+                    <mko-cell title="行业" val="国家机关"></mko-cell>
+                    <mko-cell title="已连接设备" val="电气监测"></mko-cell>
+                </div>
+
             </div>
             <div class="data-wrap">
-                <div class="title-wrap"><span>联系方式</span></div>
-                <mko-cell title="消防安全管理人" :val="dwInfo.dwManager||'暂无'"></mko-cell>
-                <mko-cell title="联系电话" :val="dwInfo.dwManagerPhone||'暂无'">
-                    <a class="phone" :href="'tel:' + dwInfo.dwManagerPhone"
-                       v-if="dwInfo.dwManagerPhone">{{dwInfo.dwManagerPhone}}</a>
-                </mko-cell>
-                <mko-cell title="消防安全责任人" :val="dwInfo.dwZRPerson||'暂无'"></mko-cell>
-                <mko-cell title="联系电话" :val="dwInfo.dwZRPhone||'暂无'">
-                    <a class="phone" :href="'tel:' + dwInfo.dwZRPhone" v-if="dwInfo.dwZRPhone">{{dwInfo.dwZRPhone}}</a>
-                </mko-cell>
-                <mko-cell title="企业法人" :val="dwInfo.dwFaRen||'暂无'"></mko-cell>
-                <mko-cell title="联系电话" :val="dwInfo.dwFaRenPhone||'暂无'">
-                    <a class="phone" :href="'tel:' + dwInfo.dwFaRenPhone"
-                       v-if="dwInfo.dwFaRenPhone">{{dwInfo.dwFaRenPhone}}</a>
-                </mko-cell>
-                <mko-cell title="法人证件号" :val="dwInfo.dwFaRenID||'暂无'"></mko-cell>
-                <mko-cell title="单位电话" :val="dwInfo.dwPhone||'暂无'">
-                    <a class="phone" :href="'tel:' + dwInfo.dwPhone" v-if="dwInfo.dwPhone">{{dwInfo.dwPhone}}</a>
-                </mko-cell>
-                <mko-cell title="单位传真" :val="dwInfo.dwFax||'暂无'"></mko-cell>
-                <mko-cell title="邮政编码" :val="dwInfo.dwPostcode||'暂无'"></mko-cell>
+                <div class="title-wrap" @click="showInfo('contact')">
+                    <span>联系方式</span>
+                    <span class="sign" :class="show.contact?'icon-arrow-down':'icon-arrow-up'"></span>
+                </div>
+                <div v-show="show.contact">
+                    <mko-cell title="消防安全管理人" :val="dwInfo.dwManager||'暂无'"></mko-cell>
+                    <mko-cell title="联系电话" :val="dwInfo.dwManagerPhone||'暂无'">
+                        <a class="phone" :href="'tel:' + dwInfo.dwManagerPhone"
+                           v-if="dwInfo.dwManagerPhone">{{dwInfo.dwManagerPhone}}</a>
+                    </mko-cell>
+                    <mko-cell title="消防安全责任人" :val="dwInfo.dwZRPerson||'暂无'"></mko-cell>
+                    <mko-cell title="联系电话" :val="dwInfo.dwZRPhone||'暂无'">
+                        <a class="phone" :href="'tel:' + dwInfo.dwZRPhone" v-if="dwInfo.dwZRPhone">{{dwInfo.dwZRPhone}}</a>
+                    </mko-cell>
+                    <mko-cell title="企业法人" :val="dwInfo.dwFaRen||'暂无'"></mko-cell>
+                    <mko-cell title="联系电话" :val="dwInfo.dwFaRenPhone||'暂无'">
+                        <a class="phone" :href="'tel:' + dwInfo.dwFaRenPhone"
+                           v-if="dwInfo.dwFaRenPhone">{{dwInfo.dwFaRenPhone}}</a>
+                    </mko-cell>
+                    <mko-cell title="法人证件号" :val="dwInfo.dwFaRenID||'暂无'"></mko-cell>
+                    <mko-cell title="单位电话" :val="dwInfo.dwPhone||'暂无'">
+                        <a class="phone" :href="'tel:' + dwInfo.dwPhone" v-if="dwInfo.dwPhone">{{dwInfo.dwPhone}}</a>
+                    </mko-cell>
+                    <mko-cell title="单位传真" :val="dwInfo.dwFax||'暂无'"></mko-cell>
+                    <mko-cell title="邮政编码" :val="dwInfo.dwPostcode||'暂无'"></mko-cell>
+                </div>
             </div>
         </div>
     </div>
@@ -80,10 +98,9 @@
 
 <script>
     import api from 'api'
-    import {NoData, ResError, ScoreBanner} from 'components';
-    import {dwJJSYZ, calcScoreText, calcBannerCircle, calcBannerBg} from 'filters'
-    import {Indicator} from 'mint-ui';
-    var Promise = require("bluebird");
+    import { NoData, ResError, ScoreBanner } from 'components';
+    import { dwJJSYZ, calcScoreText, calcBannerCircle, calcBannerBg } from 'filters'
+    import { Indicator } from 'mint-ui';
     var _id = '';
     export default{
         data() {
@@ -97,7 +114,12 @@
                 },
                 dwScore: '',
                 noAttributes: false,
-                recoredCount: ''
+                recoredCount: '',
+                show: {
+                    user: false,
+                    basic: false,
+                    contact: false
+                }
             }
         },
         mounted() {
@@ -105,10 +127,18 @@
         },
         activated(){
             this.getData();
-            this.getRecords();
+            this.show = {
+                user: false,
+                basic: false,
+                contact: false
+            }
+            this.getRecords()
         },
         methods: {
             dwJJSYZ,
+            showInfo(key){
+                this.show[key] = !this.show[key];
+            },
             getData(){
 //        Indicator.open({spinnerType: 'fading-circle'});
                 this.resError = false;
@@ -124,7 +154,7 @@
                         this.resError = true;
                         return;
                     }
-                    if(!res.response.attributes || (res.response.attributes && res.response.attributes.length <= 0)) {
+                    if (!res.response.attributes || (res.response.attributes && res.response.attributes.length <= 0)) {
                         this.noAttributes = true;
                     } else {
                         res.response.attributes = res.response.attributes.splice(0, 4);
@@ -186,7 +216,7 @@
                 }
             },
             attributesFilter(item) {
-                if(item.length >= 7) {
+                if (item.length >= 7) {
                     return `${item.substring(0, 4)}...`;
                 } else {
                     return item;
@@ -242,7 +272,7 @@
             width: 100%;
             display: table;
             text-align: center;
-            span{
+            span {
                 display: table-cell;
                 vertical-align: middle;
                 line-height: 120px;
@@ -316,6 +346,7 @@
                 }
             }
             .title-wrap {
+                position: relative;
                 height: 50px;
                 width: 100%;
                 padding-left: 14px;
@@ -328,6 +359,13 @@
                     font-size: 16px;
                     color: #333333;
                     letter-spacing: 0;
+                }
+                .sign {
+                    position: absolute;
+                    right: 14px;
+                    top: 15px;
+                    transition: transform 0.3s;
+                    -webkit-transition: transform 0.3s;
                 }
             }
             .gray-font {

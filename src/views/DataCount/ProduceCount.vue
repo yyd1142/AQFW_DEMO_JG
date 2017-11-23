@@ -93,14 +93,14 @@
                             itemStyle: {
                                 normal: {
                                     label: {
-                                        formatter: "{b} ({d}%)",
+                                        formatter: "{b}\n({d}%)",
                                         textStyle: {
                                             color: '#666',
                                             fontSize: '12px'
                                         }
                                     },
                                     labelLine: {
-                                        length: 40,
+                                        length: 20,
                                         lineStyle: {
                                             color: '#ddd',
                                         }

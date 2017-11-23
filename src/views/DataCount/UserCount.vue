@@ -31,14 +31,17 @@
     let itemStyle = {
         normal: {
             label: {
-                formatter: "{b} ({d}%)",
+//                formatter: "{b} ({d}%)",
+                formatter: function(data){
+                    return `${data.name}\n(${data.percent}%)`
+                },
                 textStyle: {
                     color: '#666',
                     fontSize: '12px'
                 }
             },
             labelLine: {
-                length: 30,
+                length: 20,
                 lineStyle: {
                     color: '#ddd',
                 }
@@ -63,6 +66,15 @@
                             {value: 1098, name: '滨湖区'},
                             {value: 716, name: '锡山区'},
                         ],
+//                        [
+//                            {value: 81.6, name: '宜兴市'},
+//                            {value: 78.8, name: '惠山区'},
+//                            {value: 83.7, name: '新吴区'},
+//                            {value: 84.9, name: '梁溪区'},
+//                            {value: 87.3, name: '江阴市'},
+//                            {value: 85.2, name: '滨湖区'},
+//                            {value: 80.4, name: '锡山区'},
+//                        ],
                         [
                             {value: 1253, name: '宜兴市'},
                             {value: 682, name: '惠山区'},
@@ -82,6 +94,13 @@
                             {value: 1057, name: '一般重点单位'},
                             {value: 568, name: '九小场所'},
                         ],
+//                        [
+//                            {value: 91.6, name: '一级重点单位'},
+//                            {value: 87.3, name: '二级重点单位'},
+//                            {value: 83.7, name: '三级重点单位'},
+//                            {value: 80.2, name: '一般重点单位'},
+//                            {value: 75.4, name: '九小场所'},
+//                        ],
                         [
                             {value: 2387, name: '一级重点单位'},
                             {value: 1576, name: '二级重点单位'},
@@ -117,6 +136,18 @@
                             {value: 837, name: '教育'},
                             {value: 2469, name: '消防'},
                         ],
+//                        [
+//                            {value: 93.4, name: '消防'},
+//                            {value: 87.6, name: '安监'},
+//                            {value: 86.9, name: '交通'},
+//                            {value: 86.7, name: '教育'},
+//                            {value: 85.8, name: '商务'},
+//                            {value: 85.3, name: '民政'},
+//                            {value: 84.5, name: '旅游'},
+//                            {value: 83.2, name: '经信'},
+//                            {value: 80.1, name: '文广'},
+//                            {value: 80.7, name: '建设'},
+//                        ],
                         [
                             {value: 256, name: '交通'},
                             {value: 307, name: '公安'},
