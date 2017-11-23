@@ -92,8 +92,15 @@
                 ];
                 let myChart = ec.init(this.$refs['chart'], theme);
                 myChart.setOption({
+
                     title: {
-                        text: '',
+                        show: this.type != 0,
+                        text: '安全评级分布',
+                        x: 'center',
+                        textStyle: {
+                            color: ' #3399ff',
+                            fontSize: 14,
+                        }
                     },
                     tooltip: {
                         trigger: 'axis'
@@ -114,6 +121,7 @@
                                 {text: '良好', max: 100},
                             ],
                             radius: 110,
+                            center: ['50%', '60%'],
                             splitLine: {
                                 show: true,
                                 lineStyle: {
@@ -161,23 +169,24 @@
                 })
             },
             DrawChart1(ec){
-
+                let fontSize = [12, 10, 12, 8];
                 let y = [
                     [],
                     ['宜兴市', '滨湖区', '新吴区', '锡山区', '江阴市', '惠山区', '梁溪区'],
-                    ['交通', '公安', '国资', '安监', '工商', '市政', '教育', '消防'],
-                    ['一级重点单位', '二级重点单位', '三级重点单位', '一般重点单位', '九小场所'],
+                    ['消防', '安监', '交通', '教育', '商务', '民政', '旅游', '经信', '文广', '建设'],
+                    ['一级\n重点单位', '二级\n重点单位', '三级\n重点单位', '一般\n重点单位单位', '九小\n场所'],
                 ];
                 let x = [
                     [],
-                    [1334, 612, 817, 1036, 1763, 998, 765],
-                    [196, 215, 314, 1154, 726, 335, 637, 3748],
-                    [2382, 1872, 1236, 1067, 768],
+                    [81.6, 85.2, 83.7, 80.4, 87.3, 78.8, 84.9],
+                    [93.4, 87.6, 86.9, 86.7, 85.8, 85.3, 84.5, 83.2, 80.1, 80.7],
+                    [91.6, 87.3, 83.7, 80.2, 75.4],
                 ];
 
                 let myChart = ec.init(this.$refs['chart'], theme);
                 myChart.setOption({
 //                    title: {
+//                        show: this.type != 0,
 //                        text: this.tabItems[this.tabI],
 //                    },
                     tooltip: {
@@ -195,7 +204,7 @@
                     xAxis: [
                         {
                             type: 'value',
-                            boundaryGap: [0.9, 1],
+                            boundaryGap: [0, 1],
                             axisLine: {
                                 show: false,
                             },
@@ -223,9 +232,9 @@
                                 show: false,
                             },
                             axisLabel: {
-                                margin: -37,
                                 textStyle: {
                                     color: '#666',
+                                    fontSize: fontSize[this.tabI]
                                 }
                             }
                         }
@@ -294,7 +303,7 @@
             .chart {
                 /*padding-top: 14px;*/
                 padding-left: 14px;
-                height: 300px;
+                height: 310px;
                 background-color: #fff !important;
             }
 

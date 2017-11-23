@@ -86,7 +86,7 @@
                         trigger: 'axis'
                     },
                     legend: {
-//                        data: ['安全评分趋势',]
+                        data: ['安全评分趋势',]
                     },
                     toolbox: {
                         show: true,
@@ -181,7 +181,7 @@
         }
         .chart-wrap {
             height: 300px;
-            /*padding-top: 10px;*/
+            padding-top: 10px;
             border-bottom: 1px solid @baseBorder;
             background-color: #fff !important;
         }
