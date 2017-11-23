@@ -1,69 +1,67 @@
 <template>
     <div class="task-count-wrap">
         <div class="placeholder-item"></div>
-        <mko-header title="累积执行任务数量" left-icon="icon-back" @handleLeftClick="back"></mko-header>
+        <mko-header title="累积执行任务数量(个)" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
             <div class="info-bar">
-                {{counts[type][weekIndex]}}
+                {{counts[type][monthIndex]}}
             </div>
-            <week-nav-bar @get="getWeekIndex"></week-nav-bar>
             <mko-cell class="title-cell" title="数据分析"></mko-cell>
             <div class="chart-wrap" ref="chart"></div>
             <div class="list-wrap">
-                <mko-cell :title="item.name" :val="item.value" v-for="item in datas[type][weekIndex]"></mko-cell>
+                <mko-cell :title="item.name" :val="item.value" v-for="item in datas[type][monthIndex]"></mko-cell>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import { WeekNavBar } from 'components'
     import echarts from 'echarts';
     let theme = 'macarons';
     export default {
         data () {
             return {
-                weekIndex: 0,
+                monthIndex: 0,
                 type: 0,
                 counts: [
-                    [56852, 54687],
-                    [9512, 9187]
+                    [1112032, 1123498],
+                    [260503, 264041]
                 ],
                 datas: [
                     [
                         [
-                            {value: 11136, name: '值班'},
-                            {value: 20366, name: '巡查'},
-                            {value: 7870, name: '维修'},
-                            {value: 9314, name: '保养'},
-                            {value: 2528, name: '检测'},
-                            {value: 5638, name: '检查'},
+                            {value: 228412, name: '值班'},
+                            {value: 458921, name: '巡查'},
+                            {value: 183752, name: '维修'},
+                            {value: 130627, name: '保养'},
+                            {value: 46502, name: '检查'},
+                            {value: 63818, name: '检测'},
                         ],
                         [
-                            {value: 10846, name: '值班'},
-                            {value: 19325, name: '巡查'},
-                            {value: 7576, name: '维修'},
-                            {value: 9487, name: '保养'},
-                            {value: 2369, name: '检测'},
-                            {value: 5264, name: '检查'},
-                        ]
+                            {value: 237412, name: '值班'},
+                            {value: 428921, name: '巡查'},
+                            {value: 173652, name: '维修'},
+                            {value: 140927, name: '保养'},
+                            {value: 67405, name: '检测'},
+                            {value: 75181, name: '检查'},
+                        ],
                     ],
                     [
                         [
-                            {value: 2378, name: '值班'},
-                            {value: 3464, name: '巡查'},
-                            {value: 1259, name: '维修'},
-                            {value: 1164, name: '保养'},
-                            {value: 761, name: '检测'},
-                            {value: 486, name: '检查'},
+                            {value: 111015, name: '巡查'},
+                            {value: 50201, name: '值班'},
+                            {value: 40476, name: '维修'},
+                            {value: 31413, name: '保养'},
+                            {value: 16487, name: '检测'},
+                            {value: 10911, name: '检查'},
                         ],
                         [
-                            {value: 2247, name: '值班'},
-                            {value: 3526, name: '巡查'},
-                            {value: 1135, name: '维修'},
-                            {value: 1093, name: '保养'},
-                            {value: 649, name: '检测'},
-                            {value: 528, name: '检查'},
+                            {value: 112523, name: '巡查'},
+                            {value: 50882, name: '值班'},
+                            {value: 41026, name: '维修'},
+                            {value: 31840, name: '保养'},
+                            {value: 16711, name: '检测'},
+                            {value: 11059, name: '检查'},
                         ]
                     ],
                 ]
@@ -74,6 +72,8 @@
         mounted() {
         },
         activated(){
+            this.monthIndex = this.$route.query.month || 0;
+
             this.type = sessionStorage.getItem(`jgDwType${this.$store.getters.groupId}`) || 0;
             this.DrawChart1(echarts);
         },
@@ -82,14 +82,14 @@
         destroyed(){
         },
         methods: {
-            getWeekIndex(index){
-                this.weekIndex = Math.abs(index);
-                if (this.weekIndex > 1)
-                    this.weekIndex = 1;
+            getMonthIndex(index){
+                this.monthIndex = Math.abs(index);
+                if (this.monthIndex > 1)
+                    this.monthIndex = 1;
                 this.DrawChart1(echarts)
             },
             DrawChart1(ec){
-                let datas = this.datas[this.type][this.weekIndex];
+                let datas = this.datas[this.type][this.monthIndex];
                 let myChart = ec.init(this.$refs['chart'], theme);
                 myChart.setOption({
                     title: {
@@ -145,7 +145,6 @@
             }
         },
         components: {
-            WeekNavBar
         }
     }
 </script>

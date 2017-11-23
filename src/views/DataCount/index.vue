@@ -3,8 +3,9 @@
         <div class="placeholder-item"></div>
         <mko-header title="数据统计" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
+            <month-nav-bar @get="getMonthIndex"></month-nav-bar>
             <div class="count-block-wrap">
-                <mko-cell :title="item.label" :val="item.num"
+                <mko-cell :title="item.label" :val="item.num[monthIndex]"
                           @click="goDetail(item.path)" is-link
                           v-for="item in counts[type]"></mko-cell>
             </div>
@@ -19,23 +20,25 @@
 
 <script>
     import api from 'api';
+    import { MonthNavBar } from 'components'
     import echarts from 'echarts';
     let theme = 'macarons';
     let gId = '';
     export default {
         data () {
             return {
+                monthIndex: 0,
                 type: -1,
                 counts: [
                     [
-                        {label: '社会单位数量(家)', num: 3746, path: '/qy_count'},
-                        {label: '累积执行任务数量(个)', num: 826852, path: '/task_count'},
-                        {label: '用户数量(人)', num: 7325, path: '/user_count'},
-                        {label: '生成数据总量(条)', num: 1511926, path: '/produce_count'}
+                        {label: '社会单位数量(家)', num: [3544, 3533], path: '/qy_count'},
+                        {label: '累积执行任务数量(个)', num: [1112032, 1123498], path: '/task_count'},
+                        {label: '用户数量(人)', num: [6359, 6355], path: '/user_count'},
+                        {label: '生成数据总量(条)', num: [5057090, 5021412], path: '/produce_count'}
                     ],
                     [
-                        {label: '社会单位数量(家)', num: 546, path: '/qy_count'},
-                        {label: '累积执行任务数量(个)', num: 68904, path: '/task_count'},
+                        {label: '社会单位数量(家)', num: [824, 823], path: '/qy_count'},
+                        {label: '累积执行任务数量(个)', num: [260503, 264041], path: '/task_count'},
                     ],
                 ]
             }
@@ -52,6 +55,12 @@
         destroyed(){
         },
         methods: {
+            getMonthIndex(index){
+                this.monthIndex = Math.abs(index);
+                if (this.monthIndex > 1)
+                    this.monthIndex = 1;
+
+            },
             getDwData(){
                 gId = this.$store.getters.groupId;
                 let params = {
@@ -61,18 +70,18 @@
                     if (res && res.code == 0) {
                         let data = res.response;
                         let path = data.path.split('/');
-                        this.type = path[1] == data.id ? 0 : 1;
-//                        this.type = path[1] != data.id ? 0 : 1;
+//                        this.type = path[1] == data.id ? 0 : 1;
+                        this.type = path[1] != data.id ? 0 : 1;
                         sessionStorage.setItem(`jgDwType${gId}`, this.type);
                         this.DrawChart1(echarts);
                     }
                 })
             },
             goDetail(path){
-                this.$MKOPush(path)
+                this.$MKOPush(path + '?month=' + this.monthIndex)
             },
             goScore(){
-                this.$MKOPush('/score_count');
+                this.$MKOPush('/score_count?month=' + this.monthIndex);
             },
             DrawChart1(ec){
                 let scores = [
@@ -163,7 +172,9 @@
                 this.$MKOPop();
             }
         },
-        components: {}
+        components: {
+            MonthNavBar
+        }
     }
 </script>
 

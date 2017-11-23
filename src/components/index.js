@@ -1,6 +1,7 @@
 import CountTimer from './CountTimer/CountTimer.vue'
 import DateNavbar from './DateNavbar/DateNavbar.vue'
 import DialogBox from './DialogBox/DialogBox.vue'
+import MonthNavBar from './MonthNavBar/MonthNavBar.vue'
 import NoData from './NoData/NoData.vue'
 import PhotoBox from './photoBox/photoBox.vue'
 import PhotoPreview from './PhotoPreview/PhotoPreview.vue'
@@ -20,6 +21,7 @@ export {
     DateNavbar,
     NoData,
     DialogBox,
+    MonthNavBar,
     PhotoBox,
     PhotoPreview,
     PopupPicker,
