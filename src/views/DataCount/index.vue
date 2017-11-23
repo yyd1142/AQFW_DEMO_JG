@@ -70,7 +70,7 @@
                     if (res && res.code == 0) {
                         let data = res.response;
                         let path = data.path.split('/');
-                        this.type = data.id == 1 ? 0 : 1;
+                        this.type = (data.id == 1 || path[1] == data.id) ? 0 : 1;
 //                        this.type = path[1] == data.id ? 0 : 1;
 //                        this.type = path[1] != data.id ? 0 : 1;
                         sessionStorage.setItem(`jgDwType${gId}`, this.type);
