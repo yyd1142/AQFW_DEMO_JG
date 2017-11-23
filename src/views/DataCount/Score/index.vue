@@ -61,7 +61,7 @@
         },
         activated(){
             this.type = sessionStorage.getItem(`jgDwType${this.$store.getters.groupId}`) || 0;
-            this.tabI = 0;
+            this.tabI = 1;
             this.DrawChart();
         },
         deactivated() {
@@ -195,7 +195,7 @@
                     xAxis: [
                         {
                             type: 'value',
-                            boundaryGap: [0, 1],
+                            boundaryGap: [0.9, 1],
                             axisLine: {
                                 show: false,
                             },
@@ -206,8 +206,8 @@
                                 show: true,
                             },
                             axisLabel: {
-                                textStyle:{
-                                    color:'#666'
+                                textStyle: {
+                                    color: '#666',
                                 }
                             }
                         }
@@ -223,8 +223,9 @@
                                 show: false,
                             },
                             axisLabel: {
-                                textStyle:{
-                                  color:'#666'
+                                margin: -37,
+                                textStyle: {
+                                    color: '#666',
                                 }
                             }
                         }
