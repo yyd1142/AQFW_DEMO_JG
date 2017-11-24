@@ -1,7 +1,7 @@
 <template>
     <div class="task-count-wrap">
         <div class="placeholder-item"></div>
-        <mko-header title="累积执行任务数量(个)" left-icon="icon-back" @handleLeftClick="back"></mko-header>
+        <mko-header title="任务执行数量(个)" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
             <div class="info-bar">
                 {{counts[type][monthIndex]}}
@@ -100,11 +100,6 @@
                         trigger: 'item',
                         formatter: "{a} <br/>{b} : {c} ({d}%)"
                     },
-//                    legend: {
-//                        orient: 'vertical',
-//                        x: 'left',
-//                        data: ['任务', '图片', '通知公告']
-//                    },
                     toolbox: {
                         show: true,
                         feature: {}
@@ -114,7 +109,7 @@
                     color: ['#3399FF', '#55DD66', '#F5A623', '#50E3C2 ', '#F8E71C', '#FF336B'],
                     series: [
                         {
-                            name: '累积执行任务数量',
+                            name: '任务执行数量',
                             type: 'pie',
                             radius: '55%',
                             center: ['50%', '50%'],

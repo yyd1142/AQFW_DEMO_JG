@@ -32,13 +32,13 @@
                 counts: [
                     [
                         {label: '社会单位数量(家)', num: [3544, 3533], path: '/qy_count'},
-                        {label: '累积执行任务数量(个)', num: [1112032, 1123498], path: '/task_count'},
+                        {label: '任务执行数量(个)', num: [1112032, 1123498], path: '/task_count'},
                         {label: '用户数量(人)', num: [6359, 6355], path: '/user_count'},
                         {label: '生成数据总量(条)', num: [5057090, 5021412], path: '/produce_count'}
                     ],
                     [
                         {label: '社会单位数量(家)', num: [824, 823], path: '/qy_count'},
-                        {label: '累积执行任务数量(个)', num: [260503, 264041], path: '/task_count'},
+                        {label: '任务执行数量(个)', num: [260503, 264041], path: '/task_count'},
                     ],
                 ]
             }

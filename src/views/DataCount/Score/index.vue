@@ -22,6 +22,12 @@
                 </mko-nav-bar>
                 <div class="chart" :class="tabI==2?'big':''" ref="chart"></div>
             </div>
+
+            <div class="list-wrap" v-show="tabI==0">
+                <mko-cell class="title-cell" title="安全评级" val="单位数量"></mko-cell>
+                <mko-cell :title="scoreLabel[i]" :val="item" v-for="(item,i) in scoreDwCounts[type][monthIndex]"></mko-cell>
+            </div>
+
         </div>
     </div>
 </template>
@@ -49,6 +55,27 @@
                         sbgl: {name: '消防设备管理', score: [13.6, 12.6], total: 20},
                         hzfx: {name: '建筑火灾风险', score: [14.8, 16.5], total: 20},
                     },
+                ],
+                scoreLabel: ['优秀', '良好', '一般', '较差', '极差'],
+                scoreDatas: [
+                    [
+                        [90.6, 83.5, 74.2, 67.9, 58.6],
+                        [90.7, 82.3, 75.2, 68.5, 51.8],
+                    ],
+                    [
+                        [91.2, 84, 75.7, 68.1, 51.7],
+                        [90.7, 82.5, 75, 68.6, 52.1],
+                    ]
+                ],
+                scoreDwCounts: [
+                    [
+                        [51, 1267, 2126, 51, 49],
+                        [8, 697, 2449, 353, 26],
+                    ],
+                    [
+                        [20, 331, 449, 8, 16],
+                        [7, 186, 535, 82, 13],
+                    ],
                 ]
             }
         },
@@ -88,16 +115,8 @@
                     this[`DrawChart${tab}`](echarts);
             },
             DrawChart0(ec){
-                let datas = [
-                    [
-                        [90.6, 83.5, 74.2, 67.9, 58.6],
-                        [90.7, 82.3, 75.2, 68.5, 51.8],
-                    ],
-                    [
-                        [91.2, 84, 75.7, 68.1, 51.7],
-                        [90.7, 82.5, 75, 68.6, 52.1],
-                    ]
-                ];
+                let label = this.scoreLabel;
+                let datas = this.scoreDatas;
                 let myChart = ec.init(this.$refs['chart'], theme);
                 myChart.setOption({
 
@@ -112,10 +131,14 @@
                         }
                     },
                     tooltip: {
-                        trigger: 'axis'
+                        trigger: 'item',
+//                        formatter: "{a} <br/>{b} : {c} ({d}%)",
+                        formatter: function (data) {
+                            return `平均分<br/>${label[data.dataIndex]} : ${data.value} (${data.percent})%`;
+                        },
                     },
                     toolbox: {
-                        show: false,
+                        show: true,
                         feature: {}
                     },
                     calculable: true,
@@ -125,13 +148,12 @@
                             name: '安全评级分布',
                             type: 'pie',
                             radius: '55%',
-                            center: ['50%', '55%'],
+                            center: ['50%', '50%'],
                             data: datas[this.type][this.monthIndex],
                             itemStyle: {
                                 normal: {
                                     label: {
                                         formatter: function (data) {
-                                            let label = ['优秀', '良好', '一般', '较差', '极差'];
                                             return `${label[data.dataIndex]}\n(${data.percent})%`;
                                         },
                                         textStyle: {
@@ -233,7 +255,7 @@
                     ],
                     series: [
                         {
-                            name: this.tabItems[this.tabI],
+                            name: '安全评分',
                             type: 'bar',
                             data: x[this.tabI][this.monthIndex],
                             itemStyle: {
@@ -302,6 +324,15 @@
                 /*}*/
             }
 
+        }
+        .list-wrap {
+            margin-top: 14px;
+            .title-cell {
+                height: 50px;
+                .cell {
+                    height: 50px;
+                }
+            }
         }
     }
 </style>
