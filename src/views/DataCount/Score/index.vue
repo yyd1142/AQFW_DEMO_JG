@@ -24,8 +24,8 @@
             </div>
 
             <div class="list-wrap" v-show="tabI==0">
-                <mko-cell class="title-cell" title="安全评级" val="单位数量"></mko-cell>
-                <mko-cell :title="scoreLabel[i]" :val="item" v-for="(item,i) in scoreDwCounts[type][monthIndex]"></mko-cell>
+                <mko-cell class="title-cell" title="安全评级" val="平均分"></mko-cell>
+                <mko-cell :title="scoreLabel[i]" :val="item" v-for="(item,i) in scoreDatas[type][monthIndex]"></mko-cell>
             </div>
 
         </div>
@@ -116,7 +116,7 @@
             },
             DrawChart0(ec){
                 let label = this.scoreLabel;
-                let datas = this.scoreDatas;
+                let datas = this.scoreDwCounts;
                 let myChart = ec.init(this.$refs['chart'], theme);
                 myChart.setOption({
 
@@ -134,7 +134,7 @@
                         trigger: 'item',
 //                        formatter: "{a} <br/>{b} : {c} ({d}%)",
                         formatter: function (data) {
-                            return `平均分<br/>${label[data.dataIndex]} : ${data.value} (${data.percent})%`;
+                            return `单位数量<br/>${label[data.dataIndex]} : ${data.value} (${data.percent})%`;
                         },
                     },
                     toolbox: {

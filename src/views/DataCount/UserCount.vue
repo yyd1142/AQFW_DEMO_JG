@@ -31,12 +31,13 @@
         normal: {
             label: {
 //                formatter: "{b} ({d}%)",
+//                position:'inner',
                 formatter: function (data) {
                     return `${data.name}\n(${data.percent}%)`
                 },
                 textStyle: {
                     color: '#666',
-                    fontSize: '12px'
+                    fontSize: '14px'
                 }
             },
             labelLine: {
@@ -47,6 +48,8 @@
             }
         },
     };
+    let noLabel = {normal: {label: {show: false}, labelLine: {show: false}}};
+
     export default {
         data () {
             return {
@@ -77,9 +80,9 @@
                     ],
                     [
                         [
-                            {value: 3616, name: '一级重点单位'},
-                            {value: 2318, name: '二级重点单位'},
-                            {value: 406, name: '三级重点单位'},
+                            {value: 3616, name: '一级重点\n单位'},
+                            {value: 2318, name: '二级重点\n单位'},
+                            {value: 406, name: '三级重点\n单位'},
                             {value: 19, name: '一般单位'},
                         ],
                         [
@@ -91,10 +94,10 @@
                     ],
                     [
                         [
-                            {value: 3545, name: '消防安全管理人'},
+                            {value: 3545, name: '消防安全\n管理人'},
                             {value: 849, name: '保安'},
-                            {value: 844, name: '专兼职消防管理人员'},
-                            {value: 509, name: '消防控制室管理人员'},
+                            {value: 844, name: '专兼职消防\n管理人员'},
+                            {value: 509, name: '消防控制室\n管理人员'},
                             {value: 202, name: '消防安全责任人'},
                             {value: 97, name: '社会单位员工'},
                             {value: 70, name: '专职（志愿）消防队员'},
@@ -107,10 +110,10 @@
                             {value: 2, name: '建设工程设计人员'},
                         ],
                         [
-                            {value: 3544, name: '消防安全管理人'},
+                            {value: 3544, name: '消防安全\n管理人'},
                             {value: 849, name: '保安'},
-                            {value: 843, name: '专兼职消防管理人员'},
-                            {value: 507, name: '消防控制室管理人员'},
+                            {value: 843, name: '专兼职消防\n管理人员'},
+                            {value: 507, name: '消防控制室\n管理人员'},
                             {value: 202, name: '消防安全责任人'},
                             {value: 97, name: '社会单位员工'},
                             {value: 70, name: '专职（志愿）消防队员'},
@@ -167,6 +170,7 @@
         mounted() {
         },
         activated(){
+            this.tabI = 0;
             this.DrawChart(echarts);
         },
         deactivated() {
@@ -186,7 +190,10 @@
             DrawChart(ec){
                 let myChart = ec.init(this.$refs['chart'], theme);
                 let data = JSON.parse(JSON.stringify(this.datas[this.tabI][this.monthIndex]));
-                data.splice(6, data.length - 6);
+                let length = [7, 4, 4, 4];
+                for (let i = data.length - 1; i >= length[this.tabI]; i--) {
+                    data[i].itemStyle = noLabel;
+                }
                 myChart.setOption({
                     title: {
                         x: 'center'
@@ -196,7 +203,7 @@
                         formatter: "{a} <br/>{b} : {c} ({d}%)"
                     },
                     toolbox: {
-                        show: true,
+                        show: false,
                         feature: {}
                     },
                     calculable: true,
@@ -206,7 +213,9 @@
                             name: this.tabItems[this.tabI],
                             type: 'pie',
                             radius: '55%',
-                            center: ['52%', '50%'],
+//                            clockWise: false,
+                            center: ['50%', '50%'],
+//                            minAngle: 10,
                             data: data,
                             itemStyle: itemStyle
                         }
@@ -217,8 +226,7 @@
                 this.$MKOPop();
             }
         },
-        components: {
-        }
+        components: {}
     }
 </script>
 
@@ -254,7 +262,7 @@
         .chart-wrap {
             margin-bottom: 10px;
             .chart {
-                height: 300px;
+                height: 450px;
                 background-color: #fff !important;
             }
 

@@ -22,12 +22,11 @@
 <script>
     import echarts from 'echarts';
     let theme = 'macarons';
-    let color = ['#3399FF', '#55DD66', '#F5A623', '#50E3C2 ', '#AD6DFF', '#F8E71C', '#FF336B', '#7E80FF'];
-    let s = '#7E80FF'
+    let color = ['#3399FF', '#55DD66', '#F5A623', '#50E3C2 ', '#AD6DFF', '#F8E71C', '#FF336B', '#7E80FF', '#38b48b', '#96514b', '#ED6D35', '#824880'];
     let itemStyle = {
         normal: {
             label: {
-//                formatter: "{b} ({d}%)",
+
                 formatter: function (data) {
                     return `${data.name}\n(${data.percent}%)`
                 },
@@ -44,6 +43,7 @@
             }
         },
     };
+    let noLabel = {normal: {label: {show: false}, labelLine: {show: false}}};
     export default {
         data () {
             return {
@@ -210,8 +210,10 @@
             DrawChart(ec){
                 let myChart = ec.init(this.$refs['chart'], theme);
                 let data = JSON.parse(JSON.stringify(this.datas[this.type][this.monthIndex][this.tabI]));
-                let length = [8, 6];
-                data.splice(length[this.type] - 1, data.length - length[this.type]);
+                let length = 8;
+                for (let i = data.length - 1; i >= length; i--) {
+                    data[i].itemStyle = noLabel;
+                }
                 myChart.setOption({
                     title: {
                         x: 'center'
@@ -381,7 +383,7 @@
         .chart-wrap {
             /*padding-top: 14px;*/
             margin-bottom: 10px;
-            height: 300px;
+            height: 400px;
             border-bottom: 1px solid @baseBorder;
             background-color: #fff !important;
         }
