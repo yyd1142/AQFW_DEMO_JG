@@ -162,7 +162,7 @@
                                         }
                                     },
                                     labelLine: {
-                                        length: 20,
+                                        length: 30,
                                         lineStyle: {
                                             color: '#ddd',
                                         }
