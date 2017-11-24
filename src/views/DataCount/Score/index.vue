@@ -78,7 +78,7 @@
             goDetail(type){
                 let paths = [
                     '/score_count_rank_admin',
-                    '/score_count_detail'
+                    '/score_count_detail?month=' + this.monthIndex
                 ];
                 this.$MKOPush(paths[type]);
             },
@@ -105,6 +105,7 @@
                         show: this.type != 0,
                         text: '安全评级分布',
                         x: 'center',
+                        y: '14px',
                         textStyle: {
                             color: ' #3399ff',
                             fontSize: 14,
@@ -297,7 +298,7 @@
                 height: 500px;
                 background-color: #fff !important;
                 /*&.big {*/
-                    /*height: 600px;*/
+                /*height: 600px;*/
                 /*}*/
             }
 

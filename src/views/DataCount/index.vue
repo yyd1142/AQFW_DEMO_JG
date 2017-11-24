@@ -150,7 +150,7 @@
                     ],
                     series: [
                         {
-                            name: '安全评分趋势',
+                            name: '安全评分',
                             clickable: false,
                             type: 'line',
                             stack: '分数',
