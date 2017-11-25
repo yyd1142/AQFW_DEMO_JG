@@ -18,10 +18,10 @@
                 <mko-cell class="title-cell" title="企业名称" val="得分"></mko-cell>
 
                 <div v-show="tabI==0">
-                    <mko-cell :title="item.name" :val="item.score" v-for="item in list"></mko-cell>
+                    <mko-cell :title="item.name" :val="item.score" v-for="item in list[monthIndex]"></mko-cell>
                 </div>
                 <div v-show="tabI==1">
-                    <mko-cell :title="item.name" :val="item.score" v-for="item in listReverse"></mko-cell>
+                    <mko-cell :title="item.name" :val="item.score" v-for="item in listReverse[monthIndex]"></mko-cell>
                 </div>
             </div>
         </div>
@@ -32,31 +32,51 @@
     export default {
         data () {
             return {
+                monthIndex: 0,
                 isSel: false,
                 tabI: 0,
                 tabItems: ['评分由高到低', '评分由低到高'],
                 list: [
-                    {name: '无锡市舒心商务宾馆有限公司', score: 95.5},
-                    {name: '江阴市华西加油站有限公司', score: 94.7},
-                    {name: '江阴市华宏装饰材料市场有限公司', score: 93.5},
-                    {name: '中国石油天然气股份有限公司江苏江阴月城加油站', score: 92.4},
-                    {name: '宜兴市张渚高级中学', score: 91.8},
-                    {name: '宜兴市茶竹度假村有限公司', score: 91.7},
-                    {name: '江阴华士中意大酒店', score: 91.4},
-                    {name: '宜兴市张渚高级中学', score: 91.2},
-                    {name: '无锡市高技能人才公共实训管理服务中心', score: 90.6},
+                    [
+                        {name: '江阴市协丰棉麻有限公司', score: 93},
+                        {name: '江阴市兴隆特种油墨有限公司', score: 92.1},
+                        {name: '江阴市华西加油站有限公司', score: 92},
+                        {name: '江阴华士中意大酒店', score: 91.9},
+                        {name: '江阴市云亭亚明网吧', score: 91.6},
+                        {name: '江阴市长泾永尚生活超市', score: 91.1},
+                        {name: '江阴市麦博士量贩式歌城有限公司', score: 90.6},
+                        {name: '江阴市华顺石化有限公司', score: 90.5},
+                        {name: '江阴享悦宝诚汽车销售服务有限公司', score: 90.2},
+                    ],
+                    [
+                        {name: '中石化江阴市镇澄路加油站', score: 96.9},
+                        {name: '江阴华士中意大酒店', score: 91.9},
+                        {name: '江阴市祝塘实验幼儿园', score: 89.1},
+                        {name: '江阴市麦博士量贩式歌城有限公司', score: 88.6},
+                        {name: '江阴市长泾永尚生活超市', score: 88.5},
+                        {name: '江阴市华顺石化有限公司', score: 88.3},
+                        {name: '江阴新东亚大酒店有限公司', score: 88.1},
+                        {name: '江阴市比图加油有限公司', score: 87.9},
+                        {name: '无锡市梅村加油站有限公司', score: 86.8},
+                    ]
                 ],
-                listReverse: []
+                listReverse: [
+                    [], []
+                ]
             }
         },
         watch: {},
         computed: {},
         mounted() {
-            this.list.forEach(item => {
-                this.listReverse.unshift(item);
+            this.list.forEach((data, index) => {
+                data.forEach(item => {
+                    this.listReverse[index].unshift(item);
+                })
             })
         },
         activated(){
+            this.tabI = 0;
+            this.monthIndex = this.$route.query.month || 0;
         },
         deactivated() {
         },

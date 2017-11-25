@@ -69,7 +69,7 @@
                 this.tabI = i;
             },
             goRank(){
-                this.$MKOPush('/score_count_rank');
+                this.$MKOPush('/score_count_rank?month=' + this.monthIndex);
             },
             back(){
                 this.$MKOPop();

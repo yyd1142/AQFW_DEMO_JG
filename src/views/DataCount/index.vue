@@ -86,8 +86,8 @@
             },
             DrawChart1(ec){
                 let scores = [
-                    [65.7, 72.8, 76.2, 83.4, 87.5, 85.6],
-                    [68.5, 77.8, 79.2, 86.4, 86.4, 87.3],
+                    [65.7, 63.5, 71.8, 73.5, 75.8, 78.6],
+                    [65, 63.8, 71.1, 73.3, 75.8, 78.9],
                 ];
 
                 let myChart = ec.init(this.$refs['lineChart'], theme);
@@ -141,6 +141,7 @@
                     yAxis: [
                         {
                             type: 'value',
+                            max: 100,
                             axisTick: {
                                 show: false,
                             },
