@@ -80,9 +80,9 @@
 
 <script>
     import api from 'api'
-    import {NoData, ResError, SearchBar} from 'components';
-    import {calcScoreStyle} from 'filters'
-    import {Indicator, Toast} from 'mint-ui';
+    import { NoData, ResError, SearchBar } from 'components';
+    import { calcScoreStyle } from 'filters'
+    import { Indicator, Toast } from 'mint-ui';
     var qy_datas = [{}, {datas: [], pageItem: {}}, {datas: [], pageItem: {}}];
     var count = 10;
     let scroll_top = [0, 0];
@@ -171,7 +171,7 @@
             this.searchBarShow = false;
             scrollTo(0, scroll_top[this.listType - 1]);
             window.onscroll = this.getScrollTop;
-            this.listType = 1;
+//            this.listType = 1;
             this.getData();
             this.getTypeData();
         },
@@ -204,6 +204,9 @@
                     });
                 })
             },
+            getAttribute(data){
+
+            },
             getData() {
                 this.noData = false;
                 this.resError = false;
@@ -233,6 +236,24 @@
                         if (res.response.datas === undefined || res.response.datas.length === 0) {
                             this.noData = true;
                         } else {
+                            //(暂时)循环请求获取标签信息
+                            res.response.datas.forEach(item => {
+                                let id = '';
+                                try {
+                                    id = JSON.parse(item.dwAttributeId || "[]");
+                                } catch (err) {
+                                    id = [];
+                                }
+                                let pas = {
+                                    m: 'getAttribute',
+                                    tagId: id.join(',')
+                                };
+                                api.getQyRecordCount(pas).then(ress => {
+                                    if (ress && ress.code == 0)
+                                        item.dwAttributes = ress.response;
+                                });
+                            });
+
                             qy_datas[this.listType] = {
                                 datas: res.response.datas,
                                 pageItem: {page: res.response.page, pageCount: res.response.pageCount}
@@ -387,7 +408,7 @@
                 }
             },
             attributesFilter(item) {
-                if(item.length >= 7) {
+                if (item.length >= 7) {
                     return `${item.substring(0, 4)}...`;
                 } else {
                     return item;

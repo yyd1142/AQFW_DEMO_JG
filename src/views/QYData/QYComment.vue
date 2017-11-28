@@ -18,8 +18,8 @@
 </template>
 <script>
     import api from 'api'
-    import {NoData, ResError} from 'components'
-    import {MessageBox, Toast} from 'mint-ui'
+    import { NoData, ResError } from 'components'
+    import { MessageBox, Toast } from 'mint-ui'
     export default {
         data() {
             return {
@@ -114,12 +114,12 @@
                 }).then(result => {
                     if (!result) return false;
                     if (result.code == 0) {
-                        Toast({ message: '保存成功', duration: 1500 });
+                        Toast({message: '保存成功', duration: 1500});
                         setTimeout(() => {
                             this.back()
                         }, 1500);
                     } else {
-                        Toast({ message: '保存失败', duration: 1500 });
+                        Toast({message: '保存失败', duration: 1500});
                     }
                 })
             },
@@ -180,8 +180,10 @@
                 min-height: 60px;
                 border-radius: 2px;
                 padding: 0 14px;
+                overflow: hidden;
                 .label {
                     height: 30px;
+                    max-width: 100%;
                     font-size: 14px;
                     color: #ffffff;
                     border-radius: 2px;
