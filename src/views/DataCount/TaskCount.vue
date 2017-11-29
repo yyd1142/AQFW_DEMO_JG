@@ -179,7 +179,7 @@
         }
         .chart-wrap {
             padding-top: 14px;
-            height: 270px;
+            height: 300px;
             border-top: 1px solid @baseBorder;
             background-color: #fff !important;
         }

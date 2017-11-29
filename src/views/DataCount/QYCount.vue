@@ -383,7 +383,7 @@
         .chart-wrap {
             /*padding-top: 14px;*/
             margin-bottom: 10px;
-            height: 400px;
+            height: 300px;
             border-bottom: 1px solid @baseBorder;
             background-color: #fff !important;
         }

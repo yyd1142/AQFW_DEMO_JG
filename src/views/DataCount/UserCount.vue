@@ -262,7 +262,7 @@
         .chart-wrap {
             margin-bottom: 10px;
             .chart {
-                height: 450px;
+                height: 300px;
                 background-color: #fff !important;
             }
 
