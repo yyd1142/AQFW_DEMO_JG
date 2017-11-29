@@ -3,7 +3,7 @@
         <div class="placeholder-item"></div>
         <mko-header :title="title" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
-            <mko-cell :title="key" :val="item" v-for="(item,key) in data" non-text="无"></mko-cell>
+            <mko-cell :title="key" :val="item" v-for="(item,key) in data" non-text="无" @click="showAllContent(item, key)"></mko-cell>
         </div>
     </div>
 </template>
@@ -40,6 +40,11 @@
             },
             back(){
                 this.$MKOPop();
+            },
+            showAllContent(item, key) {
+                if(key === '违法行为' || key === '隐患详情' || key === '违法事实') {
+                    this.$MKODialog({ msg: item });
+                }
             }
         },
         components: {}
