@@ -44,7 +44,7 @@
             }
         },
     };
-    let noLabel = {normal: {label: {show: false}, labelLine: {show: false}}};
+    let noLabel = {normal: {label: {show: false}, labelLine: {show: false}},emphasis:{label: {show: false}, labelLine: {show: false}}};
     export default {
         data () {
             return {
