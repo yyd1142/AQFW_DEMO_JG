@@ -6,12 +6,12 @@
             <div class="info-bar">
                 {{total[monthIndex]}}
             </div>
-            <mko-cell title="数据分析"></mko-cell>
 
             <div class="chart-wrap">
                 <mko-nav-bar>
                     <mko-tab-item :activied="tabI==i" :label="t" @handleTabClick="tabFn(i)" v-for="(t,i) in tabItems"></mko-tab-item>
                 </mko-nav-bar>
+                <!--<mko-cell title="数据分析"></mko-cell>-->
                 <div class="chart" ref="chart"></div>
             </div>
             <div>

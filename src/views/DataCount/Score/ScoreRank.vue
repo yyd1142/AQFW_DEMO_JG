@@ -7,7 +7,7 @@
             <!--<mko-nav-bar>-->
             <!--<mko-tab-item :activied="tabI==i" :label="t" @handleTabClick="tabFn(i)" v-for="(t,i) in tabItems"></mko-tab-item>-->
             <!--</mko-nav-bar>-->
-            <mko-cell :icon="isSel?'icon-link-arrow-down':'icon-link-arrow-up'"
+            <mko-cell :icon="isSel?'icon-link-arrow-up':'icon-link-arrow-down'"
                       :title="tabItems[tabI]" val="共9个" @click="sel"></mko-cell>
             <div class="sel-wrap" @click.self="isSel=false" v-show="isSel">
                 <mko-cell class="sel-item" :class="i==tabI?'active':''" :title="t" @click="tabFn(i)" v-for="(t,i) in tabItems">

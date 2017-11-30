@@ -6,7 +6,7 @@
             <div class="info-bar">
                 {{counts[type][monthIndex]}}
             </div>
-            <mko-cell class="title-cell" title="数据分析"></mko-cell>
+            <!--<mko-cell class="title-cell" title="数据分析"></mko-cell>-->
             <div class="chart-wrap" ref="chart"></div>
             <div class="list-wrap">
                 <mko-cell :title="item.name" :val="item.value" v-for="item in datas[type][monthIndex]"></mko-cell>

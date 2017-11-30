@@ -167,7 +167,7 @@
                 padding: 0;
                 padding-right: 14px;
                 height: 36px;
-                top: 3px;
+                top: 4px;
                 border: none;
                 font-size: 14px;
                 color: @baseText02;
