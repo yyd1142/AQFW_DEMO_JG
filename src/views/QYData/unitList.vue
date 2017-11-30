@@ -3,7 +3,7 @@
         <div class="placeholder-item"></div>
         <mko-header :title="dwItem.name" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap qy-info-wrap">
-            <mko-cell v-for="item in dwItem.datas" :title="item.dwName" is-link @click="linkPath(item)"></mko-cell>
+            <mko-cell v-for="item in dwItem.datas" :title="item.dwName" main="left" is-link @click="linkPath(item)"></mko-cell>
         </div>
     </div>
 </template>

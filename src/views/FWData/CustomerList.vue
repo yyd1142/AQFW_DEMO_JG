@@ -6,7 +6,7 @@
         <no-data v-if="noData"></no-data>
         <div class="page-wrap customer-list-wrap" v-show="!resError">
             <search-bar v-model="searchValue" hint-text="搜索公司名称" ref="search-bar"></search-bar>
-            <mko-cell :title="item.name" @click="goInfo(item)"
+            <mko-cell :title="item.name" main="left" @click="goInfo(item)"
                       v-for="item in (searchValue ? searchDatas : customerDatas)" is-link></mko-cell>
         </div>
     </div>

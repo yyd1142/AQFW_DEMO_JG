@@ -18,10 +18,10 @@
                 <mko-cell class="title-cell" title="企业名称" val="得分"></mko-cell>
 
                 <div v-show="tabI==0">
-                    <mko-cell :title="item.name" :val="item.score" v-for="item in list[monthIndex]"></mko-cell>
+                    <mko-cell :title="item.name" main="left" :val="item.score" v-for="item in list[monthIndex]"></mko-cell>
                 </div>
                 <div v-show="tabI==1">
-                    <mko-cell :title="item.name" :val="item.score" v-for="item in listReverse[monthIndex]"></mko-cell>
+                    <mko-cell :title="item.name" main="left" :val="item.score" v-for="item in listReverse[monthIndex]"></mko-cell>
                 </div>
             </div>
         </div>

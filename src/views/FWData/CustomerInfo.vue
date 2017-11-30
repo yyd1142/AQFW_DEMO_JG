@@ -15,12 +15,12 @@
             </div>
             <div class="data-wrap">
                 <div class="title-wrap"><span>合同文件</span></div>
-                <mko-cell :title="item.fileName" val="查看" val-style="blue-font" is-link @click="goPhotoViewer(item)"
+                <mko-cell :title="item.fileName" main="left" val="查看" val-style="blue-font" is-link @click="goPhotoViewer(item)"
                           v-for="item in customerDetail.attachment"></mko-cell>
             </div>
             <div class="data-wrap" v-if="customerDetail.devices.length > 0">
                 <div class="title-wrap"><span>委托管理设备</span></div>
-                <mko-cell :title="item.name" :val="typeFilter(item.type)"
+                <mko-cell :title="item.name" :val="typeFilter(item.type)" main="left"
                           v-for="item in customerDetail.devices"></mko-cell>
             </div>
         </div>

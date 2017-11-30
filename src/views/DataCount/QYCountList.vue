@@ -10,7 +10,7 @@
                 <!--<mko-double-cell :title="item.name" :label="item.desc"-->
                 <!--:val="`${item.person} ${item.number}`"-->
                 <!--v-for="item in list[tabI]"></mko-double-cell>-->
-                <mko-cell :title="item.name" is-link @click="goDetail(item)" v-for="item in list[tabI]"></mko-cell>
+                <mko-cell :title="item.name" main="left" is-link @click="goDetail(item)" v-for="item in list[tabI]"></mko-cell>
             </div>
         </div>
     </div>

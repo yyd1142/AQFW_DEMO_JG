@@ -13,7 +13,7 @@
 
             <div class="chart-wrap" ref="chart"></div>
             <div class="list-wrap">
-                <mko-cell :title="item.name" :val="item.value" v-for="item in datas[type][monthIndex][tabI]"></mko-cell>
+                <mko-cell :title="item.name" :val="item.value" main="left" v-for="item in datas[type][monthIndex][tabI]"></mko-cell>
             </div>
             <!--<mko-cell title="数据列表" is-link @click="goList"></mko-cell>-->
         </div>
