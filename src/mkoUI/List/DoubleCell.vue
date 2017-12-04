@@ -72,6 +72,9 @@
         }
         &:last-child {
             .border-btm(@baseBorder);
+            &:after {
+                bottom: -1px;
+            }
         }
         &:not(:last-child) .cell {
             .border-btm(@baseBorder);
@@ -106,7 +109,7 @@
             .title-icon {
                 position: relative;
                 margin-right: 14px;
-                min-width: 10px;
+                /*min-width: 10px;*/
                 .icon {
                     display: block;
                 }
