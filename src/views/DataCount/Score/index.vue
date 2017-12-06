@@ -42,7 +42,7 @@
             return {
                 monthIndex: 0,
                 tabI: 0,
-                tabItems: ['安全评级分布', '区域排名', '行业排名', '单位类型排名'],
+                tabItems: ['安全评级', '区域排名', '行业排名', '单位类型'],
                 type: 0,
                 counts: [
                     {

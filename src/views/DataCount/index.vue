@@ -10,7 +10,9 @@
                           v-for="item in counts[type]"></mko-cell>
             </div>
             <div class="chart-wrap" ref="lineChart"></div>
-            <mko-cell title="评分详情" is-link @click="goScore"></mko-cell>
+            <div>
+                <mko-cell title="评分详情" is-link @click="goScore"></mko-cell>
+            </div>
             <!--<div class="btn-wrap">-->
             <!--<mko-button size="large" no-radius @click="goScore">评分详情</mko-button>-->
             <!--</div>-->
@@ -119,7 +121,7 @@
                         {
                             type: 'category',
                             boundaryGap: true,
-                            data: ['2017.6', '2017.7', '2017.8', '2017.9', '2017.10','20171.11'],
+                            data: ['2017.6', '2017.7', '2017.8', '2017.9', '2017.10','2017.11'],
                             axisLine: {
                                 lineStyle: {
                                     color: '#979797'
@@ -207,7 +209,6 @@
         .chart-wrap {
             height: 300px;
             padding-top: 10px;
-            border-bottom: 1px solid @baseBorder;
             background-color: #fff !important;
         }
         .btn-wrap {

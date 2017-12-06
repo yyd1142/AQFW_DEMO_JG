@@ -29,6 +29,7 @@
     @import "../../config.less";
 
     .config-page-wrap {
+        padding-top: 14px;
         .mint-cell {
             min-height: 44px;
             height: 44px;
@@ -85,7 +86,10 @@
         },
         methods: {
             exit() {
-                MessageBox.confirm('确定退出该帐号吗', '提示').then(action => {
+                this.$MKODialog({
+                    msg:'确定退出该账号吗',
+                    cancelBtn: true,
+                }).then(action=>{
                     if (action == 'confirm') {
                         this.$store.dispatch('logout');
                         Toast({
@@ -101,9 +105,28 @@
                         })
                     }
                 });
+//                MessageBox.confirm('确定退出该帐号吗', '提示').then(action => {
+//                    if (action == 'confirm') {
+//                        this.$store.dispatch('logout');
+//                        Toast({
+//                            message: '已退出',
+//                            position: 'middle',
+//                            duration: 1000
+//                        });
+//                        this.$nextTick(() => {
+//                            setTimeout(() => {
+//                                this.$Logout();
+//                                this.$MKOJump('/login');
+//                            }, 1000)
+//                        })
+//                    }
+//                });
             },
             clear() {
-                MessageBox.confirm('确定清除缓存吗', '提示').then(action => {
+                this.$MKODialog({
+                    msg:'确定清除缓存吗',
+                    cancelBtn: true,
+                }).then(action=>{
                     if (action == 'confirm') {
                         this.$MKOClearApp((result) => {
                             if (!result || result.length == 0) return;
@@ -114,7 +137,19 @@
                             });
                         })
                     }
-                });
+                })
+//                MessageBox.confirm('确定清除缓存吗', '提示').then(action => {
+//                    if (action == 'confirm') {
+//                        this.$MKOClearApp((result) => {
+//                            if (!result || result.length == 0) return;
+//                            Toast({
+//                                message: `共清理了${result}缓存`,
+//                                position: 'middle',
+//                                duration: 1000
+//                            });
+//                        })
+//                    }
+//                });
             },
             back() {
                 this.$MKOPop()
