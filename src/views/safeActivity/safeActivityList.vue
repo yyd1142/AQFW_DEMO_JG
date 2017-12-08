@@ -1,19 +1,13 @@
 <template>
-    <div>
+    <div class="safe-activity-list">
         <div class="placeholder-item"></div>
         <mko-header title="安全活动" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap safe-aty-list">
-            <ul class="table-view">
-                <li class="table-cell" v-for="(item, index) in files" v-if="index != 0"
-                    @click="goSafeActivity(item)">
-                    <div class="title">{{projectName[item.project]}}</div>
-                    <div class="item">{{item.description}}</div>
-                    <div class="item">上传时间：{{item.uploadDate | formatDate}}</div>
-                    <div class="badge" :class="item.badgeBG">
-                        <span>{{item.status}}</span>
-                    </div>
-                </li>
-            </ul>
+            <mko-double-cell :title="item.description" :label="projectName[item.project]" :is-link="isLink(item.status)" v-for="(item, index) in files" v-if="index != 0" @click="goSafeActivity(item)">
+                <div>
+                    <span :style="{ color: valColor(item.status) }">{{item.status}}</span>
+                </div>
+            </mko-double-cell>
         </div>
     </div>
 </template>
@@ -106,7 +100,13 @@
                     return false;
                 }
                 sessionStorage.setItem('SAFEACTIVITY_DATA', JSON.stringify(item));
-                this.$MKOPush(`/safe_activity_info/${item.id}`)
+                this.$MKOPush({
+                    path: `/safe_activity_info/${item.id}`,
+                    query: {
+                        description: item.description,
+                        project: item.project
+                    }
+                })
             },
             refresh() {
                 Indicator.open({spinnerType: 'fading-circle'});
@@ -138,70 +138,30 @@
             back() {
                 this.$MKOPop()
             },
+            isLink(status) {
+                if (status == '已超期' || status == '未开展') {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            valColor(status) {
+                if (status == '已超期' || status == '未开展') {
+                    return '#333333';
+                } else {
+                    return '#666666';
+                }
+            }
         },
         components: {}
     }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
     @import "../../config.less";
-
-    .safe-aty-list {
-        .table-view {
-            box-sizing: border-box;
-            width: 100%;
-            padding-left: 14px;
-            background-color: #ffffff;
-            .table-cell {
-                width: 100%;
-                height: 70px;
-                padding: 6px 14px 6px 0;
-                background-color: #ffffff;
-                position: relative;
-                box-sizing: border-box;
-                .border-btm(@borderColor);
-                .title {
-                    font-size: 14px;
-                    color: #232323;
-                }
-                .item {
-                    width: 78%;
-                    font-size: 12px;
-                    color: #606060;
-                    overflow: hidden;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                }
-                .badge {
-                    width: 50px;
-                    position: absolute;
-                    display: table;
-                    top: 0;
-                    bottom: 0;
-                    right: 14px;
-                    margin: auto;
-                    border-radius: 2px;
-                    span {
-                        display: table-cell;
-                        vertical-align: middle;
-                        font-size: 12px;
-                        color: #ffffff;
-                        text-align: center;
-                        line-height: 20px;
-                        height: 20px;
-                    }
-                }
-                .green {
-                    background-color: #00E460;
-                }
-                .yellow {
-                    background-color: #FFB224;
-                }
-                .red {
-                    background-color: #FF6B41;
-                }
-            }
+    .safe-activity-list {
+        .page-wrap {
+            padding-top: 10px;
         }
     }
-
 </style>

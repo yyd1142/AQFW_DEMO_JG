@@ -7,6 +7,10 @@
                 <div class="message-title">
                     <h3>{{newsItem.title}}</h3>
                 </div>
+                <div class="time-wrap" :style="{ marginBottom: attachments.length <= 0 ? '20px' : '4px' }">{{newsItem.author}} {{newsItem.createDate | formatDate("YYYY-MM-DD HH:mm")}}</div>
+                <div class="attachment-list" :class="index == attachments.length - 1 ? 'last-child' : ''" v-for="item, index in attachments" v-if="attachments.length > 0" @click="downloadFile(domain + item.resouceId)">
+                    <div class="title-table">下载附件：<span>{{titleFilter(item.title) + '.' + item.type}}</span></div>
+                </div>
                 <div class="banner" v-if="images.length > 0">
                     <mt-swipe :auto="2500">
                         <mt-swipe-item  v-for="item in images" >
@@ -14,19 +18,7 @@
                         </mt-swipe-item>
                     </mt-swipe>
                 </div>
-                <div class="time-wrap">
-                    <div class="time">{{newsItem.createDate | formatDate}}</div>
-                    <div class="from">来源：{{newsItem.author}}</div>
-                </div>
                 <div id="contentMsg" class="content-msg" v-html="newsItem.content"></div>
-                <div class="attachment-list" v-if="attachments.length > 0">
-                    <div class="title-table">
-                        <div class="title">文件附件：</div>
-                    </div>
-                    <div class="attachment-cell" v-for="item in attachments" @click="downloadFile(domain + item.resouceId)">
-                        {{titleFilter(item.title) + '.' + item.type}}
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -118,19 +110,21 @@ export default {
     padding-bottom: 0;
     background-color: #ffffff;
     height: 100vh;
-    padding-top: 40px + @headerTop;
+    padding-top: 44px + @headerTop;
     margin-top: 0;
 }
 
 .message-title {
     width: 100%;
-    margin: 14px auto;
+    margin: 20px auto;
     h3 {
-        font-size: 18px;
+        font-size: 22px;
         color: #333;
         margin: 0;
-        padding: 0;
-        text-align: center;
+        padding: 0 14px 0 14px;
+        text-align: left;
+        font-weight: bold;
+        line-height: 30px;
     }
 }
 
@@ -139,7 +133,8 @@ export default {
     margin: 0 auto;
     .banner {
         width: 100%;
-        margin: 12px auto 0 auto;
+        margin: 0 auto 12px auto;
+        padding: 0 14px;
         height: 250px;
         img {
             width: 100%;
@@ -156,51 +151,31 @@ export default {
     margin-top: 8px;
     width: 100vw;
     white-space: normal;
-    padding: 0 14px;
+    padding: 0 14px 50px 14px;
 }
 
 .time-wrap {
     width: 100%;
     height: 12px;
-    color: #A8A8A8;
+    color: #999999;
     font-size: 12px;
-    margin: 6px auto 14px auto;
+    margin: 0 0 4px 0;
     padding: 0 14px;
-    .time {
-        width: 50%;
-        float: left;
-    }
-    .from {
-        width: 50%;
-        float: right;
-        text-align: right;
-    }
 }
 
 .attachment-list {
     width: 100%;
-    .title-table {
-        display: table;
-        .title {
-            width: 100%;
-            font-size: 16px;
-            padding: 0 10px;
-            height: 36px;
-            line-height: 36px;
-            display: table-cell;
-            vertical-align: middle;
-        }
+    margin-bottom: 4px;
+    padding: 0 14px;
+    &.last-child{
+        margin-bottom: 20px;
     }
-
-    .attachment-cell {
-        width: 100%;
-        height: 36px;
-        line-height: 36px;
-        margin: auto;
-        padding: 0 10px;
-        font-size: 14px;
-        color: #5a5a5a;
-        text-decoration: underline;
+    .title-table {
+        color: #3399ff;
+        font-size: 12px;
+        span {
+            font-size: 12px;
+        }
     }
 }
 </style>

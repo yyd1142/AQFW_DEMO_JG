@@ -46,16 +46,19 @@
     @import "../../../config.less";
 
     .fire-record-detail-wrap {
-        .mko-basic-cell {
-            .title {
-                flex: 0 0 120px;
-                -webkit-flex: 0 0 120px;
-                width: 120px;
-            }
-            .value {
-                flex: auto;
-                -webkit-flex: auto;
-                width: auto;
+        .page-wrap {
+            padding-top: 10px;
+            .mko-basic-cell {
+                .title {
+                    flex: 0 0 120px;
+                    -webkit-flex: 0 0 120px;
+                    width: 120px;
+                }
+                .value {
+                    flex: auto;
+                    -webkit-flex: auto;
+                    width: auto;
+                }
             }
         }
     }

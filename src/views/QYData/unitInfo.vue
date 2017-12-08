@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="unit-info">
         <div class="placeholder-item"></div>
         <mko-header title="单位信息" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap qy-info-wrap">
@@ -8,9 +8,10 @@
                 <mko-cell title="联系人" :val="zrdwItem.dwContact || '暂无'"></mko-cell>
                 <mko-cell title="联系电话" :val="zrdwItem.dwPhone || '暂无'"></mko-cell>
                 <mko-cell title="合同签订日期" :val="zrdwItem.contractDate||'未知'"></mko-cell>
-                <mko-cell title="合同起止日期"
-                         :val="(zrdwItem.contractStartDate+zrdwItem.contractEndDate)?(zrdwItem.contractStartDate||'未知') + '至' + (zrdwItem.contractEndDate||'未知'):'未知'"></mko-cell>
-                <mko-double-cell title="点击下载" v-for="item in files" @click="downloadFile(item)" :label="item.filename"></mko-double-cell>
+                <mko-cell title="合同起止日期" :val="(zrdwItem.contractStartDate+zrdwItem.contractEndDate)?(zrdwItem.contractStartDate||'未知') + '至' + (zrdwItem.contractEndDate||'未知'):'未知'"></mko-cell>
+                <mko-cell :title="item.filename" main="left" v-for="item in files" @click="downloadFile(item)">
+                    <div style="color: #3399ff">下载</div>
+                </mko-cell>
             </div>
         </div>
     </div>
@@ -84,3 +85,12 @@
         }
     }
 </script>
+
+<style lang="less">
+.unit-info {
+    .page-wrap {
+        padding-top: 10px;
+    }
+}
+</style>
+
