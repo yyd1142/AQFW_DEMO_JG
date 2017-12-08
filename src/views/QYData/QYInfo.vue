@@ -18,10 +18,12 @@
                 </div>
             </div>
             <div class="data-wrap">
-                <mko-cell title="火灾记录" val-style="gray-font" :val="`${recoredCount.hzResult}条记录`" is-link @click="go('/fire_record/'+$route.params.id)"></mko-cell>
-                <mko-cell title="监督执法记录"valStyle="gray-font" :val="`${recoredCount.jdResult}条记录`" is-link @click="go('/jgzf_record/'+$route.params.id)"></mko-cell>
-                <!--<mko-cell title="单位标签" is-link @click="goQYComment" ></mko-cell>-->
-                <!--<mko-cell title="单位属性" is-link @click="go('/qy_attributes/'+$route.params.id)"></mko-cell>-->
+                <mko-cell title="火灾记录" :is-link="recoredCount.hzResult != 0" @click="goRecord(1)">
+                    <div :style="{color: recoredCount.hzResult === 0 ? '#333' : '#666'}">{{recoredCount.hzResult}}条记录</div>
+                </mko-cell>
+                <mko-cell title="监督执法记录" :is-link="recoredCount.jdResult != 0" @click="goRecord(2)">
+                    <div :style="{color: recoredCount.jdResult === 0 ? '#333' : '#666'}">{{recoredCount.jdResult}}条记录</div>
+                </mko-cell>
             </div>
             <div class="data-wrap">
                 <mko-cell title="风险管理" is-link @click="go('/hidden_danger/'+$route.params.id)"></mko-cell>
@@ -248,6 +250,12 @@
                         }
                     }
                 })
+            },
+            goRecord(type) {
+                if(this.recoredCount.hzResult == 0 && type == 1) return false;
+                if(this.recoredCount.jdResult == 0 && type == 2) return false;
+                let path = type == 1 ? 'fire_record' : 'jgzf_record';
+                this.$MKOPush(`/${path}/${this.$route.params.id}`);
             }
         },
         components: {
@@ -363,7 +371,7 @@
                 .sign {
                     position: absolute;
                     right: 14px;
-                    top: 15px;
+                    top: 19px;
                     transition: transform 0.3s;
                     -webkit-transition: transform 0.3s;
                 }

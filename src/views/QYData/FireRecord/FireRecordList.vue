@@ -78,6 +78,8 @@
 </script>
 <style lang="less">
     .fire-record-list-wrap {
-
+        .page-wrap {
+            padding-top: 10px;
+        }
     }
 </style>

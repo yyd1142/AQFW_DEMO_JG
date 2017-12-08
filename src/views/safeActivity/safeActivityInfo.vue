@@ -3,24 +3,11 @@
         <div class="placeholder-item"></div>
         <mko-header :title="projectName[fileItem.project]" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap safe-aty-info">
-            <div class="info">
-                <div class="left">
-                    <span>上传日期</span>
-                </div>
-                <div class="right">
-                    <span>{{fileItem.uploadDate | formatDate}}</span>
-                </div>
+            <div class="activity-item">
+                <mko-cell title="上传日期" :val="formatDate(fileItem.uploadDate)"></mko-cell>
             </div>
-            <div class="files-wrap">
-                <div class="files-table-view" v-for="item in files" @click="downloadFile(item)">
-                    <div class="title">
-                        <span v-if="!item.photo">{{titleFilers(item.title)}}.{{item.type}}</span>
-                        <img :src="item.photo" alt="" v-if="item.photo" height="90" width="90">
-                    </div>
-                    <div class="date">
-                        <span>{{item.createTime | formatDate}}</span>
-                    </div>
-                </div>
+            <div class="zhidu-wrap">
+                <mko-cell :title="`${titleFilers(item.title)}.${item.type}`" :val="formatDate(item.createTime)" v-for="item in files" @click="downloadFile(item)"></mko-cell>
             </div>
         </div>
         <photo-preview :img="photoItem.photo" v-model="showPhoto"></photo-preview>
@@ -30,8 +17,8 @@
 <script>
     import api from 'api'
     import apiconf from 'apiconf'
-    import {PhotoBox, PhotoPreview} from 'components';
-    import {formatDate} from 'filters'
+    import {PhotoBox, PhotoPreview} from 'components'
+    import moment from 'moment'
 
     export default {
         data() {
@@ -85,6 +72,9 @@
                     val = `${val.substring(0, 10)}...`;
                 }
                 return val;
+            },
+            formatDate(date) {
+                return moment(date).format('YYYY-MM-DD HH:mm');
             }
         },
         components: {
@@ -95,79 +85,14 @@
 
 <style lang="less">
     @import "../../config.less";
+.activity-item {
+    width: 100%;
+    background-color: #ffffff;
+    height: 44px;
+    margin-top: 10px; 
+}
 
-    .safe-aty-info {
-        .info {
-            width: 100%;
-            background-color: #ffffff;
-            .border-btm(@borderColor);
-            height: 44px;
-            .left {
-                float: left;
-                padding-left: 14px;
-                display: table;
-                span {
-                    height: 44px;
-                    line-height: 44px;
-                    font-size: 14px;
-                    color: #232323;
-                    display: table-cell;
-                    vertical-align: middle;
-                }
-            }
-            .right {
-                float: right;
-                margin-right: 14px;
-                display: table;
-                span {
-                    height: 44px;
-                    line-height: 44px;
-                    font-size: 14px;
-                    color: #606060;
-                    display: table-cell;
-                    vertical-align: middle;
-                }
-            }
-        }
-        .files-wrap {
-            margin: 14px 0 0 0;
-            .files-table-view {
-                width: 100%;
-                background-color: #ffffff;
-                padding: 0 14px;
-                display: inline-flex;
-                position: relative;
-                .border-btm(@borderColor);
-                .title {
-                    width: 60%;
-                    display: table;
-                    text-decoration: underline;
-                    img {
-                        margin-top: 5px;
-                    }
-                    span {
-                        font-size: 14px;
-                        color: #232323;
-                        display: table-cell;
-                        vertical-align: middle;
-                        height: 44px;
-                        line-height: 44px;
-                    }
-                }
-                .date {
-                    width: 40%;
-                    display: table;
-                    span {
-                        display: table-cell;
-                        vertical-align: middle;
-                        font-size: 14px;
-                        color: #606060;
-                        height: 44px;
-                        line-height: 44px;
-                        text-align: right;
-                    }
-                }
-            }
-        }
-    }
+.zhidu-wrap {
+    margin: 10px 0 0 0;
+}
 </style>

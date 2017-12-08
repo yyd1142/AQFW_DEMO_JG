@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="unit-list">
         <div class="placeholder-item"></div>
         <mko-header :title="dwItem.name" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap qy-info-wrap">
@@ -38,3 +38,11 @@
         }
     }
 </script>
+<style lang="less">
+.unit-list {
+    .page-wrap {
+        padding-top: 10px;
+    }
+}
+</style>
+

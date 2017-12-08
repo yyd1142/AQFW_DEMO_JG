@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="xf-zr-unit-list">
         <div class="placeholder-item"></div>
         <mko-header title="消防责任单位" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap qy-info-wrap" v-if="!notData">
@@ -77,3 +77,11 @@
         }
     }
 </script>
+
+<style lang="less">
+.xf-zr-unit-list {
+    .page-wrap {
+        padding-top: 10px;
+    }
+}
+</style>
