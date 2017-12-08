@@ -100,7 +100,13 @@
                     return false;
                 }
                 sessionStorage.setItem('SAFEACTIVITY_DATA', JSON.stringify(item));
-                this.$MKOPush(`/safe_activity_info/${item.id}`)
+                this.$MKOPush({
+                    path: `/safe_activity_info/${item.id}`,
+                    query: {
+                        description: item.description,
+                        project: item.project
+                    }
+                })
             },
             refresh() {
                 Indicator.open({spinnerType: 'fading-circle'});

@@ -5,21 +5,13 @@
         <div class="page-wrap message-detail-wrap">
             <div class="main-msg">
                 <div class="message-title">
-                    <h3>{{noticeItem.title || '暂无标题'}}</h3>
+                <h3>{{noticeItem.title || '暂无标题'}}</h3>
                 </div>
-                <div class="banner">
-                    <!--<img src="/static/image-square.png">-->
-                    <div class="time-wrap">
-                        <div class="time">{{noticeItem.createTime | formatDate}}</div>
-                        <div class="from">来源：{{noticeItem.releaseDw || '未知'}}</div>
-                    </div>
+                <div class="time-wrap" :style="{ marginBottom: contentFiles.length <= 0 ? '20px' : '4px' }">{{noticeItem.releaseDw || '未知'}} {{noticeItem.createTime | formatDate}}</div>
+                <div class="attachment-list" :class="index == contentFiles.length - 1 ? 'last-child' : ''" v-for="item, index in contentFiles" v-if="contentFiles.length > 0" @click="downloadFile(item.resouceId)">
+                    <div class="title-table">下载附件：<span>{{`${item.title}.${item.type}`}}</span></div>
                 </div>
                 <div id="contentMsg" class="content-msg" v-html="noticeItem.content"></div>
-                <div class="content-file" v-if="contentFiles.length!=0">
-                    附件：
-                    <a class="file" href="javascript:;" @click="downloadFile(item.resouceId)"
-                       v-for="item in contentFiles">{{`${item.title}.${item.type}`}}</a>
-                </div>
             </div>
             <!--回复内容-->
             <div class="reply-main" v-if="noticeItem.isReply == 1">
@@ -453,60 +445,63 @@
     @import "../../config.less";
 
     .message-detail-wrap {
-        /*padding-bottom: 0;*/
-        background-color: #ffffff;
-        height: 100vh;
-        padding-top: 40px+ @headerTop;
-        margin-top: 0;
-        .message-title {
+  /*padding-bottom: 0;*/
+  background-color: #ffffff;
+  height: 100vh;
+  padding-top: 40px+ @headerTop;
+  margin-top: 0;
+.message-title {
+    width: 100%;
+    margin: 20px auto;
+    h3 {
+        font-size: 22px;
+        color: #333;
+        margin: 0;
+        padding: 0 14px 0 14px;
+        text-align: left;
+        font-weight: bold;
+        line-height: 30px;
+    }
+}
+.main-msg {
+    width: 100%;
+    margin: 0 auto;
+    .banner {
+        width: 100%;
+        margin: 0 auto 12px auto;
+        padding: 0 14px;
+        height: 250px;
+        img {
             width: 100%;
-            margin: 0 auto;
-            h3 {
-                font-size: 18px;
-                color: #333;
-                margin: 0;
-                padding: 0;
-                text-align: center;
-            }
-        }
-        .main-msg {
-            width: 100%;
-            padding: 16px 14px 14px 14px;
-            box-sizing: border-box;
-            margin: 0 auto;
-            .banner {
-                width: 100%;
-                margin: 12px auto 0 auto;
-                img {
-                    width: 100%;
-                    display: block;
-                }
-                .time-wrap {
-                    width: 100%;
-                    height: 12px;
-                    color: #A8A8A8;
-                    font-size: 12px;
-                    margin: 0 auto;
-                    margin-top: 6px;
-                    .time {
-                        width: 50%;
-                        float: left;
-                    }
-                    .from {
-                        width: 50%;
-                        float: right;
-                        text-align: right;
-                    }
-                }
-            }
-        }
-        .content-msg {
             display: block;
-            color: #333333;
-            font-size: 14px;
-            line-height: 20px;
-            margin-top: 8px;
+            height: 250px;
         }
+    }
+}
+
+.time-wrap {
+    width: 100%;
+    height: 12px;
+    color: #999999;
+    font-size: 12px;
+    margin: 0 0 4px 0;
+    padding: 0 14px;
+}
+
+.content-msg {
+    display: block;
+    color: #333333;
+    font-size: 14px;
+    width: 100%;
+    white-space: normal;
+    padding: 0 14px;
+    p {
+      font-size: 16px !important;
+      line-height: 24px !important;
+      text-align:justify;
+      padding: 0 !important;
+    }
+}
         .content-file {
             padding-bottom: 40px;
             .file {
