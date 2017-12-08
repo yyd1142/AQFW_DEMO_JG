@@ -11,20 +11,19 @@
                               @handleTabClick="ctrlListType(item.type)" v-for="item in headerBtn"></mko-tab-item>
             </mko-nav-bar>
             <div ref="wrapper">
-                <mt-loadmore ref="loadmore" :bottom-method="loadBottom" @bottom-status-change="handleBottomChange"
-                             :auto-fill="autoFill" :bottom-all-loaded="bottomAllLoaded">
+                <mt-loadmore ref="loadmore" :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :auto-fill="autoFill" :bottom-all-loaded="bottomAllLoaded">
                     <ul class="list">
-                        <li class="item" @click="go(item.groupId,item.dwName,item.dwSafeScore)"
-                            v-for="(item,n) in dwList">
-                            <div class="score" :class="scoreColorStyle(item.dwSafeScore)">
-                                {{parseInt(item.dwSafeScore) || '暂无'}}
-                            </div>
-                            <div class="info">
-                                <div class="title no-overflow">{{item.dwName}}</div>
-                                <div class="dw-attribute">
-                                    <span class="attr-item" :class="scoreColorStyle(item.dwSafeScore)"
-                                          v-for="attr, index in item.dwAttributes" v-if="index <= 2">{{attributesFilter(attr.attributeName)}}</span>
-                                    <span class="attr-item disabled" v-if="!item.dwAttributes || (item.dwAttributes && item.dwAttributes.length <= 0)">暂无标签</span>
+                        <li class="item" @click="go(item.groupId,item.dwName,item.dwSafeScore)" v-for="(item,n) in dwList">
+                            <div class="padding">
+                                <div class="score" :class="scoreColorStyle(item.dwSafeScore)">
+                                    {{parseInt(item.dwSafeScore) || '暂无'}}
+                                </div>
+                                <div class="info">
+                                    <div class="title no-overflow">{{item.dwName}}</div>
+                                    <div class="dw-attribute">
+                                        <span class="attr-item" :class="scoreColorStyle(item.dwSafeScore)" v-for="attr, index in item.dwAttributes" v-if="index <= 2">{{attributesFilter(attr.attributeName)}}</span>
+                                        <span class="attr-item disabled" v-if="!item.dwAttributes || (item.dwAttributes && item.dwAttributes.length <= 0)">暂无标签</span>
+                                    </div>
                                 </div>
                             </div>
                         </li>
@@ -236,24 +235,6 @@
                         if (res.response.datas === undefined || res.response.datas.length === 0) {
                             this.noData = true;
                         } else {
-                            //(暂时)循环请求获取标签信息
-                            res.response.datas.forEach(item => {
-                                let id = '';
-                                try {
-                                    id = JSON.parse(item.dwAttributeId || "[]");
-                                } catch (err) {
-                                    id = [];
-                                }
-                                let pas = {
-                                    m: 'getAttribute',
-                                    tagId: id.join(',')
-                                };
-                                api.getQyRecordCount(pas).then(ress => {
-                                    if (ress && ress.code == 0)
-                                        item.dwAttributes = ress.response;
-                                });
-                            });
-
                             qy_datas[this.listType] = {
                                 datas: res.response.datas,
                                 pageItem: {page: res.response.page, pageCount: res.response.pageCount}
@@ -496,51 +477,65 @@
             }
         }
         .list {
-            /*padding-bottom: 50px;*/
+            box-sizing: border-box;
+            width: 100%;
+            background: #fff;
+            .border-btm(#eeeeee);
+            &::after {
+                bottom: -1px;
+            }
             .item {
                 position: relative;
                 box-sizing: border-box;
                 height: 60px;
-                padding: 0 14px;
-                background: #fff;
                 overflow: hidden;
-                & + .item {
-                    .border-top(#E0E0E0);
+                width: 100%;
+                padding: 0 0 0 62px;
+                &:last-child>.padding::after {
+                    display: none;
+                    content: none;
                 }
-                .score {
-                    width: 34px;
-                    height: 34px;
-                    line-height: 38px;
-                    font-size: 20px;
-                    color: #ffffff;
-                    letter-spacing: 0;
-                    text-align: center;
-                    position: absolute;
-                    left: 14px;
-                    margin: auto;
-                    top: 0;
-                    bottom: 0;
-                    border-radius: 2px;
-                    &.score-null {
-                        font-size: 20px;
-                    }
-                }
-                .info {
-                    float: left;
+                .padding {
                     width: 100%;
-                    padding: 13px 0 0 48px;
-                    letter-spacing: 0;
-                    .title {
-                        font-size: 14px;
-                        color: #333333;
+                    padding: 0 14px 0 0;
+                    .border-btm(#Eeeeee);
+                    height: 60px;
+                    box-sizing: border-box;
+                    .score {
+                        width: 34px;
+                        height: 34px;
+                        line-height: 38px;
+                        font-size: 20px;
+                        color: #ffffff;
                         letter-spacing: 0;
-                        line-height: 14px;
+                        text-align: center;
+                        position: absolute;
+                        left: -48px;
+                        margin: auto;
+                        top: 0;
+                        bottom: 0;
+                        border-radius: 2px;
+                        &.score-null {
+                            font-size: 20px;
+                        }
                     }
-                    .desc {
-                        height: 17px;
-                        line-height: 17px;
-                        font-size: 12px;
-                        color: #606060;
+                    .info {
+                        float: left;
+                        width: 100%;
+                        padding: 13px 0 0 0;
+                        letter-spacing: 0;
+                        .title {
+                            font-size: 14px;
+                            color: #333333;
+                            letter-spacing: 0;
+                            line-height: 14px;
+                        }
+                        .desc {
+                            height: 17px;
+                            line-height: 17px;
+                            font-size: 12px;
+                            color: #606060;
+                        }
                     }
                 }
             }
