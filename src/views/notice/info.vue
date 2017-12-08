@@ -53,11 +53,11 @@
                 <photo-box max="8" :photo-list="photos" @removePhotoEvent="removePhoto"
                            @addPhotoEvent="sheetShow = true">
                 </photo-box>
-                <mt-button class="footer btn" type="primary" size="large" @click="uploadPhoto()">上传附件</mt-button>
+                <mko-button class="footer-btn" size="large" no-radius @click="uploadPhoto()">上传附件</mko-button>
+                <!--<mt-button class="footer btn" type="primary" size="large" @click="uploadPhoto()">上传附件</mt-button>-->
             </div>
             <!--所有已完成-->
-            <mt-button v-show="receiptType==100" class="footer btn is-disabled" size="large">我已{{receiptText}}
-            </mt-button>
+            <mko-button class="footer-btn" size="large" no-radius disabled v-show="receiptType==100">我已{{receiptText}}</mko-button>
         </div>
         <mt-actionsheet :actions="actions" v-model="sheetShow"></mt-actionsheet>
     </div>
@@ -557,6 +557,12 @@
             .photo-wrap {
                 background: #fafafa;
             }
+        }
+
+        .footer-btn {
+            position: fixed;
+            z-index: 15;
+            bottom: 0;
         }
         .footer {
             width: 100%;

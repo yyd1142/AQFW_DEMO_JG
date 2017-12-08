@@ -130,6 +130,13 @@ textarea {
     -webkit-transform: translate(-50%, 0);
 }
 
+.abs-vertical-middle {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    -webkit-transform: translate(0, -50%);
+}
+
 .abs-all-middle {
     position: absolute;
     top: 50%;
@@ -451,6 +458,28 @@ textarea {
     }
 }
 
+//popup-btm公用样式
+.mint-popup-bottom {
+    width: 100%;
+    background: #F7F8F9;
+    .p-header {
+        height: 44px;
+        .btn {
+            line-height: 44px;
+            padding: 0 14px;
+            font-size: 14px;
+            color: #159dff;
+        }
+    }
+    .p-body {
+        padding: 10px 0;
+        .picker .picker-center-highlight {
+            z-index: -1;
+            background-color: #fff;
+        }
+    }
+}
+
 //mint indicator公用样式
 .mint-indicator {
     .mint-indicator-wrapper {
@@ -460,6 +489,8 @@ textarea {
         z-index: 9;
     }
 }
+
+
 
 //状态
 .state-gray {

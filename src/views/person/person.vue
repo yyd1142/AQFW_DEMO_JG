@@ -7,29 +7,16 @@
                 <mt-loadmore ref="loadmore" :top-method="loadTop" @top-status-change="handleTopChange"
                              :auto-fill="autoFill">
                     <div :style="{ height: wrapperHeight - 100 + 'px'}">
-                        <div class="data" @click="go('/person_data')">
-                            <mt-cell is-link>
-                                <div class="avatar-wrap">
-                                    <div class="default"></div>
-                                </div>
-                                <div class="content">
-                                    <div class="main">{{personData.name || 'null'}}({{personData.role | JgRoleType}})
-                                    </div>
-                                    <div class="desc">{{personData.dwName || ''}}</div>
-                                </div>
-                            </mt-cell>
-                        </div>
+                        <mko-double-cell :title="`${personData.name || 'null'}（${JgRoleType(personData.role)}）`"
+                                         :label="personData.dwName || ''" is-link @click="go('/person_data')">
+                            <div class="avatar-wrap" slot="icon">
+                                <div class="default"></div>
+                                <!--<img class="avatar" slot="icon" src="./logo.png">-->
+                            </div>
+                        </mko-double-cell>
                         <div class="cell-wrap">
-                            <div class="cell" @click="go('/message')">
-                                <mt-cell title="消息" is-link>
-                                    <span slot="icon" class="sign sign-msg"></span>
-                                </mt-cell>
-                            </div>
-                            <div class="cell" @click="go('/config')">
-                                <mt-cell title="设置" icon="more" is-link>
-                                    <span slot="icon" class="sign sign-conf"></span>
-                                </mt-cell>
-                            </div>
+                            <mko-cell title="消息" icon="sign sign-msg" is-link @click="go('/message')"></mko-cell>
+                            <mko-cell title="设置" icon="sign sign-conf" is-link @click="go('/config')"></mko-cell>
                         </div>
                     </div>
                 </mt-loadmore>
@@ -44,80 +31,33 @@
     @import "../../config.less";
 
     .person-page-wrap {
-        .data {
-            .mint-cell-wrapper {
-                display: -webkit-box;
-                display: -moz-box;
-                display: -ms-flexbox;
-                display: -webkit-flex;
-                display: flex;
-                padding: @cellPadding;
-                height: 80px;
-                .mint-cell-title {
-                    -webkit-box-flex: 0.0;
-                    -moz-box-flex: 0.0;
-                    width: 0;
-                    -webkit-flex: none;
-                    -ms-flex: none;
-                    flex: none;
-                }
-                .mint-cell-value {
-                    .avatar-wrap {
-                        width: 60px;
-                        height: 60px;
-                        margin-right: 12px;
-                        .default {
-                            height: 100%;
-                            background: url(/static/icons/resource.png) -654px 0 no-repeat;
-                            background-size: 892px auto;
-                        }
-                        .avatar {
-                            width: 100%;
-                        }
-                    }
-                    .content {
-                        .main {
-                            margin-bottom: 5px;
-                            font-size: 14px;
-                            font-weight: 600;
-                            color: @textBase;
-                        }
-                        .desc {
-                            font-size: 12px;
-                            color: @textLB;
-                        }
-                    }
-                }
+        .avatar-wrap {
+            width: 44px;
+            height: 44px;
+            /*margin-right: 12px;*/
+            .default {
+                height: 100%;
+                background: url(/static/icons/resource.png) -654px*0.7666 0 no-repeat;
+                background-size: 892px*0.7666 auto;
+            }
+            .avatar {
+                width: 100%;
+            }
+        }
+        .sign {
+            padding: 11px;
+            font-size: 0;
+            &.sign-msg {
+                background: url(/static/icons/resource.png) -654px -60px no-repeat;
+                background-size: @bg-size;
+            }
+            &.sign-conf {
+                background: url(/static/icons/resource.png) -676px -60px no-repeat;
+                background-size: @bg-size;
             }
         }
         .cell-wrap {
             margin-top: 14px;
-            .cell {
-                background-color: @bgWhite;
-                .mint-cell-wrapper {
-                    padding: @cellPadding;
-                    .mint-cell-title {
-                        line-height: 22px;
-                        font-size: 16px;
-                        letter-spacing: 1px;
-                        .sign {
-                            position: relative;
-                            bottom: 4px;
-                            padding: 11px;
-                            margin-right: 9px;
-                            font-size: 0;
-                            &.sign-msg {
-                                background: url(/static/icons/resource.png) -654px -60px no-repeat;
-                                background-size: @bg-size;
-                            }
-                            &.sign-conf {
-                                background: url(/static/icons/resource.png) -676px -60px no-repeat;
-                                background-size: @bg-size;
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 </style>
@@ -146,6 +86,7 @@
             });
         },
         methods: {
+            JgRoleType,
             getLocalData() {
                 let local = localStorage['USER_DATA'];
                 if (local && local.length > 0) {

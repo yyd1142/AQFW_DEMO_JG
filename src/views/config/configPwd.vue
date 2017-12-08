@@ -3,15 +3,17 @@
         <div class="placeholder-item"></div>
         <mko-header title="修改密码" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap config-pwd-wrap">
-            <form>
-                <mt-field v-model="formData.originPwd" label="原密码" placeholder="请输入原密码" type="password"></mt-field>
-                <mt-field v-model="formData.newPwd" label="新密码" placeholder="请输入新密码" type="password"></mt-field>
-                <mt-field v-model="formData.renewPwd" label="确认密码" placeholder="请再次输入新密码" type="password">
-                    <span class="error-text" v-if="formData.newPwd != formData.renewPwd">两次密码输入不一致</span>
-                </mt-field>
-            </form>
+            <div class="data-wrap">
+                <mko-form-cell title="原密码" v-model="formData.originPwd" holder-text="请输入原密码" type="password" edit></mko-form-cell>
+                <mko-form-cell title="新密码" v-model="formData.newPwd" holder-text="请输入新密码" type="password" edit></mko-form-cell>
+                <mko-form-cell title="确认密码" v-model="formData.renewPwd" holder-text="请再次输入新密码" type="password" edit>
+                    <span slot="button" class="error-text abs-vertical-middle" v-if="formData.newPwd != formData.renewPwd">两次密码输入不一致</span>
+                </mko-form-cell>
+            </div>
         </div>
-        <mt-button class="submit btn" size="large" @click="submitPwd()">提交</mt-button>
+        <div class="footer-button">
+            <mko-button size="large" no-radius @click="submitPwd()">提交</mko-button>
+        </div>
     </div>
 </template>
 
@@ -105,44 +107,22 @@
     @import "../../config.less";
 
     .config-pwd-wrap {
-        .mint-cell {
-            height: 44px;
-            &.error {
-                .mint-cell-value {
-                    & > input {
-                        color: @redColor;
-                    }
-                }
-            }
-            .mint-cell-wrapper {
-                padding: 0 14px;
-                .mint-cell-title {
-                    width: 97px;
-                    font-size: 14px;
-                }
-                .mint-cell-value {
-                    font-size: 14px;
-                    color: #d2d2d2;
-                    .mint-field-other {
-                        top: 16px;
-                        right: 35px;
-                        color: @redColor;
-                    }
-                }
+        padding-top:10px;
+        .data-wrap {
+            position: relative;
+            .error-text {
+                right: 14px;
+                font-size: 12px;
+                color: @mainDanger;
             }
         }
+
     }
 
-    .submit {
-        background-color: #299fff;
-        color: #ffffff;
+    .footer-button {
         margin: auto;
         position: absolute;
+        width: 100%;
         bottom: 0;
-    }
-
-    .error-text {
-        font-size: 12px;
-        color: #f44336;
     }
 </style>

@@ -10,51 +10,47 @@
         </mt-header>
         <res-error v-if="resError"></res-error>
         <div class="page-wrap address-wrap" v-show="!resError">
-            <mt-navbar class="navbar-wrap" v-model="addressClass" fixed>
-                <mt-tab-item id="2">外部组织</mt-tab-item>
-                <mt-tab-item id="1" @click="getData">内部人员</mt-tab-item>
-            </mt-navbar>
+
+
+            <mko-light-nav-bar :tabs="tabs" v-model="activeTab"></mko-light-nav-bar>
+
+
             <div class="search-bar-wrap" v-if="isSearchBar">
                 <div class="search-hidden-wrap" @click="isSearchBar = false;"></div>
                 <search-bar v-model="searchValue" @onFocus="listenInput" @onCancelSearch="closeSearchBar" @onClearSearch="clearSearch"></search-bar>
             </div>
 
             <div class="address-list" ref="wrapper" :style="{ height: wrapperHeight - 50 + 'px'}" :class="isSearchBar ? 'has-searchbar-addresslist' : ''">
-                <mt-tab-container v-model="addressClass">
-                    <mt-tab-container-item id="1">
-                        <div @click="goInfo('/address_detail/'+cell.id)" v-for="cell in addressShowList">
-                            <!-- <mt-cell :title="cell.employeeName" :value="cell.phone"></mt-cell> -->
-                            <div class="address-cell">
-                                <div class="address-name">{{cell.employeeName}}</div>
-                                <span class="address-phone">{{cell.phone}}</span>
-                            </div>
-                        </div>
-                        <no-data v-if="addressShowList.length <= 0"></no-data>
-                    </mt-tab-container-item>
-                    <mt-tab-container-item id="2">
-                        <div v-for="cell in lowerDws">
-                            <div class="address-cell" :class="cell.children ? 'first-cell' : null" @click="goJGinfo(cell)">
-                                <div class="address-name" :class="cell.children ? 'first' : null">{{cell.dwName}}</div>
-                                <span class="address-phone" :class="cell.children ? 'first' : null">
+
+                <div v-show="activeTab==1">
+                    <mko-cell :title="cell.employeeName" :val="cell.phone" is-link
+                              @click="goInfo('/address_detail/'+cell.id)" v-for="cell in addressShowList"></mko-cell>
+                    <no-data v-if="addressShowList.length <= 0"></no-data>
+                </div>
+
+                <div v-show="activeTab==2">
+                    <div v-for="cell in lowerDws">
+                        <div class="address-cell" :class="cell.children ? 'first-cell' : null" @click="goJGinfo(cell)">
+                            <div class="address-name" :class="cell.children ? 'first' : null">{{cell.dwName}}</div>
+                            <span class="address-phone" :class="cell.children ? 'first' : null">
                   {{cell.qyScoreAverage || '暂无'}}
                   <span v-if="cell.qyScoreAverage">分</span>
                 </span>
-                            </div>
-                            <div class="address-cell" v-for="item in cell.children" @click="goJGinfo(item)" v-if="cell.children">
-                                <div class="address-name">{{item.dwName}}</div>
-                                <span class="address-phone">
+                        </div>
+                        <div class="address-cell" v-for="item in cell.children" @click="goJGinfo(item)" v-if="cell.children">
+                            <div class="address-name">{{item.dwName}}</div>
+                            <span class="address-phone">
                   {{item.qyScoreAverage || '暂无'}}
                   <span v-if="item.qyScoreAverage">分</span>
                 </span>
-                            </div>
-                            <div class="address-cell" v-if="cell.children && cell.children.length <= 0">
-                                <div class="address-name">暂无</div>
-                                <span class="address-phone">暂无</span>
-                            </div>
                         </div>
-                        <no-data v-if="lowerDws.length <= 0"></no-data>
-                    </mt-tab-container-item>
-                </mt-tab-container>
+                        <div class="address-cell" v-if="cell.children && cell.children.length <= 0">
+                            <div class="address-name">暂无</div>
+                            <span class="address-phone">暂无</span>
+                        </div>
+                    </div>
+                    <no-data v-if="lowerDws.length <= 0"></no-data>
+                </div>
             </div>
         </div>
         <tabs :class="{'address-tabs':!fixedTabs}" actived="mail"></tabs>
@@ -82,16 +78,21 @@
                 addressList: [],
                 addressShowList: [],
                 lowerDws: [],
-                isSearchBar: false
+                isSearchBar: false,
+                tabs: [
+                    {id: 2, text: '外部人员'},
+                    {id: 1, text: '内部人员'}
+                ],
+                activeTab: 2,
             };
         },
         watch: {
             searchValue: function () {
                 this.searchData();
             },
-            addressClass: function (val) {
-                if (val === '1') this.getData();
-                if (val === '2') this.getLowerDws();
+            activeTab: function (val) {
+                if (val == 1) this.getData();
+                if (val == 2) this.getLowerDws();
             },
             isSearchBar: function (val) {
                 if (!val) {
@@ -286,57 +287,13 @@
                 background: #C9C9CE;
                 z-index: 22;
                 width: 100%;
-                top: 80px + @headerTop;
-                box-shadow: 0px 2px 6px 0px rgba(213, 213, 213, 0.50);
+                top: @headerHeight + @headerTop + 36px;
             }
         }
 
-        .navbar-wrap {
-            top: @headerHeight + @headerTop;
-            z-index: 10;
-            background: #FFFFFF;
-            &:after {
-                content: '';
-                position: absolute;
-                left: 0;
-                bottom: -1px;
-                width: 100%;
-                height: 1px;
-                box-sizing: border-box;
-                transform: scale(1, .5);
-                -webkit-transform: scale(1, .5);
-                transform-origin: 0 0;
-                -webkit-transform-origin: 0 0;
-                border-bottom: 1px solid @baseBorder;
-            }
-            .mint-tab-item {
-                padding: 10px 0;
-                height: 20px;
-                font-size: 14px;
-                &.is-selected {
-                    position: relative;
-                    border-bottom: 0;
-                    color: @textBlue;
-                    .mint-tab-item-label:after {
-                        content: "";
-                        position: absolute;
-                        width: 54px;
-                        bottom: 7px;
-                        left: 50%;
-                        transform: translate(-50%, 0);
-                        -webkit-transform: translate(-50%, 0);
-                        border-bottom: 2px solid @textBlue;
-                    }
-                }
-                .mint-tab-item-label {
-                    line-height: 20px;
-                }
-            }
-        }
         .address-list {
-            margin-top: 40px;
             &.has-searchbar-addresslist {
-                margin: 80px 0 0 0;
+                margin: 40px 0 0 0;
             }
             .address-cell {
                 width: 100%;

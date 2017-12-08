@@ -4,22 +4,13 @@
         <mko-header title="设置" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap config-page-wrap">
             <div class="cell-wrap">
-                <div @click="linkPath('/config/pwd')">
-                    <mt-cell title="修改密码" is-link></mt-cell>
-                </div>
-                <!--<mt-cell title="意见反馈"></mt-cell>-->
-                <!--<mt-cell title="用户指南"></mt-cell>-->
-                <!--<mt-cell title="服务协议"></mt-cell>-->
-                <mt-cell :title="'检测新版本（' + version + '）'"></mt-cell>
-                <!--<div class="config-cell-wrap" @click="linkPath('/cacheDebug')">
-                        <mt-cell title="查看缓存"></mt-cell>
-                      </div>-->
-                <!--<div class="config-cell-wrap" @click="clear()">
-                  <mt-cell title="清除缓存"></mt-cell>
-                </div>-->
+                <mko-cell title="修改密码" is-link @click="linkPath('/config/pwd')"></mko-cell>
+                <mko-cell :title="'检测新版本（' + version + '）'" main="left"></mko-cell>
+                <!--<mko-cell title="清除缓存" @click="clear()"></mko-cell>-->
             </div>
-            <div class="config-cell-wrap center" @click="exit()">
-                <mt-cell class="exit" title="退出"></mt-cell>
+            <div class="footer-btn" @click="exit()">
+                <!--<mt-cell class="exit" title="退出账号"></mt-cell>-->
+                退出账号
             </div>
         </div>
     </div>
@@ -29,28 +20,37 @@
     @import "../../config.less";
 
     .config-page-wrap {
-        padding-top: 14px;
-        .mint-cell {
-            min-height: 44px;
-            height: 44px;
-            font-size: 14px;
-            .mint-cell-wrapper {
-                font-size: 14px;
-            }
-        }
+        padding-top: 10px;
         .cell-wrap {
-            margin-bottom: 15px;
-            box-shadow: @baseShadow;
-            .mint-cell-wrapper {
-                padding: @cellPadding;
+            margin-bottom: 14px;
+        }
+        .footer-btn {
+            width: 100%;
+            height: 44px;
+            line-height: 44px;
+            .border-btm(@baseBorder);
+            font-size: 14px;
+            text-align: center;
+            color: @baseText01;
+            background-color: #fff;
+            &::after {
+                bottom: -1px;
             }
         }
-    }
+        .config-cell-wrap {
+            width: 100%;
+            &.center {
+                text-align: center;
+            }
+            .mint-cell {
+                min-height: 44px;
+                height: 44px;
+                font-size: 14px;
+                .mint-cell-wrapper {
+                    font-size: 14px;
+                }
+            }
 
-    .config-cell-wrap {
-        width: 100%;
-        &.center {
-            text-align: center;
         }
     }
 </style>

@@ -4,17 +4,13 @@
         <mko-header title="教育培训" left-icon="icon-back" @handleLeftClick="back" right-icon-text="往期成绩" @handleRightClick="historyRecord"></mko-header>
         <div class="page-wrap train-wrap">
             <ul class="notice-table-view">
-                <li class="notice-table-cell"  v-for="item in trains" @click="goExamRuleView(item)">
-                    <div class="title">
-                        <!--<i class="not-read-item"></i>-->
-                        {{item.examTitle}}
-                    </div>
-                    <div class="from">来源：{{item.from}}</div>
-                    <div class="time">{{item.createdDate | formatDate('YYYY-MM-DD')}}</div>
-                </li>
+                <mko-double-cell :title="item.examTitle" :label="`来源：${item.from}`" is-link
+                                 v-for="item in trains" @click="goExamRuleView(item)">
+                    <div style="color: #666666">{{item.createdDate | formatDate('YYYY-MM-DD')}}</div>
+                </mko-double-cell>
             </ul>
         </div>
-        <no-data class="not-data-wrap"  v-if="notData"></no-data>
+        <no-data class="not-data-wrap" v-if="notData"></no-data>
     </div>
 </template>
 
@@ -80,52 +76,12 @@
 
 <style lang="less" scoped>
     @import "../../config.less";
+
     .notice-table-view {
         width: 100%;
-        margin: 0 auto;
-        padding-left: 14px;
+        margin: 10px auto 0;
         box-sizing: border-box;
         background-color: #fff;
-        .notice-table-cell {
-            width: 100%;
-            height: 50px;
-            background-color: #fff;
-            border-bottom: 1px solid #d8d8d8;
-            padding: 6px 14px 0 0;
-            box-sizing: border-box;
-            position: relative;
-            .not-read-item {
-                width: 10px;
-                height: 10px;
-                border-radius: 50%;
-                background-color: @blueColor;
-                display: inline-block;
-                margin-right: 6px;
-            }
-            .title {
-                width: 100%;
-                font-size: 14px;
-                color: #232323;
-                padding-right: 120px;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-            }
-            .from {
-                width: 100%;
-                font-size: 12px;
-                color: #A0A0A0;
-                margin-top: 2px;
-            }
-            .time {
-                width: auto;
-                position: absolute;
-                right: 14px;
-                color: #606060;
-                font-size: 12px;
-                top: 6px;
-            }
-        }
     }
 
     .train-wrap {

@@ -3,9 +3,9 @@
         <div class="placeholder-item"></div>
         <mko-header title="往期成绩" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
-            <div @click="linkPath('/score_info/' + item.id)"  v-for="item in scores">
-                <mt-cell :title="item.examTitle" :value="item.score" is-link></mt-cell>
-            </div>
+            <mko-cell :title="item.examTitle" :val="item.score"
+                      @click="linkPath('/score_info/' + item.id)" v-for="item in scores" is-link></mko-cell>
+
         </div>
         <no-data class="not-data-wrap"  v-if="notData"></no-data>
     </div>

@@ -18,13 +18,18 @@ export default {
             notData: false,
             bottomStatus: '',
             page: 1,
-            pageItem: {}
+            pageItem: {},
+            notReadIcon:`<i class="not-read-item"></i>`,
+
         }
     },
     activated() {
         window.addEventListener('scroll', this.handleScroll);
         if (new Date(sessionStorage.getItem(`KEEP_ALIVE_RESET_TIME_notice`)) < new Date() || _userName != this.$store.getters.userName) {
             this.noticeList();
+            // this.notices=[
+            //     {title:'时间',createTime:new Date(), status:1}
+            // ]
         }
         if (sessionStorage.getItem('NOTICEDETAIL_READ_STATUS')) {
             let noticeItem = JSON.parse(sessionStorage.getItem('NOTICEDETAIL_READ_STATUS'))

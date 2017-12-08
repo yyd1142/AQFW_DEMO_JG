@@ -151,7 +151,7 @@
 
     .hd-info {
         width: 100%;
-        background-color: #FF7F5B;
+        background-color: @mainDanger;
         position: absolute;
         top: 0;
         height: 50px;
