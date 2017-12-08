@@ -12,7 +12,6 @@ import FastClick from 'fastclick'
 import MKOMessagePlugin from './plugins/MKOMessagePlugin'
 import MKOHistoryManager from './plugins/MKOHistoryManager'
 import MKOAPPState from './plugins/MKOAPPState'
-import MKOUITools from './plugins/MKOUITools'
 import store from './store'
 import MkoUI from 'mko-ui'
 var canExitApp = false;
@@ -40,7 +39,6 @@ Vue.use(MkoUI);
 Vue.use(MKOMessagePlugin)
 Vue.use(MKOHistoryManager)
 Vue.use(MKOAPPState)
-Vue.use(MKOUITools);
 
 var cordovaApp = {
   initialize: function (callback) {

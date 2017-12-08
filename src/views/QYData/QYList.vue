@@ -84,7 +84,7 @@
     import { calcScoreStyle } from 'filters'
     import { Indicator, Toast } from 'mint-ui';
     var qy_datas = [{}, {datas: [], pageItem: {}}, {datas: [], pageItem: {}}];
-    var count = 10;
+    var count = 20;
     let scroll_top = [0, 0];
     let group_id = '';
     export default {
