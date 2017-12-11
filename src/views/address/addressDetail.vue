@@ -22,12 +22,12 @@
                 </div>
             </div>
             <div class="info-wrap">
-                <mt-cell :title="contactDetail.dwName">
+                <mko-cell :title="contactDetail.dwName || '暂无'" main="left">
                     <span slot="icon" class="sign"></span>
-                </mt-cell>
-                <mt-cell :title="contactDetail.role|JgRoleType">
+                </mko-cell>
+                <mko-cell :title="contactDetail.role|JgRoleType" main="left">
                     <span slot="icon" class="sign sign-p"></span>
-                </mt-cell>
+                </mko-cell>
             </div>
         </div>
     </div>
@@ -90,6 +90,9 @@
                         background: url(/static/icons/resource.png) -568px -86px no-repeat;
                         background-size: @bg-size;
                     }
+                    &:active{
+                        opacity: 0.5;
+                    }
                 }
                 .text {
                     margin-top: 2px;
@@ -99,25 +102,15 @@
             }
         }
         .info-wrap {
-            .mint-cell {
-                min-height: 45px;
-                .mint-cell-wrapper {
-                    padding: @cellPadding;
-                    .sign {
-                        position: relative;
-                        top: 22px;
-                        padding: 22px 22px 0 0;
-                        background: url(/static/icons/resource.png) -568px -126px no-repeat;
-                        background-size: @bg-size;
-                        &.sign-p {
-                            background: url(/static/icons/resource.png) -590px -126px no-repeat;
-                            background-size: @bg-size;
-                        }
-                    }
-                    .mint-cell-text {
-                        margin-left: 30px;
-                        line-height: 24px;
-                    }
+            .sign {
+                position: relative;
+                top: 18px;
+                padding: 22px 22px 0 0;
+                background: url(/static/icons/resource.png) -568px -126px no-repeat;
+                background-size: @bg-size;
+                &.sign-p {
+                    background: url(/static/icons/resource.png) -590px -126px no-repeat;
+                    background-size: @bg-size;
                 }
             }
         }
