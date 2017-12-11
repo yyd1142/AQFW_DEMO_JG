@@ -1,20 +1,20 @@
 <template>
     <div>
         <div class="placeholder-item"></div>
-        <mko-header title="风险单位" left-icon="icon-back" @handleLeftClick="changePage" right-icon="icon-search"
+        <mko-header title="风险单位" left-icon="icon-back" @handleLeftClick="changePage" right-icon="icon-search-l"
                     @handleRightClick="showSearchBar = !showSearchBar"></mko-header>
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
         <div class="page-wrap hdc-sel-wrap" v-show="!resError">
-            <search-bar v-model="searchValue" v-show="showSearchBar"></search-bar>
+            <mko-search-bar v-model="searchValue" v-show="showSearchBar"></mko-search-bar>
             <div v-show="!noData">
                 <mt-loadmore ref="loadmore" :top-method="loadTop" @top-status-change="handleTopChange"
                              @bottom-status-change="handleBottomChange" :bottom-method="loadBottom"
                              :bottom-all-loaded="bottomAllLoaded" :auto-fill="autoFill">
                     <div class="data-wrap" ref="wrapper" :style="{minHeight:wrapperHeight+'px'}">
-                        <div @click="selData(item)" v-for="item in dwList">
-                            <mt-cell :title="item.dwName"></mt-cell>
-                        </div>
+
+                        <mko-cell :title="item.dwName" main="left" @click="selData(item)" v-for="item in dwList"></mko-cell>
+
                     </div>
                 </mt-loadmore>
             </div>
@@ -23,9 +23,9 @@
 </template>
 
 <script>
-    import {Indicator, Toast} from 'mint-ui';
+    import { Indicator, Toast } from 'mint-ui';
     import api from 'api'
-    import {NoData, ResError, SearchBar} from 'components';
+    import { NoData, ResError, SearchBar } from 'components';
     let req_count = 20;
     let req_page = 1;
     export default{
@@ -156,24 +156,11 @@
             }
         }
         .data-wrap {
-            /*margin-bottom: 14px;*/
-            .mint-cell {
-                min-height: 44px;
-                .mint-cell-wrapper {
-                    padding: @cellPadding;
-                    font-size: 14px;
-                    letter-spacing: 0;
-                    color: #232323;
-                    background-image: none;
-                }
-                .sign-checked {
-                    display: inline-block;
-                    position: relative;
-                    top: 1px;
-                    right: 5px;
-                    padding: 9px 12px 0 0;
-                    background: url(/static/icons/resource.png) -44px -61px no-repeat;
-                    background-size: 356px auto;
+            .mko-basic-cell {
+                .value.main-left {
+                    flex: 0;
+                    -webkit-flex: 0;
+                    width: 0;
                 }
             }
         }

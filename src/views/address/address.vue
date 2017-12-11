@@ -1,16 +1,15 @@
 <template>
     <div>
         <div class="placeholder-item"></div>
-        <mt-header class="header-wrap" fixed title="部门">
-            <div class="address-search" slot="left" @click="openSearchBar" v-if="!isSearchBar">
-                <i class="search-icon"></i>
-            </div>
-            <mt-button class="header-item" slot="left" icon="back" v-else>返回</mt-button>
-            <div class="font-16" slot="right" @click="$MKOPush('/add_user')" v-if="$store.state.user.isAdmin">创建账号</div>
-        </mt-header>
+        <mko-header title="部门" :left-icon="isSearchBar ? '' : 'icon-search-l'"
+                    :left-icon-text="isSearchBar ? '取消' : null"
+                    @handleLeftClick="openSearchBar"
+                    :right-icon="$store.state.user.isAdmin ? 'icon-add': null"
+                    @handleRightClick="$MKOPush('/add_user')">
+
+        </mko-header>
         <res-error v-if="resError"></res-error>
         <div class="page-wrap address-wrap" v-show="!resError">
-
 
             <mko-light-nav-bar :tabs="tabs" v-model="activeTab"></mko-light-nav-bar>
 
@@ -35,26 +34,6 @@
                         <mko-cell :title="item.dwName" :val="item.qyScoreAverage?`${item.qyScoreAverage}分`:'暂无'"
                                   main="left" is-link @click="goJGinfo(item)" v-for="item in cell.children" v-if="cell.children"></mko-cell>
                         <mko-cell title="暂无" val="暂无" v-if="cell.children && cell.children.length <= 0"></mko-cell>
-                        <!---->
-                        <!--<div class="address-cell" :class="cell.children ? 'first-cell' : null" @click="goJGinfo(cell)">-->
-                        <!--<div class="address-name" :class="cell.children ? 'first' : null">{{cell.dwName}}</div>-->
-                        <!--<span class="address-phone" :class="cell.children ? 'first' : null">-->
-                        <!--{{cell.qyScoreAverage || '暂无'}}-->
-                        <!--<span v-if="cell.qyScoreAverage">分</span>-->
-                        <!--</span>-->
-                        <!--</div>-->
-                        <!--<div class="address-cell" v-for="item in cell.children" @click="goJGinfo(item)" v-if="cell.children">-->
-                        <!--<div class="address-name">{{item.dwName}}</div>-->
-                        <!--<span class="address-phone">-->
-                        <!--{{item.qyScoreAverage || '暂无'}}-->
-                        <!--<span v-if="item.qyScoreAverage">分</span>-->
-                        <!--</span>-->
-                        <!--</div>-->
-                        <!--<div class="address-cell" v-if="cell.children && cell.children.length <= 0">-->
-                        <!--<div class="address-name">暂无</div>-->
-                        <!--<span class="address-phone">暂无</span>-->
-                        <!--</div>-->
-                        <!---->
                     </div>
                     <no-data v-if="lowerDws.length <= 0"></no-data>
                 </div>
@@ -87,8 +66,8 @@
                 lowerDws: [],
                 isSearchBar: false,
                 tabs: [
-                    {id: 2, text: '外部人员'},
-                    {id: 1, text: '内部人员'}
+                    {id: 2, text: '外部'},
+                    {id: 1, text: '内部'}
                 ],
                 activeTab: 2,
             };
@@ -299,104 +278,14 @@
         }
 
         .address-list {
+            margin-top: 10px;
             &.has-searchbar-addresslist {
                 margin: 40px 0 0 0;
             }
             .data-wrap {
                 margin-bottom: 10px;
             }
-            .address-cell {
-                width: 100%;
-                height: 44px;
-                display: table;
-                .border-btm(#E0E0E0);
-                background: #ffffff;
-                &.first-cell {
-                }
-                .address-name,
-                .address-phone {
-                    width: 50%;
-                    vertical-align: middle;
-                    display: table-cell;
-                    line-height: 44px;
-                    letter-spacing: 0px;
-                    font-size: 14px;
-                }
-                .address-name {
-                    text-align: left;
-                    padding-left: 14px;
-                    color: #72787D;
-                    overflow: hidden;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                    &.first {
-                        color: #232323;
-                        font-weight: bold;
-                    }
-                }
-                .address-phone {
-                    text-align: right;
-                    padding-right: 14px;
-                    color: #A8AEB2;
-                    &.first {
-                        color: #72787D;
-                        font-weight: bold;
-                    }
-                }
-            }
-            .mint-indexsection {
-                .mint-indexsection-index {
-                    padding: 4px 0 3px 14px;
-                    height: 17px;
-                    line-height: 17px;
-                    font-size: 12px;
-                }
-                .mint-cell {
-                    .mint-cell-wrapper {
-                        padding: 0 14px;
-                        font-size: 14px;
-                        .mint-cell-title {
-                        }
-                        .mint-cell-value {
-                            color: #232323;
-                        }
-                    }
-                }
-            }
-            .mint-indexlist-nav {
-                display: none;
-            }
-            .mint-cell-allow-right {
-                display: none;
-            }
         }
     }
 
-    .mint-swipe {
-        height: 200px;
-        color: #fff;
-        font-size: 30px;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .mint-swipe-item {
-        line-height: 200px;
-    }
-
-    .address-search {
-        width: 18px;
-        height: 40px;
-        position: absolute;
-        top: @headerTop;
-        left: 14px;
-        .search-icon {
-            width: 18px;
-            height: 18px;
-            background: url('/static/icons/search.png') 0 0 no-repeat;
-            background-size: cover;
-            display: block;
-            margin: 11px 0 0 0;
-        }
-    }
 </style>

@@ -5,9 +5,11 @@
         <div class="page-wrap message-detail-wrap">
             <div class="main-msg">
                 <div class="message-title">
-                <h3>{{noticeItem.title || '暂无标题'}}</h3>
+                    <h3>{{noticeItem.title || '暂无标题'}}</h3>
                 </div>
-                <div class="time-wrap" :style="{ marginBottom: contentFiles.length <= 0 ? '20px' : '4px' }">{{noticeItem.releaseDw || '未知'}} {{noticeItem.createTime | formatDate}}</div>
+                <div class="time-wrap" :style="{ marginBottom: contentFiles.length <= 0 ? '20px' : '4px' }">
+                    {{noticeItem.releaseDw || '未知'}} {{noticeItem.createTime | formatDate}}
+                </div>
                 <div class="attachment-list" :class="index == contentFiles.length - 1 ? 'last-child' : ''" v-for="item, index in contentFiles" v-if="contentFiles.length > 0" @click="downloadFile(item.resouceId)">
                     <div class="title-table">下载附件：<span>{{`${item.title}.${item.type}`}}</span></div>
                 </div>
@@ -46,7 +48,8 @@
                 <!--<mt-button class="footer btn" type="primary" size="large" @click="uploadPhoto()">上传附件</mt-button>-->
             </div>
             <!--所有已完成-->
-            <mko-button class="footer-btn" size="large" no-radius disabled v-show="receiptType==100">我已{{receiptText}}</mko-button>
+            <mko-button class="footer-btn" size="large" no-radius disabled v-show="receiptType==100">我已{{receiptText}}
+            </mko-button>
         </div>
         <mt-actionsheet :actions="actions" v-model="sheetShow"></mt-actionsheet>
     </div>

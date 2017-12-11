@@ -4,43 +4,24 @@
         <mko-header title="创建账号" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap add-user-wrap">
             <div class="com-data-wrap is-edit">
-                <mt-cell title="登录账号">
-                    <span class="sign">*</span>
-                    <input class="ipt" type="text" :placeholder="holderText" v-model="formData.userName">
-                </mt-cell>
-                <mt-cell title="登录密码">
-                    <span class="sign">*</span>
+
+                <mko-form-cell title="登录账号" v-model="formData.userName" type="text" edit required></mko-form-cell>
+                <mko-form-cell title="登录密码" edit required>
                     <input class="ipt" type="text" placeholder="密码必须大约6位小于20位"
                            @keyup="formData.password = formData.password.replace(/[^\w./]/ig, '')"
                            @beforepaste="formData.password.setData('text',formData.password.getData('text').replace(/[^\w./]/ig, ''))"
                            v-model="formData.password">
-                </mt-cell>
-                <!--<mt-cell title="密码确认">-->
-                <!--<span class="sign">*</span>-->
-                <!--<input class="ipt" type="password" placeholder="密码必须大约6位小于20位" v-model="formData.passwordConfirm">-->
-                <!--</mt-cell>-->
-                <mt-cell title="姓名">
-                    <span class="sign">*</span>
-                    <input class="ipt" type="text" :placeholder="holderText" v-model="formData.name">
-                </mt-cell>
-                <div class="sel-cell-wrap" @click="popupPickerShow('gender')">
-                    <span class="sign">*</span>
-                    <mt-cell title="性别" :value="formData.gender|genderFilter" is-link></mt-cell>
-                </div>
-                <mt-cell title="身份证号">
-                    <input class="ipt" type="text" :placeholder="holderText" v-model="formData.idNumber">
-                </mt-cell>
-                <mt-cell title="电话">
-                    <span class="sign">*</span>
-                    <input class="ipt" type="number" :placeholder="holderText" v-model="formData.phone">
-                </mt-cell>
-                <div class="sel-cell-wrap" @click="popupPickerShow('role')">
-                    <span class="sign">*</span>
-                    <mt-cell title="角色" :value="formData.role|JgRoleType" is-link></mt-cell>
-                </div>
+                </mko-form-cell>
+                <mko-form-cell title="姓名" v-model="formData.name" type="text" edit required></mko-form-cell>
+                <mko-form-cell title="性别" :val="formData.gender|genderFilter" type="sel" edit required
+                               @click="popupPickerShow('gender')"></mko-form-cell>
+                <mko-form-cell title="身份证号" v-model="formData.idNumber" type="text" edit></mko-form-cell>
+                <mko-form-cell title="电话" v-model="formData.phone" type="number" edit required></mko-form-cell>
+                <mko-form-cell title="角色" :val="formData.role|JgRoleType" type="sel" edit required
+                               @click="popupPickerShow('role')"></mko-form-cell>
             </div>
             <div class="footer-btn">
-                <mt-button class="btn" :disabled="!isValidate" size="large" @click="postData">创建账号</mt-button>
+                <mko-button :disabled="!isValidate" size="large" @click="postData">创建账号</mko-button>
             </div>
             <!--弹出框-->
             <mt-popup v-model="selPopupShow" position="bottom">
@@ -59,7 +40,7 @@
 
 <script>
     import api from 'api'
-    import {Indicator, Toast, MessageBox} from 'mint-ui'
+    import {Indicator, Toast} from 'mint-ui'
     let history_gender = '';
     let history_role = '';
     export default {
@@ -201,10 +182,10 @@
             back() {
                 for (let key in this.formData) {
                     if (this.formData[key].length != 0) {
-                        MessageBox({
+                        this.$MKODialog({
                             title: '真的要返回吗',
-                            message: '此页面信息将被清空',
-                            showCancelButton: true,
+                            msg: '此页面信息将被清空',
+                            cancelBtn: true,
                         }).then(action => {
                             if (action === 'confirm') {
                                 this.$MKOPop();
@@ -233,16 +214,7 @@
     .add-user-wrap {
         .footer-btn {
             width: 100%;
-            padding: 0 10px;
             margin-top: 14px;
-            .btn {
-                background: @bgBlue;
-                color: #fff;
-                text-align: center;
-                &.is-disabled {
-                    opacity: 0.3;
-                }
-            }
         }
     }
 </style>

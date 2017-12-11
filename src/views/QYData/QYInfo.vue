@@ -57,31 +57,28 @@
                 </div>
             </div>
             <div class="data-wrap">
-                <div class="title-wrap" @click="showInfo('contact')">
-                    <span>联系方式</span>
-                    <span class="sign" :class="show.contact?'icon-arrow-down':'icon-arrow-up'"></span>
-                </div>
+                <mko-menu-header title="联系方式" @click="showInfo('contact')" @show="show.contact =! show.contact"></mko-menu-header>
                 <div v-show="show.contact">
-                    <mko-cell title="消防安全管理人" :val="dwInfo.dwManager||'暂无'"></mko-cell>
-                    <mko-cell title="联系电话" :val="dwInfo.dwManagerPhone||'暂无'">
+                    <mko-menu-cell title="消防安全管理人" :val="dwInfo.dwManager||'暂无'"></mko-menu-cell>
+                    <mko-menu-cell title="联系电话" :val="dwInfo.dwManagerPhone||'暂无'">
                         <a class="phone" :href="'tel:' + dwInfo.dwManagerPhone"
                            v-if="dwInfo.dwManagerPhone">{{dwInfo.dwManagerPhone}}</a>
-                    </mko-cell>
-                    <mko-cell title="消防安全责任人" :val="dwInfo.dwZRPerson||'暂无'"></mko-cell>
-                    <mko-cell title="联系电话" :val="dwInfo.dwZRPhone||'暂无'">
+                    </mko-menu-cell>
+                    <mko-menu-cell title="消防安全责任人" :val="dwInfo.dwZRPerson||'暂无'"></mko-menu-cell>
+                    <mko-menu-cell title="联系电话" :val="dwInfo.dwZRPhone||'暂无'">
                         <a class="phone" :href="'tel:' + dwInfo.dwZRPhone" v-if="dwInfo.dwZRPhone">{{dwInfo.dwZRPhone}}</a>
-                    </mko-cell>
-                    <mko-cell title="企业法人" :val="dwInfo.dwFaRen||'暂无'"></mko-cell>
-                    <mko-cell title="联系电话" :val="dwInfo.dwFaRenPhone||'暂无'">
+                    </mko-menu-cell>
+                    <mko-menu-cell title="企业法人" :val="dwInfo.dwFaRen||'暂无'"></mko-menu-cell>
+                    <mko-menu-cell title="联系电话" :val="dwInfo.dwFaRenPhone||'暂无'">
                         <a class="phone" :href="'tel:' + dwInfo.dwFaRenPhone"
                            v-if="dwInfo.dwFaRenPhone">{{dwInfo.dwFaRenPhone}}</a>
-                    </mko-cell>
-                    <mko-cell title="法人证件号" :val="dwInfo.dwFaRenID||'暂无'"></mko-cell>
-                    <mko-cell title="单位电话" :val="dwInfo.dwPhone||'暂无'">
+                    </mko-menu-cell>
+                    <mko-menu-cell title="法人证件号" :val="dwInfo.dwFaRenID||'暂无'"></mko-menu-cell>
+                    <mko-menu-cell title="单位电话" :val="dwInfo.dwPhone||'暂无'">
                         <a class="phone" :href="'tel:' + dwInfo.dwPhone" v-if="dwInfo.dwPhone">{{dwInfo.dwPhone}}</a>
-                    </mko-cell>
-                    <mko-cell title="单位传真" :val="dwInfo.dwFax||'暂无'"></mko-cell>
-                    <mko-cell title="邮政编码" :val="dwInfo.dwPostcode||'暂无'"></mko-cell>
+                    </mko-menu-cell>
+                    <mko-menu-cell title="单位传真" :val="dwInfo.dwFax||'暂无'"></mko-menu-cell>
+                    <mko-menu-cell title="邮政编码" :val="dwInfo.dwPostcode||'暂无'"></mko-menu-cell>
                 </div>
             </div>
         </div>
@@ -320,7 +317,7 @@ export default {
     }
     .data-wrap {
       & + .data-wrap {
-        margin-top: 14px;
+        margin-top: 10px;
       }
       .phone {
         color: @mainBlue;

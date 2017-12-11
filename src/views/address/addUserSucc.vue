@@ -4,18 +4,16 @@
         <mko-header title="创建账号" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap add-user-succ-wrap">
             <div class="com-data-wrap">
-                <mt-cell title="登录账号" :value="formData.userName"></mt-cell>
-                <mt-cell title="登录密码" :value="formData.password"></mt-cell>
-                <mt-cell title="姓名" :value="formData.name"></mt-cell>
-                <mt-cell title="性别" :value="formData.gender|genderFilter"></mt-cell>
-                <mt-cell title="身份证号" :value="formData.idNumber||'暂无'"></mt-cell>
-                <mt-cell title="电话" :value="formData.phone"></mt-cell>
-                <mt-cell title="角色" :value="formData.role|JgRoleType"></mt-cell>
+                <mko-cell title="登录账号" :val="formData.userName"></mko-cell>
+                <mko-cell title="登录密码" :val="formData.password"></mko-cell>
+                <mko-cell title="姓名" :val="formData.name"></mko-cell>
+                <mko-cell title="性别" :val="formData.gender|genderFilter"></mko-cell>
+                <mko-cell title="身份证号" :val="formData.idNumber||'暂无'"></mko-cell>
+                <mko-cell title="电话" :val="formData.phone"></mko-cell>
+                <mko-cell title="角色" :val="formData.role|JgRoleType"></mko-cell>
             </div>
             <div class="footer-btn">
-                <div class="btn">
-                    <span class="icon icon-tick"></span>创建账号成功，请截图保存
-                </div>
+                <span class="icon icon-tick"></span>创建账号成功，请截图保存
             </div>
         </div>
     </div>
@@ -23,7 +21,7 @@
 
 <script>
     import api from 'api'
-    import {Indicator, Toast, MessageBox} from 'mint-ui'
+    import {Indicator, Toast} from 'mint-ui'
     export default {
         data () {
             return {
@@ -56,21 +54,13 @@
     .add-user-succ-wrap {
         .footer-btn {
             width: 100%;
-            padding: 0 10px;
+            padding: 0 14px;
             margin-top: 14px;
-            .btn {
-                height: 40px;
-                line-height: 40px;
-                border-radius: 2px;
-                box-shadow: 0 0 1px @mainBlue;
-                font-size: 18px;
-                text-align: center;
-                background: #f7faff;
-                color: @mainBlue;
-                &.is-disabled {
-                    opacity: 0.3;
-                }
-            }
+            height: 40px;
+            line-height: 40px;
+            font-size: 18px;
+            text-align: center;
+            color: @mainBlue;
             .icon {
                 transform: scale(0.75, 0.75);
                 position: relative;

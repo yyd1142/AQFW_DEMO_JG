@@ -6,14 +6,12 @@
         <no-data v-if="noData"></no-data>
         <div class="page-wrap hdc-sel-wrap" v-show="!resError">
             <div class="data-wrap">
-                <div @click="selData(item)" v-for="item in xtList">
-                    <mt-cell :title="item.jgName">
-                        <span class="sign-checked" v-show="item.sel" slot="icon"></span>
-                    </mt-cell>
-                </div>
+                <mko-cell :title="item.jgName" @click="selData(item)" v-for="item in xtList">
+                    <span class="icon-tick-blue-1" v-if="item.sel" slot="icon"></span>
+                </mko-cell>
             </div>
             <div class="footer-wrap">
-                <mt-button class="btn" size="large" :disabled="!formValid" @click="confirmData">确定</mt-button>
+                <mko-button no-radius size="large" :disabled="!formValid" @click="confirmData">确定</mko-button>
             </div>
         </div>
     </div>
@@ -23,7 +21,7 @@
 </style>
 
 <script>
-    import {Indicator} from 'mint-ui';
+    import { Indicator } from 'mint-ui';
     import api from 'api'
     import NoData from 'components/NoData/NoData.vue';
     import ResError from 'components/ResError/ResError.vue';
@@ -52,7 +50,11 @@
             },
         },
         created() {
-//      this.getData();
+//            this.getData();
+//            this.xtList = [
+//                {jgName: 'test1', sel: true},
+//                {jgName: 'test2', sel: false},
+//            ]
         },
         methods: {
             getData(){

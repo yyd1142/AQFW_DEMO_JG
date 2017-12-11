@@ -7,13 +7,15 @@
                 <mt-loadmore ref="loadmore" :top-method="loadTop" @top-status-change="handleTopChange"
                              :auto-fill="autoFill">
                     <div :style="{ height: wrapperHeight - 100 + 'px'}">
-                        <mko-double-cell :title="`${personData.name || 'null'}（${JgRoleType(personData.role)}）`"
-                                         :label="personData.dwName || ''" is-link @click="go('/person_data')">
-                            <div class="avatar-wrap" slot="icon">
-                                <div class="default"></div>
-                                <!--<img class="avatar" slot="icon" src="./logo.png">-->
-                            </div>
-                        </mko-double-cell>
+                        <div class="cell-wrap">
+                            <mko-double-cell :title="`${personData.name || 'null'}（${JgRoleType(personData.role)}）`"
+                                             :label="personData.dwName || ''" is-link @click="go('/person_data')">
+                                <div class="avatar-wrap" slot="icon">
+                                    <div class="default"></div>
+                                    <!--<img class="avatar" slot="icon" src="./logo.png">-->
+                                </div>
+                            </mko-double-cell>
+                        </div>
                         <div class="cell-wrap">
                             <mko-cell title="消息" icon="sign sign-msg" is-link @click="go('/message')"></mko-cell>
                             <mko-cell title="设置" icon="sign sign-conf" is-link @click="go('/config')"></mko-cell>
@@ -57,15 +59,15 @@
             }
         }
         .cell-wrap {
-            margin-top: 14px;
+            margin-top: 10px;
         }
     }
 </style>
 
 <script>
     import api from 'api';
-    import {ResError, Tabs} from 'components';
-    import {JgRoleType} from 'filters';
+    import { ResError, Tabs } from 'components';
+    import { JgRoleType } from 'filters';
     export default {
         data() {
             return {

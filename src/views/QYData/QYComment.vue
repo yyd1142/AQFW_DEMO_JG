@@ -6,12 +6,8 @@
         <div class="page-wrap">
             <div class="comment-title"><span>单位标签</span></div>
             <div class="label-wrap">
-                <span class="label" :class="label.active ? scoreColorStyle($route.query.score) : 'no-active'"
-                      v-for="label, index in labelsDatas"
-                      @click="choose(label, index)">{{label.attributeName}}</span>
-            </div>
-            <div class="btn">
-                <mko-button size="large" no-radius @click="action">保存</mko-button>
+                <span class="label" :class="label.active ? scoreColorStyle($route.query.score) : 'no-active'" v-for="label, index in labelsDatas" @click="choose(label, index)">{{label.attributeName}}</span>
+                <mko-button class="btn" size="large" @click="action">保存</mko-button>
             </div>
         </div>
     </div>
@@ -19,7 +15,7 @@
 <script>
     import api from 'api'
     import { NoData, ResError } from 'components'
-    import { MessageBox, Toast } from 'mint-ui'
+    import {Toast } from 'mint-ui'
     export default {
         data() {
             return {
@@ -202,6 +198,10 @@
                         border: 1px solid #dddddd;
                     }
                 }
+                .btn {
+                    margin-top: 4px;
+                    margin-bottom: 14px;
+                }
             }
             .tips {
                 width: 100%;
@@ -224,12 +224,6 @@
                 vertical-align: middle;
                 display: table-cell;
             }
-        }
-        .btn {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            z-index: 22;
         }
     }
 </style>
