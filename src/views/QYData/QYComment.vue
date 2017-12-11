@@ -6,12 +6,8 @@
         <div class="page-wrap">
             <div class="comment-title"><span>单位标签</span></div>
             <div class="label-wrap">
-                <span class="label" :class="label.active ? scoreColorStyle($route.query.score) : 'no-active'"
-                      v-for="label, index in labelsDatas"
-                      @click="choose(label, index)">{{label.attributeName}}</span>
-            </div>
-            <div class="btn">
-                <mko-button size="large" no-radius @click="action">保存</mko-button>
+                <span class="label" :class="label.active ? scoreColorStyle($route.query.score) : 'no-active'" v-for="label, index in labelsDatas" @click="choose(label, index)">{{label.attributeName}}</span>
+                <mko-button class="btn" size="large" @click="action">保存</mko-button>
             </div>
         </div>
     </div>
@@ -61,9 +57,8 @@
                 }).then(result => {
                     if (!result) return false;
                     if (result.code === 0) {
-                        let attributes = result.response.attributes.filter(item => {
-                            return item.type == 1
-                        });
+                        result.response.dwAttributeId = result.response.dwAttributeId.split(',');
+                        let attributes = result.response.dwAttributeId
                         this.qyItem = result.response;
                         labelsDatas = attributes;
                     } else {
@@ -72,7 +67,7 @@
                     for (let item of datas) {
                         item.active = false;
                         for (let subItem of labelsDatas) {
-                            if (item.attributeName === subItem.attributeName) item.active = true;
+                            if (item.id === parseInt(subItem)) item.active = true;
                         }
                     }
                     this.labelsDatas = datas;
@@ -111,7 +106,7 @@
                 api.addDWByZF({
                     groupId: this.qyItem.groupId,
                     gxDWID: this.qyItem.gxDWID,
-                    dwAttributeId: JSON.stringify(dwAttributeId)
+                    dwAttributeId: dwAttributeId.join(',')
                 }).then(result => {
                     if (!result) return false;
                     if (result.code == 0) {
@@ -203,6 +198,10 @@
                         border: 1px solid #dddddd;
                     }
                 }
+                .btn {
+                    margin-top: 4px;
+                    margin-bottom: 14px;
+                }
             }
             .tips {
                 width: 100%;
@@ -225,12 +224,6 @@
                 vertical-align: middle;
                 display: table-cell;
             }
-        }
-        .btn {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            z-index: 22;
         }
     }
 </style>

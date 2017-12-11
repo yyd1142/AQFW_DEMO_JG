@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="qy-data-build-list">
         <div class="placeholder-item"></div>
         <mko-header title="建筑信息" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap build-list-wrap" v-if="!isLoading&&!notData">
@@ -81,9 +81,9 @@
 </script>
 
 <style lang="less" rel="stylesheet/less">
+.qy-data-build-list {
     .build-list-wrap {
-        .list {
-
-        }
+        padding-top: 10px;
     }
+}
 </style>
