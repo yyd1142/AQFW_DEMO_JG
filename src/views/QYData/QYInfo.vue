@@ -9,11 +9,12 @@
                 <span>{{$route.query.score || dwScore.totalScore}}</span>
             </div>
             <div class="label-wrap" :style="{backgroundColor:scoreHeadColor($route.query.score || dwScore.totalScore)}" @click="goQYComment">
-                <div class="label-item">
-                    <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" :style="{ marginRight: index === (dwInfo.attributes.length - 1) ? 0 : '4px' }" v-for="item, index in dwInfo.attributes" v-if="!noAttributes">
-                        <span>{{attributesFilter(item.attributeName)}}</span></div>
-                    <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" v-if="noAttributes">
-                        <span>暂无标签</span></div>
+                <div class="label-item" :class="dwInfo.attributes.length > 3 ? 'more-label' : ''">
+                    <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" :style="{ marginRight: index === (dwInfo.attributes.length - 1) ? 0 : '4px' }" v-for="item, index in dwInfo.attributes" v-if="!noAttributes && index <= 2" >
+                        <span>{{attributesFilter(item.attributeName)}}</span>
+                    </div>
+                    <div class="main ellipsis" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" v-if="dwInfo.attributes.length > 3"><i class="icon-ellipsis"></i></div>
+                    <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" v-if="noAttributes"><span>暂无标签</span></div>
                     <i class="icon icon-arrow-right-white"></i>
                 </div>
             </div>
@@ -292,6 +293,9 @@ export default {
         margin: 0 auto;
         padding: 3px 4px;
         position: relative;
+        &.more-label {
+          padding: 3px 20px 3px 4px;
+        }
         .main {
           height: 18px;
           border-radius: 2px;
@@ -301,9 +305,24 @@ export default {
           padding: 2px;
           box-sizing: border-box;
           margin-right: 4px;
+          &.ellipsis {
+            position: absolute;
+            width: 16px;
+            margin: auto;
+            top: 0;
+            bottom: 0;
+          }
           span {
             color: #ffffff;
             font-size: 12px;
+          }
+          .icon-ellipsis {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            left: 0;
+            right: 0;
           }
         }
         .icon {
