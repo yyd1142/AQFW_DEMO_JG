@@ -3,7 +3,7 @@
         <div class="placeholder-item"></div>
         <mko-header title="数据统计" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
-            <month-nav-bar @get="getMonthIndex"></month-nav-bar>
+            <!--<month-nav-bar @get="getMonthIndex"></month-nav-bar>-->
             <div class="count-block-wrap">
                 <mko-cell :title="item.label" :val="item.num[monthIndex]"
                           @click="goDetail(item.path)" is-link

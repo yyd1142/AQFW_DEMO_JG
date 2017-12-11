@@ -86,6 +86,10 @@ export default {
     getJGScoreTypes: httpGet('/dwScore', Conf.scoreDomain), //社会单位 分数等级模块
     getAppState: httpGet('/'), //获取APP状态
 
+    //数据统计
+    getUserCountByJg:httpGet('/dataCount?m=userCountByJg',Conf.platformDomain), //数据统计-用户数据
+    getQyCountByJg:httpGet('/dataCount?m=qydwTypeCountByJg',Conf.platformDomain), //数据统计-社会单位数据
+
     getAllLabels: httpGet('/label', Conf.platformDomain), //根据类型获取标签
     // PATH 形式访问
     getByPath: function (path) {

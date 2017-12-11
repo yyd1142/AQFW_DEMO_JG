@@ -2,8 +2,9 @@
     <div class="score-count-wrap">
         <div class="placeholder-item"></div>
         <mko-header title="安全评分"
-                    :right-icon-text="type==1?'查看明细':''" @handleRightClick="goDetail(type)"
+                    :right-icon-text="type==1?'单位排名':''" @handleRightClick="goDetail(type)"
                     left-icon="icon-back" @handleLeftClick="back"></mko-header>
+        <!--:right-icon-text="type==1?'查看明细':''" @handleRightClick="goDetail(type)"-->
         <div class="page-wrap">
             <!--<mko-cell :title="item.name" :val="`${item.score} (满分${item.total})`" v-for="item in counts[type]"></mko-cell>-->
 
@@ -105,7 +106,8 @@
             goDetail(type){
                 let paths = [
                     '/score_count_rank_admin',
-                    '/score_count_detail?month=' + this.monthIndex
+//                    '/score_count_detail?month=' + this.monthIndex,
+                    '/score_count_rank?month=' + this.monthIndex
                 ];
                 this.$MKOPush(paths[type]);
             },
