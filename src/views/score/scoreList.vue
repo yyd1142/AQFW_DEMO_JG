@@ -7,9 +7,6 @@
             <mko-nav-bar>
                 <mko-tab-item :label="item.text" :activied="item.actived" @handleTabClick="tab(item, index)" v-for="(item, index) in qyLevelList"></mko-tab-item>
             </mko-nav-bar>
-            <!-- <mt-navbar v-model="selected">
-                <mt-tab-item :id="item.id" v-for="item in qyLevelList">{{item.text}}</mt-tab-item>
-            </mt-navbar> -->
             <div class="data-wrap">
                 <mko-cell :title="item.dwName" :val="`${item.dwSafeScore}分`" v-for="item in qyLevelList[tabIndex].list" @click="go(`/score/${item.groupId}?name=${item.dwName}`)" main="left" is-link></mko-cell>
                 <no-data v-if="qyLevelList[tabIndex].list.length == 0"></no-data>

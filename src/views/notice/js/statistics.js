@@ -2,6 +2,7 @@ import api from 'api'
 import { Indicator, Toast } from 'mint-ui'
 import { formatDate } from 'filters'
 import { NoData } from 'components'
+import moment from 'moment'
 
 var updateDatas = [];
 var needUpdate = true;
@@ -180,6 +181,9 @@ export default {
                 let scrollBottom = totalHeight - scrollTop - clientHeight;
                 this.bottomAllLoaded = scrollBottom <= 0 ? false : true;
             })
+        },
+        formatDate(date) {
+            return moment(date).format('YYYY-MM-DD');
         }
     },
     components: {

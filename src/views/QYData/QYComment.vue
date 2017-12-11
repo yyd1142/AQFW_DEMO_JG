@@ -61,9 +61,8 @@
                 }).then(result => {
                     if (!result) return false;
                     if (result.code === 0) {
-                        let attributes = result.response.attributes.filter(item => {
-                            return item.type == 1
-                        });
+                        result.response.dwAttributeId = result.response.dwAttributeId.split(',');
+                        let attributes = result.response.dwAttributeId
                         this.qyItem = result.response;
                         labelsDatas = attributes;
                     } else {
@@ -72,7 +71,7 @@
                     for (let item of datas) {
                         item.active = false;
                         for (let subItem of labelsDatas) {
-                            if (item.attributeName === subItem.attributeName) item.active = true;
+                            if (item.id === parseInt(subItem)) item.active = true;
                         }
                     }
                     this.labelsDatas = datas;
@@ -111,7 +110,7 @@
                 api.addDWByZF({
                     groupId: this.qyItem.groupId,
                     gxDWID: this.qyItem.gxDWID,
-                    dwAttributeId: JSON.stringify(dwAttributeId)
+                    dwAttributeId: dwAttributeId.join(',')
                 }).then(result => {
                     if (!result) return false;
                     if (result.code == 0) {
