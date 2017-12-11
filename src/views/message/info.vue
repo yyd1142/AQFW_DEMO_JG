@@ -1,5 +1,5 @@
 <template>
-    <div class="message-info">
+    <div class="main-message-info">
         <div class="placeholder-item"></div>
         <mko-header title="消息详情" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap message-detail-wrap" v-if="messagesInfoShow">
@@ -112,7 +112,7 @@ export default {
 
 <style lang="less">
 @import "../../config.less";
-.message-info {
+.main-message-info {
   .message-detail-wrap {
     padding-bottom: 0;
     background-color: #ffffff;
@@ -136,9 +136,7 @@ export default {
         vertical-align: middle;
       }
     }
-  }
-
-  .message-title {
+    .message-title {
     width: 100%;
     margin: 0 auto;
     h3 {
@@ -167,6 +165,7 @@ export default {
     color: #333333;
     font-size: 16px;
     line-height: 24px;
+  }
   }
   .footer-btn {
     position: fixed;

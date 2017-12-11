@@ -143,12 +143,17 @@ export default {
         });
       }, 1500)
     },
-    titleFilters(val) {
+    titleFilters(item) {
+      let val = item.title;
       let strLength = val.length;
       if (strLength >= 13) {
         val = `${val.substring(0, 13)}...`;
       }
-      return val;
+      if(item.status == 0) {
+        return `<i class="is-not-read"></i><span class="not-read-title">${val}</span>`
+      } else {
+        return val;
+      }
     },
     handleScroll() {
       this.$nextTick(() => {

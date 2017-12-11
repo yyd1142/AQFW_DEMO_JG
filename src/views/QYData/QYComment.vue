@@ -39,16 +39,17 @@
                 this.$MKOPop();
             },
             action() {
-                MessageBox({
+                this.$MKODialog({
                     title: '确认保存当前修改？',
-                    showCancelButton: true
-                }).then(action => {
-                    if (action === 'confirm') {
+                    cancelBtn: true,
+                    cancelText: '取消'
+                }).then(msg => {
+                    if (msg == 'confirm') {
                         this.updateLabel();
                         this.text = '编辑';
                         this.isEdit = false;
                     }
-                });
+                })
             },
             choose(item, index) {
                 this.labelsDatas[index].active = !item.active;

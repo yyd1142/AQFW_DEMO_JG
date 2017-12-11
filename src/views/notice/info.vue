@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="notice-info">
         <div class="placeholder-item"></div>
         <mko-header title="通知公告" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap message-detail-wrap">
@@ -443,8 +443,8 @@
 
 <style lang="less" rel="stylesheet/less">
     @import "../../config.less";
-
-    .message-detail-wrap {
+.notice-info {
+        .message-detail-wrap {
   /*padding-bottom: 0;*/
   background-color: #ffffff;
   height: 100vh;
@@ -594,4 +594,5 @@
             }
         }
     }
+}
 </style>
