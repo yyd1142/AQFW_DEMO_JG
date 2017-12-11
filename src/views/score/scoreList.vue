@@ -4,25 +4,21 @@
         <mko-header title="消防安全管理得分" left-icon="icon-back" @handleLeftClick="$MKOPop()"></mko-header>
         <res-error v-if="resError"></res-error>
         <div class="page-wrap score-list-page-wrap" v-show="!resError">
-            <mt-navbar v-model="selected">
+            <mko-nav-bar>
+                <mko-tab-item :label="item.text" :activied="item.actived" @handleTabClick="tab(item, index)" v-for="(item, index) in qyLevelList"></mko-tab-item>
+            </mko-nav-bar>
+            <!-- <mt-navbar v-model="selected">
                 <mt-tab-item :id="item.id" v-for="item in qyLevelList">{{item.text}}</mt-tab-item>
-            </mt-navbar>
+            </mt-navbar> -->
             <div class="data-wrap">
-                <mt-tab-container v-model="selected">
-                    <mt-tab-container-item :id="item.id" v-for="item in qyLevelList">
-                        <no-data v-if="item.list.length==0"></no-data>
-                        <div @click="go(`/score/${data.groupId}?name=${data.dwName}`)" v-for="data in item.list">
-                            <mt-cell :title="data.dwName" :value="`${data.dwSafeScore}分`" is-link></mt-cell>
-                        </div>
-                    </mt-tab-container-item>
-                </mt-tab-container>
+                <mko-cell :title="item.dwName" :val="`${item.dwSafeScore}分`" v-for="item in qyLevelList[tabIndex].list" @click="go(`/score/${item.groupId}?name=${item.dwName}`)" main="left" is-link></mko-cell>
+                <no-data v-if="qyLevelList[tabIndex].list.length == 0"></no-data>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import MKOHistoryManager from '../../plugins/MKOHistoryManager'
     import api from 'api'
     import {NoData, ResError} from 'components';
     import {Indicator} from 'mint-ui';
@@ -33,12 +29,13 @@
                 resError: false,
                 qyList: [],
                 qyLevelList: [
-                    {text: '优秀', id: '1', list: []},
-                    {text: '良好', id: '2', list: []},
-                    {text: '中等', id: '3', list: []},
-                    {text: '较低', id: '4', list: []},
-                    {text: '极低', id: '5', list: []}
-                ]
+                    {text: '优秀', id: '1', list: [], actived: ''},
+                    {text: '良好', id: '2', list: [], actived: ''},
+                    {text: '中等', id: '3', list: [], actived: ''},
+                    {text: '较低', id: '4', list: [], actived: ''},
+                    {text: '极低', id: '5', list: [], actived: ''}
+                ],
+                tabIndex: 0
             }
         },
         watch: {
@@ -66,6 +63,14 @@
             this.$nextTick(() => {
                 this.getData();
                 this.selected = this.$route.query.type || '1';
+                for(let index in this.qyLevelList) {
+                    if(parseInt(this.selected) - 1 == index) {
+                        this.tabIndex = index;
+                        this.qyLevelList[index].actived = 'actived';
+                    } else {
+                        this.qyLevelList[index].actived = '';
+                    }
+                }
             });
         },
         methods: {
@@ -125,6 +130,19 @@
             },
             go(path) {
                 this.$MKOPush(path);
+            },
+            tab(item, index) {
+                this.tabIndex = index;
+                this.selected = item.id;
+                for(let index in this.qyLevelList) {
+                    if(parseInt(this.selected) - 1 == index) {
+                        this.tabIndex = index;
+                        this.qyLevelList[index].actived = 'actived';
+                    } else {
+                        this.qyLevelList[index].actived = '';
+                    }
+                }
+                this.$MKOPush(`/score_list?type=${item.id}`);
             }
         },
         components: {
@@ -134,7 +152,7 @@
     }
 </script>
 
-<style lang="less" rel="stylesheet/less">
+<style lang="less">
     @import "../../config.less";
 
     .score-list-page-wrap {
