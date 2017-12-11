@@ -1,14 +1,14 @@
 <template>
     <div class="qy-comment">
         <div class="placeholder-item"></div>
-        <mko-header title="单位标签" :background-color="scoreHeadColor($route.query.score)" left-icon="icon-back" @handleLeftClick="back"></mko-header>
+        <mko-header :title="qyItem.dwName" :background-color="scoreHeadColor($route.query.score)" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <res-error v-if="resError"></res-error>
         <div class="page-wrap">
             <div class="comment-title"><span>单位标签</span></div>
             <div class="label-wrap">
                 <span class="label" :class="label.active ? scoreColorStyle($route.query.score) : 'no-active'" v-for="label, index in labelsDatas" @click="choose(label, index)">{{label.attributeName}}</span>
-                <mko-button class="btn" size="large" @click="action">保存</mko-button>
             </div>
+            <mko-button class="btn" size="large" @click="action">保存</mko-button>
         </div>
     </div>
 </template>
@@ -198,10 +198,6 @@
                         border: 1px solid #dddddd;
                     }
                 }
-                .btn {
-                    margin-top: 4px;
-                    margin-bottom: 14px;
-                }
             }
             .tips {
                 width: 100%;
@@ -209,6 +205,10 @@
                 color: #ccc;
                 margin-top: 10px;
             }
+            .btn {
+                    margin-top: 14px;
+                    margin-bottom: 14px;
+                }
         }
         .comment-title {
             font-size: 16px;
