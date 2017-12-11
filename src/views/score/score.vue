@@ -15,98 +15,51 @@
                     {{item.score}}分
                 </div>
             </div>
+
             <!--总分-->
             <div class="total">
                 <div class="label">社会单位安全评分构成 (共100分)</div>
                 <div class="val">合计 {{score.totalScore | scoreFilter}}分</div>
             </div>
             <!--火灾风险评估得分-->
-            <div class="data-wrap">
-                <div class="total" @click="showDetail.jzhz=!showDetail.jzhz">
-                    <div class="label">
-                        <div class="sign-wrap" @click.stop="showScoreDesc('jzhz')"><span class="sign icon-info"></span>
-                        </div>
-                        建筑火灾风险评分 (共20分)
-                    </div>
-                    <div class="val">{{score.jzhzScore | scoreFilter}}分</div>
-                    <span class="arrow" :class="showDetail.jzhz?'icon-arrow-down':'icon-arrow-up'"></span>
-                </div>
-                <div class="main" v-show="showDetail.jzhz">
-                    <div class="item">
-                        <span class="label">建筑属性 (共20分)</span>
-                        <span class="val">{{score.jzhzScore | scoreFilter}}分</span>
-                    </div>
-                </div>
+            <mko-menu-header title="建筑火灾风险评分 (共20分)" icon="icon-info" @clickIcon="showScoreDesc('jzhz')"
+                             @show="showDetail.jzhz=!showDetail.jzhz">
+                {{score.jzhzScore | scoreFilter}}分
+            </mko-menu-header>
+            <div v-show="showDetail.jzhz">
+                <mko-menu-cell title="建筑属性 (共20分)">{{score.jzhzScore | scoreFilter}}分</mko-menu-cell>
             </div>
+
             <!--消防设施管理得分-->
-            <div class="data-wrap">
-                <div class="total" @click="showDetail.xfsssb=!showDetail.xfsssb">
-                    <div class="label">
-                        <div class="sign-wrap" @click.stop="showScoreDesc('xfsssb')"><span
-                            class="sign icon-info"></span></div>
-                        消防设施管理评分 (共20分)
-                    </div>
-                    <div class="val">{{score.xfsssbScore | scoreFilter}}分</div>
-                    <span class="arrow" :class="showDetail.xfsssb?'icon-arrow-down':'icon-arrow-up'"></span>
-                </div>
-                <div class="main" v-show="showDetail.xfsssb">
-                    <div class="item">
-                        <span class="label">消防设施完好率 (共20分)</span>
-                        <span class="val">{{score.xfsssbScore | scoreFilter}}分</span>
-                    </div>
-                </div>
+            <mko-menu-header title="消防设施管理评分 (共20分)" icon="icon-info" @clickIcon="showScoreDesc('xfsssb')"
+                             @show="showDetail.xfsssb=!showDetail.xfsssb">
+                {{score.xfsssbScore | scoreFilter}}分
+            </mko-menu-header>
+            <div v-show="showDetail.xfsssb">
+                <mko-menu-cell title="消防设施完好率 (共20分)">{{score.xfsssbScore | scoreFilter}}分</mko-menu-cell>
             </div>
+
             <!--消防安全管理得分-->
-            <div class="data-wrap">
-                <div class="total" @click="showDetail.xfaqgl=!showDetail.xfaqgl">
-                    <div class="label">
-                        <div class="sign-wrap" @click.stop="showScoreDesc('xfaqgl')"><span
-                            class="sign icon-info"></span></div>
-                        消防安全管理得分 (共60分)
-                    </div>
-                    <div class="val">{{score.xfaqglScore | scoreFilter}}分</div>
-                    <span class="arrow" :class="showDetail.xfaqgl?'icon-arrow-down':'icon-arrow-up'"></span>
-                </div>
-                <div class="main" v-show="showDetail.xfaqgl">
-                    <div class="item">
-                        <span class="label">基本信息完善率 (共20分)</span>
-                        <span class="val">{{basicInfoScore | scoreFilter}}分</span>
-                    </div>
-                    <div class="item">
-                        <span class="label">消控中心在岗率 (共2分)</span>
-                        <span class="val">{{score.ryzbScore | scoreFilter}}分</span>
-                    </div>
-                    <div class="item">
-                        <span class="label">人员履职率 (共10分)</span>
-                        <span class="val">{{score.ryxcScore | scoreFilter}}分</span>
-                    </div>
-                    <div class="item">
-                        <span class="label">检查项目达标率 (共5分)</span>
-                        <span class="val">{{score.sssbCheckScore | scoreFilter}}分</span>
-                    </div>
-                    <div class="item">
-                        <span class="label">安全管理执行率 (共10分)</span>
-                        <span class="val">{{aqglScore | scoreFilter}}分</span>
-                    </div>
-                    <div class="item">
-                        <span class="label">学习培训覆盖率 (共8分)</span>
-                        <span class="val">{{xuexipeixunScore | scoreFilter}}分</span>
-                    </div>
-                    <div class="item">
-                        <span class="label">第三方服务签约率 (共3分)</span>
-                        <span class="val">{{disanfangScore | scoreFilter}}分</span>
-                    </div>
-                    <div class="item">
-                        <span class="label">物联网设备接入率 (共2分)</span>
-                        <span class="val">{{wuliuScore | scoreFilter}}分</span>
-                    </div>
-                </div>
+            <mko-menu-header title="消防安全管理得分 (共60分)" icon="icon-info" @clickIcon="showScoreDesc('xfaqgl')"
+                             @show="showDetail.xfaqgl=!showDetail.xfaqgl">
+                {{score.xfaqglScore | scoreFilter}}分
+            </mko-menu-header>
+            <div v-show="showDetail.xfaqgl">
+                <mko-menu-cell title="基本信息完善率 (共20分)">{{basicInfoScore | scoreFilter}}分</mko-menu-cell>
+                <mko-menu-cell title="消控中心在岗率 (共2分)">{{score.ryzbScore | scoreFilter}}分</mko-menu-cell>
+                <mko-menu-cell title="人员履职率 (共10分)">{{score.ryxcScore | scoreFilter}}分</mko-menu-cell>
+                <mko-menu-cell title="检查项目达标率 (共5分)">{{score.sssbCheckScore | scoreFilter}}分</mko-menu-cell>
+                <mko-menu-cell title="安全管理执行率 (共10分)">{{aqglScore | scoreFilter}}分</mko-menu-cell>
+                <mko-menu-cell title="学习培训覆盖率 (共8分)">{{xuexipeixunScore | scoreFilter}}分</mko-menu-cell>
+                <mko-menu-cell title="第三方服务签约率 (共3分)">{{disanfangScore | scoreFilter}}分</mko-menu-cell>
+                <mko-menu-cell title="物联网设备接入率 (共2分)">{{wuliuScore | scoreFilter}}分</mko-menu-cell>
             </div>
+
             <div class="data-count-wrap">
                 <div class="section">
                     <div class="folder">总体评分构成</div>
                     <div class="sub-folder">
-                        <div id="chart1" style="margin: 0 auto; width:90%; height:380px"></div>
+                        <div id="chart1" style="margin: 0 auto; width:90%; height:300px"></div>
                     </div>
                 </div>
                 <!--<div class="section">-->
@@ -261,7 +214,7 @@
 
                         type: 'pie',
                         radius: [40, 100],
-                        center: ['50%', '35%'],
+                        center: ['50%', '50%'],
                         roseType: 'area',
                         itemStyle: {
                             normal: {
@@ -588,7 +541,7 @@
                 padding: 0;
             }
             .section {
-                border-bottom: #ccc 1px solid;
+                .border-btm(@baseBorder);
             }
             .folder {
                 display: block;

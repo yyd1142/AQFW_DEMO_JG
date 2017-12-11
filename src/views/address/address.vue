@@ -2,7 +2,7 @@
     <div>
         <div class="placeholder-item"></div>
         <mko-header title="部门" :left-icon="isSearchBar ? '' : 'icon-search-l'"
-                    :left-icon-text="isSearchBar ? '返回' : null"
+                    :left-icon-text="isSearchBar ? '取消' : null"
                     @handleLeftClick="openSearchBar"
                     :right-icon="$store.state.user.isAdmin ? 'icon-add': null"
                     @handleRightClick="$MKOPush('/add_user')">
@@ -34,26 +34,6 @@
                         <mko-cell :title="item.dwName" :val="item.qyScoreAverage?`${item.qyScoreAverage}分`:'暂无'"
                                   main="left" is-link @click="goJGinfo(item)" v-for="item in cell.children" v-if="cell.children"></mko-cell>
                         <mko-cell title="暂无" val="暂无" v-if="cell.children && cell.children.length <= 0"></mko-cell>
-                        <!---->
-                        <!--<div class="address-cell" :class="cell.children ? 'first-cell' : null" @click="goJGinfo(cell)">-->
-                        <!--<div class="address-name" :class="cell.children ? 'first' : null">{{cell.dwName}}</div>-->
-                        <!--<span class="address-phone" :class="cell.children ? 'first' : null">-->
-                        <!--{{cell.qyScoreAverage || '暂无'}}-->
-                        <!--<span v-if="cell.qyScoreAverage">分</span>-->
-                        <!--</span>-->
-                        <!--</div>-->
-                        <!--<div class="address-cell" v-for="item in cell.children" @click="goJGinfo(item)" v-if="cell.children">-->
-                        <!--<div class="address-name">{{item.dwName}}</div>-->
-                        <!--<span class="address-phone">-->
-                        <!--{{item.qyScoreAverage || '暂无'}}-->
-                        <!--<span v-if="item.qyScoreAverage">分</span>-->
-                        <!--</span>-->
-                        <!--</div>-->
-                        <!--<div class="address-cell" v-if="cell.children && cell.children.length <= 0">-->
-                        <!--<div class="address-name">暂无</div>-->
-                        <!--<span class="address-phone">暂无</span>-->
-                        <!--</div>-->
-                        <!---->
                     </div>
                     <no-data v-if="lowerDws.length <= 0"></no-data>
                 </div>
@@ -86,8 +66,8 @@
                 lowerDws: [],
                 isSearchBar: false,
                 tabs: [
-                    {id: 2, text: '外部人员'},
-                    {id: 1, text: '内部人员'}
+                    {id: 2, text: '外部'},
+                    {id: 1, text: '内部'}
                 ],
                 activeTab: 2,
             };

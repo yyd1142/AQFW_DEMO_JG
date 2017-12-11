@@ -1,12 +1,12 @@
 <template>
     <div>
         <div class="placeholder-item"></div>
-        <mko-header title="风险单位" left-icon="icon-back" @handleLeftClick="changePage" right-icon="icon-search"
+        <mko-header title="风险单位" left-icon="icon-back" @handleLeftClick="changePage" right-icon="icon-search-l"
                     @handleRightClick="showSearchBar = !showSearchBar"></mko-header>
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
         <div class="page-wrap hdc-sel-wrap" v-show="!resError">
-            <search-bar v-model="searchValue" v-show="showSearchBar"></search-bar>
+            <mko-search-bar v-model="searchValue" v-show="showSearchBar"></mko-search-bar>
             <div v-show="!noData">
                 <mt-loadmore ref="loadmore" :top-method="loadTop" @top-status-change="handleTopChange"
                              @bottom-status-change="handleBottomChange" :bottom-method="loadBottom"
