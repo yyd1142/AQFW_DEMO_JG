@@ -65,7 +65,7 @@
 <script>
     import api from 'api';
     import { ResError } from 'components';
-    import { Toast, MessageBox } from 'mint-ui'
+    import { Toast } from 'mint-ui'
     import { formatDate, JgDwType, genderFilter } from 'filters';
     import moment from 'moment'
     let history_gender = 0;
@@ -279,10 +279,10 @@
             },
             back() {
                 if (this.isEdit) {
-                    MessageBox({
+                    this.$MKODialog({
                         title: '真的要返回吗',
-                        message: '编辑信息还未保存',
-                        showCancelButton: true,
+                        msg: '编辑信息还未保存',
+                        cancelBtn: true,
                     }).then(action => {
                         if (action === 'confirm') {
                             this.$MKOPop();

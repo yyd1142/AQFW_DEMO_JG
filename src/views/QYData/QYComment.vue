@@ -19,7 +19,7 @@
 <script>
     import api from 'api'
     import { NoData, ResError } from 'components'
-    import { MessageBox, Toast } from 'mint-ui'
+    import {Toast } from 'mint-ui'
     export default {
         data() {
             return {

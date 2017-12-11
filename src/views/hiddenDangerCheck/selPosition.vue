@@ -6,14 +6,11 @@
         <no-data v-if="noData"></no-data>
         <div class="page-wrap hdc-sel-wrap" v-show="!noData||!resError">
             <div class="data-wrap" v-show="listType==='build'">
-                <div @click="selBuild(item.jzName,index)" v-for="(item,index) in buildList">
-                    <mt-cell :title="item.jzName"></mt-cell>
-                </div>
+                <mko-cell :title="item.jzName" main="left"
+                          @click="selBuild(item.jzName,index)" v-for="(item,index) in buildList"></mko-cell>
             </div>
             <div class="data-wrap" v-show="listType==='floor'">
-                <div @click="selData(item)" v-for="item in floorList">
-                    <mt-cell :title="item"></mt-cell>
-                </div>
+                <mko-cell :title="item" main="left" @click="selData(item)" v-for="item in floorList"></mko-cell>
             </div>
         </div>
     </div>

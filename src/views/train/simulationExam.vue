@@ -27,8 +27,8 @@
 
 <script>
     import api from 'api'
-    import {errorsExamFilter} from 'filters'
-    import {Indicator, Toast, MessageBox} from 'mint-ui'
+    import { errorsExamFilter } from 'filters'
+    import { Indicator, Toast } from 'mint-ui'
     var _id = ''
     var timer = null;
     var examDatas = [];
@@ -83,12 +83,6 @@
             this.maxtime = 60 * 50
             this.time = '00: 00'
             clearInterval(timer);
-            try {
-                MessageBox.close();
-            }
-            catch (err) {
-                alert(err);
-            }
         },
         methods: {
             startExam() {
@@ -210,7 +204,10 @@
             },
             back() {
                 if (this.bInputData && this.examShow == 1 && !this.isTimeup) {
-                    MessageBox.confirm('返回上一级将不会保存当前操作，确认要返回吗？', '提示').then(action => {
+                    this.$MKODialog({
+                        msg: '返回上一级将不会保存当前操作，确认要返回吗？',
+                        cancelBtn: true
+                    }).then(action => {
                         if (action == 'confirm') {
                             window.mkoBackButton.bInputData = false;
                             this.$MKOPop()
@@ -228,7 +225,10 @@
                 window.mkoBackButton = {};
                 window.mkoBackButton.bInputData = true;
                 window.mkoBackButton.callback = function (action) {
-                    MessageBox.confirm('返回上一级将不会保存当前操作，确认要返回吗？', '提示').then(action => {
+                    self.$MKODialog({
+                        msg: '返回上一级将不会保存当前操作，确认要返回吗？',
+                        cancelBtn: true
+                    }).then(action => {
                         if (action == 'confirm') {
                             window.mkoBackButton.bInputData = false;
                             self.$MKOPop()

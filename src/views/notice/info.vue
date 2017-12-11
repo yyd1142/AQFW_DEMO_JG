@@ -5,9 +5,11 @@
         <div class="page-wrap message-detail-wrap">
             <div class="main-msg">
                 <div class="message-title">
-                <h3>{{noticeItem.title || '暂无标题'}}</h3>
+                    <h3>{{noticeItem.title || '暂无标题'}}</h3>
                 </div>
-                <div class="time-wrap" :style="{ marginBottom: contentFiles.length <= 0 ? '20px' : '4px' }">{{noticeItem.releaseDw || '未知'}} {{noticeItem.createTime | formatDate}}</div>
+                <div class="time-wrap" :style="{ marginBottom: contentFiles.length <= 0 ? '20px' : '4px' }">
+                    {{noticeItem.releaseDw || '未知'}} {{noticeItem.createTime | formatDate}}
+                </div>
                 <div class="attachment-list" :class="index == contentFiles.length - 1 ? 'last-child' : ''" v-for="item, index in contentFiles" v-if="contentFiles.length > 0" @click="downloadFile(item.resouceId)">
                     <div class="title-table">下载附件：<span>{{`${item.title}.${item.type}`}}</span></div>
                 </div>
@@ -49,7 +51,8 @@
                 <!--<mt-button class="footer btn" type="primary" size="large" @click="uploadPhoto()">上传附件</mt-button>-->
             </div>
             <!--所有已完成-->
-            <mko-button class="footer-btn" size="large" no-radius disabled v-show="receiptType==100">我已{{receiptText}}</mko-button>
+            <mko-button class="footer-btn" size="large" no-radius disabled v-show="receiptType==100">我已{{receiptText}}
+            </mko-button>
         </div>
         <mt-actionsheet :actions="actions" v-model="sheetShow"></mt-actionsheet>
     </div>
@@ -57,9 +60,9 @@
 
 <script>
     import api from 'api'
-    import {formatDate} from 'filters'
-    import {MessageBox, Toast} from 'mint-ui'
-    import {PhotoBox} from 'components'
+    import { formatDate } from 'filters'
+    import { Toast } from 'mint-ui'
+    import { PhotoBox } from 'components'
     import apiconf from 'apiconf'
     var _id = '';
     var isClick = false;
@@ -134,12 +137,6 @@
             });
         },
         deactivated() {
-            try {
-                MessageBox.close();
-            }
-            catch (err) {
-                alert(err);
-            }
             this.replyContent = ''
             this.replyItem = {}
             this.needUploadPhoto = false;
@@ -234,9 +231,9 @@
             },
             checkNotice(item) {
                 if (item.isRead != 1) {
-                    MessageBox({
+                    this.$MKODialog({
                         title: '确定已全部阅读？',
-                        showCancelButton: true,
+                        cancelBtn: true,
                     }).then(action => {
                         if (action === 'confirm') {
                             let params = {
@@ -262,16 +259,18 @@
             replyNotice(item) {
                 if (item.isReply != 1) {
                     if (this.replyContent == '') {
-                        MessageBox.alert('请输入回复内容');
+                        this.$MKODialog({
+                            msg: '请输入回复内容'
+                        });
                         return false;
                     }
                     if (this.needUploadPhoto && this.photos.length <= 0) {
-                        MessageBox.alert('请上传图片');
+                        this.$MKODialog({msg:'请上传图片'});
                         return false;
                     }
-                    MessageBox({
+                    this.$MKODialog({
                         title: '确认回复吗？',
-                        showCancelButton: true,
+                        cancelBtn: true,
                     }).then(action => {
                         if (action === 'confirm') {
                             if (this.needUploadPhoto) {
@@ -297,7 +296,9 @@
                     if (!result) return false
                     if (result.code == 0) {
                         if (!onlyRead) {
-                            MessageBox.alert('回复成功');
+                            self.$MKODialog({
+                                msg: '回复成功'
+                            })
                             this.noticeItem.isReply = 1;
                         }
                         this.resetData();
@@ -343,7 +344,9 @@
                     api.noticeReply(params).then(result => {
                         if (!result) return false
                         if (result.code == 0) {
-                            MessageBox.alert('上传成功').then(action => {
+                            self.$MKODialog({
+                                msg:'上传成功'
+                            }).then(action => {
                                 setTimeout(() => {
                                     self.resetData()
                                     self.noticeItem.isReply = 1;
@@ -362,7 +365,9 @@
                 // doUploadSuccess('628f4c6004ad43a291635e3380fc5b8301000000');
                 let doUploadPhotos = function () {
                     if (self.photos.length <= 0) {
-                        MessageBox.alert('请上传图片');
+                        self.$MKODialog({
+                            msg: '请上传图片'
+                        })
                         return;
                     }
                     if (isClick) {
@@ -385,17 +390,17 @@
                 }
                 this.$getMobileNetworkType(function (result) {
                     if (result == "unknown") {
-                        MessageBox.alert('当前网络不可用，请确保网络正常...');
+                        self.$MKODialog({msg:'当前网络不可用，请确保网络正常...'})
                         return;
                     } else if (result == "3G/4G") {
                         let opts = {
                             title: '提示',
-                            message: '当前3G/4G网络，提交数据会消耗流量，建议WIFI环境下上传。',
-                            showCancelButton: true,
-                            confirmButtonText: '立即提交',
-                            cancelButtonText: '稍后提交'
+                            msg: '当前3G/4G网络，提交数据会消耗流量，建议WIFI环境下上传。',
+                            cancelBtn: true,
+                            confirmText: '立即提交',
+                            cancelText: '稍后提交'
                         }
-                        MessageBox(opts).then(action => {
+                        self.$MKODialog(opts).then(action => {
                             if (action != 'confirm')
                                 return;
                             doUploadPhotos();
@@ -443,156 +448,157 @@
 
 <style lang="less" rel="stylesheet/less">
     @import "../../config.less";
-.notice-info {
+
+    .notice-info {
         .message-detail-wrap {
-  /*padding-bottom: 0;*/
-  background-color: #ffffff;
-  height: 100vh;
-  padding-top: 40px+ @headerTop;
-  margin-top: 0;
-.message-title {
-    width: 100%;
-    margin: 20px auto;
-    h3 {
-        font-size: 22px;
-        color: #333;
-        margin: 0;
-        padding: 0 14px 0 14px;
-        text-align: left;
-        font-weight: bold;
-        line-height: 30px;
-    }
-}
-.main-msg {
-    width: 100%;
-    margin: 0 auto;
-    .banner {
-        width: 100%;
-        margin: 0 auto 12px auto;
-        padding: 0 14px;
-        height: 250px;
-        img {
-            width: 100%;
-            display: block;
-            height: 250px;
-        }
-    }
-}
-
-.time-wrap {
-    width: 100%;
-    height: 12px;
-    color: #999999;
-    font-size: 12px;
-    margin: 0 0 4px 0;
-    padding: 0 14px;
-}
-
-.content-msg {
-    display: block;
-    color: #333333;
-    font-size: 14px;
-    width: 100%;
-    white-space: normal;
-    padding: 0 14px;
-    p {
-      font-size: 16px !important;
-      line-height: 24px !important;
-      text-align:justify;
-      padding: 0 !important;
-    }
-}
-        .content-file {
-            padding-bottom: 40px;
-            .file {
-                overflow-wrap: break-word;
-                text-decoration: underline;
+            /*padding-bottom: 0;*/
+            background-color: #ffffff;
+            height: 100vh;
+            padding-top: 40px+ @headerTop;
+            margin-top: 0;
+            .message-title {
+                width: 100%;
+                margin: 20px auto;
+                h3 {
+                    font-size: 22px;
+                    color: #333;
+                    margin: 0;
+                    padding: 0 14px 0 14px;
+                    text-align: left;
+                    font-weight: bold;
+                    line-height: 30px;
+                }
             }
-        }
-        .is-disabled {
-            background-color: @disabled-bg;
-        }
-        .fujian-title {
-            width: 100%;
-            font-size: 16px;
-            color: #333333;
-        }
-        .fujian-table-view {
-            width: 100%;
-            margin: 10px auto;
-        }
-        .fujian-table-cell {
-            width: 100%;
-            font-size: 14px;
-            color: #444444;
-            img {
-                width: 25vw;
+            .main-msg {
+                width: 100%;
+                margin: 0 auto;
+                .banner {
+                    width: 100%;
+                    margin: 0 auto 12px auto;
+                    padding: 0 14px;
+                    height: 250px;
+                    img {
+                        width: 100%;
+                        display: block;
+                        height: 250px;
+                    }
+                }
             }
-        }
-        .reply-main {
-            width: 100%; // padding: 10px;
-            background-color: #fafafa;
-            border-radius: 3px;
-            .reply-title {
+
+            .time-wrap {
+                width: 100%;
+                height: 12px;
+                color: #999999;
+                font-size: 12px;
+                margin: 0 0 4px 0;
+                padding: 0 14px;
+            }
+
+            .content-msg {
+                display: block;
+                color: #333333;
+                font-size: 14px;
+                width: 100%;
+                white-space: normal;
+                padding: 0 14px;
+                p {
+                    font-size: 16px !important;
+                    line-height: 24px !important;
+                    text-align: justify;
+                    padding: 0 !important;
+                }
+            }
+            .content-file {
+                padding-bottom: 40px;
+                .file {
+                    overflow-wrap: break-word;
+                    text-decoration: underline;
+                }
+            }
+            .is-disabled {
+                background-color: @disabled-bg;
+            }
+            .fujian-title {
                 width: 100%;
                 font-size: 16px;
                 color: #333333;
-                padding: 0 10px;
             }
-            .reply-table-view {
+            .fujian-table-view {
                 width: 100%;
                 margin: 10px auto;
             }
-            .reply-table-cell {
+            .fujian-table-cell {
                 width: 100%;
-                font-size: 13px;
-                color: #888;
-                padding: 0 10px;
-            }
-            .photo-wrap {
-                background: #fafafa;
-            }
-        }
-
-        .footer-btn {
-            position: fixed;
-            z-index: 15;
-            bottom: 0;
-        }
-        .footer {
-            width: 100%;
-            height: 40px;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            z-index: 10;
-            opacity: 1;
-            &.btn {
-                border-radius: 0;
                 font-size: 14px;
-            }
-            &.reply {
-                display: flex;
-                display: -webkit-flex;
-                background: @bgGray;
-                .ipt {
-                    box-sizing: border-box;
-                    flex: 1;
-                    -webkit-flex: 1;
-                    height: 30px;
-                    margin: 5px 3px 0;
-                    border: 1px solid @borderGray;
+                color: #444444;
+                img {
+                    width: 25vw;
                 }
-                .btn {
-                    flex: 0 0 80px;
-                    -webkit-flex: 0 0 80px;
+            }
+            .reply-main {
+                width: 100%; // padding: 10px;
+                background-color: #fafafa;
+                border-radius: 3px;
+                .reply-title {
+                    width: 100%;
+                    font-size: 16px;
+                    color: #333333;
+                    padding: 0 10px;
+                }
+                .reply-table-view {
+                    width: 100%;
+                    margin: 10px auto;
+                }
+                .reply-table-cell {
+                    width: 100%;
+                    font-size: 13px;
+                    color: #888;
+                    padding: 0 10px;
+                }
+                .photo-wrap {
+                    background: #fafafa;
+                }
+            }
+
+            .footer-btn {
+                position: fixed;
+                z-index: 15;
+                bottom: 0;
+            }
+            .footer {
+                width: 100%;
+                height: 40px;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                z-index: 10;
+                opacity: 1;
+                &.btn {
                     border-radius: 0;
                     font-size: 14px;
-                    height: 30px;
-                    margin: 5px 3px 0 0;
+                }
+                &.reply {
+                    display: flex;
+                    display: -webkit-flex;
+                    background: @bgGray;
+                    .ipt {
+                        box-sizing: border-box;
+                        flex: 1;
+                        -webkit-flex: 1;
+                        height: 30px;
+                        margin: 5px 3px 0;
+                        border: 1px solid @borderGray;
+                    }
+                    .btn {
+                        flex: 0 0 80px;
+                        -webkit-flex: 0 0 80px;
+                        border-radius: 0;
+                        font-size: 14px;
+                        height: 30px;
+                        margin: 5px 3px 0 0;
+                    }
                 }
             }
         }
     }
-}
 </style>

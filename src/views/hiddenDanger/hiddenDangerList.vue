@@ -24,17 +24,6 @@
                         <div style="color: #666666">{{item.createDate | formatDate('YYYY-MM-DD HH:mm')}}</div>
                     </mko-double-cell>
 
-                    <!--<li class="notice-table-cell" v-for="item in hiddenDangers"-->
-                        <!--@click="linkPath('/hidden_danger_info/' + item.id)">-->
-                        <!--<a>-->
-                            <!--<div class="title">-->
-                                <!--&lt;!&ndash;<i class="not-read-item"  v-if="!item.isRead"></i>&ndash;&gt;-->
-                                <!--{{item.yhDesc || '暂无风险描述'}}-->
-                            <!--</div>-->
-                            <!--<div class="from">上报人：{{item.employeeName || '暂无'}}（{{item.sbDWName || '暂无上报单位'}}）</div>-->
-                            <!--<div class="time">{{item.createDate | formatDate}}</div>-->
-                        <!--</a>-->
-                    <!--</li>-->
                 </ul>
             </mt-loadmore>
         </div>

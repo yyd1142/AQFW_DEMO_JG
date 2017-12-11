@@ -57,7 +57,7 @@
 
 <script>
     import api from 'api'
-    import {Toast, MessageBox} from 'mint-ui'
+    import {Toast} from 'mint-ui'
     export default {
         name: 'config',
         data() {
@@ -77,12 +77,6 @@
             })
         },
         deactivated() {
-            try {
-                MessageBox.close();
-            }
-            catch (err) {
-                alert(err);
-            }
         },
         methods: {
             exit() {
@@ -105,22 +99,6 @@
                         })
                     }
                 });
-//                MessageBox.confirm('确定退出该帐号吗', '提示').then(action => {
-//                    if (action == 'confirm') {
-//                        this.$store.dispatch('logout');
-//                        Toast({
-//                            message: '已退出',
-//                            position: 'middle',
-//                            duration: 1000
-//                        });
-//                        this.$nextTick(() => {
-//                            setTimeout(() => {
-//                                this.$Logout();
-//                                this.$MKOJump('/login');
-//                            }, 1000)
-//                        })
-//                    }
-//                });
             },
             clear() {
                 this.$MKODialog({
@@ -138,18 +116,6 @@
                         })
                     }
                 })
-//                MessageBox.confirm('确定清除缓存吗', '提示').then(action => {
-//                    if (action == 'confirm') {
-//                        this.$MKOClearApp((result) => {
-//                            if (!result || result.length == 0) return;
-//                            Toast({
-//                                message: `共清理了${result}缓存`,
-//                                position: 'middle',
-//                                duration: 1000
-//                            });
-//                        })
-//                    }
-//                });
             },
             back() {
                 this.$MKOPop()

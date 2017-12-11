@@ -4,9 +4,10 @@
         <div class="jg-detail-title">
             <span v-text="data.title"></span>
         </div>
-        <mt-header class="header-wrap" :style="{backgroundColor:calcHeadColor(data.scoreData.qyScoreAverage, data.headColors)}" fixed>
-            <mt-button class="header-item" slot="left" icon="back" @click="back"></mt-button>
-        </mt-header>
+
+        <mko-header :background-color="calcHeadColor(data.scoreData.qyScoreAverage, data.headColors)"
+                    left-icon="icon-back" @handleLeftClick="back"></mko-header>
+
         <div class="page-wrap">
             <div class="home-banner-wrap">
                 <div class="banner-bg">
@@ -388,7 +389,7 @@
 
         .jg-detail-title {
             position: fixed;
-            z-index: 20;
+            z-index: 26;
             color: #fff;
             margin: 0 auto;
             left: 0;
@@ -398,9 +399,9 @@
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-            font-size: 17px;
+            font-size: 18px;
             top: @headerTop;
-            height: 40px;
+            height: @headerHeight;
             display: table;
             span {
                 display: table-cell;
