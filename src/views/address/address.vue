@@ -29,25 +29,32 @@
                 </div>
 
                 <div v-show="activeTab==2">
-                    <div v-for="cell in lowerDws">
-                        <div class="address-cell" :class="cell.children ? 'first-cell' : null" @click="goJGinfo(cell)">
-                            <div class="address-name" :class="cell.children ? 'first' : null">{{cell.dwName}}</div>
-                            <span class="address-phone" :class="cell.children ? 'first' : null">
-                  {{cell.qyScoreAverage || '暂无'}}
-                  <span v-if="cell.qyScoreAverage">分</span>
-                </span>
-                        </div>
-                        <div class="address-cell" v-for="item in cell.children" @click="goJGinfo(item)" v-if="cell.children">
-                            <div class="address-name">{{item.dwName}}</div>
-                            <span class="address-phone">
-                  {{item.qyScoreAverage || '暂无'}}
-                  <span v-if="item.qyScoreAverage">分</span>
-                </span>
-                        </div>
-                        <div class="address-cell" v-if="cell.children && cell.children.length <= 0">
-                            <div class="address-name">暂无</div>
-                            <span class="address-phone">暂无</span>
-                        </div>
+                    <div class="data-wrap" v-for="cell in lowerDws">
+                        <mko-cell :title="cell.dwName" :val="cell.qyScoreAverage?`${cell.qyScoreAverage}分`:'暂无'"
+                                  main="left" is-link @click="goJGinfo(cell)"></mko-cell>
+                        <mko-cell :title="item.dwName" :val="item.qyScoreAverage?`${item.qyScoreAverage}分`:'暂无'"
+                                  main="left" is-link @click="goJGinfo(item)" v-for="item in cell.children" v-if="cell.children"></mko-cell>
+                        <mko-cell title="暂无" val="暂无" v-if="cell.children && cell.children.length <= 0"></mko-cell>
+                        <!---->
+                        <!--<div class="address-cell" :class="cell.children ? 'first-cell' : null" @click="goJGinfo(cell)">-->
+                        <!--<div class="address-name" :class="cell.children ? 'first' : null">{{cell.dwName}}</div>-->
+                        <!--<span class="address-phone" :class="cell.children ? 'first' : null">-->
+                        <!--{{cell.qyScoreAverage || '暂无'}}-->
+                        <!--<span v-if="cell.qyScoreAverage">分</span>-->
+                        <!--</span>-->
+                        <!--</div>-->
+                        <!--<div class="address-cell" v-for="item in cell.children" @click="goJGinfo(item)" v-if="cell.children">-->
+                        <!--<div class="address-name">{{item.dwName}}</div>-->
+                        <!--<span class="address-phone">-->
+                        <!--{{item.qyScoreAverage || '暂无'}}-->
+                        <!--<span v-if="item.qyScoreAverage">分</span>-->
+                        <!--</span>-->
+                        <!--</div>-->
+                        <!--<div class="address-cell" v-if="cell.children && cell.children.length <= 0">-->
+                        <!--<div class="address-name">暂无</div>-->
+                        <!--<span class="address-phone">暂无</span>-->
+                        <!--</div>-->
+                        <!---->
                     </div>
                     <no-data v-if="lowerDws.length <= 0"></no-data>
                 </div>
@@ -294,6 +301,9 @@
         .address-list {
             &.has-searchbar-addresslist {
                 margin: 40px 0 0 0;
+            }
+            .data-wrap {
+                margin-bottom: 10px;
             }
             .address-cell {
                 width: 100%;

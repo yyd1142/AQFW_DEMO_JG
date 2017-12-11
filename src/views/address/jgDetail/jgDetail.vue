@@ -29,40 +29,19 @@
                     </div>
                 </div>
             </div>
-            <div class="xiaji-bumen-wrap xiaji-main">
-                <div class="title">
-                    <span class="xiajijiandu">下级监督部门</span>
-                    <span class="anquanpingfen">管辖单位平均分</span>
-                </div>
-                <ul class="xiaji-table-view">
-                    <li class="xiaji-table-cell" v-for="item in data.lowerDws" @click="goJGinfo(item)">
-                        <span class="key" v-text="item.dwName"></span>
-                        <span class="value">
-                            {{item.qyScoreAverage || '暂无'}}
-                            <span v-if="item.qyScoreAverage">分</span>
-                        </span>
-                    </li>
-                    <li class="xiaji-table-cell" v-if="data.noData">
-                        <span class="key">暂无</span>
-                        <span class="value">暂无</span>
-                    </li>
-                </ul>
+            <div class="data-wrap">
+                <task-build-title title="下级监督部门" value="管辖单位平均分"></task-build-title>
+                <mko-cell :title="item.dwName" :val="item.qyScoreAverage?`${item.qyScoreAverage}分`:'暂无'"
+                          main="left" is-link @click="goJGinfo(item)" v-for="item in data.lowerDws"></mko-cell>
+                <mko-cell title="暂无" val="暂无" v-if="data.noData"></mko-cell>
             </div>
-            <div class="xiaji-bumen-wrap">
-                <div class="title">
-                    <span class="xiajijiandu">人员组成（角色）</span>
-                    <span class="anquanpingfen">联系电话</span>
-                </div>
-                <ul class="xiaji-table-view">
-                    <li class="xiaji-table-cell" v-for="item in data.persons" @click="goPersonInfo(item)">
-                        <span class="key">{{item.name}}（{{item.role | JgRoleType}}）</span>
-                        <span class="value">{{item.phone || '暂无'}}</span>
-                    </li>
-                    <li class="xiaji-table-cell" v-if="data.notPersons">
-                        <span class="key">暂无</span>
-                        <span class="value">暂无</span>
-                    </li>
-                </ul>
+
+            <div class="data-wrap">
+                <task-build-title title="人员组成（角色）" value="联系电话"></task-build-title>
+                <mko-cell :title="`${item.name}（${JgRoleType(item.role)}）`"
+                          :val="item.phone" non-text="暂无" main="left" is-link
+                          @click="goPersonInfo(item)" v-for="item in data.persons"></mko-cell>
+                <mko-cell title="暂无" value="暂无" v-if="data.notPersons"></mko-cell>
             </div>
         </div>
         <!--<res-error v-if="data.resError"></res-error>-->
@@ -70,7 +49,7 @@
 </template>
 <script>
     import api from 'api'
-    import { ResError, NoData } from 'components'
+    import { ResError, NoData, TaskBuildTitle } from 'components'
     import { JgRoleType, calcHeadColor, calcBannerBg, calcBannerCircle, calcScoreText } from 'filters'
     import { Toast } from 'mint-ui';
 
@@ -109,6 +88,7 @@
             this.onBackButtonEvent()
         },
         methods: {
+            JgRoleType,
             calcHeadColor,
             calcBannerBg,
             calcBannerCircle,
@@ -254,7 +234,7 @@
             }
         },
         components: {
-            ResError, NoData
+            ResError, NoData, TaskBuildTitle
         }
     }
 </script>
@@ -401,99 +381,11 @@
                 }
             }
         }
-        .xiaji-bumen-wrap {
-            width: 100%;
-            margin: 10px 0;
-            &.xiaji-main {
-                margin: -1px 0 10px 0;
-            }
-            .title {
-                width: 100%;
-                height: 44px;
-                display: table;
-                background-color: #ffffff;
-                .border-btm(#E0E0E0);
-                .xiajijiandu {
-                    width: 50%;
-                    line-height: 44px;
-                    vertical-align: middle;
-                    display: table-cell;
-                    font-size: 14px;
-                    color: #232323;
-                    padding-left: 14px;
-                }
-                .anquanpingfen {
-                    width: 50%;
-                    line-height: 44px;
-                    vertical-align: middle;
-                    display: table-cell;
-                    font-size: 14px;
-                    color: #72787D;
-                    text-align: right;
-                    padding-right: 14px;
-                }
-            }
-            .xiaji-table-view {
-                width: 100%;
-                background-color: #Ffffff;
-                box-sizing: border-box;
-                padding-left: 14px;
-                .xiaji-table-cell {
-                    width: 100%;
-                    height: 44px;
-                    .border-btm(#E0E0E0);
-                    display: table;
-                    .key {
-                        height: 44px;
-                        display: table-cell;
-                        line-height: 44px;
-                        vertical-align: middle;
-                        width: 80%;
-                        font-size: 14px;
-                        color: #72787D;
-                        letter-spacing: 0px;
-                    }
-                    .value {
-                        height: 44px;
-                        display: table-cell;
-                        line-height: 44px;
-                        vertical-align: middle;
-                        width: 20%;
-                        text-align: right;
-                        padding-right: 14px;
-                        font-size: 14px;
-                        color: #A8AEB2;
-                        letter-spacing: 0px;
-                    }
-                    .person-name,
-                    .person-phone,
-                    .person-role {
-                        display: table-cell;
-                        vertical-align: middle;
-                        height: 44px;
-                        line-height: 44px;
-                        width: 100% / 3;
-                    }
-                    .person-name {
-                        text-align: left;
-                        overflow: hidden;
-                        white-space: nowrap;
-                        text-overflow: ellipsis;
-                    }
-                    .person-phone {
-                        text-align: center;
-                    }
-                    .person-role {
-                        text-align: right;
-                        padding: 0 10px 0 0;
-                    }
-                }
-                .not-data {
-                    width: 100%;
-                    text-align: center;
-                }
-            }
+
+        .data-wrap {
+            /*margin-bottom: 10px;*/
         }
+
         .jg-detail-title {
             position: fixed;
             z-index: 20;

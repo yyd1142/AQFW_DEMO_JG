@@ -1,5 +1,5 @@
 <template>
-    <div class="main">
+    <div class="main address-jg-person-detail-wrap">
         <div class="placeholder-item"></div>
         <mko-header :title="person.name || '暂无'" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap address-detail-wrap">
@@ -21,45 +21,31 @@
                     </a>
                 </div>
             </div>
-            <div class="info-wrap">
-                <div class="cell">
-                    <div class="cell-icon">
-                        <i class="dw-icon"></i>
-                    </div>
-                    <div class="item" v-text="person.dwName || '暂无单位信息'"></div>
-                </div>
-                <div class="cell">
-                    <div class="cell-icon">
-                        <i class="position-icon"></i>
-                    </div>
-                    <div class="item">{{person.role | JgRoleType}}</div>
-                </div>
+
+            <div>
+                <mko-cell :title="person.dwName||'暂无单位信息'" main="left">
+                    <span slot="icon" class="cell-icon dw-icon"></span>
+                </mko-cell>
+                <mko-cell :title="person.role | JgRoleType" main="left">
+                    <span slot="icon" class="cell-icon position-icon"></span>
+                </mko-cell>
             </div>
-            <div class="xiaji-bumen-wrap">
-                <div class="title">
-                    <span class="xiajijiandu">管辖社会单位</span>
-                    <span class="anquanpingfen">安全评分</span>
-                </div>
-                <ul class="xiaji-table-view">
-                    <li class="xiaji-table-cell" v-for="item in units">
-                        <span class="key">{{item.dwName}}</span>
-                        <span class="value">
-                            {{item.dwSafeScore || '暂无'}}<span v-if="item.dwSafeScore">分</span>
-                        </span>
-                    </li>
-                    <li class="xiaji-table-cell" v-if="units.length <= 0">
-                        <span class="key">暂无</span>
-                        <span class="value">暂无</span>
-                    </li>
-                </ul>
+
+            <div>
+                <task-build-title title="管辖社会单位" value="安全评分"></task-build-title>
+                <mko-cell :title="item.dwName" main="left" v-for="item in units">
+                    {{item.dwSafeScore || '暂无'}}<span v-if="item.dwSafeScore">分</span>
+                </mko-cell>
+                <mko-cell title="暂无" val="暂无" v-if="units.length <= 0"></mko-cell>
             </div>
+
         </div>
         <res-error v-if="resError"></res-error>
     </div>
 </template>
 <script>
 import api from 'api'
-import { ResError } from 'components'
+import { ResError,TaskBuildTitle } from 'components'
 import { JgRoleType } from 'filters'
 
 export default {
@@ -117,11 +103,11 @@ export default {
         }
     },
     components: {
-        ResError
+        ResError,TaskBuildTitle
     }
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
 @import "../../../config.less";
 
 .main {
@@ -129,6 +115,21 @@ export default {
     .address-detail-wrap {
 
         min-height: 400px;
+
+        .cell-icon {
+            position: relative;
+            top: 18px;
+            padding: 22px 22px 0 0;
+            &.dw-icon {
+                background: url(/static/icons/resource.png) -568px -126px no-repeat;
+                background-size: @bg-size;
+            }
+            &.position-icon {
+                background: url(/static/icons/resource.png) -590px -126px no-repeat;
+                background-size: @bg-size;
+            }
+        }
+
         .card-wrap {
             position: relative;
             height: 282px;
@@ -180,6 +181,9 @@ export default {
                         background: url(/static/icons/resource.png) -568px -86px no-repeat;
                         background-size: @bg-size;
                     }
+                    &:active{
+                        opacity: 0.5;
+                    }
                 }
                 .text {
                     margin-top: 2px;
@@ -187,166 +191,6 @@ export default {
                     font-size: 12px;
                 }
             }
-        }
-        .info-wrap {
-            .border-top(#E0E0E0);
-            .cell {
-                width: 100%;
-                height: 44px;
-                background: #ffffff;
-                .border-btm(#E0E0E0);
-                display: table;
-                .cell-icon {
-                    width: 30px;
-                    height: 44px;
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    .dw-icon,
-                    .position-icon {
-                        width: 22px;
-                        display: block;
-                        margin: 10px 0 0 14px;
-                        height: 22px;
-                    }
-                    .dw-icon {
-                        background: url(/static/icons/resource.png) -568px -126px no-repeat;
-                        background-size: @bg-size;
-                    }
-                    .position-icon {
-                        background: url(/static/icons/resource.png) -590px -126px no-repeat;
-                        background-size: @bg-size;
-                    }
-                }
-                .item {
-                    width: 100%;
-                    height: 44px;
-                    line-height: 44px;
-                    vertical-align: middle;
-                    display: table-cell;
-                    font-size: 14px;
-                    color: #52627F;
-                    letter-spacing: 0px;
-                    text-align: right;
-                    padding-right: 14px;
-                }
-            }
-            .mint-cell {
-                min-height: 45px;
-                .mint-cell-wrapper {
-                    padding: @cellPadding;
-                    .sign {
-                        position: relative;
-                        top: 22px;
-                        padding: 22px 22px 0 0;
-                        background: url(/static/icons/resource.png) -568px -126px no-repeat;
-                        background-size: @bg-size;
-                        margin-right: 30px;
-                        &.sign-p {
-                            background: url(/static/icons/resource.png) -590px -126px no-repeat;
-                            background-size: @bg-size;
-                        }
-                    }
-                    .mint-cell-text {
-                        margin-left: 30px;
-                        line-height: 24px;
-                    }
-                }
-            }
-        }
-    }
-}
-
-.xiaji-bumen-wrap {
-    width: 100%;
-    margin: 10px 0;
-    &.xiaji-main {
-        margin: -1px 0 10px 0;
-    }
-    .title {
-        width: 100%;
-        height: 44px;
-        display: table;
-        background-color: #ffffff;
-        .border-btm(#E0E0E0);
-        .xiajijiandu {
-            width: 50%;
-            line-height: 44px;
-            vertical-align: middle;
-            display: table-cell;
-            font-size: 14px;
-            color: #232323;
-            padding-left: 14px;
-        }
-        .anquanpingfen {
-            width: 50%;
-            line-height: 44px;
-            vertical-align: middle;
-            display: table-cell;
-            font-size: 14px;
-            color: #72787D;
-            text-align: right;
-            padding-right: 14px;
-        }
-    }
-    .xiaji-table-view {
-        width: 100%;
-        background-color: #Ffffff;
-        box-sizing: border-box;
-        padding-left: 14px;
-        .xiaji-table-cell {
-            width: 100%;
-            height: 44px;
-            .border-btm(#E0E0E0);
-            display: table;
-            .key {
-                height: 44px;
-                display: table-cell;
-                line-height: 44px;
-                vertical-align: middle;
-                width: 80%;
-                font-size: 14px;
-                color: #72787D;
-                letter-spacing: 0px;
-            }
-            .value {
-                height: 44px;
-                display: table-cell;
-                line-height: 44px;
-                vertical-align: middle;
-                width: 20%;
-                text-align: right;
-                padding-right: 14px;
-                font-size: 14px;
-                color: #A8AEB2;
-                letter-spacing: 0px;
-            }
-            .person-name,
-            .person-phone,
-            .person-role {
-                display: table-cell;
-                vertical-align: middle;
-                height: 44px;
-                line-height: 44px;
-                width: 100% / 3;
-            }
-            .person-name {
-                text-align: left;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-            }
-            .person-phone {
-                text-align: center;
-            }
-            .person-role {
-                text-align: right;
-                padding: 0 10px 0 0;
-            }
-        }
-        .not-data {
-            width: 100%;
-            text-align: center;
         }
     }
 }
