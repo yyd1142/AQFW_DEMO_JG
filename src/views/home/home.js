@@ -34,29 +34,42 @@ export default {
                 {class: 'yinhuan-icon', text: '风险管理', url: `/hidden_danger/${this.$store.getters.groupId}?is_jg=1`},
             ],
             newsTabs: [
-                {text: '新闻通知', selected: 'news-table-actived', type: 1},
-                {text: '安全知识', selected: false, type: 2},
-                {text: '法律法规', selected: false, type: 3},
-                {text: '经典案例', selected: false, type: 4}
+                {text: '新闻通知', id: 1, selected: 'news-table-actived', type: 1},
+                {text: '安全知识', id: 2, selected: false, type: 2},
+                {text: '法律法规', id: 3, selected: false, type: 3},
+                {text: '经典案例', id: 4, selected: false, type: 4}
             ],
+            activeTab: 1,
             newsType: 1,
             newsDatas: [],
             autoFill: false,
             bottomAllLoaded: false,
             bottomStatus: '',
-            // topAllLoaded: false,
-            // topStatus: '',
             wrapperHeight: 0,
             hasMessageDataClass: '',
             resError: false
         }
     },
+    watch: {
+        activeTab: function(val) {
+            this.newsType = val;
+            this.bottomAllLoaded = true;
+            if (needUpdate[this.newsType].datas.length <= 0) {
+                this.newsList(1, this.newsType);
+            } else {
+                this.newsDatas = needUpdate[this.newsType].datas
+            }
+        }
+    },
     activated() {
+        window.addEventListener('scroll', this.handleScroll);
         this.resError = false;
         this.hasNewMessage();
         this.getBannerData();
         this.newsList(1, this.newsType);
-        this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+    },
+    deactivated() {
+        window.removeEventListener('scroll', this.handleScroll)
     },
     methods: {
         //Banner数据
@@ -83,23 +96,6 @@ export default {
             })
         },
         calcHeadColor,
-        //tab
-        tab(item, index) {
-            this.newsTabs.forEach((obj) => {
-                if (index == this.newsTabs.indexOf(obj)) {
-                    obj.selected = 'news-table-actived';
-                } else {
-                    obj.selected = false;
-                }
-            })
-            this.newsType = item.type;
-            this.bottomAllLoaded = needUpdate[this.newsType].bottomAllLoaded;
-            if (needUpdate[this.newsType].datas.length <= 0) {
-                this.newsList(1, this.newsType);
-            } else {
-                this.newsDatas = needUpdate[this.newsType].datas
-            }
-        },
         safeScore() {
         },
         //新闻列表
@@ -140,7 +136,7 @@ export default {
                             pageCount: result.response.pageCount,
                             bottomAllLoaded: false
                         };
-                        this.bottomAllLoaded = false;
+                        this.bottomAllLoaded = true;
                         this.newsDatas = result.response.datas;
                     } else {
                         needUpdate[type] = {
@@ -170,7 +166,7 @@ export default {
                         duration: 1500
                     });
                     needUpdate[this.newsType].bottomAllLoaded = true
-                    this.bottomAllLoaded = needUpdate[this.newsType].bottomAllLoaded;
+                    this.bottomAllLoaded = true;
                     this.$refs.loadmore.onBottomLoaded();
                     return false;
                 }
@@ -194,7 +190,7 @@ export default {
                                 duration: 1500
                             });
                             needUpdate[this.newsType].bottomAllLoaded = true;
-                            this.bottomAllLoaded = needUpdate[this.newsType].bottomAllLoaded;
+                            this.bottomAllLoaded = true
                         } else {
                             Toast({
                                 message: '加载完成',
@@ -202,7 +198,7 @@ export default {
                                 duration: 1500
                             });
                             this.newsDatas = this.newsDatas.concat(result.response.datas);
-                            this.bottomAllLoaded = false;
+                            this.bottomAllLoaded = true;
                             needUpdate[this.newsType] = {
                                 isupdate: false,
                                 type: this.newsType,
@@ -264,6 +260,20 @@ export default {
                 val = `${val.substring(0, 20)}...`
             }
             return val;
+        },
+        handleScroll() {
+            this.$nextTick(() => {
+                let totalHeight = document.getElementById('pageWrapper').offsetHeight;
+                let scrollTop = document.documentElement && document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
+                let clientHeight = 0;
+                if (document.body.clientHeight && document.documentElement.clientHeight) {
+                clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+                } else {
+                clientHeight = (document.body.clientHeight > document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+                }
+                let scrollBottom = totalHeight - scrollTop - clientHeight;
+                this.bottomAllLoaded = scrollBottom <= 0 ? false : true;
+            })
         }
     },
     components: {
