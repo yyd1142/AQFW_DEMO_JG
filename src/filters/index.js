@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import moment from 'moment'
+import Conf from 'config'
+
 // 日期格式化
 Vue.filter('formatDate', (value, format) => {
     if (!value) {
@@ -31,6 +33,11 @@ Vue.filter('errorsExamFilter', (value) => {
 Vue.filter('QyRoleType', (value) => {
     const role = ['消防安全责任人', '消防安全管理人', '消防控制室管理人员', '专兼职消防管理人员', '保安', '消防引导员'];
     return role[value - 1]
+});
+
+Vue.filter('allQyRoleType', (value) => {
+    const role = Conf.allQyRoleList;
+    return role[value] || ''
 });
 
 //监管单位角色权限
@@ -157,6 +164,7 @@ export const formatDate = Vue.filter('formatDate')
 export const genderFilter = Vue.filter('genderFilter')
 const errorsExamFilter = Vue.filter('errorsExamFilter')
 const QyRoleType = Vue.filter('QyRoleType')
+export const allQyRoleType = Vue.filter('allQyRoleType')
 export const JgRoleType = Vue.filter('JgRoleType')
 const JgDwType = Vue.filter('JgDwType')
 const IDType = Vue.filter('IDType')

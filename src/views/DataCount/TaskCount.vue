@@ -72,7 +72,7 @@
         mounted() {
         },
         activated(){
-            this.monthIndex = this.$route.query.month || 0;
+//            this.monthIndex = this.$route.query.month || 0;
 
             this.type = sessionStorage.getItem(`jgDwType${this.$store.getters.groupId}`) || 0;
             this.DrawChart1(echarts);

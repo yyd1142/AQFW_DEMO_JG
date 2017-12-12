@@ -1,6 +1,6 @@
 <template>
     <div class="month-nav-bar-wrap">
-        <div class="btn btn-left fl" :class="{'disable':monthIndex<=-1}" @click="getMonth(-1)">
+        <div class="btn btn-left fl" :class="{'disable':monthIndex<=-2}" @click="getMonth(-1)">
             <span class="icon-arrow-left"></span>
         </div>
         <div class="abs-middle text">{{monthStart | formatDate('YYYY年MM月')}}</div>
@@ -14,6 +14,7 @@
     export default {
         data () {
             return {
+                limitMonth: -2,
                 monthIndex: 0,
                 monthStart: new Date(),
                 monthEnd: '',
@@ -41,7 +42,7 @@
                 if (this.monthIndex == 0 && handle == 1)
                     return;
 
-                if (this.monthIndex == -1 && handle == -1)
+                if (this.monthIndex == -2 && handle == -1)
                     return;
 
                 this.monthIndex += handle;
@@ -87,7 +88,8 @@
                 this.monthEnd = new Date(year, lastMonth - 1, totalDay);
             },
             sendData(){
-                this.$emit('get', this.monthIndex)
+//                this.$emit('get', this.monthIndex)
+                this.$emit('get', this.monthStart)
             }
         },
         components: {}

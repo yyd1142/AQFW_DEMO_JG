@@ -91,6 +91,7 @@
             margin-top: 10px;
             .title-cell {
                 height: 50px;
+                font-weight: bolder;
                 .cell {
                     height: 50px;
                 }

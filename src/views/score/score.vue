@@ -84,9 +84,9 @@
     import api from 'api'
     import conf from 'config'
     import echarts from 'echarts';
-    import {ScoreBanner} from 'components';
-    import {Toast, Indicator} from 'mint-ui'
-    import {calcHeadColor, calcScoreStyle, calcBannerCircle, scoreFilter} from 'filters'
+    import { ScoreBanner } from 'components';
+    import { Toast, Indicator } from 'mint-ui'
+    import { calcHeadColor, calcScoreStyle, calcBannerCircle, scoreFilter } from 'filters'
     import moment from 'moment'
     let theme = 'macarons';
     let keys = ['dwInfoScore', 'jzInfoScore', 'ryInfoScore', 'xfsssbInfoScore', 'ryzbScore', 'ryxcScore', 'sssbCheckScore', 'xfgzryScore', 'xfaqzdScore', 'xfgzjhScore', 'xfgzlhScore', 'yjyaScore', 'yjssylScore', 'zyxfdScore', 'dqzgpxScore', 'xfaqpxqkScore', 'yggqpxScore', 'sfqywbScore', 'sfqyjcScore', 'sfqybxScore', 'spjkfxScore', 'dqjcScore', 'ywgjcScore', 'sxtjcScore', 'krqtjcScore']
@@ -472,8 +472,8 @@
             font-size: 14px;
             letter-spacing: 0;
             background: #fff;
-            color: #232323;
-            box-shadow: 0 0 0 0.5px @borderColor;
+            color: @baseText01;
+            .border-top(@baseBorder);
             .label {
                 float: left;
             }
@@ -542,6 +542,11 @@
             }
             .section {
                 .border-btm(@baseBorder);
+                &:last-child {
+                    &:after {
+                        bottom: -1px;
+                    }
+                }
             }
             .folder {
                 display: block;

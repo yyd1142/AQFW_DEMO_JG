@@ -4,41 +4,50 @@
         <mko-header title="单位排名"
                     left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
-            <!--<mko-nav-bar>-->
-            <!--<mko-tab-item :activied="tabI==i" :label="t" @handleTabClick="tabFn(i)" v-for="(t,i) in tabItems"></mko-tab-item>-->
-            <!--</mko-nav-bar>-->
             <div>
                 <mko-cell :icon="isSel?'icon-link-arrow-up':'icon-link-arrow-down'"
-                          :title="tabItems[tabI]" val="共9个" @click="sel"></mko-cell>
+                          :title="tabItems[tabI].text" :val="`共${total}个`" @click="sel"></mko-cell>
             </div>
 
             <div class="sel-wrap" @click.self="isSel=false" v-show="isSel">
-                <mko-cell class="sel-item" :class="i==tabI?'active':''" :title="t" @click="tabFn(i)" v-for="(t,i) in tabItems">
+                <mko-cell class="sel-item" :class="i==tabI?'active':''" :title="t.text" @click="tabFn(i)" v-for="(t,i) in tabItems">
                     <div class="icon-tick-blue-1 fr" v-show="i==tabI"></div>
                 </mko-cell>
             </div>
-            <div class="list-wrap">
-                <mko-cell class="title-cell" title="企业名称" val="得分"></mko-cell>
 
-                <div v-show="tabI==0">
-                    <mko-cell :title="item.name" main="left" :val="item.score" v-for="item in list[monthIndex]"></mko-cell>
+
+            <mt-loadmore ref="loadmore" :bottom-method="loadBottom" @bottom-status-change="handleBottomChange"
+                         :bottom-all-loaded="bottomAllLoaded" :auto-fill="autoFill">
+                <div class="list-wrap">
+                    <mko-cell class="title-cell" title="企业名称" val="得分"></mko-cell>
+
+                    <mko-cell :title="item.dwName" main="left" :val="item.dwSafeScore" non-text="0" v-for="item in list"></mko-cell>
+
                 </div>
-                <div v-show="tabI==1">
-                    <mko-cell :title="item.name" main="left" :val="item.score" v-for="item in listReverse[monthIndex]"></mko-cell>
-                </div>
-            </div>
+            </mt-loadmore>
         </div>
     </div>
 </template>
 
 <script>
+    import api from 'api';
+    import { ResError } from 'components'
+    import { Indicator, Toast } from 'mint-ui';
+
+    let _page = 1;
+    let _count = 20;
+    let _pageCount = 0;
     export default {
         data () {
             return {
-                monthIndex: 0,
+                month: 0,
                 isSel: false,
                 tabI: 0,
-                tabItems: ['评分由高到低', '评分由低到高'],
+//                tabItems: ['评分由高到低', '评分由低到高'],
+                tabItems: [
+                    {text: '评分由高到低', value: 'DESC'},
+                    {text: '评分由低到高', value: 'ASC'},
+                ],
                 list: [
                     [
                         {name: '江阴市协丰棉麻有限公司', score: 93},
@@ -65,10 +74,23 @@
                 ],
                 listReverse: [
                     [], []
-                ]
+                ],
+                total: 0,
+                //load-more
+                autoFill: false,
+                bottomAllLoaded: false,
+                topStatus: '',
+                bottomStatus: '',
+
             }
         },
-        watch: {},
+        watch: {
+            tabI(){
+                _page = 1;
+                this.bottomAllLoaded = false;
+                this.getData();
+            }
+        },
         computed: {},
         mounted() {
             this.list.forEach((data, index) => {
@@ -78,8 +100,11 @@
             })
         },
         activated(){
+            _page = 1;
+            this.bottomAllLoaded = false;
             this.tabI = 0;
-            this.monthIndex = this.$route.query.month || 0;
+            this.month = this.$route.query.month || '';
+            this.getData();
         },
         deactivated() {
         },
@@ -92,6 +117,64 @@
             tabFn(i){
                 this.tabI = i;
                 this.isSel = false;
+            },
+            getData(){
+                if (_page <= 1)
+                    Indicator.open({spinnerType: 'fading-circle'});
+                let pas = {
+                    groupId: this.$store.getters.groupId,
+                    dwId: this.$store.getters.userInfo.dwId || '',
+                    createDate: this.month,
+                    page: _page,
+                    count: _count,
+                    sort: this.tabItems[this.tabI].value
+                };
+                api.getQyDwRanking(pas).then(res => {
+                    this.$refs.loadmore.onBottomLoaded();
+                    if (res && res.code == 0) {
+                        if (_page <= 1) {
+                            this.list = res.response.datas;
+                        } else {
+                            this.list=this.list.concat(res.response.datas)
+                        }
+                        _pageCount = res.response.pageCount;
+                        this.total = res.response.countNumber;
+                    }
+                    Indicator.close();
+
+                })
+            },
+            loadBottom() {
+                if (_page >= _pageCount) {
+                    Toast({
+                        message: '暂无更多数据',
+                        position: 'middle',
+                        duration: 1500
+                    });
+                    this.bottomAllLoaded = true;
+                    this.$refs.loadmore.onBottomLoaded();
+                    return false;
+                }
+                _page++;
+                setTimeout(this.getData, 500);
+            },
+            handleBottomChange(status) {
+                this.bottomStatus = status;
+            },
+            handleScroll() {
+//                this.scoTop = document.documentElement.scrollTop || document.body.scrollTop;
+                this.$nextTick(() => {
+                    let totalHeight = this.$refs['pageWrapper'].offsetHeight;
+                    let scrollTop = document.documentElement && document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
+                    let clientHeight = 0;
+                    if (document.body.clientHeight && document.documentElement.clientHeight) {
+                        clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+                    } else {
+                        clientHeight = (document.body.clientHeight > document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+                    }
+                    let scrollBottom = totalHeight - scrollTop - clientHeight;
+                    this.bottomAllLoaded = scrollBottom <= 0 ? false : true;
+                })
             },
             back(){
                 this.$MKOPop();
@@ -120,6 +203,7 @@
             margin-top: 10px;
             .title-cell {
                 height: 50px;
+                font-weight: bolder;
                 .cell {
                     height: 50px;
                 }

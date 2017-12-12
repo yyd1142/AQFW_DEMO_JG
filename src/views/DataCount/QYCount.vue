@@ -4,7 +4,7 @@
         <mko-header title="社会单位数量(家)" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
             <div class="info-bar">
-                {{counts[type][monthIndex]}}
+                {{datas.qydwTotalCount}}
             </div>
             <mko-nav-bar>
                 <mko-tab-item :activied="tabI==i" :label="t.text" @handleTabClick="tabFn(i)" v-for="(t,i) in tabItems"></mko-tab-item>
@@ -13,7 +13,7 @@
 
             <div class="chart-wrap" ref="chart"></div>
             <div class="list-wrap">
-                <mko-cell :title="item.name" :val="item.value" main="left" v-for="item in datas.qydwTypeCount"></mko-cell>
+                <mko-cell :title="item.name" :val="item.value||'0'" main="left" v-for="item in datas[tabItems[tabI].key]"></mko-cell>
             </div>
             <!--<mko-cell title="数据列表" is-link @click="goList"></mko-cell>-->
         </div>
@@ -24,14 +24,22 @@
     import echarts from 'echarts';
     import api from 'api';
     import { ResError } from 'components'
+    import { Indicator } from 'mint-ui';
+
     let theme = 'macarons';
     let color = ['#3399FF', '#55DD66', '#F5A623', '#50E3C2 ', '#AD6DFF', '#F8E71C', '#FF336B', '#7E80FF', '#38b48b', '#96514b', '#ED6D35', '#824880'];
     let itemStyle = {
         normal: {
-            label: {
 
+            label: {
                 formatter: function (data) {
-                    return `${data.name}\n(${data.percent}%)`
+                    let max = 6;
+                    let name = data.name || '';
+                    if (name.length > max) {
+                        name = name.split('').splice(0, max).join('');
+                        name += '…'
+                    }
+                    return `${name}\n(${data.percent}%)`
                 },
                 textStyle: {
                     color: '#666',
@@ -39,7 +47,7 @@
                 }
             },
             labelLine: {
-                length: 20,
+                length: 10,
                 lineStyle: {
                     color: '#ddd',
                 }
@@ -52,7 +60,7 @@
     };
     let tabItems = [
         {text: '区域', key: 'qydwAreaCount'},
-        {text: '行业', key: 'qydwTypeCount'},
+        {text: '行业', key: 'qydwIndustryCount'},
         {text: '单位类型', key: 'qydwTypeCount'},
     ];
     export default {
@@ -60,25 +68,21 @@
             return {
                 type: 0,
                 tabI: 0,
-                tabItems: [],
-                monthIndex: 0,
-                counts: [
-                    [3544, 3533],
-                    [824, 823],
-                ],
+                tabItems: [{text: '', key: ''}],
+                month: 0,
                 datas: {}
             }
         },
         watch: {
             tabI(){
-                this.getData();
+                this.DrawChart(echarts);
             }
         },
         computed: {},
         mounted() {
         },
         activated(){
-            this.monthIndex = this.$route.query.month || 0;
+            this.month = this.$route.query.month;
             this.type = sessionStorage.getItem(`jgDwType${this.$store.getters.groupId}`) || 0;
             this.tabI = 0;
             this.tabItems = this.type == 0 ? JSON.parse(JSON.stringify(tabItems)) : JSON.parse(JSON.stringify(tabItems)).splice(1, 2);
@@ -96,37 +100,67 @@
                 this.tabI = i;
             },
             getData(){
+                Indicator.open({spinnerType: 'fading-circle'});
                 let pas = {
-                    groupId: this.$store.getters.groupId
+                    groupId: this.$store.getters.groupId,
+                    dwId: this.$store.getters.userInfo.dwId || '',
+                    createDate: this.month
                 };
                 api.getQyCountByJg(pas).then(res => {
                     if (res && res.code == 0) {
                         this.datas = res.response;
-                        this.datas.qydwTypeCount = res.response.qydwTypeCount.map(item => {
-                            return {
-                                value: item.count,
-                                name: item.safetyName
+                        let that = this;
+                        let match = function (key) {
+                            let names = {
+                                qydwAreaCount: 'dwAreaName',
+                                qydwIndustryCount: 'dwTypeName',
+                                qydwTypeCount: 'safetyName'
+                            };
+                            if (res.response[key]) {
+                                let other = res.response.qydwTotalCount || 0;
+                                that.datas[key] = res.response[key].map(item => {
+                                    other -= item.count;
+                                    return {
+                                        value: item.count,
+                                        name: item[names[key]]
+                                    }
+                                });
+                                //将剩余归为其他类
+                                if (other > 0)
+                                    that.datas[key].push({
+                                        value: other,
+                                        name: '其他'
+                                    })
+                                //排序
+                                that.datas[key].sort(function (a, b) {
+                                    return b.value - a.value;
+                                });
                             }
-                        });
+                        };
+                        match('qydwAreaCount');
+                        match('qydwIndustryCount');
+                        match('qydwTypeCount');
                         this.DrawChart(echarts);
                     }
+                    Indicator.close();
+
                 })
             },
             DrawChart(ec){
                 let myChart = ec.init(this.$refs['chart'], theme);
-                let data = this.datas[this.tabItems[this.tabI].key];
-                console.log(data);
-//                let length = 8;
-//                for (let i = data.length - 1; i >= length; i--) {
-//                    data[i].itemStyle = noLabel;
-//                }
+                let data = this.datas[this.tabItems[this.tabI].key] || [];
+                //限制饼图最多显示8个标签
+                let length = 8;
+                for (let i = data.length - 1; i >= length; i--) {
+                    data[i].itemStyle = noLabel;
+                }
                 myChart.setOption({
                     title: {
                         x: 'center'
                     },
                     tooltip: {
                         trigger: 'item',
-                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+//                        formatter: "{a} <br/>{b} : {c} ({d}%)"
                     },
                     toolbox: {
                         show: true,
@@ -143,115 +177,6 @@
                             data: data,
                             itemStyle: itemStyle
                         }
-                    ]
-                })
-            },
-            _DrawChart(ec){
-                let _t = this.type;
-                let total = this.counts[_t];
-                let jh = datas[_t].jh;
-                let hy = datas[_t].hy;
-
-                let myChart = ec.init(this.$refs['chart'], theme);
-                let radius = [72, 75];
-                let labelTop = {
-                    normal: {
-                        label: {
-                            show: false,
-//                            position: 'center',
-//                            formatter: '{b}',
-                            textStyle: {
-                                baseline: 'bottom',
-                                color: '#3399ff',
-                                fontSize: 12
-                            }
-                        },
-                        labelLine: {
-                            show: false
-                        }
-                    }
-                };
-                let labelFromatter = {
-                    normal: {
-                        label: {
-                            formatter: function (params) {
-                                return ((total - params.value) / total * 100).toFixed(2) + '%'
-                            },
-                            textStyle: {
-                                baseline: 'bottom',
-                                color: '#333',
-                                fontSize: 28
-                            }
-                        }
-                    },
-                };
-                let labelBottom = {
-                    normal: {
-                        color: '#ccc',
-                        label: {
-                            show: true,
-                            position: 'center'
-                        },
-                        labelLine: {
-                            show: false
-                        }
-                    },
-                    emphasis: {
-                        color: '#ccc'
-                    }
-                };
-                myChart.setOption({
-                    legend: {
-                        orient: 'vertical',
-                        x: 'center',
-                        y: 195,
-                        itemGap: 217,
-                        selectedMode: false,
-                        formatter: function (name) {
-                            let val = name == '激活单位数' ? jh : hy;
-                            return `${name}：${val}`
-                        },
-                        data: [
-                            '激活单位数', '活跃单位数'
-                        ],
-                        textStyle: {
-                            color: '#666',
-                            fontSize: 18
-                        }
-                    },
-                    title: {
-//                        text: '社会单位数据',
-//                        x: 'center'
-                    },
-                    toolbox: {
-                        show: false,
-                        feature: {}
-                    },
-                    color: ['#2CABFF', ' #2CABFF'],
-                    categories: {},
-                    series: [
-                        {
-                            type: 'pie',
-                            center: ['50%', '20%'],
-                            radius: radius,
-                            x: '0%', // for funnel
-                            itemStyle: labelFromatter,
-                            data: [
-                                {name: 'other', value: parseInt(total - jh), itemStyle: labelBottom},
-                                {name: '激活单位数', value: jh, itemStyle: labelTop}
-                            ]
-                        },
-                        {
-                            type: 'pie',
-                            center: ['50%', '70%'],
-                            radius: radius,
-                            x: '20%', // for funnel
-                            itemStyle: labelFromatter,
-                            data: [
-                                {name: 'other', value: parseInt(total - hy), itemStyle: labelBottom},
-                                {name: '活跃单位数', value: hy, itemStyle: labelTop}
-                            ]
-                        },
                     ]
                 })
             },
@@ -274,6 +199,7 @@
         }
         .info-bar {
             height: 44px;
+            margin-bottom: 10px;
             line-height: 44px;
             font-size: 30px;
             text-align: center;

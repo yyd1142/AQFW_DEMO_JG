@@ -3,9 +3,9 @@
         <div class="placeholder-item"></div>
         <mko-header title="数据统计" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
-            <!--<month-nav-bar @get="getMonthIndex"></month-nav-bar>-->
+            <month-nav-bar @get="getMonthIndex"></month-nav-bar>
             <div class="count-block-wrap">
-                <mko-cell :title="item.label" :val="item.num[monthIndex]"
+                <mko-cell :title="item.label" :val="item.num[0]"
                           @click="goDetail(item.path)" is-link
                           v-for="item in counts[type]"></mko-cell>
             </div>
@@ -24,12 +24,13 @@
     import api from 'api';
     import { MonthNavBar } from 'components'
     import echarts from 'echarts';
+    import { formatDate } from 'filters';
     let theme = 'macarons';
     let gId = '';
     export default {
         data () {
             return {
-                monthIndex: 0,
+                month: '',
                 type: -1,
                 counts: [
                     [
@@ -48,6 +49,7 @@
         watch: {},
         computed: {},
         mounted() {
+            this.getMonthIndex(new Date());
         },
         activated(){
             this.getDwData();
@@ -57,11 +59,12 @@
         destroyed(){
         },
         methods: {
-            getMonthIndex(index){
-                this.monthIndex = Math.abs(index);
-                if (this.monthIndex > 1)
-                    this.monthIndex = 1;
-
+            formatDate,
+            getMonthIndex(data){
+                this.month = this.formatDate(data, 'YYYY-MM');
+                if (this.month)
+                    this.month += '-00';
+                console.log(this.month)
             },
             getDwData(){
                 gId = this.$store.getters.groupId;
@@ -81,10 +84,10 @@
                 })
             },
             goDetail(path){
-                this.$MKOPush(path + '?month=' + this.monthIndex)
+                this.$MKOPush(path + '?month=' + this.month)
             },
             goScore(){
-                this.$MKOPush('/score_count?month=' + this.monthIndex);
+                this.$MKOPush('/score_count?month=' + this.month);
             },
             DrawChart1(ec){
                 let scores = [
@@ -121,7 +124,7 @@
                         {
                             type: 'category',
                             boundaryGap: true,
-                            data: ['2017.6', '2017.7', '2017.8', '2017.9', '2017.10','2017.11'],
+                            data: ['2017.6', '2017.7', '2017.8', '2017.9', '2017.10', '2017.11'],
                             axisLine: {
                                 lineStyle: {
                                     color: '#979797'
