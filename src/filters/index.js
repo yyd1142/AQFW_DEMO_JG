@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import moment from 'moment'
-import Conf from 'config'
+import conf from 'config'
 
 // 日期格式化
 Vue.filter('formatDate', (value, format) => {
@@ -36,7 +36,7 @@ Vue.filter('QyRoleType', (value) => {
 });
 
 Vue.filter('allQyRoleType', (value) => {
-    const role = Conf.allQyRoleList;
+    const role = conf.allQyRoleList;
     return role[value] || ''
 });
 

@@ -12,20 +12,21 @@
                 <div class="count-block" v-for="item in counts[type]">
                     <div class="title abs-middle">{{item.name}}</div>
                     <div class="desc abs-middle">满分{{item.total}}</div>
-                    <div class="value abs-middle">{{item.score[0]}}</div>
+                    <div class="value abs-middle">{{item.score[monthIndex]}}</div>
                 </div>
             </div>
+            <!--<week-nav-bar></week-nav-bar>-->
 
             <div class="chart-wrap">
                 <mko-nav-bar v-if="type==0">
-                    <mko-tab-item :activied="tabI==i" :label="t.text" @handleTabClick="tabFn(i)" v-for="(t,i) in tabItems"></mko-tab-item>
+                    <mko-tab-item :activied="tabI==i" :label="t" @handleTabClick="tabFn(i)" v-for="(t,i) in tabItems"></mko-tab-item>
                 </mko-nav-bar>
                 <div class="chart" :class="tabI==2?'big':''" ref="chart"></div>
             </div>
 
             <div class="list-wrap" v-show="tabI==0">
                 <mko-cell class="title-cell" title="安全评级" val="平均分"></mko-cell>
-                <mko-cell :title="scoreLabel[i]" :val="item" v-for="(item,i) in scoreDatas[type][0]"></mko-cell>
+                <mko-cell :title="scoreLabel[i]" :val="item" v-for="(item,i) in scoreDatas[type][monthIndex]"></mko-cell>
             </div>
 
         </div>
@@ -34,25 +35,15 @@
 
 <script>
     import { WeekNavBar } from 'components'
-    import api from 'api';
-    import conf from 'config';
-    import { ResError } from 'components'
-    import { Indicator } from 'mint-ui';
 
     import echarts from 'echarts';
     let theme = 'macarons';
     export default {
         data () {
             return {
-                month: 0,
+                monthIndex: 0,
                 tabI: 0,
-//                tabItems: ['安全评级', '区域排名', '行业排名', '单位类型'],
-                tabItems: [
-                    {text: '安全评级', key: ''},
-                    {text: '区域排名', key: 'scoreAreaCount'},
-                    {text: '行业排名', key: 'scoreSafetyCount'},
-                    {text: '单位类型', key: 'scoreTypeCount'},
-                ],
+                tabItems: ['安全评级', '区域排名', '行业排名', '单位类型'],
                 type: 0,
                 counts: [
                     {
@@ -86,8 +77,7 @@
                         [20, 331, 449, 8, 16],
                         [7, 186, 535, 82, 13],
                     ],
-                ],
-                scoreInfoDatas: {}
+                ]
             }
         },
         watch: {
@@ -99,11 +89,11 @@
         mounted() {
         },
         activated(){
-            this.month = this.$route.query.month;
+//            this.monthIndex = this.$route.query.month || 0;
+
             this.type = sessionStorage.getItem(`jgDwType${this.$store.getters.groupId}`) || 0;
             this.tabI = 0;
             this.DrawChart();
-            this.getScoreInfo();
         },
         deactivated() {
         },
@@ -116,56 +106,10 @@
             goDetail(type){
                 let paths = [
                     '/score_count_rank_admin',
-//                    '/score_count_detail?month=' + this.month,
-                    '/score_count_rank?month=' + this.month
+//                    '/score_count_detail?month=' + this.monthIndex,
+                    '/score_count_rank?month=' + this.monthIndex
                 ];
                 this.$MKOPush(paths[type]);
-            },
-            getScoreInfo(){
-                Indicator.open({spinnerType: 'fading-circle'});
-                let pas = {
-//                    groupId: this.$store.getters.groupId,
-                    dwId: this.$store.getters.userInfo.dwId,
-                    createDate: this.month
-                };
-                api.getQyDwScoreInfo(pas).then(res => {
-                    if (res && res.code == 0) {
-                        this.scoreInfoDatas = res.response;
-                        let that = this;
-                        let match = function (key) {
-                            let names = {
-                                scoreAreaCount: 'dwAreaName',
-                                scoreTypeCount: 'dwTypeName',
-                                scoreSafetyCount: 'safetyName'
-                            };
-                            if (res.response[key]) {
-                                let other = res.response.qydwTotalCount || 0;
-                                that.datas[key] = res.response[key].map(item => {
-                                    other -= item.count;
-                                    return {
-                                        value: item.average,
-                                        name: item[names[key]]
-                                    }
-                                });
-                                //将剩余归为其他类
-                                if (other > 0)
-                                    that.datas[key].push({
-                                        value: other,
-                                        name: '其他'
-                                    });
-                                //排序
-                                that.datas[key].sort(function (a, b) {
-                                    return b.value - a.value;
-                                });
-                            }
-                        };
-                        match('scoreAreaCount');
-                        match('scoreTypeCount');
-                        match('scoreSafetyCount');
-                        this.DrawChart();
-                    }
-                    Indicator.close();
-                })
             },
             DrawChart(){
                 let tab = this.tabI > 1 ? 1 : this.tabI;
@@ -207,7 +151,7 @@
                             type: 'pie',
                             radius: '55%',
                             center: ['50%', '50%'],
-                            data: datas[this.type][0],
+                            data: datas[this.type][this.monthIndex],
                             itemStyle: {
                                 normal: {
                                     label: {
@@ -233,38 +177,27 @@
             },
             DrawChart1(ec){
                 let fontSize = [12, 10, 12, 10];
-                let datas = this.scoreInfoDatas[this.tabItems[this.tabI].key] || [];
-                let y = [];
-                let x = [];
-                datas.forEach(item => {
-                    y.push(item.name);
-                    x.push(item.value);
-                });
-                console.log(x);
-                console.log(y);
-
-                return;
-//                let y = [
-//                    [],
-//                    ['宜兴市', '惠山区', '江阴市', '锡山区', '滨湖区', '梁溪区', '新吴区'],
-//                    ['公安', '教育', '新闻', '安监', '住建', '民政', '工商', '文化', '卫计', '交通', '规划', '人社', '质监'],
-//                    ['一级\n重点单位', '二级\n重点单位', '三级\n重点单位', '一般\n单位'],
-//                ];
-//                let x = [
-//                    [],
-//                    [
-//                        [79.4, 79.3, 78.9, 78.7, 78.5, 78, 77.9],
-//                        [76.8, 76.6, 76, 75.8, 75.6, 75.4, 74.9],
-//                    ],
-//                    [
-//                        [79.9, 79.8, 79.7, 78.8, 78.7, 78.5, 78.1, 78, 77.8, 77.2, 76.5, 76, 76],
-//                        [77.6, 76.9, 76.6, 75.9, 75.6, 75.6, 75.5, 75.4, 74.8, 74.4, 74.3, 73.9, 72.4],
-//                    ],
-//                    [
-//                        [76.9, 78.6, 78.9, 76.5],
-//                        [75.1, 75.7, 75.9, 75.2],
-//                    ],
-//                ];
+                let y = [
+                    [],
+                    ['宜兴市', '惠山区', '江阴市', '锡山区', '滨湖区', '梁溪区', '新吴区'],
+                    ['公安', '教育', '新闻', '安监', '住建', '民政', '工商', '文化', '卫计', '交通', '规划', '人社', '质监'],
+                    ['一级\n重点单位', '二级\n重点单位', '三级\n重点单位', '一般\n单位'],
+                ];
+                let x = [
+                    [],
+                    [
+                        [79.4, 79.3, 78.9, 78.7, 78.5, 78, 77.9],
+                        [76.8, 76.6, 76, 75.8, 75.6, 75.4, 74.9],
+                    ],
+                    [
+                        [79.9, 79.8, 79.7, 78.8, 78.7, 78.5, 78.1, 78, 77.8, 77.2, 76.5, 76, 76],
+                        [77.6, 76.9, 76.6, 75.9, 75.6, 75.6, 75.5, 75.4, 74.8, 74.4, 74.3, 73.9, 72.4],
+                    ],
+                    [
+                        [76.9, 78.6, 78.9, 76.5],
+                        [75.1, 75.7, 75.9, 75.2],
+                    ],
+                ];
 
                 let myChart = ec.init(this.$refs['chart'], theme);
                 myChart.setOption({
@@ -326,7 +259,7 @@
                         {
                             name: '安全评分',
                             type: 'bar',
-                            data: x[this.tabI][0],
+                            data: x[this.tabI][this.monthIndex],
                             itemStyle: {
                                 normal: {
                                     barBorderColor: '#3399ff'

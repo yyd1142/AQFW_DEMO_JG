@@ -90,6 +90,9 @@ export default {
     getUserCountByJg:httpGet('/dataCount?m=userCountByJg',Conf.platformDomain), //数据统计-用户数据
     getQyCountByJg:httpGet('/dataCount?m=qydwTypeCountByJg',Conf.platformDomain), //数据统计-社会单位数据
     getQyDwRanking:httpGet('/dataCount?m=qyDwRanking',Conf.platformDomain), //数据统计-单位排名
+    getQytaskCount:httpGet('/dataCount?m=taskCount',Conf.platformDomain), //数据统计-任务数据统计
+    getQyDwScoreInfo:httpGet('/dataCount?m=qyDwScoreInfo',Conf.platformDomain), //数据统计-评分详情
+    // getQyDwScoreInfo:httpGet('/dataCount?m=qyDwScoreInfo','http://10.0.1.5:3030'), //数据统计-评分详情
 
     getAllLabels: httpGet('/label', Conf.platformDomain), //根据类型获取标签
     // PATH 形式访问

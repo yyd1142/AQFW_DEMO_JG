@@ -4,12 +4,12 @@
         <mko-header title="任务执行数量(个)" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
             <div class="info-bar">
-                {{counts[type][monthIndex]}}
+                {{datas.qyTotalTaskByJg}}
             </div>
             <!--<mko-cell class="title-cell" title="数据分析"></mko-cell>-->
             <div class="chart-wrap" ref="chart"></div>
             <div class="list-wrap">
-                <mko-cell :title="item.name" main="left" :val="item.value" v-for="item in datas[type][monthIndex]"></mko-cell>
+                <mko-cell :title="item.name" main="left" :val="item.value" v-for="item in datas.qyTaskTypeCountByJg"></mko-cell>
             </div>
         </div>
     </div>
@@ -17,54 +17,19 @@
 
 <script>
     import echarts from 'echarts';
+    import api from 'api';
+    import conf from 'config';
+    import { ResError } from 'components'
+    import { Indicator } from 'mint-ui';
+
     let theme = 'macarons';
     export default {
         data () {
             return {
-                monthIndex: 0,
+                month: 0,
                 type: 0,
-                counts: [
-                    [1112032, 1123498],
-                    [260503, 264041]
-                ],
-                datas: [
-                    [
-                        [
-                            {value: 228412, name: '值班'},
-                            {value: 458921, name: '巡查'},
-                            {value: 183752, name: '维修'},
-                            {value: 130627, name: '保养'},
-                            {value: 46502, name: '检查'},
-                            {value: 63818, name: '检测'},
-                        ],
-                        [
-                            {value: 237412, name: '值班'},
-                            {value: 428921, name: '巡查'},
-                            {value: 173652, name: '维修'},
-                            {value: 140927, name: '保养'},
-                            {value: 67405, name: '检测'},
-                            {value: 75181, name: '检查'},
-                        ],
-                    ],
-                    [
-                        [
-                            {value: 111015, name: '巡查'},
-                            {value: 50201, name: '值班'},
-                            {value: 40476, name: '维修'},
-                            {value: 31413, name: '保养'},
-                            {value: 16487, name: '检测'},
-                            {value: 10911, name: '检查'},
-                        ],
-                        [
-                            {value: 112523, name: '巡查'},
-                            {value: 50882, name: '值班'},
-                            {value: 41026, name: '维修'},
-                            {value: 31840, name: '保养'},
-                            {value: 16711, name: '检测'},
-                            {value: 11059, name: '检查'},
-                        ]
-                    ],
-                ]
+                total: 0,
+                datas: {}
             }
         },
         watch: {},
@@ -72,24 +37,61 @@
         mounted() {
         },
         activated(){
-//            this.monthIndex = this.$route.query.month || 0;
-
             this.type = sessionStorage.getItem(`jgDwType${this.$store.getters.groupId}`) || 0;
-            this.DrawChart1(echarts);
+            this.month = this.$route.query.month;
+            this.getData();
         },
         deactivated() {
         },
         destroyed(){
         },
         methods: {
-            getMonthIndex(index){
-                this.monthIndex = Math.abs(index);
-                if (this.monthIndex > 1)
-                    this.monthIndex = 1;
-                this.DrawChart1(echarts)
+            getData(){
+                Indicator.open({spinnerType: 'fading-circle'});
+                let pas = {
+                    groupId: this.$store.getters.groupId,
+                    dwId: this.$store.getters.userInfo.dwId,
+                    createDate: this.month
+                };
+                api.getQytaskCount(pas).then(res => {
+                    if (res && res.code == 0) {
+                        this.datas = res.response;
+                        let that = this;
+                        let match = function (key) {
+                            let names = {
+                                qyTaskTypeCountByJg: 'taskType',
+                            };
+                            if (res.response[key]) {
+                                let other = res.response.qyTotalTaskByJg || 0;
+                                that.datas[key] = res.response[key].map(item => {
+                                    other -= item.count;
+                                    let name = item[names[key]];
+                                    return {
+                                        value: item.count,
+                                        name: conf.taskTypeList[name]
+                                    }
+                                });
+                                //将剩余归为其他类
+                                if (other > 0)
+                                    that.datas[key].push({
+                                        value: other,
+                                        name: '其他'
+                                    });
+                                //排序
+                                that.datas[key].sort(function (a, b) {
+                                    return b.value - a.value;
+                                });
+                            }
+                        };
+                        match('qyTaskTypeCountByJg');
+                        this.DrawChart1(echarts);
+                    }
+                    Indicator.close();
+                })
+
             },
             DrawChart1(ec){
-                let datas = this.datas[this.type][this.monthIndex];
+                let datas = this.datas.qyTaskTypeCountByJg;
                 let myChart = ec.init(this.$refs['chart'], theme);
                 myChart.setOption({
                     title: {
@@ -139,8 +141,7 @@
                 this.$MKOPop();
             }
         },
-        components: {
-        }
+        components: {}
     }
 </script>
 
