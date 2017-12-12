@@ -694,13 +694,15 @@ export default {
       border-radius: 2px;
       text-align: center;
       display: inline-block;
-      line-height: 11px;
-      padding: 2px;
+      line-height: 0;
+      padding: 8px 2px 2px 2px;
       box-sizing: border-box;
       margin-right: 4px;
       position: relative;
       &.disabled {
         color: #888;
+        padding-left: 0;
+        text-align: left;
       }
       &.ellipsis {
         position: absolute;
