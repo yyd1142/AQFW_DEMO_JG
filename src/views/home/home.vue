@@ -1,5 +1,5 @@
 <template>
-    <div style="margin-bottom: 64px;">
+    <div class="home-index" style="margin-bottom: 64px;">
         <div class="placeholder-item" :style="{backgroundColor:calcHeadColor(score,headColors)}"></div>
         <mko-header title="安全服务云" :background-color="calcHeadColor(score,headColors)">
             <div class="header-right" slot="custom">
@@ -24,14 +24,16 @@
                         </li>
                     </ul>
                     <!--新闻-->
-                    <mko-light-nav-bar :tabs="newsTabs" v-model="activeTab"></mko-light-nav-bar>
+                    <div class="news-tabs-bar">
+                        <mko-light-nav-bar :tabs="newsTabs" v-model="activeTab"></mko-light-nav-bar>
+                    </div>
                     <div class="page-loadmore-wrapper">
                         <ul class="page-infinite-list">
                             <li v-for="item in newsDatas" class="page-infinite-listitem" @click="goNewsInfo(item)">
                                 <div class="padding">
                                     <img v-lazy="domain + item.fileId"/>
                                     <div class="news-title" v-text="titleFilters(item.title)"></div>
-                                    <div class="news-date">{{item.createDate | formatDate('YYYY-MM-DD')}}</div>
+                                    <div class="news-date">{{item.author}}<span style="margin-left: 10px;">{{item.createDate | formatDate('YYYY-MM-DD')}}</span></div>
                                 </div>
                             </li>
                             <li class="not-data" v-if="newsDatas.length == 0">暂无内容</li>
@@ -45,4 +47,4 @@
 </template>
 
 <script src="./home.js"></script>
-<style lang="less" src="./home.less" scoped></style>
+<style lang="less" src="./home.less"></style>

@@ -59,7 +59,7 @@
                     <mko-menu-cell title="消防管辖" :val="dwInfo.gxDWName ? dwInfo.gxDWName : '暂无'"></mko-menu-cell>
                     <mko-menu-cell title="监督员" :val="dwInfo.jgName||'暂无'"></mko-menu-cell>
                     <mko-menu-cell title="行业" val="国家机关"></mko-menu-cell>
-                    <mko-menu-cell title="已连接设备" val="电气监测"></mko-menu-cell>
+                    <mko-menu-cell title="已连接设备" val="暂无"></mko-menu-cell>
                 </div>
             </div>
             <div class="data-wrap">
