@@ -5,7 +5,7 @@
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
         <div class="page-wrap qy-list-wrap" v-show="!resError" id="pageWrapper">
-            <mko-search-bar v-model="search" hint-text="搜索单位名称" ref="search-bar"></mko-search-bar>
+            <mko-search-bar v-model="search" hint-text="搜索单位名称" ref="search-bar" fill></mko-search-bar>
             <mko-nav-bar border-bottom>
                 <mko-tab-item :label="item.text" :activied="listType == item.type"
                               @handleTabClick="ctrlListType(item.type)" v-for="item in headerBtn"></mko-tab-item>

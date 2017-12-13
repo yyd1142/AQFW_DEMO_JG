@@ -1,6 +1,7 @@
 <template>
     <div class="mko-search-wrap"
-         :class="{'is-header':fr(isHeader),'has-left-button':$slots['left-button'],'has-right-button':$slots['right-button']}">
+         :class="{'is-header':fr(isHeader),'has-left-button':$slots['left-button'],
+         'has-right-button':$slots['right-button'],'is-fill':fr(fill)&&!iptOnFocus}">
 
         <slot name="left-button"></slot>
 
@@ -12,16 +13,18 @@
             <input ref="input" class="ipt" type="text" v-model="iptValue" @focus="inputOnFocus" @blur="inputOnBlur">
             <i class="mintui mintui-field-error cancel-xx" @click="inputReset" v-if="iptHasValue"></i>
         </div>
-        <div class="cancel" @click="cancel" v-if="!$slots['right-button']">
-            取消
+        <div class="right-button">
+            <div class="cancel" @click="cancel" v-if="!$slots['right-button']">
+                取消
+            </div>
+            <slot name="right-button"></slot>
         </div>
-        <slot name="right-button"></slot>
     </div>
 </template>
 
 <script>
     export default {
-        props: ['value', 'hintText', 'isHeader', 'autofocus'],
+        props: ['value', 'hintText', 'isHeader', 'autofocus', 'fill'],
         data() {
             return {
                 iptValue: '',
@@ -101,6 +104,20 @@
         }
         &.has-right-button {
             padding-right: 14px;
+        }
+        &.is-fill {
+            .right-button {
+                display: none;
+            }
+            .box {
+                right: 10px;
+            }
+            .sign-wrap {
+                left: 50%;
+                transform: translate(-50%, -50%);
+                -webkit-transform: translate(-50%, -50%);
+            }
+
         }
         .box {
             position: absolute;

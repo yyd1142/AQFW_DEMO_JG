@@ -197,9 +197,12 @@
         .page-wrap {
             margin-top: @headerHeight + @headerTop - 1px;
         }
+        .mkotabs {
+            padding-top: 14px;
+            height: 54px;
+        }
         .info-bar {
             height: 44px;
-            margin-bottom: 10px;
             line-height: 44px;
             font-size: 30px;
             text-align: center;

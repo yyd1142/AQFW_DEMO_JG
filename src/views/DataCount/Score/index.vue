@@ -319,8 +319,7 @@
                 this.$MKOPop();
             }
         },
-        components: {
-        }
+        components: {}
     }
 </script>
 
@@ -332,7 +331,7 @@
             margin-top: @headerHeight + @headerTop - 1px;
         }
         .count-block-wrap {
-            background-color: #3091F2;
+            background-color: shade(@mainBlue, 5%);
             .count-block {
                 position: relative;
                 float: left;
@@ -340,7 +339,7 @@
                 height: 100px;
                 letter-spacing: 0;
                 color: #fff;
-                background-color: #3091F2;
+                background-color: shade(@mainBlue, 5%);
                 font-family: STHeitiSC-Light;
                 &:not(:last-child) {
                     &:after {
@@ -351,8 +350,7 @@
                         right: 0;
                         width: 1px;
                         height: 72px;
-                        opacity: .8;
-                        background-color: #fff;
+                        background-color: shade(@mainBlue, 20%);
                         transform: scale(0.5, 1);
                         -webkit-transform: scale(.5, 1);
                         transform-origin: 0 0;
