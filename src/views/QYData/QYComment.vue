@@ -1,6 +1,6 @@
 <template>
     <div class="qy-comment">
-        <div class="placeholder-item"></div>
+        <div class="placeholder-item" :style="{ backgroundColor: scoreHeadColor($route.query.score) }"></div>
         <mko-header :title="qyItem.dwName" :background-color="scoreHeadColor($route.query.score)" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <res-error v-if="resError"></res-error>
         <div class="page-wrap">
@@ -77,8 +77,8 @@
                 let labelsDatas = [];
                 api.getAllLabels({
                     m: 'attribute',
-                    dep: 1,
-                    type: 1
+                    dep: this.$store.getters.userInfo.zgHy,
+                    type: this.$store.getters.userInfo.type
                 }).then(result => {
                     if (!result) return false;
                     if (result.code === 0) {

@@ -1,6 +1,6 @@
 <template>
     <div class="qy-info">
-        <div class="placeholder-item"></div>
+        <div class="placeholder-item" :style="{ backgroundColor: scoreHeadColor($route.query.score || dwScore.totalScore) }"></div>
         <mko-header :title="this.$route.query.name || '社会单位'" :background-color="scoreHeadColor($route.query.score || dwScore.totalScore)" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
@@ -9,11 +9,11 @@
                 <span>{{$route.query.score || dwScore.totalScore}}</span>
             </div>
             <div class="label-wrap" :style="{backgroundColor:scoreHeadColor($route.query.score || dwScore.totalScore)}" @click="goQYComment">
-                <div class="label-item" :class="dwInfo.attributes.length > 3 ? 'more-label' : ''">
-                    <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" :style="{ marginRight: index === (dwInfo.attributes.length - 1) ? 0 : '4px' }" v-for="item, index in dwInfo.attributes" v-if="!noAttributes && index <= 2" >
+                <div class="label-item" :class="dwInfo.attributes && dwInfo.attributes.length > 3 ? 'more-label' : ''">
+                    <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" :style="{ marginRight: index === (dwInfo.attributes && dwInfo.attributes.length - 1) ? 0 : '4px' }" v-for="item, index in dwInfo.attributes" v-if="!noAttributes && index <= 2" >
                         <span>{{attributesFilter(item.attributeName)}}</span>
                     </div>
-                    <div class="main ellipsis" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" v-if="dwInfo.attributes.length > 3"><i class="icon-ellipsis"></i></div>
+                    <div class="main ellipsis" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" v-if="dwInfo.attributes && dwInfo.attributes.length > 3"><i class="icon-ellipsis"></i></div>
                     <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" v-if="noAttributes"><span>暂无标签</span></div>
                     <i class="icon icon-arrow-right-white"></i>
                 </div>

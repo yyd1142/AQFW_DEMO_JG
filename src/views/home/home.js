@@ -263,7 +263,7 @@ export default {
         },
         handleScroll() {
             this.$nextTick(() => {
-                let totalHeight = document.getElementById('pageWrapper').offsetHeight;
+                let totalHeight = document.getElementById('pageWrapper') ? document.getElementById('pageWrapper').offsetHeight : 0;
                 let scrollTop = document.documentElement && document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
                 let clientHeight = 0;
                 if (document.body.clientHeight && document.documentElement.clientHeight) {

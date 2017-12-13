@@ -1,6 +1,6 @@
 <template>
     <div id="header">
-        <header class="mko-header-wrap" :style="{ backgroundColor: backgroundColor ? backgroundColor : '#3399FF', borderBottom: `1px solid ${borderColor}` }">
+        <header class="mko-header-wrap" :class="borderBtm ? 'header-btm' : ''" :style="{ backgroundColor: backgroundColor ? backgroundColor : '#3399FF', borderBottom: `1px solid ${borderColor}` }">
             <div class="header-left" @click="onLeftClickEvent" v-if="leftIconText || leftIcon">
                 <i class="left-icon icon" :class="leftIcon" v-if="leftIcon"></i>
                 <span class="left-text" v-text="leftIconText" v-if="leftIconText"></span>
@@ -17,7 +17,7 @@
 
 <script>
 export default {
-    props: ['title', 'leftIcon', 'rightIcon', 'leftIconText', 'rightIconText', 'type', 'backgroundColor', 'rightFontColor', 'titleColor', 'border-color'],
+    props: ['title', 'leftIcon', 'rightIcon', 'leftIconText', 'rightIconText', 'type', 'backgroundColor', 'rightFontColor', 'titleColor', 'border-color', 'border-btm'],
     methods: {
         onRightClickEvent() {
             this.$emit("handleRightClick");
@@ -45,6 +45,12 @@ export default {
         color: #fff;
         height: @headerHeight;
         padding-top: 0px;
+        &.header-btm {
+            .border-btm(#Eeeeee);
+            &:after {
+                bottom: -1px;
+            }
+        }
         .header-left {
             margin: 0;
             width: 80px;

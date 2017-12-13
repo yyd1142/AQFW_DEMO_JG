@@ -1,7 +1,11 @@
 <template>
-    <div>
-        <div class="placeholder-item"></div>
-        <mko-header :title="newsTitles[$route.query.type]" left-icon="icon-back" @handleLeftClick="back"></mko-header>
+    <div class="news-info">
+        <div class="placeholder-item" style="background-color: #ffffff;"></div>
+        <mko-header :title="newsTitles[$route.query.type]" 
+            background-color="#ffffff" 
+            title-color="#333333"
+            left-icon="icon-back-black"
+            @handleLeftClick="back" :border-btm="true"></mko-header>
         <div class="page-wrap message-detail-wrap" v-if="newsInfoShow">
             <div class="main-msg">
                 <div class="message-title">
@@ -104,77 +108,78 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 @import "../../config.less";
-.message-detail-wrap {
-    padding-bottom: 0;
-    background-color: #ffffff;
-    height: 100vh;
-    padding-top: 44px + @headerTop;
-    margin-top: 0;
-}
-
-.message-title {
-    width: 100%;
-    margin: 20px auto;
-    h3 {
-        font-size: 22px;
-        color: #333;
-        margin: 0;
-        padding: 0 14px 0 14px;
-        text-align: left;
-        font-weight: bold;
-        line-height: 30px;
+.news-info {
+    .message-detail-wrap {
+        padding: 20px 0 0 0;
+        background-color: #ffffff;
+        height: 100vh;
+        margin-top: @headerTop;
     }
-}
 
-.main-msg {
-    width: 100%;
-    margin: 0 auto;
-    .banner {
+    .message-title {
         width: 100%;
-        margin: 0 auto 12px auto;
-        padding: 0 14px;
-        height: 250px;
-        img {
-            width: 100%;
-            display: block;
-            height: 250px;
+        margin-bottom: 20px;
+        h3 {
+            font-size: 22px;
+            color: #333;
+            margin: 0;
+            padding: 0 14px 0 14px;
+            text-align: left;
+            font-weight: bold;
+            line-height: 30px;
         }
     }
-}
 
-.content-msg {
-    display: block;
-    color: #333333;
-    font-size: 14px;
-    margin-top: 8px;
-    width: 100vw;
-    white-space: normal;
-    padding: 0 14px 50px 14px;
-}
-
-.time-wrap {
-    width: 100%;
-    height: 12px;
-    color: #999999;
-    font-size: 12px;
-    margin: 0 0 4px 0;
-    padding: 0 14px;
-}
-
-.attachment-list {
-    width: 100%;
-    margin-bottom: 4px;
-    padding: 0 14px;
-    &.last-child{
-        margin-bottom: 20px;
+    .main-msg {
+        width: 100%;
+        margin: 0 auto;
+        .banner {
+            width: 100%;
+            margin: 0 auto 12px auto;
+            padding: 0 14px;
+            height: 250px;
+            img {
+                width: 100%;
+                display: block;
+                height: 250px;
+            }
+        }
     }
-    .title-table {
-        color: #3399ff;
+
+    .content-msg {
+        display: block;
+        color: #333333;
+        font-size: 14px;
+        margin-top: 8px;
+        width: 100vw;
+        white-space: normal;
+        padding: 0 14px 50px 14px;
+    }
+
+    .time-wrap {
+        width: 100%;
+        height: 12px;
+        color: #999999;
         font-size: 12px;
-        span {
+        margin: 0 0 4px 0;
+        padding: 0 14px;
+    }
+
+    .attachment-list {
+        width: 100%;
+        margin-bottom: 4px;
+        padding: 0 14px;
+        &.last-child{
+            margin-bottom: 20px;
+        }
+        .title-table {
+            color: #3399ff;
             font-size: 12px;
+            span {
+                font-size: 12px;
+            }
         }
     }
 }

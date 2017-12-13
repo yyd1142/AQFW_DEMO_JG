@@ -25,7 +25,7 @@ export default {
     width: 100%;
     height: 36px;
     position: relative;
-    .border-btm(#eeeeee);
+    // .border-btm(#eeeeee);
     &::after {
       z-index: 10;
     }

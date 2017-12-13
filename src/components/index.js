@@ -16,7 +16,7 @@ import Tabs from './Tabs/Tabs.vue'
 import TaskBuildTitle from './TaskBuildTitle/index'
 import TaskSummary from './TaskSummary/index.vue'
 import WeekNavBar from './WeekNavBar/WeekNavBar.vue'
-
+import TimeLine from './TimeLine/index.vue'
 export {
     CountTimer,
     DateNavbar,
@@ -35,5 +35,6 @@ export {
     Tabs,
     TaskBuildTitle,
     TaskSummary,
-    WeekNavBar
+    WeekNavBar,
+    TimeLine
 }

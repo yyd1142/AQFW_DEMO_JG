@@ -9,9 +9,9 @@
                     </div>
                 </div>
                 <div class="task-item">
-                    <div class="item" v-for="item, index in taskInfo">
-                        <span class="key fl" v-text="item.key"></span>
-                        <span class="value fl" :class="taskInfo.length == (index + 1) ? null : 'no-overflow'" v-text="item.value"></span>
+                    <div class="item" :class="(index == taskInfo.length - 1) ? 'desc-item' : null" v-for="item, index in taskInfo">
+                        <span class="key fl desc-key" v-text="item.key"></span>
+                        <span class="value fl desc-value" v-text="item.value"></span>
                     </div>
                     <slot></slot>
                 </div>
@@ -26,7 +26,7 @@ export default {
     props: ['taskInfo', 'status'],
     methods: {
         statusIconFilter(status) {
-            // [1: 待执行，2: 执行中，3: 已完成，未上传 4: 已上传，处理中  5: 处理完成，待审核，6: 通过审核（已完成） 7: 已超期]
+            // [1: 待执行，2: 执行中，3: 已完成，未上传 4: 已上传，处理中  5: 处理完成，未审核，6: 通过审核（已完成） 7: 已超期]
             let icons = ['', 'icon-not-start', 'icon-clock', 'icon-upload-task', 'icon-not-start', 'icon-not-review', 'icon-is-finish', 'icon-time-up', 'icon-clock']
             return icons[status]
         },
@@ -59,6 +59,7 @@ export default {
                     margin: 0 auto;
                     position: relative;
                     padding-left: 14px;
+                    display: table;
                     .icon {
                         position: absolute;
                         left: 0;
@@ -70,7 +71,10 @@ export default {
                         font-size: 16px;
                         color: #FFFFFF;
                         letter-spacing: 0;
-                        line-height: 16px;
+                        line-height: 30px;
+                        display: table-cell;
+                        vertical-align: middle;
+                        height: 30px;
                     }
                 }
             }
@@ -80,11 +84,24 @@ export default {
                     min-height: 14px;
                     display: table;
                     width: 100%;
-                    margin-bottom: 12px;
+                    // margin-bottom: 12px;
+                    &.desc-item {
+                            position: RELATIVE;
+                            width: 100%;
+                            padding-left: 70px;
+                        .desc-key {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                        }
+                        .desc-value {
+                            max-width: 100%;
+                        }
+                    }
                     span {
                         vertical-align: middle;
                         display: table-cell;
-                        line-height: 14px;
+                        line-height: 22px;
                     }
                     .key {
                         font-size: 14px;
@@ -97,9 +114,12 @@ export default {
                         font-size: 14px;
                         color: #666666;
                         letter-spacing: 0;
-                        line-height: 14px;
+                        // line-height: 14px;
                         white-space: normal;
                         word-break: break-all;
+                        &.desc {
+                            // line-height: 14px
+                        }
                     }
                 }
                 .item-btn {

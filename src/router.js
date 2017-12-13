@@ -464,7 +464,7 @@ const routers = {
 const router = new Router(routers);
 
 router.beforeEach((to, from, next) => {
-    if (to.name == 'home' || to.name == 'score' || to.name == 'jgDetail' || to.name == 'login' || to.name == 'scoreDetail' || to.name == 'QYInfo' || to.name == 'QYComment' || to.name == 'FWInfo' || to.name == 'FWList' || to.name == 'CustomerList' || to.name == 'QYCount' || to.name == 'TaskCount' || to.name == 'UserCount' || to.name == 'ProduceCount') {
+    if (to.name == 'home' || to.name == 'score' || to.name == 'jgDetail' || to.name == 'login' || to.name == 'scoreDetail' || to.name == 'QYInfo' || to.name == 'QYComment' || to.name == 'FWInfo' || to.name == 'FWList' || to.name == 'CustomerList' || to.name == 'QYCount' || to.name == 'TaskCount' || to.name == 'UserCount' || to.name == 'ProduceCount' || to.name == 'newsInfo') {
         NProgress.remove();
     } else {
         NProgress.start();
