@@ -92,7 +92,8 @@ export default {
     getQyDwRanking:httpGet('/dataCount?m=qyDwRanking',Conf.platformDomain), //数据统计-单位排名
     getQytaskCount:httpGet('/dataCount?m=taskCount',Conf.platformDomain), //数据统计-任务数据统计
     getQyDwScoreInfo:httpGet('/dataCount?m=qyDwScoreInfo',Conf.platformDomain), //数据统计-评分详情
-    // getQyDwScoreInfo:httpGet('/dataCount?m=qyDwScoreInfo','http://10.0.1.5:3030'), //数据统计-评分详情
+    // getQyDataCount:httpGet('/dataCount?m=qyDataCount',Conf.platformDomain), //数据统计-生成数据
+    getQyDataCount:httpGet('/dataCount?m=qyDataCount','http://10.0.1.11:3030'), //数据统计-生成数据
 
     getAllLabels: httpGet('/label', Conf.platformDomain), //根据类型获取标签
     // PATH 形式访问

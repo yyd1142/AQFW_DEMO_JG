@@ -10,20 +10,24 @@
             </div>
             <div class="label-wrap" :style="{backgroundColor:scoreHeadColor($route.query.score || dwScore.totalScore)}" @click="goQYComment">
                 <div class="label-item" :class="dwInfo.attributes && dwInfo.attributes.length > 3 ? 'more-label' : ''">
-                    <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" :style="{ marginRight: index === (dwInfo.attributes && dwInfo.attributes.length - 1) ? 0 : '4px' }" v-for="item, index in dwInfo.attributes" v-if="!noAttributes && index <= 2" >
+                    <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" :style="{ marginRight: index === (dwInfo.attributes && dwInfo.attributes.length - 1) ? 0 : '4px' }" v-for="item, index in dwInfo.attributes" v-if="!noAttributes && index <= 2">
                         <span>{{attributesFilter(item.attributeName)}}</span>
                     </div>
-                    <div class="main ellipsis" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" v-if="dwInfo.attributes && dwInfo.attributes.length > 3"><i class="icon-ellipsis"></i></div>
-                    <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" v-if="noAttributes"><span>暂无标签</span></div>
+                    <div class="main ellipsis" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" v-if="dwInfo.attributes && dwInfo.attributes.length > 3">
+                        <i class="icon-ellipsis"></i></div>
+                    <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" v-if="noAttributes">
+                        <span>暂无标签</span></div>
                     <i class="icon icon-arrow-right-white"></i>
                 </div>
             </div>
             <div class="data-wrap">
                 <mko-cell title="火灾记录" :is-link="recoredCount.hzResult != 0" @click="goRecord(1)">
-                    <div :style="{color: recoredCount.hzResult === 0 ? '#333' : '#666'}">{{recoredCount.hzResult}}条记录</div>
+                    <div :style="{color: recoredCount.hzResult === 0 ? '#333' : '#666'}">{{recoredCount.hzResult}}条记录
+                    </div>
                 </mko-cell>
                 <mko-cell title="监督执法记录" :is-link="recoredCount.jdResult != 0" @click="goRecord(2)">
-                    <div :style="{color: recoredCount.jdResult === 0 ? '#333' : '#666'}">{{recoredCount.jdResult}}条记录</div>
+                    <div :style="{color: recoredCount.jdResult === 0 ? '#333' : '#666'}">{{recoredCount.jdResult}}条记录
+                    </div>
                 </mko-cell>
             </div>
             <div class="data-wrap">
@@ -40,7 +44,7 @@
                     <mko-menu-cell title="单位编码" :val="dwInfo.groupId||'暂无'"></mko-menu-cell>
                 </div>
             </div>
-            
+
             <div class="data-wrap">
                 <mko-menu-header title="基本信息" @click="showInfo('basic')" @show="show.basic =! show.basic"></mko-menu-header>
                 <div v-show="show.basic">
@@ -49,7 +53,8 @@
                     <mko-menu-cell title="组织机构代码" :val="dwInfo.dwCode||'暂无'"></mko-menu-cell>
                     <mko-menu-cell title="单位地址" :val="(dwInfo.dwProvinceName||'未知')+'-'+(dwInfo.dwCityName||'未知')+'-'+(dwInfo.dwAreaName||'未知')"></mko-menu-cell>
                     <mko-menu-cell title="详细地址" :val="dwInfo.dwAddress||'暂无'"></mko-menu-cell>
-                    <mko-menu-cell title="单位类型" :val="(dwInfo.dwTypeName+dwInfo.dwSubTypeName)||'暂无'" @click="showAllContent(dwInfo.dwTypeName+dwInfo.dwSubTypeName)"></mko-menu-cell>
+                    <mko-menu-cell title="单位类型" :val="(dwInfo.dwTypeName+(dwInfo.dwSubTypeName==null?'':dwInfo.dwSubTypeName))||'暂无'"
+                                   @click="showAllContent(dwInfo.dwTypeName+(dwInfo.dwSubTypeName==null?'':dwInfo.dwSubTypeName))"></mko-menu-cell>
                     <mko-menu-cell title="经济所有制" :val="dwJJSYZ(dwInfo.dwJJSYZ)"></mko-menu-cell>
                     <mko-menu-cell title="消防管辖" :val="dwInfo.gxDWName ? dwInfo.gxDWName : '暂无'"></mko-menu-cell>
                     <mko-menu-cell title="监督员" :val="dwInfo.jgName||'暂无'"></mko-menu-cell>
@@ -87,328 +92,331 @@
 </template>
 
 <script>
-import api from "api";
-import { NoData, ResError, ScoreBanner } from "components";
-import {
-  dwJJSYZ,
-  calcScoreText,
-  calcBannerCircle,
-  calcBannerBg
-} from "filters";
-import { Indicator } from "mint-ui";
-var _id = "";
-export default {
-  data() {
-    return {
-      //提示
-      resError: false,
-      noData: false,
-      //数据
-      dwInfo: {
-        attributes: []
-      },
-      dwScore: "",
-      noAttributes: false,
-      recoredCount: "",
-      show: {
-        user: false,
-        basic: false,
-        contact: false
-      }
-    };
-  },
-  mounted() {},
-  activated() {
-    this.getData();
-    this.show = {
-      user: false,
-      basic: false,
-      contact: false
-    };
-    this.getRecords();
-  },
-  methods: {
-    dwJJSYZ,
-    showInfo(key) {
-      this.show[key] = !this.show[key];
-    },
-    getData() {
-      //        Indicator.open({spinnerType: 'fading-circle'});
-      this.resError = false;
-      this.noData = false;
-      this.dwInfo = {};
-      this.dwScore = "";
-      let params = {
-        groupId: this.$route.params.id
-      };
-      api.getQyInfo(params).then(res => {
-        _id = this.$route.params.id;
-        if (!res) {
-          this.resError = true;
-          return;
-        }
-        if (
-          !res.response.attributes ||
-          (res.response.attributes && res.response.attributes.length <= 0)
-        ) {
-          this.noAttributes = true;
-        } else {
-          res.response.attributes = res.response.attributes.splice(0, 4);
-          this.noAttributes = false;
-        }
-        if (!this.dwInfo) this.noData = true;
-        this.dwInfo = res.response || "";
-      });
-      api.getScoreList(params).then(res => {
-        if (!res) {
-          return;
-        }
-        this.dwScore = res.msg.length ? res.msg[res.msg.length - 1] : {};
-        if (!this.dwScore.totalScore) this.dwScore.totalScore = 0;
-      });
-    },
-    calcScoreText,
-    calcBannerCircle,
-    calcBannerBg,
-    go(path) {
-      this.$MKOPush(path);
-    },
-    back() {
-      this.$MKOPop();
-      Indicator.close();
-    },
-    scoreHeadColor(val) {
-      val = parseFloat(val);
-      if (!val) return "#8988FF";
-      if (val >= 90) {
-        return "#8988FF";
-      } else if (val >= 80) {
-        return "#52B0FE";
-      } else if (val >= 70) {
-        return "#34D986";
-      } else if (val >= 60) {
-        return "#FF9744";
-      } else {
-        return "#FF8383";
-      }
-    },
-    scoreColorStyle(score) {
-      let val = parseFloat(score);
-      if (!val) return "gradients90";
-      if (val >= 90) {
-        return "gradients90";
-      } else if (val >= 80) {
-        return "gradients80";
-      } else if (val >= 70) {
-        return "gradients70";
-      } else if (val >= 60) {
-        return "gradients60";
-      } else {
-        return "gradients50";
-      }
-    },
-    attributesFilter(item) {
-      if (item.length >= 7) {
-        return `${item.substring(0, 4)}...`;
-      } else {
-        return item;
-      }
-    },
-    goQYComment() {
-      this.$MKOPush({
-        path: `/qy_comment/${this.$route.params.id}`,
-        query: {
-          score: this.$route.query.score
-        }
-      });
-    },
-    showAllContent(text) {
-      this.$MKODialog({ msg: text });
-    },
-    getRecords() {
-      api
-        .getQyRecordCount({
-          m: "enforceLowNumber",
-          groupId: this.$route.params.id
-        })
-        .then(result => {
-          if (!result) return false;
-          if (result.code == 0) {
-            this.recoredCount = result.response;
-          } else {
-            this.recoredCount = {
-              hzResult: 0,
-              jdResult: 0
+    import api from "api";
+    import { NoData, ResError, ScoreBanner } from "components";
+    import {
+        dwJJSYZ,
+        calcScoreText,
+        calcBannerCircle,
+        calcBannerBg
+    } from "filters";
+    import { Indicator } from "mint-ui";
+    var _id = "";
+    export default {
+        data() {
+            return {
+                //提示
+                resError: false,
+                noData: false,
+                //数据
+                dwInfo: {
+                    attributes: []
+                },
+                dwScore: "",
+                noAttributes: false,
+                recoredCount: "",
+                show: {
+                    user: false,
+                    basic: false,
+                    contact: false
+                }
             };
-          }
-        });
-    },
-    goRecord(type) {
-      if (this.recoredCount.hzResult == 0 && type == 1) return false;
-      if (this.recoredCount.jdResult == 0 && type == 2) return false;
-      let path = type == 1 ? "fire_record" : "jgzf_record";
-      this.$MKOPush(`/${path}/${this.$route.params.id}`);
-    }
-  },
-  components: {
-    NoData,
-    ResError,
-    ScoreBanner
-  }
-};
+        },
+        mounted() {
+        },
+        activated() {
+            this.getData();
+            this.show = {
+                user: false,
+                basic: false,
+                contact: false
+            };
+            this.getRecords();
+        },
+        methods: {
+            dwJJSYZ,
+            showInfo(key) {
+                this.show[key] = !this.show[key];
+            },
+            getData() {
+                //        Indicator.open({spinnerType: 'fading-circle'});
+                this.resError = false;
+                this.noData = false;
+                this.dwInfo = {};
+                this.dwScore = "";
+                let params = {
+                    groupId: this.$route.params.id
+                };
+                api.getQyInfo(params).then(res => {
+                    _id = this.$route.params.id;
+                    if (!res) {
+                        this.resError = true;
+                        return;
+                    }
+                    if (
+                        !res.response.attributes ||
+                        (res.response.attributes && res.response.attributes.length <= 0)
+                    ) {
+                        this.noAttributes = true;
+                    } else {
+                        res.response.attributes = res.response.attributes.splice(0, 4);
+                        this.noAttributes = false;
+                    }
+                    if (!this.dwInfo) this.noData = true;
+                    this.dwInfo = res.response || "";
+                });
+                api.getScoreList(params).then(res => {
+                    if (!res) {
+                        return;
+                    }
+                    this.dwScore = res.msg.length ? res.msg[res.msg.length - 1] : {};
+                    if (!this.dwScore.totalScore) this.dwScore.totalScore = 0;
+                });
+            },
+            calcScoreText,
+            calcBannerCircle,
+            calcBannerBg,
+            go(path) {
+                this.$MKOPush(path);
+            },
+            back() {
+                this.$MKOPop();
+                Indicator.close();
+            },
+            scoreHeadColor(val) {
+                val = parseFloat(val);
+                if (!val) return "#8988FF";
+                if (val >= 90) {
+                    return "#8988FF";
+                } else if (val >= 80) {
+                    return "#52B0FE";
+                } else if (val >= 70) {
+                    return "#34D986";
+                } else if (val >= 60) {
+                    return "#FF9744";
+                } else {
+                    return "#FF8383";
+                }
+            },
+            scoreColorStyle(score) {
+                let val = parseFloat(score);
+                if (!val) return "gradients90";
+                if (val >= 90) {
+                    return "gradients90";
+                } else if (val >= 80) {
+                    return "gradients80";
+                } else if (val >= 70) {
+                    return "gradients70";
+                } else if (val >= 60) {
+                    return "gradients60";
+                } else {
+                    return "gradients50";
+                }
+            },
+            attributesFilter(item) {
+                if (item.length >= 7) {
+                    return `${item.substring(0, 4)}...`;
+                } else {
+                    return item;
+                }
+            },
+            goQYComment() {
+                this.$MKOPush({
+                    path: `/qy_comment/${this.$route.params.id}`,
+                    query: {
+                        score: this.$route.query.score
+                    }
+                });
+            },
+            showAllContent(text) {
+                if (text.length >= 10)
+                    this.$MKODialog({msg: text});
+            },
+            getRecords() {
+                api
+                    .getQyRecordCount({
+                        m: "enforceLowNumber",
+                        groupId: this.$route.params.id
+                    })
+                    .then(result => {
+                        if (!result) return false;
+                        if (result.code == 0) {
+                            this.recoredCount = result.response;
+                        } else {
+                            this.recoredCount = {
+                                hzResult: 0,
+                                jdResult: 0
+                            };
+                        }
+                    });
+            },
+            goRecord(type) {
+                if (this.recoredCount.hzResult == 0 && type == 1) return false;
+                if (this.recoredCount.jdResult == 0 && type == 2) return false;
+                let path = type == 1 ? "fire_record" : "jgzf_record";
+                this.$MKOPush(`/${path}/${this.$route.params.id}`);
+            }
+        },
+        components: {
+            NoData,
+            ResError,
+            ScoreBanner
+        }
+    };
 </script>
 
 <style lang="less" rel="stylesheet/less">
-@import "../../config.less";
-.qy-info {
-  .qy-info-header {
-    background-color: #a386f3;
-    /*opacity: 0;*/
-  }
+    @import "../../config.less";
 
-  .qy-info-wrap {
-    .score-banner {
-      height: 120px;
-      width: 100%;
-      display: table;
-      text-align: center;
-      span {
-        display: table-cell;
-        vertical-align: middle;
-        line-height: 120px;
-        margin: 10px auto;
-        font-size: 60px;
-        color: #ffffff;
-      }
-    }
-    .label-wrap {
-      width: 100%;
-      height: 32px;
-      margin-bottom: 10px;
-      .label-item {
-        background: rgba(255, 255, 255, 0.5);
-        border-radius: 4px;
-        text-align: center;
-        display: table;
-        margin: 0 auto;
-        padding: 3px 4px;
-        position: relative;
-        &.more-label {
-          padding: 3px 20px 3px 4px;
+    .qy-info {
+        .qy-info-header {
+            background-color: #a386f3;
+            /*opacity: 0;*/
         }
-        .main {
-          height: 18px;
-          border-radius: 2px;
-          text-align: center;
-          display: inline-block;
-          line-height: 12px;
-          padding: 2px;
-          box-sizing: border-box;
-          margin-right: 4px;
-          &.ellipsis {
-            position: absolute;
-            width: 16px;
-            margin: auto;
-            top: 0;
-            bottom: 0;
-          }
-          span {
-            color: #ffffff;
-            font-size: 12px;
-          }
-          .icon-ellipsis {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            margin: auto;
-            left: 0;
-            right: 0;
-          }
-        }
-        .icon {
-          position: absolute;
-          right: -14px;
-          top: 0;
-          bottom: 0;
-          margin: auto;
-        }
-      }
-    }
-    .data-wrap {
-      & + .data-wrap {
-        margin-top: 10px;
-      }
-      .phone {
-        color: @mainBlue;
-      }
-      .mint-cell {
-        min-height: 44px;
-        background: none;
-        background-color: #fff;
-        .mint-cell-wrapper {
-          padding: @cellPadding;
-          font-size: 14px;
-          letter-spacing: 0;
-          color: #232323;
-          .mint-cell-title {
-            min-width: 100px;
-            white-space: nowrap;
-          }
-          .mint-cell-value {
-            display: block;
-            padding-left: 20px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          }
-        }
-      }
-      .mko-menu-cell {
-        .cell {
-          padding-left: 14px;
-          padding-right: 14px;
-          .label {
-          }
-          .val {
-            float: right;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-            width: 230px;
-            text-align: right;
-            span {
-              width: auto;
+
+        .qy-info-wrap {
+            .score-banner {
+                height: 120px;
+                width: 100%;
+                display: table;
+                text-align: center;
+                span {
+                    display: table-cell;
+                    vertical-align: middle;
+                    line-height: 120px;
+                    margin: 10px auto;
+                    font-size: 60px;
+                    color: #ffffff;
+                }
             }
-          }
+            .label-wrap {
+                width: 100%;
+                height: 32px;
+                margin-bottom: 10px;
+                .label-item {
+                    background: rgba(255, 255, 255, 0.5);
+                    border-radius: 4px;
+                    text-align: center;
+                    display: table;
+                    margin: 0 auto;
+                    padding: 3px 4px;
+                    position: relative;
+                    &.more-label {
+                        padding: 3px 20px 3px 4px;
+                    }
+                    .main {
+                        height: 18px;
+                        border-radius: 2px;
+                        text-align: center;
+                        display: inline-block;
+                        line-height: 12px;
+                        padding: 2px;
+                        box-sizing: border-box;
+                        margin-right: 4px;
+                        &.ellipsis {
+                            position: absolute;
+                            width: 16px;
+                            margin: auto;
+                            top: 0;
+                            bottom: 0;
+                        }
+                        span {
+                            color: #ffffff;
+                            font-size: 12px;
+                        }
+                        .icon-ellipsis {
+                            position: absolute;
+                            top: 0;
+                            bottom: 0;
+                            margin: auto;
+                            left: 0;
+                            right: 0;
+                        }
+                    }
+                    .icon {
+                        position: absolute;
+                        right: -14px;
+                        top: 0;
+                        bottom: 0;
+                        margin: auto;
+                    }
+                }
+            }
+            .data-wrap {
+                & + .data-wrap {
+                    margin-top: 10px;
+                }
+                .phone {
+                    color: @mainBlue;
+                }
+                .mint-cell {
+                    min-height: 44px;
+                    background: none;
+                    background-color: #fff;
+                    .mint-cell-wrapper {
+                        padding: @cellPadding;
+                        font-size: 14px;
+                        letter-spacing: 0;
+                        color: #232323;
+                        .mint-cell-title {
+                            min-width: 100px;
+                            white-space: nowrap;
+                        }
+                        .mint-cell-value {
+                            display: block;
+                            padding-left: 20px;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                        }
+                    }
+                }
+                .mko-menu-cell {
+                    .cell {
+                        padding-left: 14px;
+                        padding-right: 14px;
+                        .label {
+                        }
+                        .val {
+                            float: right;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            width: 230px;
+                            text-align: right;
+                            span {
+                                width: auto;
+                            }
+                        }
+                    }
+                }
+                .title-wrap {
+                    position: relative;
+                    height: 50px;
+                    width: 100%;
+                    padding-left: 14px;
+                    display: table;
+                    background-color: #ffffff;
+                    span {
+                        display: table-cell;
+                        vertical-align: middle;
+                        line-height: 50px;
+                        font-size: 16px;
+                        color: #333333;
+                        letter-spacing: 0;
+                    }
+                    .sign {
+                        position: absolute;
+                        right: 14px;
+                        top: 19px;
+                        transition: transform 0.3s;
+                        -webkit-transition: transform 0.3s;
+                    }
+                }
+                .gray-font {
+                    color: @textGray;
+                }
+            }
         }
-      }
-      .title-wrap {
-        position: relative;
-        height: 50px;
-        width: 100%;
-        padding-left: 14px;
-        display: table;
-        background-color: #ffffff;
-        span {
-          display: table-cell;
-          vertical-align: middle;
-          line-height: 50px;
-          font-size: 16px;
-          color: #333333;
-          letter-spacing: 0;
-        }
-        .sign {
-          position: absolute;
-          right: 14px;
-          top: 19px;
-          transition: transform 0.3s;
-          -webkit-transition: transform 0.3s;
-        }
-      }
-      .gray-font {
-        color: @textGray;
-      }
     }
-  }
-}
 </style>

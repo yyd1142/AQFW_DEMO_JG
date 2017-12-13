@@ -112,5 +112,13 @@ export default {
     taskTypeList: {
         1: '值班',
         2: '巡查'
+    },
+    //分数类型
+    scoreTypeList: {
+        excellent: '优秀',
+        good: '良好',
+        special: '一般',
+        low: '较差',
+        veryLow: '极差'
     }
 }

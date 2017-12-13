@@ -27,7 +27,7 @@
     import echarts from 'echarts';
     import api from 'api';
     import { allQyRoleType } from 'filters'
-    import { Indicator } from 'mint-ui';
+    import { Indicator, Toast } from 'mint-ui';
 
 
     let theme = 'macarons';
@@ -65,7 +65,7 @@
     export default {
         data () {
             return {
-                monthIndex: 0,
+                month: 0,
                 tabI: 0,
                 tabItems: [
                     {text: '区域', key: 'userAreaCount', nameKey: 'dwAreaName'},
@@ -73,7 +73,12 @@
                     {text: '用户类型', key: 'userRoleCount', nameKey: 'role'},
                     {text: '行业类型', key: 'userTypeCount', nameKey: 'dwTypeName'},
                 ],
-                datas: []
+                datas: {
+                    userAreaCount: '',
+                    userSafetyCount: '',
+                    userRoleCount: '',
+                    userTypeCount: '',
+                }
             }
         },
         watch: {
@@ -86,6 +91,7 @@
         },
         activated(){
             this.tabI = 0;
+            this.month = this.$route.query.month;
             this.getData();
         },
         deactivated() {
@@ -97,25 +103,19 @@
             tabFn(i){
                 this.tabI = i;
             },
-//            getMonthIndex(index){
-//                this.monthIndex = Math.abs(index);
-//                if (this.monthIndex > 1)
-//                    this.monthIndex = 1;
-//                this.DrawChart(echarts);
-//            },
             getData(){
                 Indicator.open({spinnerType: 'fading-circle'});
                 let pas = {
                     groupId: this.$store.getters.groupId,
                     dwId: this.$store.getters.userInfo.dwId || '',
-                    createDate: this.month
+                    createDate: this.month,
                 };
                 api.getUserCountByJg(pas).then(res => {
                     if (res && res.code == 0) {
                         this.datas = res.response;
                         let that = this;
                         let match = function (key) {
-                            if (res.response[key]) {
+                            if (res.response && res.response[key]) {
                                 let other = res.response.userTotal || 0;
                                 let names = {
                                     userAreaCount: 'dwAreaName',
@@ -146,7 +146,6 @@
                                     return b.value - a.value;
                                 });
                             }
-                            Indicator.close();
                         };
                         match('userAreaCount');
                         match('userSafetyCount');
@@ -154,11 +153,21 @@
                         match('userTypeCount');
                         this.DrawChart(echarts);
                     }
+                    Indicator.close();
                 })
             },
             DrawChart(ec){
                 let myChart = ec.init(this.$refs['chart'], theme);
-                let data = JSON.parse(JSON.stringify(this.datas[this.tabItems[this.tabI].key])) || [];
+                let data = this.datas ? (this.datas[this.tabItems[this.tabI].key]) : [];
+
+                if (data.length <= 0) {
+                    Toast({
+                        message: '暂无数据',
+                        position: 'middle',
+                        duration: 1500
+                    });
+                }
+
                 let length = [7, 4, 4, 4];
                 for (let i = data.length - 1; i >= length[this.tabI]; i--) {
                     data[i].itemStyle = noLabel;
