@@ -69,7 +69,7 @@ export default {
         this.getBannerData();
         this.newsList(1, this.newsType);
         this.$nextTick(() => {
-            document.body.clientWidth = this.viewWidth;
+            this.viewWidth = document.body.clientWidth;
         })
     },
     deactivated() {

@@ -305,11 +305,11 @@
                         padding: 3px 20px 3px 4px;
                     }
                     .main {
-                        height: 18px;
+                        height: 16px;
                         border-radius: 2px;
                         text-align: center;
                         display: inline-block;
-                        line-height: 12px;
+                        line-height: 10px;
                         padding: 2px;
                         box-sizing: border-box;
                         margin-right: 4px;
