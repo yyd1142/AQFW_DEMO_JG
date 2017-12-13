@@ -1,5 +1,5 @@
 <template>
-    <div id="header">
+    <div class="mko-header">
         <header class="mko-header-wrap" :class="borderBtm ? 'header-btm' : ''" :style="{ backgroundColor: backgroundColor ? backgroundColor : '#3399FF', borderBottom: `1px solid ${borderColor}` }">
             <div class="header-left" @click="onLeftClickEvent" v-if="leftIconText || leftIcon">
                 <i class="left-icon icon" :class="leftIcon" v-if="leftIcon"></i>
@@ -33,15 +33,14 @@ export default {
 @import "../../config.less";
 @headerTitleFontSize: 18px;
 @headerFontSize: 14px;
-#header {
+.mko-header {
     position: relative;
     .mko-header-wrap {
         top: 0 + @headerTop;
         right: 0;
         left: 0;
         position: fixed;
-        z-index: 25;
-        display: flex;
+        z-index: 3000;
         color: #fff;
         height: @headerHeight;
         padding-top: 0px;

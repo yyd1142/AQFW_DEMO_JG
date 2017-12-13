@@ -67,10 +67,10 @@
         }
         &.inset {
             .mint-popup-right {
-                z-index: 24;
+                z-index: 24 !important;
             }
             .v-modal {
-                z-index: 23;
+                z-index: 23 !important;
             }
             .body {
                 top: @headerHeight+@headerTop;

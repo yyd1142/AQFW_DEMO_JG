@@ -17,9 +17,9 @@
 
     .mkotabs {
         width: 100%;
-        height: 50px;
+        height: 58px;
         background-color: #ffffff;
-        padding: 10px 14px;
+        padding: 14px;
         &.is-header {
             position: fixed;
             z-index: 100;

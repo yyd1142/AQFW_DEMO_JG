@@ -2,7 +2,7 @@
     <!--下拉菜单头部-->
     <div class="mko-menu-header" @click="showFn">
         <div class="label" :class="{'no-sign':!icon}">
-            <div class="sign-wrap" @click.stop="clickIconFn" v-if="icon"><span class="sign" :class="icon"></span>
+            <div class="sign-wrap" @click="clickIconFn" v-if="icon"><span class="sign" :class="icon"></span>
             </div>
             {{title}}
         </div>
