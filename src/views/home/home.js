@@ -47,7 +47,8 @@ export default {
             bottomStatus: '',
             wrapperHeight: 0,
             hasMessageDataClass: '',
-            resError: false
+            resError: false,
+            viewWidth: 0
         }
     },
     watch: {
@@ -67,6 +68,9 @@ export default {
         this.hasNewMessage();
         this.getBannerData();
         this.newsList(1, this.newsType);
+        this.$nextTick(() => {
+            document.body.clientWidth = this.viewWidth;
+        })
     },
     deactivated() {
         window.removeEventListener('scroll', this.handleScroll)

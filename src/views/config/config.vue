@@ -8,10 +8,7 @@
                 <mko-cell :title="'检测新版本（' + version + '）'" main="left"></mko-cell>
                 <!--<mko-cell title="清除缓存" @click="clear()"></mko-cell>-->
             </div>
-            <div class="footer-btn" @click="exit()">
-                <!--<mt-cell class="exit" title="退出账号"></mt-cell>-->
-                退出账号
-            </div>
+            <div class="footer-btn" @click="exit()">退出账号</div>
         </div>
     </div>
 </template>
@@ -28,6 +25,7 @@
             width: 100%;
             height: 44px;
             line-height: 44px;
+            .border-top(@baseBorder);
             .border-btm(@baseBorder);
             font-size: 14px;
             text-align: center;
@@ -35,6 +33,9 @@
             background-color: #fff;
             &::after {
                 bottom: -1px;
+            }
+            &:active {
+                background-color: rgba(255, 255, 255, 0.5);
             }
         }
         .config-cell-wrap {

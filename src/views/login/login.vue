@@ -31,7 +31,7 @@
         <span>记住密码</span>
       </div>
       <div class="form-group">
-        <button type="button" class="btn btn-primary btn-block" @click="login()">登录</button>
+        <mko-button class="login-btn" size="large" @click="login">登录</mko-button>
       </div>
     </form>
     <!--<div class="forget-password">忘记密码</div>-->

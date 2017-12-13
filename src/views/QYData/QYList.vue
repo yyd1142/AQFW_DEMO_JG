@@ -212,9 +212,9 @@ export default {
       let params = {
         type: this.listType,
         page: 1,
-        count: count,
-        search: this.search
+        count: count
       };
+      if(this.search) params['search'] = this.search;
       if (this.formData.dwType != "") {
         params["dwTypeID"] = this.formData.dwType;
       }
@@ -706,7 +706,7 @@ export default {
       }
       &.ellipsis {
         position: absolute;
-        top: 6px;
+        top: 4px;
         bottom: 0;
         right: 0;
         width: 16px;
