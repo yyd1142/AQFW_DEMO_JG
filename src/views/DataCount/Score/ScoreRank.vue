@@ -124,7 +124,7 @@
                 let pas = {
                     groupId: this.$store.getters.groupId,
                     dwId: this.$store.getters.userInfo.dwId || '',
-                    createDate: this.month,
+//                    createDate: this.month,
                     page: _page,
                     count: _count,
                     sort: this.tabItems[this.tabI].value

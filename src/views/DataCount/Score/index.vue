@@ -20,12 +20,12 @@
                 <mko-nav-bar v-if="type==0">
                     <mko-tab-item :activied="tabI==i" :label="t.text" @handleTabClick="tabFn(i)" v-for="(t,i) in tabItems"></mko-tab-item>
                 </mko-nav-bar>
-                <div class="chart" :class="tabI==2?'big':''" ref="chart"></div>
+                <div class="chart" ref="chart"></div>
             </div>
 
             <div class="list-wrap" v-show="tabI==0">
                 <mko-cell class="title-cell" title="安全评级" val="平均分"></mko-cell>
-                <mko-cell :title="scoreLabel[i]" :val="item" v-for="(item,i) in scoreDatas[type][0]"></mko-cell>
+                <mko-cell :title="item.name" :val="item.average" v-for="(item,i) in scoreInfoDatas.scoreSafetyRatingCount"></mko-cell>
             </div>
 
         </div>
@@ -33,7 +33,6 @@
 </template>
 
 <script>
-    import { WeekNavBar } from 'components'
     import api from 'api';
     import conf from 'config';
     import { ResError } from 'components'
@@ -48,7 +47,7 @@
                 tabI: 0,
 //                tabItems: ['安全评级', '区域排名', '行业排名', '单位类型'],
                 tabItems: [
-                    {text: '安全评级', key: ''},
+                    {text: '安全评级', key: 'scoreSafetyRatingCount'},
                     {text: '区域排名', key: 'scoreAreaCount'},
                     {text: '行业排名', key: 'scoreSafetyCount'},
                     {text: '单位类型', key: 'scoreTypeCount'},
@@ -59,28 +58,9 @@
                     scoreXfSSSbScoreCount: {name: '消防设备管理', score: 0, total: 20},
                     scoreJzHzScoreCount: {name: '建筑火灾风险', score: 0, total: 20},
                 },
-                scoreLabel: ['优秀', '良好', '一般', '较差', '极差'],
-                scoreDatas: [
-                    [
-                        [90.6, 83.5, 74.2, 67.9, 58.6],
-                        [90.7, 82.3, 75.2, 68.5, 51.8],
-                    ],
-                    [
-                        [91.2, 84, 75.7, 68.1, 51.7],
-                        [90.7, 82.5, 75, 68.6, 52.1],
-                    ]
-                ],
-                scoreDwCounts: [
-                    [
-                        [51, 1267, 2126, 51, 49],
-                        [8, 697, 2449, 353, 26],
-                    ],
-                    [
-                        [20, 331, 449, 8, 16],
-                        [7, 186, 535, 82, 13],
-                    ],
-                ],
-                scoreInfoDatas: {}
+                scoreInfoDatas: {
+                    scoreSafetyRatingCount: []
+                }
             }
         },
         watch: {
@@ -95,7 +75,6 @@
             this.month = this.$route.query.month;
             this.type = sessionStorage.getItem(`jgDwType${this.$store.getters.groupId}`) || 0;
             this.tabI = 0;
-            this.DrawChart();
             this.getScoreInfo();
         },
         deactivated() {
@@ -109,7 +88,6 @@
             goDetail(type){
                 let paths = [
                     '/score_count_rank_admin',
-//                    '/score_count_detail?month=' + this.month,
                     '/score_count_rank?month=' + this.month
                 ];
                 this.$MKOPush(paths[type]);
@@ -117,10 +95,8 @@
             getScoreInfo(){
                 Indicator.open({spinnerType: 'fading-circle'});
                 let pas = {
-//                    groupId: this.$store.getters.groupId,
                     dwId: this.$store.getters.userInfo.dwId,
 //                    createDate: this.month
-                    createDate: '2017-11-00'
                 };
                 api.getQyDwScoreInfo(pas).then(res => {
                     if (res && res.code == 0) {
@@ -132,28 +108,37 @@
                                 scoreTypeCount: 'dwTypeName',
                                 scoreSafetyCount: 'safetyName'
                             };
-
                             if (res.response && res.response[key]) {
-                                let other = res.response.qydwTotalCount || 0;
-                                that.scoreInfoDatas[key] = res.response[key].map(item => {
-                                    other -= item.count;
-                                    return {
-                                        value: item.average,
-                                        name: item[names[key]]
+                                let data = [];
+                                for (let itemKey in res.response[key]) {
+                                    let item = res.response[key][itemKey];
+                                    if (key == 'scoreSafetyRatingCount') {
+                                        if (item == 0) {
+
+                                        } else {
+                                            data.push({
+                                                average: item.average,
+                                                value: item.count,
+                                                name: conf.scoreTypeList[itemKey],
+                                            });
+                                        }
+                                    } else {
+                                        data.push({
+                                            value: item.average,
+                                            name: item[names[key]]
+                                        });
                                     }
-                                });
-                                //将剩余归为其他类
-                                if (other > 0)
-                                    that.scoreInfoDatas[key].push({
-                                        value: other,
-                                        name: '其他'
+                                }
+                                //排序
+                                if (key == 'scoreSafetyRatingCount')
+                                    data.sort(function (a, b) {
+                                        return b.average - a.average;
                                     });
-//                                //排序
-                                that.scoreInfoDatas[key].sort(function (a, b) {
-                                    return b.value - a.value;
-                                });
+                                that.scoreInfoDatas[key] = data;
+
                             }
                         };
+                        match('scoreSafetyRatingCount');
                         match('scoreAreaCount');
                         match('scoreTypeCount');
                         match('scoreSafetyCount');
@@ -168,8 +153,7 @@
                     this[`DrawChart${tab}`](echarts);
             },
             DrawChart0(ec){
-                let label = this.scoreLabel;
-                let datas = this.scoreDwCounts;
+                let datas = this.scoreInfoDatas[this.tabItems[this.tabI].key] || [];
 
                 let height = 400;
                 this.$refs['chart'].style.height = height + 'px';
@@ -189,10 +173,10 @@
                     },
                     tooltip: {
                         trigger: 'item',
-//                        formatter: "{a} <br/>{b} : {c} ({d}%)",
-                        formatter: function (data) {
-                            return `单位数量<br/>${label[data.dataIndex]} : ${data.value} (${data.percent})%`;
-                        },
+                        formatter: "{a} <br/>{b} : {c} ({d}%)",
+//                        formatter: function (data) {
+//                            return `单位数量<br/>${label[data.dataIndex]} : ${data.value} (${data.percent})%`;
+//                        },
                     },
                     toolbox: {
                         show: true,
@@ -206,13 +190,13 @@
                             type: 'pie',
                             radius: '55%',
                             center: ['50%', '50%'],
-                            data: datas[this.type][0],
+                            data: datas,
                             itemStyle: {
                                 normal: {
                                     label: {
-                                        formatter: function (data) {
-                                            return `${label[data.dataIndex]}\n(${data.percent})%`;
-                                        },
+//                                        formatter: function (data) {
+//                                            return `${label[data.dataIndex]}\n(${data.percent})%`;
+//                                        },
                                         textStyle: {
                                             color: '#666',
                                             fontSize: '12px'
@@ -336,7 +320,6 @@
             }
         },
         components: {
-            WeekNavBar
         }
     }
 </script>
