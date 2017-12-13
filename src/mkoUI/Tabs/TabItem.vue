@@ -1,5 +1,5 @@
 <template>
-    <div class="mkotabs-item" :class="[activied ? 'is-activied' : null,{'is-header':isHeader!==undefined}]" @click.stop="tab">
+    <div class="mkotabs-item" :class="[activied ? 'is-activied' : null,{'is-header':isHeader!==undefined}]" @click="tab">
         <span class="item">
             <slot>
             {{label}}

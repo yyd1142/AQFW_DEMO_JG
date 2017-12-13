@@ -1,7 +1,7 @@
 <template>
     <div class="mko-basic-cell" @click="handleClick">
         <div class="cell">
-            <div class="title-icon fl" @click.stop="clickIconFn" v-show="$slots.icon||icon">
+            <div class="title-icon fl" @click="clickIconFn" v-show="$slots.icon||icon">
                 <slot name="icon">
                     <span class="icon" :class="icon"></span>
                 </slot>
