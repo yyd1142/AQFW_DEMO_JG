@@ -9,10 +9,10 @@
             <!--<mko-cell :title="item.name" :val="`${item.score} (满分${item.total})`" v-for="item in counts[type]"></mko-cell>-->
 
             <div class="count-block-wrap clear">
-                <div class="count-block" v-for="item in counts[type]">
+                <div class="count-block" v-for="(item,key) in counts">
                     <div class="title abs-middle">{{item.name}}</div>
                     <div class="desc abs-middle">满分{{item.total}}</div>
-                    <div class="value abs-middle">{{item.score[0]}}</div>
+                    <div class="value abs-middle">{{scoreInfoDatas[key] || '-'}}</div>
                 </div>
             </div>
 
@@ -54,18 +54,11 @@
                     {text: '单位类型', key: 'scoreTypeCount'},
                 ],
                 type: 0,
-                counts: [
-                    {
-                        aqgl: {name: '消防安全管理', score: [48.9, 46.5], total: 60},
-                        sbgl: {name: '消防设备管理', score: [14.2, 15.6], total: 20},
-                        hzfx: {name: '建筑火灾风险', score: [15.5, 13.7], total: 20},
-                    },
-                    {
-                        aqgl: {name: '消防安全管理', score: [50.5, 46.7], total: 60},
-                        sbgl: {name: '消防设备管理', score: [13.6, 12.6], total: 20},
-                        hzfx: {name: '建筑火灾风险', score: [14.8, 16.5], total: 20},
-                    },
-                ],
+                counts: {
+                    scoreXfSafetyCount: {name: '消防安全管理', score: 0, total: 60},
+                    scoreXfSSSbScoreCount: {name: '消防设备管理', score: 0, total: 20},
+                    scoreJzHzScoreCount: {name: '建筑火灾风险', score: 0, total: 20},
+                },
                 scoreLabel: ['优秀', '良好', '一般', '较差', '极差'],
                 scoreDatas: [
                     [
@@ -126,7 +119,8 @@
                 let pas = {
 //                    groupId: this.$store.getters.groupId,
                     dwId: this.$store.getters.userInfo.dwId,
-                    createDate: this.month
+//                    createDate: this.month
+                    createDate: '2017-11-00'
                 };
                 api.getQyDwScoreInfo(pas).then(res => {
                     if (res && res.code == 0) {
@@ -138,9 +132,10 @@
                                 scoreTypeCount: 'dwTypeName',
                                 scoreSafetyCount: 'safetyName'
                             };
-                            if (res.response[key]) {
+
+                            if (res.response && res.response[key]) {
                                 let other = res.response.qydwTotalCount || 0;
-                                that.datas[key] = res.response[key].map(item => {
+                                that.scoreInfoDatas[key] = res.response[key].map(item => {
                                     other -= item.count;
                                     return {
                                         value: item.average,
@@ -149,12 +144,12 @@
                                 });
                                 //将剩余归为其他类
                                 if (other > 0)
-                                    that.datas[key].push({
+                                    that.scoreInfoDatas[key].push({
                                         value: other,
                                         name: '其他'
                                     });
-                                //排序
-                                that.datas[key].sort(function (a, b) {
+//                                //排序
+                                that.scoreInfoDatas[key].sort(function (a, b) {
                                     return b.value - a.value;
                                 });
                             }
@@ -175,6 +170,10 @@
             DrawChart0(ec){
                 let label = this.scoreLabel;
                 let datas = this.scoreDwCounts;
+
+                let height = 400;
+                this.$refs['chart'].style.height = height + 'px';
+
                 let myChart = ec.init(this.$refs['chart'], theme);
                 myChart.setOption({
 
@@ -240,31 +239,11 @@
                     y.push(item.name);
                     x.push(item.value);
                 });
-                console.log(x);
-                console.log(y);
 
-                return;
-//                let y = [
-//                    [],
-//                    ['宜兴市', '惠山区', '江阴市', '锡山区', '滨湖区', '梁溪区', '新吴区'],
-//                    ['公安', '教育', '新闻', '安监', '住建', '民政', '工商', '文化', '卫计', '交通', '规划', '人社', '质监'],
-//                    ['一级\n重点单位', '二级\n重点单位', '三级\n重点单位', '一般\n单位'],
-//                ];
-//                let x = [
-//                    [],
-//                    [
-//                        [79.4, 79.3, 78.9, 78.7, 78.5, 78, 77.9],
-//                        [76.8, 76.6, 76, 75.8, 75.6, 75.4, 74.9],
-//                    ],
-//                    [
-//                        [79.9, 79.8, 79.7, 78.8, 78.7, 78.5, 78.1, 78, 77.8, 77.2, 76.5, 76, 76],
-//                        [77.6, 76.9, 76.6, 75.9, 75.6, 75.6, 75.5, 75.4, 74.8, 74.4, 74.3, 73.9, 72.4],
-//                    ],
-//                    [
-//                        [76.9, 78.6, 78.9, 76.5],
-//                        [75.1, 75.7, 75.9, 75.2],
-//                    ],
-//                ];
+                //根据图表数据量调整画布高度
+                let min = 300;
+                let height = min + (y.length - 1) * 20;
+                this.$refs['chart'].style.height = height + 'px';
 
                 let myChart = ec.init(this.$refs['chart'], theme);
                 myChart.setOption({
@@ -281,6 +260,10 @@
                     },
                     calculable: true,
                     color: ['#70BBFE'],
+                    grid: {
+//                        left: '5%',
+                        containLabel: true
+                    },
                     xAxis: [
                         {
                             type: 'value',
@@ -306,7 +289,7 @@
                     yAxis: [
                         {
                             type: 'category',
-                            data: y[this.tabI],
+                            data: y,
                             axisLine: {
                                 show: false,
                             },
@@ -314,6 +297,15 @@
                                 show: false,
                             },
                             axisLabel: {
+                                formatter: function (data) {
+                                    let max = 6;
+                                    let name = data || '';
+                                    if (name.length > max) {
+                                        name = name.split('').splice(0, max).join('');
+                                        name += '…'
+                                    }
+                                    return `${name}`
+                                },
                                 margin: 2,
                                 textStyle: {
                                     color: '#666',
@@ -326,7 +318,8 @@
                         {
                             name: '安全评分',
                             type: 'bar',
-                            data: x[this.tabI][0],
+                            center: ['70%', '50%'],
+                            data: x,
                             itemStyle: {
                                 normal: {
                                     barBorderColor: '#3399ff'
@@ -403,7 +396,7 @@
             .chart {
                 /*padding-top: 14px;*/
                 padding-left: 14px;
-                height: 500px;
+                height: 400px;
                 background-color: #fff !important;
             }
 
