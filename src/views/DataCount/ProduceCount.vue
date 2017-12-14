@@ -45,7 +45,8 @@
 //                ],
                 datas: [
                     {value: 0, name: '任务', key: 'qyTaskCountByJg'},
-                    {value: 0, name: '图片', key: 'qyResourcesCountByJg'}
+                    {value: 0, name: '图片', key: 'qyResourcesCountByJg'},
+                    {value: 0, name: '通知公告', key: 'qyNoticeCountByJg'},
                 ]
             }
         },
