@@ -20,11 +20,17 @@
                                 </div>
                                 <div class="info">
                                     <div class="title no-overflow">{{item.dwName}}</div>
-                                    <div class="dw-attribute">
-                                        <span class="attr-item" :class="scoreColorStyle(item.dwSafeScore)" v-for="attr, index in item.dwAttributes" v-if="index <= 2">{{attributesFilter(attr.attributeName)}}</span>
-                                        <span class="attr-item disabled" v-if="!item.dwAttributes || (item.dwAttributes && item.dwAttributes.length <= 0)">暂无标签</span>
-                                        <span class="attr-item ellipsis" :class="scoreColorStyle(item.dwSafeScore)" v-if="item.dwAttributes.length > 3"><i class="icon-ellipsis"></i></span>
-                                    </div>
+                                    <ul class="dw-attribute">
+                                        <li class="attr-item" v-for="attr, index in item.dwAttributes" v-if="index <= 2">
+                                          <div class="main" :class="scoreColorStyle(item.dwSafeScore)"><span>{{attributesFilter(attr.attributeName)}}</span></div>
+                                        </li>
+                                        <li class="attr-item" v-if="item.dwAttributes.length > 3">
+                                          <div class="main ellipsis" :class="scoreColorStyle(item.dwSafeScore)"><i class="icon-ellipsis"></i></div>
+                                        </li>
+                                        <li class="attr-item" v-if="!item.dwAttributes || (item.dwAttributes && item.dwAttributes.length <= 0)">
+                                          <div class="disabled"><span>暂无标签</span></div>
+                                        </li>
+                                    </ul>
                                 </div>
                                 <i class="icon icon-link-arrow"></i>
                             </div>
@@ -593,7 +599,7 @@ export default {
     }
     .body-wrap {
       overflow: scroll;
-      padding: 34px 0 100px 7px;
+      padding: 54px + @headerTop 0 100px 7px;
       max-height: 700px;
       bottom: 100px;
       &:after {
@@ -684,41 +690,55 @@ export default {
     }
   }
   .dw-attribute {
-    display: inline-block;
-    padding: 3px 16px 0 0;
+    display: inline-flex;
+    padding: 6px 16px 0 0;
     position: relative;
     .attr-item {
-      height: 14px;
-      font-size: 11px;
-      color: #ffffff;
-      border-radius: 2px;
-      text-align: center;
       display: inline-block;
-      line-height: 0;
-      padding: 8px 2px 2px 2px;
-      box-sizing: border-box;
       margin-right: 4px;
-      position: relative;
-      &.disabled {
-        color: #888;
-        padding-left: 0;
-        text-align: left;
-      }
-      &.ellipsis {
-        position: absolute;
-        top: 4px;
-        bottom: 0;
-        right: 0;
-        width: 16px;
+      .main {
         height: 14px;
-        margin: auto;
-        .icon-ellipsis {
-          position: absolute;
-          left: 0;
-          right: 0;
-          margin: auto;
-          top: 0;
-          bottom: 0;
+        border-radius: 2px;
+        display: table;
+        box-sizing: border-box;
+        position: relative;
+        span {
+          font-size: 11px;
+          color: #ffffff;
+          width: 100%;
+          text-align: center;
+          height: 14px;
+          line-height: 14px;
+          padding: 0 2px;
+          display: table-cell;
+          vertical-align: middle;
+        }
+        &.ellipsis {
+          width: 16px;
+          height: 14px;
+          position: relative;
+          .icon-ellipsis {
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: auto;
+            top: 0;
+            bottom: 0;
+          }
+        }
+      }
+      .disabled {
+        display: table;
+        height: 14px;
+        span {
+          color: #888;
+          padding-left: 0;
+          text-align: left;
+          display: table-cell;
+          vertical-align: middle;
+          font-size: 12px;
+          height: 14px;
+          line-height: 14px;
         }
       }
     }

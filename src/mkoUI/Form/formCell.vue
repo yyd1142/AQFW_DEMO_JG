@@ -2,7 +2,9 @@
     <!--可用于展示和编辑表单信息的组件-->
     <div class="mko-form-cell" @click="click">
         <div class="cell" :class="{'is-link':fr(isLink)}">
-            <span class="required" v-if="isEdit&&fr(required)">*</span>
+            <div class="required" v-if="isEdit&&fr(required)">
+                <div class="main"><span>*</span></div>
+            </div>
             <div class="title fl no-overflow">{{title}}</div><!--标题限定最多7个字-->
             <span class="sign icon-link-arrow" v-if="fr(isLink)"></span>
 
@@ -128,11 +130,27 @@
             }
             .required {
                 position: absolute;
-                z-index: 1;
+                z-index: 10;
                 left: -7px;
-                top: 18px;
-                font-size: 14px;
-                color: @mainDanger;
+                top: 0;
+                height: 44px;
+                margin: AUTO;
+                bottom: 0;
+                width: 6px;
+                .main {
+                    display: table;
+                    height: 44px;
+                    width: 6px;
+                    span {
+                        width: 6px;
+                        color: @mainDanger;
+                        font-size: 14px;
+                        display: table-cell;
+                        vertical-align: middle;
+                        height: 44px;
+                        line-height: 44px;
+                    }
+                }
             }
             .sign {
                 position: absolute;
