@@ -100,7 +100,7 @@
           &.flow {
             padding-bottom: 14px;
           }
-          max-height: 376px;
+          max-height: 400px;
           overflow: scroll;
         }
         .mask {

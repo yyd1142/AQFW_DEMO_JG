@@ -50,11 +50,11 @@
             <div class="data-wrap">
                 <mko-menu-header title="基本信息" @click="showInfo('basic')" @show="show.basic =! show.basic"></mko-menu-header>
                 <div v-show="show.basic">
-                    <mko-menu-cell title="单位名称" :val="dwInfo.dwName||'暂无'"></mko-menu-cell>
+                    <mko-menu-cell title="单位名称" :val="dwInfo.dwName||'暂无'" @click="showAllContent(dwInfo.dwName)"></mko-menu-cell>
                     <mko-menu-cell title="单位简称" :val="dwInfo.dwShortName||'暂无'"></mko-menu-cell>
                     <mko-menu-cell title="组织机构代码" :val="dwInfo.dwCode||'暂无'"></mko-menu-cell>
                     <mko-menu-cell title="单位地址" :val="(dwInfo.dwProvinceName||'未知')+'-'+(dwInfo.dwCityName||'未知')+'-'+(dwInfo.dwAreaName||'未知')"></mko-menu-cell>
-                    <mko-menu-cell title="详细地址" :val="dwInfo.dwAddress||'暂无'"></mko-menu-cell>
+                    <mko-menu-cell title="详细地址" :val="dwInfo.dwAddress||'暂无'" @click="showAllContent(dwInfo.dwAddress)"></mko-menu-cell>
                     <mko-menu-cell title="单位类型" :val="(dwInfo.dwTypeName+(dwInfo.dwSubTypeName==null?'':dwInfo.dwSubTypeName))||'暂无'"
                                    @click="showAllContent(dwInfo.dwTypeName+(dwInfo.dwSubTypeName==null?'':dwInfo.dwSubTypeName))"></mko-menu-cell>
                     <mko-menu-cell title="经济所有制" :val="dwJJSYZ(dwInfo.dwJJSYZ)"></mko-menu-cell>
@@ -231,7 +231,7 @@
                 });
             },
             showAllContent(text) {
-                if (text.length >= 10)
+                if (text && text.length >= 10)
                     this.$MKODialog({msg: text});
             },
             getRecords() {
