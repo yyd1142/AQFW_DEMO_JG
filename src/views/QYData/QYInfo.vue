@@ -9,16 +9,18 @@
                 <span>{{$route.query.score || dwScore.totalScore}}</span>
             </div>
             <div class="label-wrap" :style="{backgroundColor:scoreHeadColor($route.query.score || dwScore.totalScore)}" @click="goQYComment">
-                <div class="label-item" :class="dwInfo.attributes && dwInfo.attributes.length > 3 ? 'more-label' : ''">
-                    <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" :style="{ marginRight: index === (dwInfo.attributes && dwInfo.attributes.length - 1) ? 0 : '4px' }" v-for="item, index in dwInfo.attributes" v-if="!noAttributes && index <= 2">
+                <ul class="label-item" :class="dwInfo.attributes && dwInfo.attributes.length > 3 ? 'more-label' : ''">
+                    <li class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" :style="{ marginRight: index === (dwInfo.attributes && dwInfo.attributes.length - 1) ? 0 : '4px' }" v-for="item, index in dwInfo.attributes" v-if="!noAttributes && index <= 2">
                         <span>{{attributesFilter(item.attributeName)}}</span>
-                    </div>
-                    <div class="main ellipsis" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" v-if="dwInfo.attributes && dwInfo.attributes.length > 3">
-                        <i class="icon-ellipsis"></i></div>
-                    <div class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" v-if="noAttributes">
-                        <span>暂无标签</span></div>
+                    </li>
+                    <li class="main ellipsis" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" v-if="dwInfo.attributes && dwInfo.attributes.length > 3">
+                        <i class="icon-ellipsis"></i>
+                    </li>
+                    <li class="main" :class="scoreColorStyle($route.query.score || dwScore.totalScore)" v-if="noAttributes">
+                        <span>暂无标签</span>
+                    </li>
                     <i class="icon icon-arrow-right-white"></i>
-                </div>
+                </ul>
             </div>
             <div class="data-wrap">
                 <mko-cell title="火灾记录" :is-link="recoredCount.hzResult != 0" @click="goRecord(1)">
@@ -293,36 +295,37 @@
                 width: 100%;
                 height: 32px;
                 margin-bottom: 10px;
+                text-align: center;
                 .label-item {
                     background: rgba(255, 255, 255, 0.5);
                     border-radius: 4px;
                     text-align: center;
-                    display: table;
+                    display: inline-flex;
                     margin: 0 auto;
-                    padding: 3px 4px;
+                    padding: 3px 4px !important;
                     position: relative;
                     &.more-label {
-                        padding: 3px 20px 3px 4px;
+                        padding: 2px 20px 3px 4px;
                     }
                     .main {
-                        height: 16px;
+                        height: 14px;
                         border-radius: 2px;
-                        text-align: center;
-                        display: inline-block;
-                        line-height: 10px;
-                        padding: 2px;
+                        display: table;
+                        padding: 0 2px;
                         box-sizing: border-box;
-                        margin-right: 4px;
                         &.ellipsis {
-                            position: absolute;
                             width: 16px;
-                            margin: auto;
-                            top: 0;
-                            bottom: 0;
+                            position: relative;
                         }
                         span {
                             color: #ffffff;
-                            font-size: 12px;
+                            font-size: 11px;
+                            display: table-cell;
+                            vertical-align: middle;
+                            line-height: 10px;
+                            text-align: center;
+                            height: 14px;
+                            line-height: 14px;
                         }
                         .icon-ellipsis {
                             position: absolute;

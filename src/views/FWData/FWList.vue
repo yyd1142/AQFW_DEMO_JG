@@ -124,7 +124,7 @@
             }
             .body-wrap {
                 overflow: scroll;
-                padding: 34px 7px 100px;
+                padding: 54px + @headerTop 7px 100px;
                 max-height: 700px;
                 bottom: 100px;
                 &:after {

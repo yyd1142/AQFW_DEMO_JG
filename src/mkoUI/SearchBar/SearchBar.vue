@@ -17,8 +17,8 @@
             <div class="cancel" @click="cancel" v-if="!$slots['right-button']">
                 取消
             </div>
-            <slot name="right-button"></slot>
         </div>
+        <slot name="right-button"></slot>
     </div>
 </template>
 
@@ -127,16 +127,17 @@
             padding: 0 8px;
             border-radius: 100px;
             background: #FFFFFF;
-
             .ipt {
-                position: relative;
-                top: 4px;
+                position: absolute;
+                top: 0;
                 left: 24px;
-                width: 90%;
+                width: 80%;
                 height: 20px;
                 border: none;
                 border-radius: 28px;
                 font-size: 14px;
+                bottom: 0;
+                margin: auto;
             }
             .cancel-xx {
                 position: absolute;
