@@ -139,7 +139,7 @@
                                 if (other > 0)
                                     that.datas[key].push({
                                         value: other,
-                                        name: '其他'
+                                        name: '未知'
                                     });
                                 //排序
                                 that.datas[key].sort(function (a, b) {

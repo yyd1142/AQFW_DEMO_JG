@@ -5,7 +5,7 @@
         <div class="page-wrap">
             <month-nav-bar @get="getMonthIndex"></month-nav-bar>
             <div class="count-block-wrap">
-                <mko-cell :title="item.label" :val="item.num[0]"
+                <mko-cell :title="item.label" :val="item.num"
                           @click="goDetail(item.path)" is-link
                           v-for="item in counts[type]"></mko-cell>
             </div>
@@ -25,6 +25,8 @@
     import { MonthNavBar } from 'components'
     import echarts from 'echarts';
     import { formatDate } from 'filters';
+    import { Indicator } from 'mint-ui';
+
     let theme = 'macarons';
     let gId = '';
     export default {
@@ -34,19 +36,23 @@
                 type: -1,
                 counts: [
                     [
-                        {label: '社会单位数量(家)', num: [3544, 3533], path: '/qy_count'},
-                        {label: '用户数量(人)', num: [6359, 6355], path: '/user_count'},
-                        {label: '任务执行数量(个)', num: [1112032, 1123498], path: '/task_count'},
-                        {label: '生成数据总量(条)', num: [5057090, 5021412], path: '/produce_count'}
+                        {label: '社会单位数量(家)', num: 0, path: '/qy_count', key: 'qyTotal'},
+                        {label: '用户数量(人)', num: 0, path: '/user_count', key: 'qyUserTotal'},
+                        {label: '任务执行数量(个)', num: 0, path: '/task_count', key: 'qyTaskTotal'},
+                        {label: '生成数据总量(条)', num: 0, path: '/produce_count', key: 'qyDataTotal'}
                     ],
                     [
-                        {label: '社会单位数量(家)', num: [824, 823], path: '/qy_count'},
-                        {label: '任务执行数量(个)', num: [260503, 264041], path: '/task_count'},
+                        {label: '社会单位数量(家)', num: 0, path: '/qy_count', key: 'qyTotal'},
+                        {label: '任务执行数量(个)', num: 0, path: '/task_count', key: 'qyTaskTotal'},
                     ],
                 ]
             }
         },
-        watch: {},
+        watch: {
+            month(){
+                this.getTotalData();
+            }
+        },
         computed: {},
         mounted() {
             this.getMonthIndex(new Date());
@@ -64,23 +70,44 @@
                 this.month = this.formatDate(data, 'YYYY-MM');
                 if (this.month)
                     this.month += '-00';
-                console.log(this.month)
             },
             getDwData(){
+                Indicator.open({spinnerType: 'fading-circle'});
                 gId = this.$store.getters.groupId;
                 let params = {
                     groupId: gId
                 };
                 api.getJGDwInfo(params).then(res => {
-                    if (res && res.code == 0) {
+                    if (res && res.code == 0 && res.response) {
                         let data = res.response;
                         let path = data.path.split('/');
                         this.type = (data.id == 1 || path[1] == data.id) ? 0 : 1;
 //                        this.type = path[1] == data.id ? 0 : 1;
 //                        this.type = path[1] != data.id ? 0 : 1;
                         sessionStorage.setItem(`jgDwType${gId}`, this.type);
+                        this.getTotalData();
                         this.DrawChart1(echarts);
+                    } else {
+                        Indicator.close();
                     }
+                })
+            },
+            getTotalData(){
+                Indicator.open({spinnerType: 'fading-circle'});
+                let pas = {
+                    dwId: this.$store.getters.userInfo.dwId,
+                    createDate: this.month
+                };
+                api.getAllTotalCount(pas).then(res => {
+                    if (res && res.code == 0 && res.response) {
+                        let data = res.response;
+                        if (this.counts[this.type])
+                            this.counts[this.type].forEach(item => {
+                                item.num = data[item.key] || 0;
+                            })
+
+                    }
+                    Indicator.close();
                 })
             },
             goDetail(path){
