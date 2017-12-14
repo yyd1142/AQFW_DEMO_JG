@@ -112,7 +112,7 @@
                         let that = this;
                         let match = function (key) {
                             let names = {
-                                qydwAreaCount: 'dwName',
+                                qydwAreaCount: 'dwJC',
                                 qydwIndustryCount: 'dwTypeName',
                                 qydwTypeCount: 'safetyName'
                             };
