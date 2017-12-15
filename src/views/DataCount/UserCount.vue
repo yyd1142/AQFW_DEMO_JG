@@ -188,7 +188,7 @@
                     color: color,
                     series: [
                         {
-                            name: this.tabItems[this.tabI],
+                            name: this.tabItems[this.tabI].text,
                             type: 'pie',
                             radius: '55%',
 //                            clockWise: false,

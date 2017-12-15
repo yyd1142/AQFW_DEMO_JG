@@ -3,7 +3,7 @@
         <div class="placeholder-item"></div>
         <mko-header title="创建账号" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap add-user-wrap">
-            <div>
+            <div class="data-wrap">
 
                 <mko-form-cell title="登录账号" v-model="formData.userName" type="text" edit required></mko-form-cell>
                 <mko-form-cell title="登录密码" edit required>
@@ -142,6 +142,7 @@
             postData(){
                 if (isClick) return false;
                 isClick = true;
+
                 let form = JSON.parse(JSON.stringify(this.formData));
                 api.postPerson(form).then(res => {
                     if (res && res.code == 0) {
@@ -216,6 +217,9 @@
     @import "../../config.less";
 
     .add-user-wrap {
+        .data-wrap {
+            margin-top: 10px;
+        }
         .footer-btn {
             width: 100%;
             margin-top: 14px;

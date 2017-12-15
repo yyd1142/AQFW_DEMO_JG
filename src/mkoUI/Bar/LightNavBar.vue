@@ -61,6 +61,10 @@
         height: @lightNavBarHeight;
         width: 100%;
         background-color: #fff;
+        .border-btm(@baseBorder);
+        &:after {
+            bottom: -1px;
+        }
         .cell {
             box-sizing: border-box;
             margin-right: 20px;
