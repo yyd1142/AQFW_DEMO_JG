@@ -58,15 +58,16 @@
             fr(val){
                 return val !== undefined && val !== false
             },
+            focus(){
+                this.$refs.input.focus();
+            },
             cancel(){
                 this.iptValue = '';
                 this.$emit('onCancel');
             },
-            focus(){
-                this.$refs.input.focus();
-            },
             inputReset() {
                 this.iptValue = '';
+                this.focus();
                 this.$emit('onCancelSearch');
             },
             inputOnFocus() {

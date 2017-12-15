@@ -1,12 +1,15 @@
 <template>
     <div class="month-nav-bar-wrap">
-        <div class="btn btn-left fl" :class="{'disable':monthIndex<=-2}" @click="getMonth(-1)">
-            <span class="icon-arrow-left"></span>
+        <div class="box">
+            <div class="btn btn-left fl" :class="{'disable':monthIndex<=-2}" @click="getMonth(-1)">
+                <span class="icon-arrow-left"></span>
+            </div>
+            <div class="abs-middle text no-overflow">{{monthStart | formatDate('YYYY年MM月')}}</div>
+            <div class="btn btn-right fr" :class="{'disable':monthIndex>=0}" @click="getMonth(1)">
+                <span class="icon-arrow-right"></span>
+            </div>
         </div>
-        <div class="abs-middle text">{{monthStart | formatDate('YYYY年MM月')}}</div>
-        <div class="btn btn-right fr" :class="{'disable':monthIndex>=0}" @click="getMonth(1)">
-            <span class="icon-arrow-right"></span>
-        </div>
+
     </div>
 </template>
 
@@ -99,31 +102,47 @@
 <style lang="less" rel="stylesheet/less">
     @import "../../config.less";
 
+    @monthNavBarHeight: 30px;
     .month-nav-bar-wrap {
         position: relative;
         margin-bottom: 10px;
-        height: 30px;
+        height: @monthNavBarHeight;
         width: 100%;
         text-align: center;
         background-color: #fff;
-        .btn {
-            position: relative;
-            margin: 0 14px;
-            width: 100px;
-            top: 9px;
-            &.btn-left {
-                text-align: left;
+        .box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            width: 220px;
+            height: @monthNavBarHeight;
+            .btn {
+                position: absolute;
+                top: 50%;
+                transform: translate(0, -50%);
+                -webkit-transform: translate(0, -50%);
+                &.btn-left {
+                    left: 0;
+                    padding-left: 50px;
+                    text-align: right;
+                }
+                &.btn-right {
+                    right: 0;
+                    padding-right: 50px;
+                    text-align: left;
+                }
+                &.disable {
+                    opacity: 0.5;
+                }
             }
-            &.btn-right {
-                text-align: right;
-            }
-            &.disable {
-                opacity: 0.5;
+            .text {
+                width: 75px;
+                line-height: @monthNavBarHeight;
+                font-size: 14px;
             }
         }
-        .text {
-            font-size: 14px;
-            line-height: 30px;
-        }
+
     }
 </style>
