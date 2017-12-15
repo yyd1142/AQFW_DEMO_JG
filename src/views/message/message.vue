@@ -14,13 +14,14 @@
     </div>
 </template>
 
-<script src="./message.js"></script>
+<script src="./message.js">
+</script>
 
 <style lang="less">
 @import "../../config.less";
 .message-index {
     .message-page-wrap {
-        padding: 54px + @headerTop 0 0 0;
+        padding: 34px 0 0 0;
         margin: 0 0 0 0;
         .mint-loadmore > .mint-loadmore-content > .no-border {
             .border-btm(#eeeeee);

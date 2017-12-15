@@ -216,7 +216,7 @@
                 }
             },
             attributesFilter(item) {
-                if (item.length >= 7) {
+                if (item.length >= 15) {
                     return `${item.substring(0, 4)}...`;
                 } else {
                     return item;

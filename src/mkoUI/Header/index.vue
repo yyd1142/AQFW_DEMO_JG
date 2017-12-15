@@ -40,7 +40,7 @@ export default {
         right: 0;
         left: 0;
         position: fixed;
-        z-index: 3000;
+        z-index: 25;
         color: #fff;
         height: @headerHeight;
         padding-top: 0px;

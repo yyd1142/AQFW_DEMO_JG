@@ -426,7 +426,7 @@ export default {
       }
     },
     attributesFilter(item) {
-      if (item.length >= 7) {
+      if (item.length >= 15) {
         return `${item.substring(0, 4)}...`;
       } else {
         return item;
@@ -573,6 +573,7 @@ export default {
             color: #333333;
             letter-spacing: 0;
             line-height: 14px;
+            padding-right: 28px;
           }
           .desc {
             height: 17px;
@@ -599,7 +600,7 @@ export default {
     }
     .body-wrap {
       overflow: scroll;
-      padding: 54px + @headerTop 0 100px 7px;
+      padding: 34px 0 100px 7px;
       max-height: 700px;
       bottom: 100px;
       &:after {
