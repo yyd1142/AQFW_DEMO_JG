@@ -21,8 +21,7 @@
 @import "../../config.less";
 .message-index {
     .message-page-wrap {
-        padding: 34px 0 0 0;
-        margin: 0 0 0 0;
+        padding-top: 10px;
         .mint-loadmore > .mint-loadmore-content > .no-border {
             .border-btm(#eeeeee);
             &::after {
