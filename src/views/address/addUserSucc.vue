@@ -3,7 +3,7 @@
         <div class="placeholder-item"></div>
         <mko-header title="创建账号" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap add-user-succ-wrap">
-            <div class="com-data-wrap">
+            <div class="data-wrap">
                 <mko-cell title="登录账号" :val="formData.userName"></mko-cell>
                 <mko-cell title="登录密码" :val="formData.password"></mko-cell>
                 <mko-cell title="姓名" :val="formData.name"></mko-cell>
@@ -21,7 +21,7 @@
 
 <script>
     import api from 'api'
-    import {Indicator, Toast} from 'mint-ui'
+    import { Indicator, Toast } from 'mint-ui'
     export default {
         data () {
             return {
@@ -52,6 +52,9 @@
     @import "../../config.less";
 
     .add-user-succ-wrap {
+        .data-wrap {
+            margin-top: 10px;
+        }
         .footer-btn {
             width: 100%;
             padding: 0 14px;

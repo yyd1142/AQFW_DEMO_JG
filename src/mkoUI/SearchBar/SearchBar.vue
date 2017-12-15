@@ -1,7 +1,7 @@
 <template>
     <div class="mko-search-wrap"
          :class="{'is-header':fr(isHeader),'has-left-button':$slots['left-button'],
-         'has-right-button':$slots['right-button'],'is-fill':fr(fill)&&!iptOnFocus}">
+         'has-right-button':$slots['right-button'],'is-fill':fr(fill)&&!iptOnFocus&&!iptHasValue}">
 
         <slot name="left-button"></slot>
 
@@ -88,7 +88,7 @@
     .mko-search-wrap {
         position: relative;
         height: 44px;
-        padding: 8px;
+        padding: 8px 14px;
         background: @mainBlue;
         &.is-header {
             position: fixed;
@@ -110,29 +110,28 @@
                 display: none;
             }
             .box {
-                right: 10px;
+                right: 14px;
             }
             .sign-wrap {
                 left: 50%;
                 transform: translate(-50%, -50%);
                 -webkit-transform: translate(-50%, -50%);
             }
-
         }
         .box {
             position: absolute;
-            left: 10px;
+            left: 14px;
             right: 50px;
-            height: 30px;
+            height: 28px;
             padding: 0 8px;
             border-radius: 100px;
             background: #FFFFFF;
             .ipt {
                 position: absolute;
                 top: 0;
-                left: 24px;
+                left: 30px;
                 width: 80%;
-                height: 20px;
+                /*height: 20px;*/
                 border: none;
                 border-radius: 28px;
                 font-size: 14px;
@@ -141,10 +140,10 @@
             }
             .cancel-xx {
                 position: absolute;
-                top: 5px;
+                top: 50%;
                 right: 8px;
-                /*width: 14px;*/
-                /*height: 14px;*/
+                transform: translate(0, -50%);
+                -webkit-transform: translate(0, -50%);
                 font-size: 18px;
                 color: #c9c9ce;
                 background: none;
