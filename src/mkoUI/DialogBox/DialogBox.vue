@@ -120,8 +120,9 @@
                     &.flow {
                         padding-bottom: 14px;
                     }
-                    max-height: 376px;
+                    max-height: 400px;
                     overflow-y: scroll;
+                    overflow-x: hidden;
                 }
                 .mask {
                     position: absolute;
