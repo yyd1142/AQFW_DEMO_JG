@@ -1,32 +1,32 @@
 <template>
-    <div>
+    <div class="hidden-danger-check">
         <div class="placeholder-item"></div>
         <mko-header title="风险上报" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap hdc-main-wrap" v-show="onPage==='main'">
             <div class="info-wrap">
-                <mko-form-cell title="风险单位" :val="formData.dwName"
-                               edit type="sel" @click="changePage('selDw')"></mko-form-cell>
-                <mko-form-cell title="风险位置" :val="formData.yhPosition" @click="changePage('selPosition')"
-                               edit :type="formData.groupId?'sel':''"></mko-form-cell>
-                <mko-form-cell title="详细地址" v-model="formData.yhPositionDetail"
-                               edit type="text" v-show="formData.yhPosition"></mko-form-cell>
-
-                <mko-form-cell title="协同部门" :val="formData.xtSupervise"
-                               edit :type="formData.groupId?'sel':''" @click="onXtPage"></mko-form-cell>
-
-                <mko-form-cell title="处置期限" :val="formatDate(formData.limitedTime)"
-                               edit type="sel" @click="ctrlDatePicker"></mko-form-cell>
+                <mko-form-cell title="风险单位" :val="formData.dwName || '请选择风险单位'" edit type="sel" @click="changePage('selDw')"></mko-form-cell>
+                <mko-form-cell title="风险位置" :val="formData.yhPosition || '请选择风险位置'" @click="changePage('selPosition')" edit :type="formData.groupId?'sel':''"></mko-form-cell>
+                <mko-form-cell title="详细地址" v-model="formData.yhPositionDetail" edit type="text" v-show="formData.yhPosition"></mko-form-cell>
+                <mko-form-cell title="协同部门" :val="formData.xtDWName || '请选择协同部门'" edit :type="formData.groupId?'sel':''" @click="onXtPage"></mko-form-cell>
+                <mko-form-cell title="处置期限" :val="formatDate(formData.limitedTime)" edit type="sel" @click="ctrlDatePicker"></mko-form-cell>
 
             </div>
-            <div class="content-wrap">
-                <mko-textarea type="outer" v-model="formData.yhDesc" placeholder="请输入风险描述" @input="onInputData"></mko-textarea>
-                <photo-box :photo-list="photoList" :max='8' @addPhotoEvent="sheetShow=true"
-                           @removePhotoEvent="removePhoto()"></photo-box>
+            <div class="desc-wrap">
+                <div class="text">
+                    <div class="padding">
+                        <textarea id="textarea_yh" placeholder="填写风险描述" v-model="formData.yhDesc" @input="updateDescription"></textarea>
+                        <span class="word-number">{{wordNumber}}/140个字</span>
+                    </div>
+                </div>
+                <photo-box 
+                    :photo-list="photoList" 
+                    @removePhotoEvent="removePhoto" 
+                    @addPhotoEvent="sheetShow = true" 
+                    :user-camera="true"
+                    btn-class="yellow-btn">
+                </photo-box>
             </div>
-            <div class="footer-wrap">
-                <mko-button type="danger" size="large" :disabled="!formValid" no-radius @click="postHideDanger">提交</mko-button>
-                <!--<mt-button class="btn" size="large" @click="postHideDanger">提交</mt-button>-->
-            </div>
+            <mko-button class="btn" type="warn" size="large" @click="postHideDanger">提交</mko-button>
         </div>
         <!--选择页面-->
         <sel-xt :selFormData="xtFormData" :dwId="formData.groupId" @sel="selXt" @changePage="onPage='main'"
@@ -78,7 +78,8 @@
                     yhDesc: '',
                     xtSupervise: '',
                     xtDWName: '',
-                    yhFilesID: ''
+                    yhFilesID: '',
+                    wordNumber: 0
                 },
                 xtFormData: {
                     xtId: [],
@@ -338,6 +339,16 @@
                         }
                     });
                 }
+            },
+            updateDescription(e) {
+                let description = e.target.value;
+                this.wordNumber = description.length;
+                this.onInputData();
+                if (description.length <= 140) {
+                } else {
+                    this.wordNumber = 140;
+                    Toast({ message: "最多只能输入140个字", duration: 2000 });
+                }
             }
         },
         components: {
@@ -353,21 +364,102 @@
 
 <style lang="less" rel="stylesheet/less">
     @import "../../config.less";
-
-    .hdc-main-wrap {
-        .info-wrap {
-            margin-bottom: 14px;
-        }
-        .content-wrap {
-            margin-top: 14px;
-            .mko-text-area {
-                padding-bottom: 0;
+.hidden-danger-check {
+  .hdc-main-wrap {
+    padding-bottom: 0;
+    padding-top: 10px;
+    .data-wrap {
+      .mko-form-cell {
+        &.no-border {
+          .border-btm(#eeeeee);
+          &::after {
+            bottom: -1px;
+          }
+          .cell {
+            &::after {
+              display: none;
+              content: none;
             }
+          }
         }
-        .footer-wrap {
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-        }
+      }
     }
+    .desc-wrap {
+      width: 100%;
+      background-color: #ffffff;
+      margin-top: 10px;
+      .border-top(#eeeeee);
+      .border-btm(#eeeeee);
+      &::after {
+          bottom: -1px;
+      }
+      .text {
+        width: 100%;
+        padding: 14px 14px 0 14px;
+        position: relative;
+        height: 94px;
+        .padding {
+          width: 100%;
+          padding: 0;
+          background-color: #f2f2f2;
+          border-radius: 4px;
+          height: 80px;
+          textarea {
+            width: 100%;
+            height: 60px;
+            background: none;
+            border-style: none;
+            padding: 8px;
+            box-sizing: border-box;
+            resize: none;
+          }
+          .word-number {
+            font-size: 12px;
+            color: #999999;
+            letter-spacing: 0px;
+            position: absolute;
+            bottom: 6px;
+            right: 20px;
+            .red-font {
+              color: #ff4949;
+            }
+          }
+          .desc {
+            opacity: 0.72;
+            background: #ffffff;
+            border: 1px solid #eeeeee;
+            border-radius: 4px;
+            height: 80px;
+            font-size: 14px;
+            color: #666666;
+            letter-spacing: 0px;
+            line-height: 18px;
+            padding: 8px;
+            overflow: auto;
+          }
+        }
+      }
+      .photo-wrap {
+        background: none;
+      }
+    }
+    .btn {
+      margin-top: 14px;
+    }
+  }
+
+  .hdc-main-footer-wrap {
+    width: 100%;
+    bottom: 0;
+    position: fixed;
+    z-index: 20;
+    margin: AUTO;
+  }
+  .yellow-btn {
+    background-color: @mainWarn !important;
+    &:active {
+      background-color: #e6a800 !important;
+    }
+  }
+}
 </style>

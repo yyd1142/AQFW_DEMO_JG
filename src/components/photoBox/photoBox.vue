@@ -5,8 +5,8 @@
                 <div class="photo-cell" :class="'photo-cell-' + index" v-for="(url, index) in photoList" @click="show(url, index)" :style="{ width: photoWrapperHeight + 'px', height: photoWrapperHeight + 'px' }">
                     <span :style="{ background: 'url('+ url +') 0 0 no-repeat', backgroundSize: 'cover' }"></span>
                 </div>
-                <div class="photo-cell photo-button camera-btn"
-                     :class="btnClass ? btnClass : ''"
+                <div class="photo-cell photo-button"
+                     :class="[btnClass ? btnClass : '', userCamera ? 'camera-btn' : 'no-camera-btn']"
                      v-if="(readOnly === undefined || !readOnly) && photoList.length < (max ? max : 8)"
                      @click="upload()" id="photoCell"
                      :style="{ width: photoWrapperHeight + 'px', height: photoWrapperHeight + 'px' }">
@@ -122,6 +122,9 @@ export default {
                 &:active {
                     background-color: #2e8ae6;
                 }
+            }
+            &.no-camera-btn {
+                background-color: none;
             }
             span {
                 position: absolute;
