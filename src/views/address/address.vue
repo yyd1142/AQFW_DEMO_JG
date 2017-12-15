@@ -1,23 +1,23 @@
 <template>
-    <div>
+    <div class="address-wrap" :class="{'search-bar-is-focus':searchBarIsFocus||searchValue}">
         <div class="placeholder-item"></div>
-        <mko-header title="部门" :left-icon="isSearchBar ? '' : 'icon-search-l'"
-                    :left-icon-text="isSearchBar ? '取消' : null"
-                    @handleLeftClick="openSearchBar"
+        <mko-header title="部门"
                     :right-icon="$store.state.user.isAdmin ? 'icon-add': null"
                     @handleRightClick="$MKOPush('/add_user')">
 
         </mko-header>
         <res-error v-if="resError"></res-error>
-        <div class="page-wrap address-wrap" v-show="!resError">
+        <div class="page-wrap" v-show="!resError">
+            <mko-search-bar v-model="searchValue" hint-text="搜索单位名称" ref="search-bar" fill
+                            @onCancelSearch="clearSearch"
+                            @onFocus="searchBarHandleFn($event,true)" @onBlur="searchBarHandleFn($event,false)"></mko-search-bar>
 
             <mko-light-nav-bar :tabs="tabs" v-model="activeTab"></mko-light-nav-bar>
 
-
-            <div class="search-bar-wrap" v-if="isSearchBar">
-                <div class="search-hidden-wrap" @click="isSearchBar = false;"></div>
-                <search-bar v-model="searchValue" @onFocus="listenInput" @onCancelSearch="closeSearchBar" @onClearSearch="clearSearch"></search-bar>
-            </div>
+            <!--<div class="search-bar-wrap" v-if="isSearchBar">-->
+            <!--<div class="search-hidden-wrap" @click="isSearchBar = false;"></div>-->
+            <!--<search-bar v-model="searchValue" @onFocus="listenInput" @onCancelSearch="closeSearchBar" @onClearSearch="clearSearch"></search-bar>-->
+            <!--</div>-->
 
             <div class="address-list" ref="wrapper" :style="{ height: wrapperHeight - 50 + 'px'}" :class="isSearchBar ? 'has-searchbar-addresslist' : ''">
 
@@ -57,7 +57,9 @@
                 noData: false,
                 //config
                 addressClass: "2",
+                //搜索
                 searchValue: "",
+                searchBarIsFocus: false,
                 wrapperHeight: 0,
                 fixedTabs: true,
                 //数据
@@ -102,6 +104,9 @@
                 if (!val) {
                     this.isSearchBar = false;
                 }
+            },
+            searchBarHandleFn(type, bool){
+                this.searchBarIsFocus = bool;
             },
             getData() {
                 this.noData = false;
@@ -236,6 +241,7 @@
 <style lang="less" rel="stylesheet/less">
     @import "../../config.less";
 
+    @searchBarHeight: 44px;
     .address-tabs {
         .home-tabs-wrap {
             position: static !important;
@@ -244,43 +250,42 @@
     }
 
     .address-wrap {
-        padding-bottom: 0;
-        .search-bar-wrap {
-            position: fixed;
-            z-index: 20;
-            margin: auto;
-            height: 100%;
-            width: 100%;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            .search-hidden-wrap {
-                position: fixed;
-                z-index: 20;
-                margin: auto;
-                height: 100%;
-                width: 100%;
-                left: 0;
-                right: 0;
-                top: 0;
-                bottom: 0;
+
+        &.search-bar-is-focus {
+            .mko-header {
+                display: none;
             }
-            .search-wrap {
-                position: fixed;
-                height: 44px;
-                padding: 8px;
-                background: #C9C9CE;
-                z-index: 22;
-                width: 100%;
-                top: @headerHeight + @headerTop + 36px;
+            .mko-search-wrap {
+                top: @headerTop;
+            }
+            .mko-light-nav-bar-wrap {
+                top: @headerTop+@searchBarHeight;
+            }
+            .address-list {
+                margin-top: 46px;
             }
         }
 
+        .page-wrap {
+            padding-bottom: 0;
+        }
+
+        .mko-search-wrap {
+            position: fixed;
+            width: 100%;
+            top: @headerHeight+@headerTop;
+            z-index: 1;
+        }
+        .mko-light-nav-bar-wrap {
+            position: fixed;
+            top: @headerHeight+@headerTop+@searchBarHeight;
+            z-index: 1;
+        }
+
         .address-list {
-            margin-top: 10px;
+            margin-top: 46px+@searchBarHeight;
             &.has-searchbar-addresslist {
-                margin: 40px 0 0 0;
+                margin: 80px 0 0 0;
             }
             .data-wrap {
                 margin-bottom: 10px;
@@ -289,3 +294,34 @@
     }
 
 </style>
+<!--.search-bar-wrap {-->
+<!--position: fixed;-->
+<!--z-index: 20;-->
+<!--margin: auto;-->
+<!--height: 100%;-->
+<!--width: 100%;-->
+<!--left: 0;-->
+<!--right: 0;-->
+<!--top: 0;-->
+<!--bottom: 0;-->
+<!--.search-hidden-wrap {-->
+<!--position: fixed;-->
+<!--z-index: 20;-->
+<!--margin: auto;-->
+<!--height: 100%;-->
+<!--width: 100%;-->
+<!--left: 0;-->
+<!--right: 0;-->
+<!--top: 0;-->
+<!--bottom: 0;-->
+<!--}-->
+<!--.search-wrap {-->
+<!--position: fixed;-->
+<!--height: 44px;-->
+<!--padding: 8px;-->
+<!--background: #C9C9CE;-->
+<!--z-index: 22;-->
+<!--width: 100%;-->
+<!--top: @headerHeight + @headerTop + 36px;-->
+<!--}-->
+<!--}-->
