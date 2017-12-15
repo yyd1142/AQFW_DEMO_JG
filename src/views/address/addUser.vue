@@ -3,7 +3,7 @@
         <div class="placeholder-item"></div>
         <mko-header title="创建账号" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap add-user-wrap">
-            <div class="com-data-wrap is-edit">
+            <div>
 
                 <mko-form-cell title="登录账号" v-model="formData.userName" type="text" edit required></mko-form-cell>
                 <mko-form-cell title="登录密码" edit required>
@@ -40,9 +40,10 @@
 
 <script>
     import api from 'api'
-    import {Indicator, Toast} from 'mint-ui'
+    import { Indicator, Toast } from 'mint-ui'
     let history_gender = '';
     let history_role = '';
+    let isClick = false;
     export default {
         data () {
             return {
@@ -88,6 +89,7 @@
         destroyed(){
             window.mkoBackButton.bInputData = false;
             document.body.style.overflow = 'auto';
+            isClick = false;
         },
         methods: {
             selPopupClose(){
@@ -138,6 +140,8 @@
                 this.isValidate = true;
             },
             postData(){
+                if (isClick) return false;
+                isClick = true;
                 let form = JSON.parse(JSON.stringify(this.formData));
                 api.postPerson(form).then(res => {
                     if (res && res.code == 0) {
