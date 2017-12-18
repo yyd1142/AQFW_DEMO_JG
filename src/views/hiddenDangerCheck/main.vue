@@ -78,8 +78,7 @@
                     yhDesc: '',
                     xtSupervise: '',
                     xtDWName: '',
-                    yhFilesID: '',
-                    wordNumber: 0
+                    yhFilesID: ''
                 },
                 xtFormData: {
                     xtId: [],
@@ -87,7 +86,8 @@
                 },
                 //日期选择
                 pickerVal: '',
-                startDate: new Date()
+                startDate: new Date(),
+                wordNumber: 0
             }
         },
         watch: {
