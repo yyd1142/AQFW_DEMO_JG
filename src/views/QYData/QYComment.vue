@@ -110,7 +110,7 @@
                 api.addDWByZF({
                     groupId: this.qyItem.groupId,
                     gxDWID: this.qyItem.gxDWID,
-                    dwAttributeId: JSON.stringify(dwAttributeId)
+                    dwAttributeId: dwAttributeId.join(',')
                 }).then(result => {
                     if (!result) return false;
                     if (result.code == 0) {
