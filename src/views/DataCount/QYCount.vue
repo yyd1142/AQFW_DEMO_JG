@@ -59,7 +59,7 @@
         emphasis: {label: {show: false}, labelLine: {show: false}}
     };
     let tabItems = [
-        {text: '区域', key: 'qydwAreaCount'},
+        {text: '管辖', key: 'qydwAreaCount'},
         {text: '行业', key: 'qydwIndustryCount'},
         {text: '单位类型', key: 'qydwTypeCount'},
     ];
