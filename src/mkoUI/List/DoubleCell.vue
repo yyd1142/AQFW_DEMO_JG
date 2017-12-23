@@ -144,10 +144,11 @@
                 line-height: 14px;
                 font-size: 14px;
                 text-align: right;
-                color: @baseText03;
+                color: @baseText01;
                 font-family: HelveticaNeue-Light;
                 &.is-link {
                     margin-right: 12px;
+                    color: @baseText02;
                 }
                 &.is-active {
                     color: @mainBlue;

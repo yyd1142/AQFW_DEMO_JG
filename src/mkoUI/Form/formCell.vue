@@ -114,7 +114,7 @@
             .border-btm(@baseBorder);
         }
         &:active {
-            opacity: 0.8;
+            background-color: rgba(255, 255, 255, 0.5);
         }
         .cell {
             display: -webkit-flex;

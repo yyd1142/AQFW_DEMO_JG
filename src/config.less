@@ -70,13 +70,14 @@
         border-bottom: 1px solid @color;
     }
 }
-.border-btm(@color) {
+
+.border-btm(@color,@bottom:0) {
     position: relative;
     &:after {
         content: '';
         position: absolute;
         left: 0;
-        bottom: 0;
+        bottom: @bottom;
         width: 100%;
         height: 1px;
         box-sizing: border-box;

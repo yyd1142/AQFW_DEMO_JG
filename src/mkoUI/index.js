@@ -2,6 +2,7 @@
  * Created by queue on 2017/8/23.
  */
 import Vue from 'vue'
+import MkoGroupBar from './Bar/GroupBar.vue'
 import MkoInfoBar from './Bar/InfoBar.vue'
 import MkoLightNavBar from './Bar/LightNavBar.vue'
 import MkoButton from './Button/Button.vue'
@@ -27,6 +28,7 @@ import MkoTabItem from './Tabs/TabItem.vue'
 Vue.use(MkoDialogBox);
 
 export {
+    MkoGroupBar,
     MkoInfoBar,
     MkoLightNavBar,
     MkoButton,
@@ -56,6 +58,7 @@ class MkoUI {
 MkoUI.installed = false;
 MkoUI.install = function (Vue, options) {
 
+    Vue.component('MkoGroupBar', MkoGroupBar);
     Vue.component('MkoInfoBar', MkoInfoBar);
     Vue.component('MkoLightNavBar', MkoLightNavBar);
     Vue.component('MkoButton', MkoButton);
