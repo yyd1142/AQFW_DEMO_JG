@@ -727,7 +727,7 @@
                         width: 100%;
                         text-align: center;
                         height: 14px;
-                        line-height: 14px;
+                        line-height: 15px;
                         padding: 0 2px;
                         display: table-cell;
                         vertical-align: middle;
