@@ -14,7 +14,7 @@ const Http = (path, method, domain, bHandleError, mode) => {
             url: (domain || Conf.domain) + '' + path,
             data: method === 'post' ? data : null,
             params: method === 'get' ? data : params,
-            timeout: 10000,
+            timeout: 150000,
             headers: { 'MKOTEAM-ACCESS-TOKEN': window.localStorage.getItem('jg_token'), 'MKOTEAM-USER-ENVIRONMENT': mode }
         }).then(function (response) {
             if (response.data.code == 0) {
