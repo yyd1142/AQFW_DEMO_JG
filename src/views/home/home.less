@@ -24,88 +24,89 @@
         top: @headerTop;
     }
     .home-wrap {
-        margin: 0;
+        margin-top: @headerHeight + @headerTop - 1px;
         padding-bottom: 0;
-
     }
     .action-item {
         margin: 0 11vw 4vw 11vw
     }
-    .actions-table-view {
-        list-style: none;
-        padding: 0;
-        margin: -3px auto 0 auto;
-        width: 100%;
-        min-height: 180px;
-        .actions-table-cell {
-            position: relative;
-            width: 100% / 3;
-            float: left;
-            text-align: center;
-            height: 90px;
-            margin: 0;
-            background-color: #ffffff;
-            &:active {
-                background-color: rgba(255, 255, 255, 0.5);
-            }
-            i {
-                display: block;
-                margin: 14px auto 0 auto;
-                width: 52px;
-                height: 32px;
-            }
-            .qy-icon {
-                height: 35px;
-                background: url('/static/icons/resource.png') -190px -207px no-repeat;
-                background-size: 892px auto;
-            }
-            .fw-icon {
-                height: 35px;
-                background: url('/static/icons/resource.png') -238px -207px no-repeat;
-                background-size: 892px auto;
-            }
-            .datacount-icon {
-                width: 64px;
-                height: 35px;
-                background: url('/static/icons/resource.png') -280px -207px no-repeat;
-                background-size: 892px auto;
-            }
-            .peixun-icon {
-                background: url('/static/icons/resource.png') -246px -100px no-repeat;
-                background-size: 892px auto;
-            }
-            .notice-icon {
-                background: url('/static/icons/resource.png') -298px -100px no-repeat;
-                background-size: 892px auto;
-            }
-            .has-notice-icon {
-                background: url('/static/icons/resource.png') -298px -130px no-repeat;
-                background-size: 892px auto;
-            }
-            .yinhuan-icon {
-                background: url('/static/icons/resource.png') -190px -100px no-repeat;
-                background-size: 892px auto;
-            }
-            span {
-                position: absolute;
-                bottom: 14px;
-                left: 0;
-                width: 100%;
-                font-size: 12px;
+    .actions-wrap {
+        position: relative;
+        bottom: 30px;
+        margin: auto;
+        width: 90%;
+        .table-wrap {
+            width: 100%;
+            min-height: 180px;
+            .cell {
+                position: relative;
+                width: 50%;
+                float: left;
                 text-align: center;
-                color: #737F89;
+                height: 122px;
+                margin: 0;
+                background-color: #ffffff;
+                &:active {
+                    background-color: rgba(255, 255, 255, 0.5);
+                }
+                .icon {
+                    display: block;
+                    margin: 14px auto 0 auto;
+                    width: 52px;
+                    height: 32px;
+                }
+                .title {
+                    margin-top: 14px;
+                    width: 100%;
+                    font-size: 12px;
+                    text-align: center;
+                    color: #737F89;
+                }
+                .qy-icon {
+                    height: 35px;
+                    background: url('/static/icons/resource.png') -190px -207px no-repeat;
+                    background-size: 892px auto;
+                }
+                .fw-icon {
+                    height: 35px;
+                    background: url('/static/icons/resource.png') -238px -207px no-repeat;
+                    background-size: 892px auto;
+                }
+                .datacount-icon {
+                    width: 64px;
+                    height: 35px;
+                    background: url('/static/icons/resource.png') -280px -207px no-repeat;
+                    background-size: 892px auto;
+                }
+                .peixun-icon {
+                    background: url('/static/icons/resource.png') -246px -100px no-repeat;
+                    background-size: 892px auto;
+                }
+                .notice-icon {
+                    background: url('/static/icons/resource.png') -298px -100px no-repeat;
+                    background-size: 892px auto;
+                }
+                .has-notice-icon {
+                    background: url('/static/icons/resource.png') -298px -130px no-repeat;
+                    background-size: 892px auto;
+                }
+                .yinhuan-icon {
+                    background: url('/static/icons/resource.png') -190px -100px no-repeat;
+                    background-size: 892px auto;
+                }
             }
-        }
-        .actions-table-cell:nth-child(3),
-        .actions-table-cell:nth-child(6) {
-            border-right: none !important;
-        }
-        .actions-table-cell:nth-child(4),
-        .actions-table-cell:nth-child(5),
-        .actions-table-cell:nth-child(6) {
-            border-bottom: none !important;
+            .actions-table-cell:nth-child(3),
+            .actions-table-cell:nth-child(6) {
+                border-right: none !important;
+            }
+            .actions-table-cell:nth-child(4),
+            .actions-table-cell:nth-child(5),
+            .actions-table-cell:nth-child(6) {
+                border-bottom: none !important;
+            }
         }
     }
+
     .news-tabs-bar {
         margin-top: 10px;
         padding-bottom: 1px;

@@ -13,6 +13,7 @@ NProgress.configure({
 const login = resolve => require(['views/login/login.vue'], resolve);
 //首页
 const enter = resolve => require(['views/enter/enter.vue'], resolve);
+// const home = resolve => require(['views/home/home.vue'], resolve);
 const home = resolve => require(['views/home/_home.vue'], resolve);
 //新闻
 const newsInfo = resolve => require(['views/news/newsInfo.vue'], resolve);

@@ -12,35 +12,52 @@
                 </div>
             </div>
             <div class="score-detail-wrap" v-show="type==2">
-
+                <div class="chart-wrap" ref="chart"></div>
+                <div class="desc">
+                    管辖单位平均安全得分 共{{datas.count || 0}}家
+                </div>
             </div>
             <div class="switch-wrap" @click="switchHandle">
                 <div class="btn icon-link-arrow">
 
                 </div>
+
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import echarts from 'echarts';
     import { calcScoreText } from 'filters'
+    let theme = 'macarons';
 
     export default {
-        props: ['score', 'title'],
+        props: ['score', 'title', 'datas'],
         data () {
             return {
-                type: 1,
+                type: 2,
             }
         },
         watch: {
-            score(){
+            type(val){
+                if (val == 2)
+                    this.$nextTick(() => {
+                        this.DrawChart(echarts);
+                    })
             }
         },
         computed: {},
         mounted() {
         },
         activated(){
+            this.datas = {
+                count: 8,
+            };
+            if (this.type == 2)
+                this.$nextTick(() => {
+                    this.DrawChart(echarts);
+                })
         },
         deactivated() {
         },
@@ -50,6 +67,68 @@
             calcScoreText,
             switchHandle(){
                 this.type = this.type == 1 ? 2 : 1;
+            },
+            DrawChart(ec){
+                let myChart = ec.init(this.$refs['chart'], theme);
+                let total = this.datas.count;
+                let data = this.datas;
+
+                myChart.setOption({
+                    title: {},
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    calculable: true,
+                    polar: [
+                        {
+                            indicator: [
+                                {text: '优秀', max: total},
+                                {text: '中等', max: total},
+                                {text: '极低', max: total},
+                                {text: '较低', max: total},
+                                {text: '良好', max: total},
+                            ],
+                            radius: 90,
+                            name: {
+                                textStyle: {color: '#fff'}
+                            },
+                            splitArea: {
+                                show: true,
+                                areaStyle: {
+                                    color: ['transparent']
+                                }
+                            },
+                        }
+                    ],
+                    series: [
+                        {
+
+                            name: '',
+                            type: 'radar',
+//                            center:['30%','50%'],
+                            itemStyle: {
+                                normal: {
+                                    areaStyle: {
+                                        type: 'default'
+                                    },
+                                }
+                            },
+                            data: [
+                                {
+//                                    value: [data.excellent, data.good, data.special, data.low, data.veryLow],
+                                    value: [0, 0, 1, 6, 1],
+                                    name: '',
+                                    itemStyle: {
+                                        normal: {
+                                            color: '#fff',
+                                        },
+                                        emphasis: {}
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                });
             }
         },
         components: {}
@@ -103,6 +182,20 @@
                 .refresh-wrap {
                     top: 140px;
                     width: 80px;
+                    text-align: center;
+                }
+            }
+            .score-detail-wrap {
+                position: relative;
+                /*margin-top: 28px;*/
+                .chart-wrap {
+                    height: 270px;
+                }
+                .desc {
+                    position: relative;
+                    bottom: 30px;
+                    font-size: 12px;
+                    color: #fff;
                     text-align: center;
                 }
             }

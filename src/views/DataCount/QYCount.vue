@@ -13,7 +13,10 @@
 
             <div class="chart-wrap" ref="chart"></div>
             <div class="list-wrap">
-                <mko-cell :title="item.name" :val="item.value||'0'" main="left" v-for="item in datas[tabItems[tabI].key]"></mko-cell>
+                <mko-cell :title="item.name" main="left" v-for="item in datas[tabItems[tabI].key]">
+                    <span v-show="tabI==0">{{item.score == '未知' ? '未知分数' : (item.score || '0') + '分'}}, {{item.value || 0}}家</span>
+                    <span v-show="tabI!=0">{{item.value || 0}}</span>
+                </mko-cell>
             </div>
             <!--<mko-cell title="数据列表" is-link @click="goList"></mko-cell>-->
         </div>
@@ -120,16 +123,20 @@
                                 let other = res.response.qydwTotalCount || 0;
                                 that.datas[key] = res.response[key].map(item => {
                                     other -= item.count;
-                                    return {
+                                    let obj = {
                                         value: item.count,
-                                        name: item[names[key]]
-                                    }
+                                        name: item[names[key]],
+                                    };
+                                    if (item.qyScoreAverage)
+                                        obj.score = item.qyScoreAverage;
+                                    return obj;
                                 });
                                 //将剩余归为其他类
                                 if (other > 0)
                                     that.datas[key].push({
                                         value: other,
-                                        name: '未知'
+                                        name: '未知',
+                                        score: '未知'
                                     });
                                 //排序
                                 that.datas[key].sort(function (a, b) {
@@ -215,6 +222,10 @@
                 .cell {
                     height: 50px;
                 }
+            }
+            .value {
+                flex: 0 0 148px !important;
+                -webkit-flex: 0 0 148px !important;
             }
         }
         .chart-wrap {

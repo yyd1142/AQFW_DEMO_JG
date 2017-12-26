@@ -47,4 +47,4 @@
 </template>
 
 <script src="./home.js"></script>
-<style lang="less" src="./home.less"></style>
+<style lang="less" src="./_home.less"></style>
