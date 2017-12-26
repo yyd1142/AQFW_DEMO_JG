@@ -9,11 +9,11 @@
         </mko-header>
         <div class="page-wrap home-wrap" ref="wrapper" id="pageWrapper">
             <!--安全得分-->
-            <score-banner-jg :title="jgName" :score="score" :datas="scoreDatas"></score-banner-jg>
+            <score-banner-new-jg :title="jgName" :score="score" :datas="scoreDatas"></score-banner-new-jg>
             <!--管功能区-->
             <div class="actions-wrap">
-                <div class="table-wrap">
-                    <div class="cell" v-for="item in actions" @click="routerLink(item)">
+                <div class="table-wrap" v-for="table in actions">
+                    <div class="cell"  v-for="item in table" @click="routerLink(item)">
                         <i class="icon" :class="item.class"></i>
                         <div class="title" v-text="item.text"></div>
                     </div>

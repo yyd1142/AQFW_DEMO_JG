@@ -1,7 +1,7 @@
 import api from 'api';
 import { Indicator, Toast } from 'mint-ui';
 import { formatDate, calcScoreText, calcHeadColor, calcBannerCircle, calcBannerBg } from 'filters'
-import { Tabs, ResError, ScoreBannerJg,ScoreBannerNewJg } from 'components'
+import { Tabs, ResError, ScoreBannerJg } from 'components'
 import apiconf from 'apiconf'
 
 var page = 1;
@@ -26,22 +26,18 @@ export default {
             swipeable: true,
             actionClass: 'action-item',
             actions: [
-                [
-                    {class: 'qy-icon', text: '社会单位', url: '/qy_list'},
-                    {class: 'fw-icon', text: '服务单位', url: '/fw_list'},
-                    {class: 'datacount-icon', text: '数据统计', url: '/data_count'},
-                    {class: 'notice-icon', text: '通知公告', url: '/notice'},
-                    {class: 'peixun-icon', text: '教育培训', url: '/train'},
-                    {class: 'yinhuan-icon', text: '风险管理', url: `/hidden_danger/${this.$store.getters.groupId}?is_jg=1`},
-                ],
-                [
-                    {class: 'qy-icon', text: '社会单位', url: '/qy_list'},
-                    {class: 'fw-icon', text: '服务单位', url: '/fw_list'},
-                    {class: 'datacount-icon', text: '数据统计', url: '/data_count'},
-                    {class: 'notice-icon', text: '通知公告', url: '/notice'},
-                    {class: 'peixun-icon', text: '教育培训', url: '/train'},
-                    {class: 'yinhuan-icon', text: '风险管理', url: `/hidden_danger/${this.$store.getters.groupId}?is_jg=1`},
-                ],
+                {class: 'qy-icon', text: '社会单位', url: '/qy_list'},
+                {class: 'fw-icon', text: '服务单位', url: '/fw_list'},
+                {class: 'datacount-icon', text: '数据统计', url: '/data_count'},
+                {class: 'notice-icon', text: '通知公告', url: '/notice'},
+                {class: 'peixun-icon', text: '教育培训', url: '/train'},
+                {class: 'yinhuan-icon', text: '风险管理', url: `/hidden_danger/${this.$store.getters.groupId}?is_jg=1`},
+            ],
+            newsTabs: [
+                {text: '新闻通知', id: 1, selected: 'news-table-actived', type: 1},
+                {text: '安全知识', id: 2, selected: false, type: 2},
+                {text: '法律法规', id: 3, selected: false, type: 3},
+                {text: '经典案例', id: 4, selected: false, type: 4}
             ],
             activeTab: 1,
             newsType: 1,
@@ -289,7 +285,6 @@ export default {
         Tabs,
         ResError,
         ScoreBannerJg,
-        ScoreBannerNewJg
     }
 }
 

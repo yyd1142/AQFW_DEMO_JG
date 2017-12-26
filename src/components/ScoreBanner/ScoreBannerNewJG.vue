@@ -36,7 +36,7 @@
         props: ['score', 'title', 'datas'],
         data () {
             return {
-                type: 2,
+                type: 1,
             }
         },
         watch: {
@@ -51,9 +51,6 @@
         mounted() {
         },
         activated(){
-            this.datas = {
-                count: 8,
-            };
             if (this.type == 2)
                 this.$nextTick(() => {
                     this.DrawChart(echarts);
@@ -82,11 +79,11 @@
                     polar: [
                         {
                             indicator: [
-                                {text: '优秀', max: total},
-                                {text: '中等', max: total},
-                                {text: '极低', max: total},
-                                {text: '较低', max: total},
-                                {text: '良好', max: total},
+                                {text: '优秀', },
+                                {text: '中等', },
+                                {text: '极低', },
+                                {text: '较低', },
+                                {text: '良好', },
                             ],
                             radius: 90,
                             name: {
@@ -115,8 +112,8 @@
                             },
                             data: [
                                 {
-//                                    value: [data.excellent, data.good, data.special, data.low, data.veryLow],
-                                    value: [0, 0, 1, 6, 1],
+                                    value: [data.excellent, data.good, data.special, data.low, data.veryLow],
+//                                    value: [0, 0, 1, 6, 1],
                                     name: '',
                                     itemStyle: {
                                         normal: {
