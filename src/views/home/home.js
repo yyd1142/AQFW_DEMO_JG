@@ -52,7 +52,7 @@ export default {
         }
     },
     watch: {
-        activeTab: function(val) {
+        activeTab: function (val) {
             this.newsType = val;
             this.bottomAllLoaded = true;
             if (needUpdate[this.newsType].datas.length <= 0) {
@@ -85,6 +85,7 @@ export default {
             }
             this.jgName = JSON.parse(localStorage['USER_DATA']).dwName || '';
             this.score = JSON.parse(localStorage['USER_DATA']).qyScoreAverage || 0;
+            this.score = Math.round(this.score);
             let params = {
                 m: 'qydwScore',
                 groupId: this.$store.getters.groupId,
@@ -220,11 +221,11 @@ export default {
         },
         routerLink(item) {
             if (item.url == '/fw_list') {
-              Toast({
-                message: '功能未开放',
-                duration: 1000
-              });
-              return;
+                Toast({
+                    message: '功能未开放',
+                    duration: 1000
+                });
+                return;
             }
             this.$nextTick(() => {
                 this.$MKOPush(item.url);
@@ -271,9 +272,9 @@ export default {
                 let scrollTop = document.documentElement && document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
                 let clientHeight = 0;
                 if (document.body.clientHeight && document.documentElement.clientHeight) {
-                clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+                    clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
                 } else {
-                clientHeight = (document.body.clientHeight > document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+                    clientHeight = (document.body.clientHeight > document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
                 }
                 let scrollBottom = totalHeight - scrollTop - clientHeight;
                 this.bottomAllLoaded = scrollBottom <= 0 ? false : true;

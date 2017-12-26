@@ -1,5 +1,4 @@
 @import "../../config.less";
-
 .home-index {
     .xiaoxizhongxin-icon {
         background: url('/static/icons/resource.png') -194px -166px no-repeat;
@@ -26,7 +25,104 @@
     .home-wrap {
         margin: 0;
         padding-bottom: 0;
-
+    }
+    .home-banner-wrap {
+        width: 100%;
+        min-height: 460px;
+        max-height: 510px;
+        margin: -40px auto 0;
+        padding: 0;
+        position: relative;
+        top: -1px;
+        .banner-bg {
+            //background: no-repeat center;
+            //background-size: cover;
+            img {
+                width: 100%;
+                min-height: 460px;
+                max-height: 510px;
+                display: block;
+                margin: 0 auto;
+            }
+        }
+        .banner-title {
+            //z-index: 2;
+            width: 230px;
+            height: 156px;
+            position: absolute;
+            top: 65px;
+            left: 50%;
+            transform: translate(-50%, 0);
+            -webkit-transform: translate(-50%, 0);
+            color: #fff;
+            text-align: center;
+            .score-text {
+                margin-top: 30px;
+                font-size: 24px;
+            }
+            .score {
+                margin: 10px auto;
+                font-size: 60px;
+            }
+            .name {
+                width: 184px;
+                margin: auto;
+                font-size: 16px;
+            }
+            .info {
+                margin-top: 39px;
+                font-size: 12px;
+            }
+        }
+        .banner-body {
+            position: absolute; //bottom:200px;
+            top: 322px;
+            left: 50%;
+            width: 100%;
+            max-width: 376px;
+            transform: translate(-50%, 0);
+            -webkit-transform: translate(-50%, 0);
+            color: #fff;
+            .item {
+                float: left;
+                width: 20%;
+                /* For old syntax, otherwise collapses. */
+                min-height: 110px;
+                position: relative;
+                background: url('/static/banner/square.png') no-repeat 50% 0/contain;
+                >div {
+                    position: absolute;
+                    left: 50%;
+                    transform: translate(-50%, 0);
+                    -webkit-transform: translate(-50%, 0);
+                }
+                .text {
+                    top: 11px;
+                    width: 36px;
+                    height: 18px;
+                    border-radius: 91px;
+                    border: 1px #fff solid;
+                    font-size: 12px;
+                    line-height: 18px;
+                    text-align: center;
+                }
+                .count {
+                    top: 33px;
+                    line-height: 14px;
+                    font-size: 10px;
+                }
+                .percent {
+                    top: 44px;
+                    line-height: 48px;
+                    font-size: 34px;
+                }
+                .sign {
+                    top: 84px;
+                    line-height: 12px;
+                    font-size: 10px;
+                }
+            }
+        }
     }
     .action-item {
         margin: 0 11vw 4vw 11vw
