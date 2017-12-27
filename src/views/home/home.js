@@ -27,7 +27,7 @@ export default {
                     {class: 'icon-index-train', text: '教育培训', url: '/train'},
                 ],
                 [
-                    {class: 'icon-index-news-info', text: '资讯科普', url: ''},
+                    {class: 'icon-index-news-info', text: '资讯科普', url: '/newsList'},
                     {class: '', text: '', url: ''},
                 ],
             ],

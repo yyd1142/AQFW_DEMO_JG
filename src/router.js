@@ -99,6 +99,8 @@ const noticeReplyDetail = resolve => require(['./views/notice/replyDetail.vue'],
 const QYComment = resolve => require(['./views/QYData/QYComment.vue'], resolve)
 const QYAttributes = resolve => require(['./views/QYData/QYAttributes.vue'], resolve)
 const PhotoViewer = resolve => require(['./components/PhotoViewer/index.vue'], resolve)
+// 新闻资讯
+const newsList = resolve => require(['./views/news/index.vue'], resolve);
 Vue.use(Router)
 
 const routers = {
@@ -458,6 +460,11 @@ const routers = {
             path: '/photo_viewer',
             name: 'PhotoViewer',
             component: PhotoViewer
+        },
+        {
+            path: '/newsList',
+            name: 'newsList',
+            component: newsList
         }
     ]
 };
