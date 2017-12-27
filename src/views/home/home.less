@@ -1,6 +1,7 @@
 @import "../../config.less";
 
 .home-index {
+    margin-bottom: 50px;
     .xiaoxizhongxin-icon {
         background: url('/static/icons/resource.png') -194px -166px no-repeat;
         background-size: 892px auto;
@@ -33,78 +34,49 @@
     .actions-wrap {
         position: relative;
         bottom: 30px;
-        margin: auto;
-        width: 90%;
+        margin: auto 14px;
+        //width: 93%;
+        //max-width: 386px;
         .table-wrap {
             width: 100%;
-            min-height: 180px;
-            margin-bottom: 14x;
+            min-height: 104px;
+            margin-bottom: 14px;
             .cell {
                 position: relative;
-                width: 50%;
                 float: left;
-                text-align: center;
-                height: 122px;
                 margin: 0;
+                width: 50%;
+                height: 122px;
+                border-bottom: 1px solid @baseBorder;
+                border-right: 1px solid @baseBorder;
+                text-align: center;
                 background-color: #ffffff;
                 &:active {
                     background-color: rgba(255, 255, 255, 0.5);
                 }
                 .icon {
                     display: block;
-                    margin: 14px auto 0 auto;
-                    width: 52px;
-                    height: 32px;
+                    margin: 20px auto 0 auto;
+                    width: 36px;
+                    height: 36px;
                 }
                 .title {
                     margin-top: 14px;
                     width: 100%;
-                    font-size: 12px;
+                    line-height: 14px;
+                    font-size: 14px;
                     text-align: center;
-                    color: #737F89;
+                    color: @baseText01;
                 }
-                .qy-icon {
-                    height: 35px;
-                    background: url('/static/icons/resource.png') -190px -207px no-repeat;
-                    background-size: 892px auto;
+                &:nth-child(even) {
+                    border-right: none;
                 }
-                .fw-icon {
-                    height: 35px;
-                    background: url('/static/icons/resource.png') -238px -207px no-repeat;
-                    background-size: 892px auto;
-                }
-                .datacount-icon {
-                    width: 64px;
-                    height: 35px;
-                    background: url('/static/icons/resource.png') -280px -207px no-repeat;
-                    background-size: 892px auto;
-                }
-                .peixun-icon {
-                    background: url('/static/icons/resource.png') -246px -100px no-repeat;
-                    background-size: 892px auto;
-                }
-                .notice-icon {
-                    background: url('/static/icons/resource.png') -298px -100px no-repeat;
-                    background-size: 892px auto;
-                }
-                .has-notice-icon {
-                    background: url('/static/icons/resource.png') -298px -130px no-repeat;
-                    background-size: 892px auto;
-                }
-                .yinhuan-icon {
-                    background: url('/static/icons/resource.png') -190px -100px no-repeat;
-                    background-size: 892px auto;
+                &:nth-last-child(1),
+                &:nth-last-child(2) {
+                    border-bottom: none;
                 }
             }
-            .actions-table-cell:nth-child(3),
-            .actions-table-cell:nth-child(6) {
-                border-right: none !important;
-            }
-            .actions-table-cell:nth-child(4),
-            .actions-table-cell:nth-child(5),
-            .actions-table-cell:nth-child(6) {
-                border-bottom: none !important;
-            }
+
         }
     }
 

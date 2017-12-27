@@ -1,5 +1,5 @@
 <template>
-    <div class="home-index" style="margin-bottom: 64px;">
+    <div class="home-index" >
         <div class="placeholder-item" :style="{backgroundColor:'#0056ff'}"></div>
         <mko-header title="安全服务云" background-color="#0056ff">
             <div class="header-right" slot="custom">
@@ -9,10 +9,10 @@
         </mko-header>
         <div class="page-wrap home-wrap" ref="wrapper" id="pageWrapper">
             <!--安全得分-->
-            <score-banner-new-jg :title="jgName" :score="score" :datas="scoreDatas"></score-banner-new-jg>
+            <score-banner-new-jg :title="jgName" :score="score" :datas="scoreDatas" @refresh="getBannerData"></score-banner-new-jg>
             <!--管功能区-->
             <div class="actions-wrap">
-                <div class="table-wrap" v-for="table in actions">
+                <div class="table-wrap clear" v-for="table in actions">
                     <div class="cell"  v-for="item in table" @click="routerLink(item)">
                         <i class="icon" :class="item.class"></i>
                         <div class="title" v-text="item.text"></div>

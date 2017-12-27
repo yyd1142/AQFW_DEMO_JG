@@ -5,7 +5,7 @@
                 <div class="score abs-middle">{{score}}</div>
                 <div class="score-text abs-middle">{{calcScoreText(score)}}</div>
                 <div class="title abs-middle">{{title}}</div>
-                <div class="refresh-wrap abs-middle">
+                <div class="refresh-wrap abs-middle" @click="refresh">
                     <div class="btn icon-refresh">
 
                     </div>
@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="switch-wrap" @click="switchHandle">
-                <div class="btn icon-link-arrow">
+                <div class="btn icon-arrow-right-white">
 
                 </div>
 
@@ -65,6 +65,9 @@
             switchHandle(){
                 this.type = this.type == 1 ? 2 : 1;
             },
+            refresh(){
+                this.$emit('refresh')
+            },
             DrawChart(ec){
                 let myChart = ec.init(this.$refs['chart'], theme);
                 let total = this.datas.count;
@@ -79,11 +82,11 @@
                     polar: [
                         {
                             indicator: [
-                                {text: '优秀', },
-                                {text: '中等', },
-                                {text: '极低', },
-                                {text: '较低', },
-                                {text: '良好', },
+                                {text: '优秀',},
+                                {text: '中等',},
+                                {text: '极低',},
+                                {text: '较低',},
+                                {text: '良好',},
                             ],
                             radius: 90,
                             name: {
