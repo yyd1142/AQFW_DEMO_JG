@@ -1,23 +1,23 @@
 <template>
     <div class="score-banner-jg-wrap">
         <div class="score-banner-wrap mof-clear">
-            <div class="score-main-wrap" @click.self="go('/score_list')" v-show="type==1">
+            <div class="score-main-wrap" @click.self="switchHandle" v-show="type==1">
                 <div class="score abs-middle">{{score}}</div>
                 <div class="score-text abs-middle">{{calcScoreText(score)}}</div>
                 <div class="title abs-middle">{{title}}</div>
-                <div class="refresh-wrap abs-middle" @click="refresh">
+                <div class="refresh-wrap abs-middle">
                     <div class="btn icon-refresh" :class="isRefresh?'rotate':null">
 
                     </div>
                 </div>
             </div>
-            <div class="score-detail-wrap" v-show="type==2">
+            <div class="score-detail-wrap" @click="switchHandle" v-show="type==2">
                 <div class="chart-wrap" ref="chart"></div>
                 <div class="desc">
                     管辖单位平均安全得分 共{{datas.count || 0}}家
                 </div>
             </div>
-            <div class="switch-wrap" @click="switchHandle">
+            <div class="switch-wrap" @click="go('/score_list')">
                 <div class="btn icon-arrow-right-white">
 
                 </div>
@@ -30,7 +30,7 @@
     import echarts from 'echarts';
     import { calcScoreText } from 'filters'
     let theme = 'macarons';
-    let _refreshTime = 2000;
+    let _refreshTime = 100;
     let _timer = null;
     export default {
         props: ['score', 'title', 'datas'],
@@ -66,22 +66,25 @@
         methods: {
             calcScoreText,
             switchHandle(){
-                this.type = this.type == 1 ? 2 : 1;
-            },
-            refresh(){
-                this.isRefresh = true;
-                this.$emit('refresh');
                 let that = this;
-                _timer = setTimeout(function () {
-                    that.isRefresh = false;
-                    clearTimeout(_timer);
-                }, _refreshTime);
+                if (this.type == 1) {
+                    this.isRefresh = true;
+                    _timer = setTimeout(function () {
+                        that.type = 2;
+                        that.isRefresh = false;
+                        clearTimeout(_timer);
+                    }, _refreshTime);
+                } else {
+                    this.type = 1;
+                }
             },
             DrawChart(ec){
                 let myChart = ec.init(this.$refs['chart'], theme);
                 let total = this.datas.count;
                 let data = this.datas;
-
+                for (let key in data) {
+                    if (!data[key] && key != 'count') data[key] = 1;
+                }
                 myChart.setOption({
                     title: {},
                     tooltip: {
@@ -91,11 +94,11 @@
                     polar: [
                         {
                             indicator: [
-                                {text: '优秀',},
-                                {text: '中等',},
-                                {text: '极低',},
-                                {text: '较低',},
-                                {text: '良好',},
+                                {text: '优秀', max: total},
+                                {text: '中等', max: total},
+                                {text: '极低', max: total},
+                                {text: '较低', max: total},
+                                {text: '良好', max: total},
                             ],
                             radius: 90,
                             name: {
@@ -158,7 +161,7 @@
 <style lang="less" rel="stylesheet/less">
     @import "../../config.less";
 
-    @refreshTime: 2s;
+    @refreshTime: 1s;
     .score-banner-jg-wrap {
         .score-banner-wrap {
             position: relative;

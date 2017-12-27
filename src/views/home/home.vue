@@ -9,7 +9,7 @@
         </mko-header>
         <div class="page-wrap home-wrap" ref="wrapper" id="pageWrapper">
             <!--安全得分-->
-            <score-banner-new-jg :title="jgName" :score="score" :datas="scoreDatas" @refresh="getBannerData"></score-banner-new-jg>
+            <score-banner-new-jg :title="jgName" :score="score" :datas="scoreDatas"></score-banner-new-jg>
             <!--管功能区-->
             <div class="actions-wrap">
                 <div class="table-wrap clear" v-for="table in actions">
