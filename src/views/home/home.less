@@ -2,220 +2,82 @@
 
 .home-index {
     margin-bottom: 50px;
-    .xiaoxizhongxin-icon {
-        background: url('/static/icons/resource.png') -194px -166px no-repeat;
-        background-size: 892px auto;
-        width: 15px;
-        height: 17px;
-        display: block;
-        right: 14px;
-        position: absolute;
-        top: 0;
-        margin: auto;
-        bottom: 0;
-    }
     .placeholder-item {
         background-color: #B484F7; //background-color: rgba(0,0,0,0);
         height: 21px;
     }
-    .home-header-wrap {
-        background-color: #B484F7; //background-color: rgba(0,0,0,0);
-        font-size: 18px;
-        color: #ffffff;
-        top: @headerTop;
-    }
-    .home-wrap {
-        margin-top: @headerHeight + @headerTop - 1px;
-        padding-bottom: 0;
-    }
-    .action-item {
-        margin: 0 11vw 4vw 11vw
-    }
-    .actions-wrap {
-        position: relative;
-        bottom: 30px;
-        margin: auto 14px;
-        //width: 93%;
-        //max-width: 386px;
-        .table-wrap {
-            width: 100%;
-            min-height: 104px;
-            margin-bottom: 14px;
-            .cell {
-                position: relative;
-                float: left;
-                margin: 0;
-                width: 50%;
-                height: 122px;
-                border-bottom: 1px solid @baseBorder;
-                border-right: 1px solid @baseBorder;
-                text-align: center;
-                background-color: #ffffff;
-                &:active {
-                    background-color: rgba(255, 255, 255, 0.5);
-                }
-                .icon {
-                    display: block;
-                    margin: 20px auto 0 auto;
-                    width: 36px;
-                    height: 36px;
-                }
-                .title {
-                    margin-top: 14px;
-                    width: 100%;
-                    line-height: 14px;
-                    font-size: 14px;
-                    text-align: center;
-                    color: @baseText01;
-                }
-                &:nth-child(even) {
-                    border-right: none;
-                }
-                &:nth-last-child(1),
-                &:nth-last-child(2) {
-                    border-bottom: none;
-                }
-            }
-
-        }
-    }
-
-    .news-tabs-bar {
-        margin-top: 10px;
-        padding-bottom: 1px;
-        background-color: #fff;
-    }
-    .news-table-view {
-        width: 100%;
-        margin-top: 15px;
-        padding: 12px 0 13px;
-        background: #F4F4F6; // .border-top(#B4BCC5);
-        display: table;
-        .news-table-cell {
-            width: 25%;
-            height: 25px;
-            line-height: 25px;
-            display: table-cell;
-            vertical-align: middle;
-            text-align: center;
-            color: #4B4B4B;
-            font-size: 14px;
-        }
-        .news-table-actived {
-            color: @blueColor;
-            font-size: 18px;
-        }
-    }
-    .page-infinite-list {
-        width: 100%;
-        list-style: none;
-        box-sizing: border-box;
-        .page-infinite-listitem {
-            width: 100%;
-            margin: 0;
-            background-color: #fff;
-            min-height: 88px;
-            position: relative;
-            box-sizing: border-box;
-            padding: 0 0 0 14px;
-            &:active {
-                background-color: rgba(255, 255, 255, 0.5);
-            }
-            &:last-child {
-                .border-btm(#eeeeee);
-                &::after {
-                    bottom: -1px;
-                }
-                .padding::after {
-                    display: none;
-                    content: none;
-                }
-            }
-            .padding {
-                box-sizing: border-box;
-                position: relative;
-                .border-btm(#eeeeee);
-                min-height: 88px;
-                img {
-                    width: 75px;
-                    position: absolute;
-                    height: 60px;
-                    top: 14px;
-                    right: 14px;
-                    bottom: 14px;
-                    border-radius: 2px;
-                }
-                .news-title {
-                    width: 100%;
-                    display: block;
-                    font-size: 16px;
-                    margin-left: 0;
-                    padding: 12px 103px 0 0;
-                    color: #333333;
-                    line-height: 20px;
-                    text-align: justify;
-                }
-                .news-date {
-                    width: 100%;
-                    position: ABSOLUTE;
-                    font-size: 12px;
-                    color: #999999;
-                    bottom: 14px;
-                    left: 0;
-                }
-            }
-        }
-    }
-    .page-infinite-loading {
-        width: 100%;
-        text-align: center;
-        font-size: 12px;
-        color: #818181;
-    }
-    .page-loader {
-        width: auto;
-    }
-    .loading-item {
-        text-align: center;
-        color: #818181;
-        font-size: 12px;
-    }
-    .home-load-view {
-        margin-top: 40px + @headerTop
-    }
-    .has-message-data {
-        background-position-y: -188px;
-    }
     .header-right {
-        .message-count,
-        .more-message-count {
-            position: absolute;
-            background-color: #ff6666;
-            border-radius: 50%;
-            z-index: 20;
-            border: 1px solid #ffffff;
-            text-align: center;
-            font-size: 12px;
-        }
-        .message-count {
-            right: 10px;
-            width: 14px;
-            height: 14px;
-            line-height: 14px;
-            top: 7px;
-        }
-        .more-message-count {
-            right: 12px;
-            width: 8px;
-            height: 8px;
-            top: 10px;
-        }
-        .icon-message {
+        .icon {
             position: absolute;
             right: 14px;
             margin: auto;
             top: 0;
             bottom: 0;
+        }
+        .more-message-count {
+            position: absolute;
+            right: 12px;
+            width: 8px;
+            height: 8px;
+            top: 10px;
+            z-index: 20;
+            border-radius: 50%;
+            border: 1px solid #ffffff;
+            text-align: center;
+            font-size: 12px;
+            background-color: @mainDanger;
+        }
+    }
+    .home-wrap {
+        margin-top: @headerHeight + @headerTop - 1px;
+        padding-bottom: 0;
+        .actions-wrap {
+            position: relative;
+            bottom: 30px;
+            margin: auto 14px;
+            //width: 93%;
+            //max-width: 386px;
+            .table-wrap {
+                width: 100%;
+                min-height: 104px;
+                margin-bottom: 14px;
+                .cell {
+                    position: relative;
+                    float: left;
+                    margin: 0;
+                    width: 50%;
+                    height: 122px;
+                    border-bottom: 1px solid @baseBorder;
+                    border-right: 1px solid @baseBorder;
+                    text-align: center;
+                    background-color: #ffffff;
+                    &:active {
+                        background-color: rgba(255, 255, 255, 0.5);
+                    }
+                    .icon {
+                        display: block;
+                        margin: 20px auto 0 auto;
+                        width: 36px;
+                        height: 36px;
+                    }
+                    .title {
+                        margin-top: 14px;
+                        width: 100%;
+                        line-height: 14px;
+                        font-size: 14px;
+                        text-align: center;
+                        color: @baseText01;
+                    }
+                    &:nth-child(even) {
+                        border-right: none;
+                    }
+                    &:nth-last-child(1),
+                    &:nth-last-child(2) {
+                        border-bottom: none;
+                    }
+                }
+            }
+
         }
     }
 }

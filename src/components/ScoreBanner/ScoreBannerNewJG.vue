@@ -1,12 +1,12 @@
 <template>
     <div class="score-banner-jg-wrap">
         <div class="score-banner-wrap mof-clear">
-            <div class="score-main-wrap" v-show="type==1">
+            <div class="score-main-wrap" @click.self="go('/score_list')" v-show="type==1">
                 <div class="score abs-middle">{{score}}</div>
                 <div class="score-text abs-middle">{{calcScoreText(score)}}</div>
                 <div class="title abs-middle">{{title}}</div>
                 <div class="refresh-wrap abs-middle" @click="refresh">
-                    <div class="btn icon-refresh">
+                    <div class="btn icon-refresh" :class="isRefresh?'rotate':null">
 
                     </div>
                 </div>
@@ -21,7 +21,6 @@
                 <div class="btn icon-arrow-right-white">
 
                 </div>
-
             </div>
         </div>
     </div>
@@ -31,12 +30,14 @@
     import echarts from 'echarts';
     import { calcScoreText } from 'filters'
     let theme = 'macarons';
-
+    let _refreshTime = 2000;
+    let _timer = null;
     export default {
         props: ['score', 'title', 'datas'],
         data () {
             return {
                 type: 1,
+                isRefresh: false,
             }
         },
         watch: {
@@ -57,6 +58,8 @@
                 })
         },
         deactivated() {
+            this.isRefresh = false;
+            clearTimeout(_timer);
         },
         destroyed(){
         },
@@ -66,7 +69,13 @@
                 this.type = this.type == 1 ? 2 : 1;
             },
             refresh(){
-                this.$emit('refresh')
+                this.isRefresh = true;
+                this.$emit('refresh');
+                let that = this;
+                _timer = setTimeout(function () {
+                    that.isRefresh = false;
+                    clearTimeout(_timer);
+                }, _refreshTime);
             },
             DrawChart(ec){
                 let myChart = ec.init(this.$refs['chart'], theme);
@@ -129,6 +138,17 @@
                         }
                     ]
                 });
+            },
+            go(url) {
+                if (!this.score) {
+                    Toast({
+                        message: '暂无分数信息',
+                        duration: 1500
+                    });
+                    return false;
+                }
+                if (!this.onlyRead)
+                    this.$MKOPush(url);
             }
         },
         components: {}
@@ -138,6 +158,7 @@
 <style lang="less" rel="stylesheet/less">
     @import "../../config.less";
 
+    @refreshTime: 2s;
     .score-banner-jg-wrap {
         .score-banner-wrap {
             position: relative;
@@ -182,7 +203,31 @@
                 .refresh-wrap {
                     top: 140px;
                     width: 80px;
+                    height: 30px;
                     text-align: center;
+                    .btn.rotate {
+                        animation: rotate @refreshTime linear infinite;
+                        -moz-animation: rotate @refreshTime linear infinite;
+                        -webkit-animation: rotate @refreshTime linear infinite;
+                        -o-animation: rotate @refreshTime linear infinite;
+                        @keyframes rotate {
+                            from {
+                                transform: rotate(0deg);
+                                -ms-transform: rotate(0deg); /* IE 9 */
+                                -moz-transform: rotate(0deg); /* Firefox */
+                                -webkit-transform: rotate(0deg); /* Safari 和 Chrome */
+                                -o-transform: rotate(0deg); /* Opera */
+                            }
+                            to {
+                                transform: rotate(360deg);
+                                -ms-transform: rotate(360deg); /* IE 9 */
+                                -moz-transform: rotate(360deg); /* Firefox */
+                                -webkit-transform: rotate(360deg); /* Safari 和 Chrome */
+                                -o-transform: rotate(360deg); /* Opera */
+                            }
+                        }
+                    }
+
                 }
             }
             .score-detail-wrap {

@@ -4,7 +4,7 @@
         <mko-header title="安全服务云" background-color="#0056ff">
             <div class="header-right" slot="custom">
                 <span class="more-message-count" v-if="hasMessageDataClass"></span>
-                <i class="icon-message" @click="routerLink({url:'/message'})"></i>
+                <i class="icon icon-message-envelope" @click="routerLink({url:'/message'})"></i>
             </div>
         </mko-header>
         <div class="page-wrap home-wrap" ref="wrapper" id="pageWrapper">
