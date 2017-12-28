@@ -1,7 +1,7 @@
 <template>
     <div class="score-banner-jg-wrap">
         <div class="score-banner-wrap mof-clear">
-            <div class="score-main-wrap" @click.self="switchHandle" v-show="type==1">
+            <div class="score-main-wrap" @click="switchHandle" v-show="type==1">
                 <div class="score abs-middle">{{score}}</div>
                 <div class="score-text abs-middle">{{calcScoreText(score)}}</div>
                 <div class="title abs-middle">{{title}}</div>

@@ -1,5 +1,5 @@
 <template>
-    <div class="home-index" >
+    <div class="home-index">
         <div class="placeholder-item" :style="{backgroundColor:'#0056ff'}"></div>
         <mko-header title="安全服务云" background-color="#0056ff">
             <div class="header-right" slot="custom">
@@ -13,9 +13,12 @@
             <!--管功能区-->
             <div class="actions-wrap">
                 <div class="table-wrap clear" v-for="table in actions">
-                    <div class="cell"  v-for="item in table" @click="routerLink(item)">
+                    <div class="cell" v-for="item in table" @click="routerLink(item)">
                         <i class="icon" :class="item.class"></i>
                         <div class="title" v-text="item.text"></div>
+                        <div class="desc" :class="item.type" v-show="item.desc&&item.new">
+                            {{item.new}}{{item.desc}}
+                        </div>
                     </div>
                 </div>
             </div>

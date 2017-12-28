@@ -17,13 +17,13 @@ export default {
                     {class: 'icon-index-fw-data', text: '服务单位', url: '/fw_list'},
                     {class: 'icon-index-data-count', text: '数据统计', url: '/data_count'},
                     {
-                        class: 'icon-index-hidden-danger',
-                        text: '风险管理',
-                        url: `/hidden_danger/${this.$store.getters.groupId}?is_jg=1`
+                        class: 'icon-index-hidden-danger', text: '风险管理',
+                        url: `/hidden_danger/${this.$store.getters.groupId}?is_jg=1`,
+                        new: 0, desc: '个风险未处理', type: 'danger'
                     },
                 ],
                 [
-                    {class: 'icon-index-notice', text: '通知公告', url: '/notice'},
+                    {class: 'icon-index-notice', text: '通知公告', url: '/notice', new: 0, desc: '条消息未读'},
                     {class: 'icon-index-train', text: '教育培训', url: '/train'},
                 ],
                 [
@@ -91,7 +91,10 @@ export default {
             }).then(result => {
                 if (result.code == 0) {
                     let data = result.response;
-                    this.hasMessageDataClass = data.message > 0 ? true : false
+                    this.hasMessageDataClass = data.message > 0 ? true : false;
+                    this.actions[0][3].new = data.dwYHK || 0;
+                    this.actions[1][0].new = data.notice || 0;
+                    console.log(data)
                 } else {
                     this.resError = true;
                 }

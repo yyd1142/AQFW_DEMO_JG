@@ -42,6 +42,11 @@
                 min-height: 104px;
                 margin-bottom: 14px;
                 box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.05);
+                &:last-child {
+                    .cell {
+                        height: 104px;
+                    }
+                }
                 .cell {
                     position: relative;
                     float: left;
@@ -53,7 +58,8 @@
                     text-align: center;
                     background-color: #ffffff;
                     &:active {
-                        background-color: rgba(255, 255, 255, 0.5);
+                        //background-color: rgba(255, 255, 255, 0.5);
+                        background-color: #f8f8f8;
                     }
                     .icon {
                         display: block;
@@ -68,6 +74,15 @@
                         font-size: 14px;
                         text-align: center;
                         color: @baseText01;
+                    }
+                    .desc {
+                        margin-top: 6px;
+                        line-height: 12px;
+                        font-size: 12px;
+                        color: @mainBlue;
+                        &.danger {
+                            color: @mainDanger;
+                        }
                     }
                     &:nth-child(even) {
                         border-right: none;
