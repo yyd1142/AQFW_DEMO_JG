@@ -94,7 +94,6 @@ export default {
                     this.hasMessageDataClass = data.message > 0 ? true : false;
                     this.actions[0][3].new = data.dwYHK || 0;
                     this.actions[1][0].new = data.notice || 0;
-                    console.log(data)
                 } else {
                     this.resError = true;
                 }

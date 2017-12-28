@@ -4,7 +4,7 @@
             <div class="score-main-wrap" @click="switchHandle" v-show="type==1">
                 <div class="score abs-middle">{{score}}</div>
                 <div class="score-text abs-middle">{{calcScoreText(score)}}</div>
-                <div class="title abs-middle">{{title}}</div>
+                <div class="title no-overflow abs-middle">{{title}}</div>
                 <div class="refresh-wrap abs-middle">
                     <div class="btn icon-refresh" :class="isRefresh?'rotate':null">
 
@@ -79,12 +79,18 @@
                 }
             },
             DrawChart(ec){
-                let myChart = ec.init(this.$refs['chart'], theme);
                 let total = this.datas.count;
                 let data = this.datas;
                 for (let key in data) {
-                    if (!data[key] && key != 'count') data[key] = 1;
+                    if (key == 'count') break;
+                    if (!data[key]) {
+                        data[key] = 1;
+                    } else if (data[key] > total) {
+                        data[key] = total;
+                    }
                 }
+
+                let myChart = ec.init(this.$refs['chart'], theme);
                 myChart.setOption({
                     title: {},
                     tooltip: {
@@ -200,6 +206,7 @@
                 }
                 .title {
                     top: 108px;
+                    max-width: 130px;
                     line-height: 12px;
                     font-size: 12px;
                 }
