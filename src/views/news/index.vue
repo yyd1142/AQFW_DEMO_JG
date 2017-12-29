@@ -210,9 +210,9 @@ export default {
                 let scrollTop = document.documentElement && document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
                 let clientHeight = 0;
                 if (document.body.clientHeight && document.documentElement.clientHeight) {
-                clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+                    clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
                 } else {
-                clientHeight = (document.body.clientHeight > document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+                    clientHeight = (document.body.clientHeight > document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
                 }
                 let scrollBottom = totalHeight - scrollTop - clientHeight;
                 this.bottomAllLoaded = scrollBottom <= 0 ? false : true;
@@ -227,64 +227,68 @@ export default {
 .news-index {
     .page-wrap {
             .page-infinite-list {
-            width: 100%;
-            list-style: none;
-            box-sizing: border-box;
-            .page-infinite-listitem {
                 width: 100%;
-                margin: 0;
-                background-color: #fff;
-                min-height: 88px;
-                position: relative;
+                list-style: none;
                 box-sizing: border-box;
-                padding: 0 0 0 14px;
-                &:active {
-                    background-color: #f9f9f9;
+                .border-top(#eeeeee);
+                &::before {
+                    z-index: 10;
                 }
-                &:last-child {
-                    .border-btm(#eeeeee);
-                    &::after {
-                        bottom: -1px;
-                    }
-                    .padding::after {
-                        display: none;
-                        content: none;
-                    }
-                }
-                .padding {
-                    box-sizing: border-box;
-                    position: relative;
-                    .border-btm(#eeeeee);
+                .page-infinite-listitem {
+                    width: 100%;
+                    margin: 0;
+                    background-color: #fff;
                     min-height: 88px;
-                    img {
-                        width: 75px;
-                        position: absolute;
-                        height: 60px;
-                        top: 14px;
-                        right: 14px;
-                        bottom: 14px;
-                        border-radius: 2px;
+                    position: relative;
+                    box-sizing: border-box;
+                    padding: 0 0 0 14px;
+                    &:active {
+                        background-color: #f9f9f9;
                     }
-                    .news-title {
-                        width: 100%;
-                        display: block;
-                        font-size: 16px;
-                        margin-left: 0;
-                        padding: 12px 103px 0 0;
-                        color: #333333;
-                        line-height: 20px;
-                        text-align: justify;
+                    &:last-child {
+                        .border-btm(#eeeeee);
+                        &::after {
+                            bottom: -1px;
+                        }
+                        .padding::after {
+                            display: none;
+                            content: none;
+                        }
                     }
-                    .news-date {
-                        width: 100%;
-                        position: ABSOLUTE;
-                        font-size: 12px;
-                        color: #999999;
-                        bottom: 14px;
-                        left: 0;
+                    .padding {
+                        box-sizing: border-box;
+                        position: relative;
+                        .border-btm(#eeeeee);
+                        min-height: 88px;
+                        img {
+                            width: 75px;
+                            position: absolute;
+                            height: 60px;
+                            top: 14px;
+                            right: 14px;
+                            bottom: 14px;
+                            border-radius: 2px;
+                        }
+                        .news-title {
+                            width: 100%;
+                            display: block;
+                            font-size: 16px;
+                            margin-left: 0;
+                            padding: 12px 103px 0 0;
+                            color: #333333;
+                            line-height: 20px;
+                            text-align: justify;
+                        }
+                        .news-date {
+                            width: 100%;
+                            position: ABSOLUTE;
+                            font-size: 12px;
+                            color: #999999;
+                            bottom: 14px;
+                            left: 0;
+                        }
                     }
                 }
-            }
         }
     }
 }
