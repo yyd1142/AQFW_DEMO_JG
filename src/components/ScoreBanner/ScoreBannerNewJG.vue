@@ -11,6 +11,7 @@
             </div>
             <transition :name="first?'fade':null">
                 <div class="score-main-wrap" @click="switchHandle" v-show="!isLoading&&type==1">
+                    <div class="breath abs-all-middle"></div>
                     <div class="score abs-middle">{{score}}</div>
                     <div class="score-text abs-middle">{{calcScoreText(score)}}级</div>
                     <div class="title no-overflow abs-middle">{{title}}</div>
@@ -191,6 +192,7 @@
     @refreshTime: 1s;
     @circleTime: 2s;
     @circleTime-fast: 1s;
+    @breathTime: 2s;
     .score-banner-jg-wrap {
         @keyframes rotate {
             from {
@@ -238,6 +240,14 @@
                 -moz-transform: scale(0.94, 0.94); /* Firefox */
                 -webkit-transform: scale(0.94, 0.94); /* Safari 和 Chrome */
                 -o-transform: scale(0.94, 0.94); /* Opera */
+            }
+        }
+        @keyframes breath {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0.1;
             }
         }
         .fade-enter-active,
@@ -353,6 +363,16 @@
                 background: url('/static/index/index_score_jg.png') center no-repeat;
                 background-size: contain;
                 color: #fff;
+                .breath {
+                    width: 426px;
+                    height: 426px;
+                    background: url('/static/index/index_score_breath_jg.png') center no-repeat;
+                    background-size: contain;
+                    animation: breath @breathTime linear infinite alternate;
+                    -moz-animation: breath @breathTime linear infinite alternate;
+                    -webkit-animation: breath @breathTime linear infinite alternate;
+                    -o-animation: breath @breathTime linear infinite alternate;
+                }
                 .score {
                     top: 40px;
                     line-height: 50px;
