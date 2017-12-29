@@ -19,7 +19,7 @@ export default {
                     {
                         class: 'icon-index-hidden-danger', text: '风险管理',
                         url: `/hidden_danger/${this.$store.getters.groupId}?is_jg=1`,
-                        new: 0, desc: '个风险未处理', type: 'danger'
+                        new: 0, desc: '个风险未处置', type: 'danger'
                     },
                 ],
                 [
