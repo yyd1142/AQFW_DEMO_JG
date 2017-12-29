@@ -12,7 +12,7 @@
             <transition :name="first?'fade':null">
                 <div class="score-main-wrap" @click="switchHandle" v-show="!isLoading&&type==1">
                     <div class="score abs-middle">{{score}}</div>
-                    <div class="score-text abs-middle">{{calcScoreText(score)}}</div>
+                    <div class="score-text abs-middle">{{calcScoreText(score)}}级</div>
                     <div class="title no-overflow abs-middle">{{title}}</div>
                     <div class="refresh-wrap abs-middle">
                         <div class="btn icon-refresh" :class="isRefresh?'rotate':null"></div>
