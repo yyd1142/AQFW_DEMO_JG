@@ -42,6 +42,7 @@
                 min-height: 104px;
                 margin-bottom: 14px;
                 box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.05);
+                background-color: #fff;
                 &:last-child {
                     .cell {
                         height: 104px;
@@ -53,8 +54,8 @@
                     margin: 0;
                     width: 50%;
                     height: 122px;
-                    border-bottom: 1px solid @baseBorder;
-                    border-right: 1px solid @baseBorder;
+                    .border-right(@baseBorder);
+                    .border-btm(@baseBorder);
                     text-align: center;
                     background-color: #ffffff;
                     &:active {
@@ -85,11 +86,11 @@
                         }
                     }
                     &:nth-child(even) {
-                        border-right: none;
+                        .border-right-none;
                     }
                     &:nth-last-child(1),
                     &:nth-last-child(2) {
-                        border-bottom: none;
+                        .border-btm-none;
                     }
                 }
             }
