@@ -55,8 +55,8 @@ export default {
                 data = JSON.parse(localStorage['USER_DATA']);
             } catch (err) {
             }
-            this.jgName = JSON.parse(localStorage['USER_DATA']).dwName || '';
-            this.score = JSON.parse(localStorage['USER_DATA']).qyScoreAverage || 0;
+            this.jgName = data.dwJC || data.dwName || '';
+            this.score = data.qyScoreAverage || 0;
             this.score = Math.round(this.score);
             let params = {
                 m: 'qydwScore',
