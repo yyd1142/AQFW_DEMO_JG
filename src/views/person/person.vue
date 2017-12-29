@@ -50,12 +50,12 @@
             padding: 11px;
             font-size: 0;
             &.sign-msg {
-                background: url(/static/icons/resource.png) -654px -60px no-repeat;
-                background-size: @bg-size;
+                background: url('/static/icons/5_1/transparent_icons.png') -52px -804px no-repeat;
+                background-size: @bgSize;
             }
             &.sign-conf {
-                background: url(/static/icons/resource.png) -676px -60px no-repeat;
-                background-size: @bg-size;
+                background: url('/static/icons/5_1/transparent_icons.png') -74px -804px no-repeat;
+                background-size: @bgSize;
             }
         }
         .cell-wrap {

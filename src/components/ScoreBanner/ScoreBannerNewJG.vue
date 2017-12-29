@@ -1,17 +1,26 @@
 <template>
     <div class="score-banner-jg-wrap">
         <div class="score-banner-wrap mof-clear">
-            <div class="score-main-wrap" @click="switchHandle" v-show="type==1">
-                <div class="score abs-middle">{{score}}</div>
-                <div class="score-text abs-middle">{{calcScoreText(score)}}</div>
-                <div class="title no-overflow abs-middle">{{title}}</div>
-                <div class="refresh-wrap abs-middle">
-                    <div class="btn icon-refresh" :class="isRefresh?'rotate':null">
-
+            <div class="loading-wrap" v-if="isLoading">
+                <div class="circle-1"></div>
+                <div class="circle-2"></div>
+                <div class="circle-3"></div>
+                <div class="circle-4"></div>
+                <div class="circle-5"></div>
+                <div class="text">正在统计</div>
+            </div>
+            <transition :name="first?'fade':null">
+                <div class="score-main-wrap" @click="switchHandle" v-show="!isLoading&&type==1">
+                    <div class="breath abs-all-middle"></div>
+                    <div class="score abs-middle">{{score}}</div>
+                    <div class="score-text abs-middle">{{calcScoreText(score)}}级</div>
+                    <div class="title no-overflow abs-middle">{{title}}</div>
+                    <div class="refresh-wrap abs-middle">
+                        <div class="btn icon-refresh" :class="isRefresh?'rotate':null"></div>
                     </div>
                 </div>
-            </div>
-            <div class="score-detail-wrap" @click="switchHandle" v-show="type==2">
+            </transition>
+            <div class="score-detail-wrap" @click="switchHandle" v-show="!isLoading&&type==2">
                 <div class="chart-wrap" ref="chart"></div>
                 <div class="desc">
                     管辖单位平均安全得分 共{{datas.count || 0}}家
@@ -31,13 +40,17 @@
     import { calcScoreText } from 'filters'
     let theme = 'macarons';
     let _refreshTime = 100;
-    let _timer = null;
+    let _loadingTime = 3000;
+    let _timer1 = null;
+    let _timer2 = null;
     export default {
         props: ['score', 'title', 'datas'],
         data () {
             return {
                 type: 1,
                 isRefresh: false,
+                isLoading: false,
+                first: false,
             }
         },
         watch: {
@@ -50,6 +63,13 @@
         },
         computed: {},
         mounted() {
+            let that = this;
+            this.isLoading = true;
+            this.first = true;
+            _timer2 = setTimeout(function () {
+                that.isLoading = false;
+                clearTimeout(_timer2);
+            }, _loadingTime);
         },
         activated(){
             if (this.type == 2)
@@ -59,7 +79,8 @@
         },
         deactivated() {
             this.isRefresh = false;
-            clearTimeout(_timer);
+            clearTimeout(_timer1);
+            clearTimeout(_timer2);
         },
         destroyed(){
         },
@@ -67,12 +88,13 @@
             calcScoreText,
             switchHandle(){
                 let that = this;
+                this.first = false;
                 if (this.type == 1) {
                     this.isRefresh = true;
-                    _timer = setTimeout(function () {
+                    _timer1 = setTimeout(function () {
                         that.type = 2;
                         that.isRefresh = false;
-                        clearTimeout(_timer);
+                        clearTimeout(_timer1);
                     }, _refreshTime);
                 } else {
                     this.type = 1;
@@ -168,7 +190,75 @@
     @import "../../config.less";
 
     @refreshTime: 1s;
+    @circleTime: 2s;
+    @circleTime-fast: 1s;
+    @breathTime: 2s;
     .score-banner-jg-wrap {
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+                -ms-transform: rotate(0deg); /* IE 9 */
+                -moz-transform: rotate(0deg); /* Firefox */
+                -webkit-transform: rotate(0deg); /* Safari 和 Chrome */
+                -o-transform: rotate(0deg); /* Opera */
+            }
+            to {
+                transform: rotate(360deg);
+                -ms-transform: rotate(360deg); /* IE 9 */
+                -moz-transform: rotate(360deg); /* Firefox */
+                -webkit-transform: rotate(360deg); /* Safari 和 Chrome */
+                -o-transform: rotate(360deg); /* Opera */
+            }
+        }
+        @keyframes rotate-anti {
+            from {
+                transform: rotate(360deg);
+                -ms-transform: rotate(360deg); /* IE 9 */
+                -moz-transform: rotate(360deg); /* Firefox */
+                -webkit-transform: rotate(360deg); /* Safari 和 Chrome */
+                -o-transform: rotate(360deg); /* Opera */
+            }
+            to {
+                transform: rotate(0deg);
+                -ms-transform: rotate(0deg); /* IE 9 */
+                -moz-transform: rotate(0deg); /* Firefox */
+                -webkit-transform: rotate(0deg); /* Safari 和 Chrome */
+                -o-transform: rotate(0deg); /* Opera */
+            }
+        }
+        @keyframes scale {
+            from {
+                transform: scale(1, 1);
+                -ms-transform: scale(1, 1); /* IE 9 */
+                -moz-transform: scale(1, 1); /* Firefox */
+                -webkit-transform: scale(1, 1); /* Safari 和 Chrome */
+                -o-transform: scale(1, 1); /* Opera */
+            }
+            to {
+                transform: scale(0.94, 0.94);
+                -ms-transform: scale(0.94, 0.94); /* IE 9 */
+                -moz-transform: scale(0.94, 0.94); /* Firefox */
+                -webkit-transform: scale(0.94, 0.94); /* Safari 和 Chrome */
+                -o-transform: scale(0.94, 0.94); /* Opera */
+            }
+        }
+        @keyframes breath {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0.1;
+            }
+        }
+        .fade-enter-active,
+        .fade-leave-active {
+            transition: opacity 1s;
+        }
+
+        .fade-enter,
+        .fade-leave-active {
+            opacity: 0;
+        }
         .score-banner-wrap {
             position: relative;
             height: 300px;
@@ -186,6 +276,86 @@
                     right: 0;
                 }
             }
+            .loading-wrap {
+                position: absolute;
+                top: 28px;
+                left: 50%;
+                transform: translate(-50%, 0);
+                -webkit-transform: translate(-50%, 0);
+                width: 202px;
+                height: 202px;
+                text-align: center;
+                [class|="circle"] {
+                    position: absolute;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    animation: rotate @circleTime linear infinite;
+                    -moz-animation: rotate @circleTime linear infinite;
+                    -webkit-animation: rotate @circleTime linear infinite;
+                    -o-animation: rotate @circleTime linear infinite;
+                }
+                .text {
+                    position: absolute;
+                    color: #fff;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    -webkit-transform: translate(-50%, -50%);
+                    font-size: 14px;
+                }
+                .circle-1 {
+                    top: 0;
+                    left: 0;
+                    width: 202px;
+                    height: 202px;
+                    background-image: url('/static/index/banner_circle_01.png');
+                    animation: scale @circleTime-fast linear infinite alternate;
+                    -moz-animation: scale @circleTime-fast linear infinite alternate;
+                    -webkit-animation: scale @circleTime-fast linear infinite alternate;
+                    -o-animation: scale @circleTime-fast linear infinite alternate;
+                }
+                .circle-2 {
+                    top: 13px;
+                    left: 13px;
+                    width: 176px;
+                    height: 176px;
+                    background-image: url('/static/index/banner_circle_02.png');
+                }
+                .circle-3 {
+                    top: 28px;
+                    left: 28px;
+                    width: 146px;
+                    height: 146px;
+                    background-image: url('/static/index/banner_circle_03.png');
+                    animation-name: rotate-anti;
+                    -moz-animation-name: rotate-anti;
+                    -webkit-animation-name: rotate-anti;
+                    -o-animation-name: rotate-anti;
+                }
+                .circle-4 {
+                    top: 32px;
+                    left: 32px;
+                    width: 138px;
+                    height: 138px;
+                    background-image: url('/static/index/banner_circle_04.png');
+                    animation-duration: @circleTime-fast;
+                    -moz-animation-duration: @circleTime-fast;
+                    -webkit-animation-duration: @circleTime-fast;
+                    -o-animation-duration: @circleTime-fast;
+                }
+                .circle-5 {
+                    top: 13px;
+                    left: 13px;
+                    width: 176px;
+                    height: 176px;
+                    background-image: url('/static/index/banner_circle_05.png');
+                    animation: none;
+                    -moz-animation: none;
+                    -webkit-animation: none;
+                    -o-animation: none;
+                }
+            }
             .score-main-wrap {
                 position: relative;
                 margin-top: 28px;
@@ -193,6 +363,16 @@
                 background: url('/static/index/index_score_jg.png') center no-repeat;
                 background-size: contain;
                 color: #fff;
+                .breath {
+                    width: 426px;
+                    height: 426px;
+                    background: url('/static/index/index_score_breath_jg.png') center no-repeat;
+                    background-size: contain;
+                    animation: breath @breathTime linear infinite alternate;
+                    -moz-animation: breath @breathTime linear infinite alternate;
+                    -webkit-animation: breath @breathTime linear infinite alternate;
+                    -o-animation: breath @breathTime linear infinite alternate;
+                }
                 .score {
                     top: 40px;
                     line-height: 50px;
