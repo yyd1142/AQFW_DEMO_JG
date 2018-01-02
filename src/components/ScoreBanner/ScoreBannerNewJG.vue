@@ -362,6 +362,7 @@
                 height: 200px;
                 background: url('/static/index/index_score_jg.png') center no-repeat;
                 background-size: contain;
+                overflow: hidden;
                 color: #fff;
                 .breath {
                     width: 426px;
