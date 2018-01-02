@@ -42,7 +42,7 @@ export default {
     getReplyInfo: httpGet('/dwNotice', Conf.domain),
     getNoticeReplyList: httpGet('/dwNotice', Conf.domain),
     //风险管理
-    getYhkList: httpGet('/yhk?m=list', Conf.qyApiDomain),
+    getYhkList: httpGet('/yhk', Conf.domain),
     getYhkInfo: httpGet('/yhk?m=info', Conf.qyApiDomain),
     addYhk: httpPost('/yhk?m=addByZF', Conf.domain),
     updateYhk: httpPost('/yhk?m=update', Conf.qyApiDomain),

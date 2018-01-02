@@ -36,6 +36,7 @@ export default {
     getData(page, type, isloadTop) {
       Indicator.open({ spinnerType: 'fading-circle' });
       api.getYhkList({
+        m: this.$store.getters.userInfo.type === 1 ? 'gjList' : 'xtList',
         groupId: this.$route.params.id,
         status: type,
         page: 1,
@@ -48,15 +49,17 @@ export default {
         }
         this.$refs.loadmore.onBottomLoaded();
         if (res.code === 0) {
-          if (res.response.datas === undefined || res.response.datas.length == 0) {
-            needUpdate[type] = { isupdate: false, type: type, datas: [], bottomAllLoaded: true, page: 1 };
-            this.hiddenDangers = [];
-            this.notData = true;
-          } else {
+          if (res.response && res.response.datas.length > 0) {
             needUpdate[type] = { isupdate: false, type: type, datas: res.response.datas, bottomAllLoaded: false, page: res.response.page, pageCount: res.response.pageCount, count: res.response.count, countNumber: res.response.countNumber };
             this.hiddenDangers = res.response.datas;
             this.notData = false;
+          } else {
+            needUpdate[type] = { isupdate: false, type: type, datas: [], bottomAllLoaded: true, page: 1 };
+            this.hiddenDangers = [];
+            this.notData = true;
           }
+        } else {
+
         }
       })
     },
@@ -95,6 +98,7 @@ export default {
         let page = needUpdate[this.hiddenDangersType].page;
         page = page + 1;
         api.getYhkList({
+          m: this.$store.getters.userInfo.type === 1 ? 'gjList' : 'xtList',
           groupId: this.$route.params.id,
           status: this.hiddenDangersType,
           page: page,
