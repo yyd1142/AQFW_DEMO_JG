@@ -10,8 +10,7 @@
         <div class="page-wrap hidden-danger-page-wrap" v-show="!resError" id="pageWrapper">
 
             <mko-nav-bar>
-                <mko-tab-item :label="item.text" :activied="item.actived" @handleTabClick="tab(item, index)"
-                              v-for="(item, index) in tabs"></mko-tab-item>
+                <mko-tab-item :label="item.text" :activied="item.actived" @handleTabClick="tab(item, index)" v-for="(item, index) in tabs"></mko-tab-item>
             </mko-nav-bar>
 
             <mt-loadmore :bottom-method="loadBottom" @bottom-status-change="handleBottomChange"
@@ -31,9 +30,10 @@
     </div>
 </template>
 
-<script src="./hiddenDanger.js"></script>
+<script src="./hiddenDanger.js">
+</script>
 
-<style lang="less" rel="stylesheet/less" scoped>
+<style lang="less" scoped>
     @import "../../config.less";
 
     .hidden-danger-page-wrap {
