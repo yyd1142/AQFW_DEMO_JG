@@ -1,6 +1,6 @@
 <template>
-    <div class="score-banner-jg-wrap">
-        <div class="score-banner-wrap mof-clear">
+    <div class="score-banner-wrap">
+        <div class="score-banner mof-clear">
             <div class="loading-wrap" v-if="isLoading">
                 <div class="circle-1"></div>
                 <div class="circle-2"></div>
@@ -11,7 +11,8 @@
             </div>
             <transition :name="first?'fade':null">
                 <div class="score-main-wrap" @click="switchHandle" v-show="!isLoading&&type==1">
-                    <div class="breath abs-all-middle"></div>
+                    <div class="breath abs-middle"></div>
+                    <div class="loading-end abs-middle" v-show="isLoadingEnd"></div>
                     <div class="score abs-middle">{{score}}</div>
                     <div class="score-text abs-middle">{{calcScoreText(score)}}级</div>
                     <div class="title no-overflow abs-middle">{{title}}</div>
@@ -20,12 +21,15 @@
                     </div>
                 </div>
             </transition>
-            <div class="score-detail-wrap" @click="switchHandle" v-show="!isLoading&&type==2">
-                <div class="chart-wrap" ref="chart"></div>
-                <div class="desc">
-                    管辖单位平均安全得分 共{{datas.count || 0}}家
+            <transition name="fade">
+                <div class="score-detail-wrap" @click="switchHandle" v-show="!isLoading&&type==2">
+                    <div class="chart-wrap" ref="chart"></div>
+                    <div class="desc">
+                        管辖单位平均安全得分 共{{datas.count || 0}}家
+                    </div>
                 </div>
-            </div>
+            </transition>
+
             <div class="switch-wrap" @click="go('/score_list')">
                 <div class="btn icon-arrow-right-white">
 
@@ -41,8 +45,11 @@
     let theme = 'macarons';
     let _refreshTime = 100;
     let _loadingTime = 3000;
+    let _loadingEndTime = 3000;
     let _timer1 = null;
     let _timer2 = null;
+    let _timer3 = null;
+
     export default {
         props: ['score', 'title', 'datas'],
         data () {
@@ -50,6 +57,7 @@
                 type: 1,
                 isRefresh: false,
                 isLoading: false,
+                isLoadingEnd: false,
                 first: false,
             }
         },
@@ -68,6 +76,11 @@
             this.first = true;
             _timer2 = setTimeout(function () {
                 that.isLoading = false;
+                that.isLoadingEnd = true;
+                _timer3 = setTimeout(function () {
+                    that.isLoadingEnd = false;
+                    clearTimeout(_timer3);
+                }, _loadingEndTime);
                 clearTimeout(_timer2);
             }, _loadingTime);
         },
@@ -81,6 +94,7 @@
             this.isRefresh = false;
             clearTimeout(_timer1);
             clearTimeout(_timer2);
+            clearTimeout(_timer3);
         },
         destroyed(){
         },
@@ -193,7 +207,9 @@
     @circleTime: 2s;
     @circleTime-fast: 1s;
     @breathTime: 2s;
-    .score-banner-jg-wrap {
+    @top: 28px + @headerHeight;
+
+    .score-banner-wrap {
         @keyframes rotate {
             from {
                 transform: rotate(0deg);
@@ -250,6 +266,60 @@
                 opacity: 0.1;
             }
         }
+
+        @keyframes loading-end {
+            .blur(@px) {
+                -webkit-filter: blur(@px); /* Chrome, Opera */
+                -moz-filter: blur(@px);
+                -ms-filter: blur(@px);
+                filter: blur(@px);
+            }
+            0% {
+                opacity: 0;
+            }
+            10% {
+                .blur(3px);
+                background-size: 420px 420px;
+            }
+            20% {
+                .blur(6px);
+                background-size: 440px 440px;
+            }
+            30% {
+                .blur(9px);
+                background-size: 460px 460px;
+            }
+            40% {
+                .blur(12px);
+                background-size: 480px 480px;
+            }
+            50% {
+                .blur(15px);
+                background-size: 500px 500px;
+                opacity: 1;
+            }
+            60% {
+                .blur(18px);
+                background-size: 520px 520px;
+            }
+            70% {
+                .blur(21px);
+                background-size: 540px 540px;
+            }
+            80% {
+                .blur(24px);
+                background-size: 560px 560px;
+            }
+            90% {
+                .blur(27px);
+                background-size: 580px 580px;
+            }
+            100% {
+                .blur(30px);
+                background-size: 600px 600px;
+                opacity: 0;
+            }
+        }
         .fade-enter-active,
         .fade-leave-active {
             transition: opacity 1s;
@@ -259,9 +329,10 @@
         .fade-leave-active {
             opacity: 0;
         }
-        .score-banner-wrap {
+        .score-banner {
             position: relative;
-            height: 300px;
+            top: -@headerHeight;
+            height: 300px + @headerHeight;
             background: url('/static/index/index_bg.png') center;
             background-size: cover;
             .switch-wrap {
@@ -269,7 +340,7 @@
                 width: 30px;
                 position: absolute;
                 right: 14px;
-                top: 28px;
+                top: @top;
                 .btn {
                     position: absolute;
                     top: 86px;
@@ -278,7 +349,7 @@
             }
             .loading-wrap {
                 position: absolute;
-                top: 28px;
+                top: 28px + @headerHeight;
                 left: 50%;
                 transform: translate(-50%, 0);
                 -webkit-transform: translate(-50%, 0);
@@ -358,41 +429,57 @@
             }
             .score-main-wrap {
                 position: relative;
-                margin-top: 28px;
-                height: 200px;
-                background: url('/static/index/index_score_jg.png') center no-repeat;
-                background-size: contain;
+                //margin-top: 28px;
+                //height: 200px + @headerHeight;
+                height: 256px + @headerHeight;
+                background: url('/static/index/index_score_jg.png') center @top no-repeat;
+                background-size: 200px 200px;
                 overflow: hidden;
                 color: #fff;
-                .breath {
-                    width: 426px;
-                    height: 426px;
-                    background: url('/static/index/index_score_breath_jg.png') center no-repeat;
+                .loading-end {
+                    z-index: 30;
+                    top: -45px;
+                    width: 420px;
+                    height: 429px;
+                    background: url('/static/index/banner_loading_end.png') center no-repeat;
                     background-size: contain;
-                    animation: breath @breathTime linear infinite alternate;
-                    -moz-animation: breath @breathTime linear infinite alternate;
-                    -webkit-animation: breath @breathTime linear infinite alternate;
-                    -o-animation: breath @breathTime linear infinite alternate;
+                    @ani: loading-end 3s linear infinite;
+                    animation: @ani;
+                    -moz-animation: @ani;
+                    -webkit-animation: @ani;
+                    -o-animation: @ani;
+                }
+                .breath {
+                    top: -45px;
+                    width: 405px;
+                    height: 428px;
+                    background: url('/static/index/index_score_breath_jg.png') center no-repeat;
+                    background-size: 405px 428px;
+                    @ani: breath @breathTime linear infinite alternate;
+                    animation: @ani;
+                    -moz-animation: @ani;
+                    -webkit-animation: @ani;
+                    -o-animation: @ani;
                 }
                 .score {
-                    top: 40px;
+                    top: 40px + @top;
                     line-height: 50px;
                     font-size: 50px;
                     font-weight: bold;
                 }
                 .score-text {
-                    top: 90px;
+                    top: 90px + @top;
                     line-height: 14px;
                     font-size: 14px;
                 }
                 .title {
-                    top: 108px;
+                    top: 108px + @top;
                     max-width: 130px;
                     line-height: 12px;
                     font-size: 12px;
                 }
                 .refresh-wrap {
-                    top: 140px;
+                    top: 140px + @top;
                     width: 80px;
                     height: 30px;
                     text-align: center;
@@ -423,7 +510,7 @@
             }
             .score-detail-wrap {
                 position: relative;
-                /*margin-top: 28px;*/
+                margin-top: @headerHeight;
                 .chart-wrap {
                     height: 270px;
                 }
