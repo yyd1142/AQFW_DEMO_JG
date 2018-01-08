@@ -148,7 +148,7 @@
     @import "../../config.less";
 
     .hdc-sel-wrap {
-        padding: 0;
+        padding: 10px 0 0 0;
         .search-wrap {
             height: auto;
             .mint-searchbar {

@@ -24,7 +24,7 @@ import MkoSearchBar from './SearchBar/SearchBar.vue'
 import MkoDropdowns from './Dropdowns/Dropdowns.vue'
 import MkoNavBar from './Tabs/NavBar.vue'
 import MkoTabItem from './Tabs/TabItem.vue'
-
+import MkoLoadMore from './LoadMore/index.vue'
 Vue.use(MkoDialogBox);
 
 export {
@@ -46,7 +46,8 @@ export {
     MkoHeader,
     MkoPopupBottom,
     MkoPopupRight,
-    MkoSearchBar
+    MkoSearchBar,
+    MkoLoadMore
 }
 
 
@@ -79,6 +80,7 @@ MkoUI.install = function (Vue, options) {
     Vue.component('MkoDropdowns', MkoDropdowns);
     Vue.component('MkoNavBar', MkoNavBar);
     Vue.component('MkoTabItem', MkoTabItem);
+    Vue.component('MkoLoadMore', MkoLoadMore);
 };
 
 export default MkoUI;

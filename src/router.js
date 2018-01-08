@@ -101,6 +101,9 @@ const QYAttributes = resolve => require(['./views/QYData/QYAttributes.vue'], res
 const PhotoViewer = resolve => require(['./components/PhotoViewer/index.vue'], resolve)
 // 新闻资讯
 const newsList = resolve => require(['./views/news/index.vue'], resolve);
+const QYNoticeModel = resolve => require(['./views/QYData/Notice/model.vue'], resolve);
+const AddNotice = resolve => require(['./views/QYData/Notice/addNotice.vue'], resolve);
+const NoticeHistory = resolve => require(['./views/QYData/Notice/history.vue'], resolve);
 Vue.use(Router)
 
 const routers = {
@@ -465,6 +468,21 @@ const routers = {
             path: '/newsList',
             name: 'newsList',
             component: newsList
+        },
+        {
+            path: '/qy_notice_model',
+            name: 'QYNoticeModel',
+            component: QYNoticeModel
+        },
+        {
+            path: '/add_notice',
+            name: 'AddNotice',
+            component: AddNotice
+        },
+        {
+            path: '/notice_history',
+            name: 'NoticeHistory',
+            component: NoticeHistory
         }
     ]
 };

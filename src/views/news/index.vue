@@ -15,9 +15,9 @@
                         <div class="news-date">{{item.author}}<span style="margin-left: 10px;">{{item.createDate | formatDate('YYYY-MM-DD')}}</span></div>
                         </div>
                     </li>
-                    <li class="not-data-home"  v-if="newsDatas.length == 0">暂无内容</li>
                 </ul>
             </mt-loadmore>
+            <no-data v-if="newsDatas.length == 0"></no-data>
         </div>
     </div>
 </template>
@@ -34,6 +34,7 @@ var needUpdate = [
 import api from 'api'
 import { Toast } from 'mint-ui'
 import apiconf from 'apiconf'
+import { NoData } from 'components'
 export default {
     data() {
         return {
@@ -218,6 +219,9 @@ export default {
                 this.bottomAllLoaded = scrollBottom <= 0 ? false : true;
             })
         }
+    },
+    components: {
+        NoData
     }
 }
 </script>
