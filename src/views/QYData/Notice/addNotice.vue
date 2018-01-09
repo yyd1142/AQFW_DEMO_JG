@@ -16,9 +16,21 @@ export default {
     data() {
         return {
             formData: {
-                title: this.$route.query.title,
-                content: this.$route.query.content
+                title: '',
+                content: ''
             }
+        }
+    },
+    activated() {
+        this.formData = {
+            title: this.$route.query.title,
+            content: this.$route.query.content
+        }
+    },
+    deactivated() {
+        this.formData = {
+            title: '',
+            content: ''
         }
     },
     methods: {
@@ -41,11 +53,16 @@ export default {
 </script>
 
 <style lang="less">
+@import "../../../config.less";
 .qy-addnotice-model {
-    padding-top: 10px;
+    // padding-top: 10px;
     .page-wrap {
         .form-card {
             background-color: #ffffff;
+            .border-btm(#eeeeee);
+            &::after {
+                bottom: -1px;
+            }
             .mko-text-area {
                 background: none;
                 .body {

@@ -19,7 +19,7 @@
                     <div style="color: #666666">{{item.createDate | formatDate('YYYY-MM-DD HH:mm')}}</div>
                 </mko-double-cell>
             </ul>
-            <mko-load-more @click="loadBottom" v-if="!noLoadMore"></mko-load-more>
+            <mko-load-more @click="loadBottom" :no-load-more="noLoadMore" v-if="!notData"></mko-load-more>
         </div>
         <no-data class="not-data-wrap" v-if="notData"></no-data>
     </div>

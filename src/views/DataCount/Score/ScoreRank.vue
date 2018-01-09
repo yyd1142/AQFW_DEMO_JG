@@ -20,7 +20,7 @@
                 <mko-cell :title="item.dwName" main="left" :val="item.dwSafeScore" non-text="0" v-for="item in list"></mko-cell>
 
             </div>
-            <mko-load-more @click="loadBottom" v-if="!noLoadMore"></mko-load-more>
+            <mko-load-more @click="loadBottom" :no-load-more="noLoadMore" v-if="list.length != 0"></mko-load-more>
         </div>
     </div>
 </template>

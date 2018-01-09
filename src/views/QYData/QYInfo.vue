@@ -1,7 +1,8 @@
 <template>
     <div class="qy-info">
         <div class="placeholder-item" :style="{ backgroundColor: scoreHeadColor($route.query.score || dwScore.totalScore) }"></div>
-        <mko-header :title="this.$route.query.name || '社会单位'" :background-color="scoreHeadColor($route.query.score || dwScore.totalScore)" left-icon="icon-back" @handleLeftClick="back" right-icon-text="通知入口" @handleRightClick="goNotice"></mko-header>
+        <mko-header :title="this.$route.query.name || '社会单位'" :background-color="scoreHeadColor($route.query.score || dwScore.totalScore)" left-icon="icon-back" @handleLeftClick="back"></mko-header> 
+        <!-- right-icon-text="通知入口" @handleRightClick="goNotice" -->
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
         <div class="page-wrap qy-info-wrap" v-if="!noData&&!resError">

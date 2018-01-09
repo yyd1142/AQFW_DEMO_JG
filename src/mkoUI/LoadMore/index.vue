@@ -1,14 +1,15 @@
 <template>
     <div class="mko-load-more" @click="loadBottom">
         <div class="main">
-            <span class="text">查看更多</span>
-            <i class="icon icon-small-up-arrow"></i>
+            <span class="text" v-text="noLoadMore ? '没有更多了' : '查看更多'"></span>
+            <i class="icon icon-small-up-arrow" v-if="!noLoadMore"></i>
         </div>
     </div>
 </template>
 
 <script>
 export default {
+    props: ['noLoadMore'],
     methods: {
         loadBottom() { 
             this.$emit('click')

@@ -12,34 +12,33 @@
                               @handleTabClick="ctrlListType(item.type)" v-for="item in headerBtn"></mko-tab-item>
             </mko-nav-bar>
             <div ref="wrapper">
-                <mt-loadmore ref="loadmore" :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :auto-fill="autoFill" :bottom-all-loaded="bottomAllLoaded">
-                    <ul class="list">
-                        <li class="item" @click="go(item.groupId,item.dwName,item.dwSafeScore)" v-for="(item,n) in dwList">
-                            <div class="padding">
-                                <div class="score" :class="scoreColorStyle(item.dwSafeScore)">
-                                    {{parseInt(item.dwSafeScore) || '暂无'}}
-                                </div>
-                                <div class="info">
-                                    <div class="title no-overflow">{{item.dwName}}</div>
-                                    <ul class="dw-attribute">
-                                        <li class="attr-item" v-for="attr, index in item.dwAttributes" v-if="index <= 2">
-                                            <div class="main" :class="scoreColorStyle(item.dwSafeScore)">
-                                                <span>{{attributesFilter(attr.attributeName)}}</span></div>
-                                        </li>
-                                        <li class="attr-item" v-if="item.dwAttributes.length > 3">
-                                            <div class="main ellipsis" :class="scoreColorStyle(item.dwSafeScore)">
-                                                <i class="icon-ellipsis"></i></div>
-                                        </li>
-                                        <li class="attr-item" v-if="!item.dwAttributes || (item.dwAttributes && item.dwAttributes.length <= 0)">
-                                            <div class="disabled"><span>暂无标签</span></div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <i class="icon icon-link-arrow"></i>
+                <ul class="list">
+                    <li class="item" @click="go(item.groupId,item.dwName,item.dwSafeScore)" v-for="(item,n) in dwList">
+                        <div class="padding">
+                            <div class="score" :class="scoreColorStyle(item.dwSafeScore)">
+                                {{parseInt(item.dwSafeScore) || '暂无'}}
                             </div>
-                        </li>
-                    </ul>
-                </mt-loadmore>
+                            <div class="info">
+                                <div class="title no-overflow">{{item.dwName}}</div>
+                                <ul class="dw-attribute">
+                                    <li class="attr-item" v-for="attr, index in item.dwAttributes" v-if="index <= 2">
+                                        <div class="main" :class="scoreColorStyle(item.dwSafeScore)">
+                                            <span>{{attributesFilter(attr.attributeName)}}</span></div>
+                                    </li>
+                                    <li class="attr-item" v-if="item.dwAttributes.length > 3">
+                                        <div class="main ellipsis" :class="scoreColorStyle(item.dwSafeScore)">
+                                            <i class="icon-ellipsis"></i></div>
+                                    </li>
+                                    <li class="attr-item" v-if="!item.dwAttributes || (item.dwAttributes && item.dwAttributes.length <= 0)">
+                                        <div class="disabled"><span>暂无标签</span></div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <i class="icon icon-link-arrow"></i>
+                        </div>
+                    </li>
+                </ul>
+                <mko-load-more @click="loadBottom" :no-load-more="noLoadMore" v-if="dwList.length != 0"></mko-load-more>
             </div>
             <!--筛选-->
             <div class="popup-wrap">
@@ -116,12 +115,7 @@
                         type: 2
                     }
                 ],
-                //loadMore
-                wrapperHeight: 0,
-                autoFill: false,
-                topStatus: "",
-                bottomStatus: "",
-                bottomAllLoaded: false,
+                noLoadMore: false,
                 //        page: 1,
                 //数据
                 dwList: [],
@@ -174,7 +168,6 @@
         mounted() {
         },
         activated() {
-            window.addEventListener("scroll", this.handleScroll);
             this.formData = {
                 dwType: "",
                 dwChildType: "",
@@ -193,7 +186,6 @@
             window.mkoBackButton.bInputData = false;
             window.mkoBackButton.callback = null;
             window.onscroll = null;
-            window.removeEventListener("scroll", this.handleScroll);
         },
         methods: {
             searchBarHandleFn(type, bool){
@@ -237,7 +229,6 @@
                     params["dwSafeScore"] = this.formData.dwSafeScore;
                 }
                 api.getQyList(params).then(res => {
-                    this.$refs.loadmore.onTopLoaded();
                     if (!res) {
                         Indicator.close();
                         if (!this.formData.dwType) this.resError = true;
@@ -268,92 +259,88 @@
                 });
             },
             loadBottom() {
-                setTimeout(() => {
-                    if (qy_datas[this.listType].pageItem.page == qy_datas[this.listType].pageItem.pageCount) {
-                        Toast({
-                            message: "暂无更多数据",
-                            position: "middle",
-                            duration: 1500
-                        });
-                        this.$refs.loadmore.onBottomLoaded();
-                        return false;
-                    }
-                    qy_datas[this.listType].pageItem.page =
-                        qy_datas[this.listType].pageItem.page + 1;
-                    let params = {
-                        type: this.listType,
-                        page: qy_datas[this.listType].pageItem.page,
-                        count: count,
-                        search: this.search
-                    };
-                    if (this.formData.dwType != "") {
-                        params["dwTypeID"] = this.formData.dwType;
-                    }
-                    if (this.formData.dwSafeScore != 0) {
-                        params["dwSafeScore"] = this.formData.dwSafeScore;
-                    }
-                    api.getQyList(params).then(res => {
-                        this.bottomAllLoaded = true;
-                        this.$refs.loadmore.onBottomLoaded();
-                        if (!res) {
-                            Indicator.close();
-                            if (!this.formData.dwType) this.resError = true;
-                            return;
-                        }
-                        if (res.code == 0) {
-                            if (
-                                res.response.datas === undefined ||
-                                res.response.datas.length === 0
-                            ) {
-                                Toast({
-                                    message: "暂无更多数据",
-                                    position: "middle",
-                                    duration: 1500
-                                });
-                                this.noData = true;
-                            } else {
-                                Toast({
-                                    message: "加载完成",
-                                    position: "middle",
-                                    duration: 1500
-                                });
-                                this.dwList = this.dwList.concat(res.response.datas);
-                                this.noData = false;
-                                qy_datas[this.listType] = {
-                                    datas: this.dwList,
-                                    pageItem: {
-                                        page: res.response.page,
-                                        pageCount: res.response.pageCount
-                                    }
-                                };
-                            }
-                        }
-                        Indicator.close();
+                if (qy_datas[this.listType].pageItem.page == qy_datas[this.listType].pageItem.pageCount) {
+                    Toast({
+                        message: "暂无更多数据",
+                        position: "middle",
+                        duration: 1500
                     });
-                }, 1500);
-            },
-            handleBottomChange(status) {
-                this.bottomStatus = status;
+                    this.noLoadMore = true;
+                    return false;
+                }
+                qy_datas[this.listType].pageItem.page =
+                    qy_datas[this.listType].pageItem.page + 1;
+                let params = {
+                    type: this.listType,
+                    page: qy_datas[this.listType].pageItem.page,
+                    count: count,
+                    search: this.search
+                };
+                if (this.formData.dwType != "") {
+                    params["dwTypeID"] = this.formData.dwType;
+                }
+                if (this.formData.dwSafeScore != 0) {
+                    params["dwSafeScore"] = this.formData.dwSafeScore;
+                }
+                Indicator.open({ spinnerType: 'fading-circle' });
+                api.getQyList(params).then(res => {
+                    if (!res) {
+                        Indicator.close();
+                        if (!this.formData.dwType) this.resError = true;
+                        return;
+                    }
+                    if (res.code == 0) {
+                        if (
+                            res.response.datas === undefined ||
+                            res.response.datas.length === 0
+                        ) {
+                            Toast({
+                                message: "暂无更多数据",
+                                position: "middle",
+                                duration: 1500
+                            });
+                            this.noData = true;
+                            this.noLoadMore = true;
+                        } else {
+                            Toast({
+                                message: "加载完成",
+                                position: "middle",
+                                duration: 1500
+                            });
+                            this.noLoadMore = false;
+                            this.dwList = this.dwList.concat(res.response.datas);
+                            this.noData = false;
+                            qy_datas[this.listType] = {
+                                datas: this.dwList,
+                                pageItem: {
+                                    page: res.response.page,
+                                    pageCount: res.response.pageCount
+                                }
+                            };
+                        }
+                    }
+                    Indicator.close();
+                });
             },
             ctrlListType(type) {
                 this.listType = type;
-                this.bottomAllLoaded = false;
+                this.noLoadMore = false;
                 Indicator.open({spinnerType: "fading-circle"});
                 scrollTo(0, 0);
                 this.getData();
             },
             searchData() {
-                this.bottomAllLoaded = false;
+                this.noLoadMore = false;
                 this.getData();
             },
             filterList() {
-                this.bottomAllLoaded = false;
+                this.noLoadMore = false;
                 this.popupShow = false;
                 document.body.style.overflow = "auto";
                 this.getData();
             },
             resetData() {
-                this.bottomAllLoaded = false;
+                this.noLoadMore = false;
                 let data = this.formData;
                 for (let key in data) {
                     data[key] = "";
@@ -389,32 +376,6 @@
             getScrollTop() {
                 scroll_top[this.listType - 1] =
                     document.documentElement.scrollTop || document.body.scrollTop;
-            },
-            handleScroll() {
-                this.$nextTick(() => {
-                    let totalHeight = document.getElementById("pageWrapper").offsetHeight;
-                    let scrollTop =
-                        document.documentElement && document.documentElement.scrollTop
-                            ? document.documentElement.scrollTop
-                            : document.body.scrollTop;
-                    let clientHeight = 0;
-                    if (
-                        document.body.clientHeight &&
-                        document.documentElement.clientHeight
-                    ) {
-                        clientHeight =
-                            document.body.clientHeight < document.documentElement.clientHeight
-                                ? document.body.clientHeight
-                                : document.documentElement.clientHeight;
-                    } else {
-                        clientHeight =
-                            document.body.clientHeight > document.documentElement.clientHeight
-                                ? document.body.clientHeight
-                                : document.documentElement.clientHeight;
-                    }
-                    let scrollBottom = totalHeight - scrollTop - clientHeight;
-                    this.bottomAllLoaded = scrollBottom <= 0 ? false : true;
-                });
             },
             scoreColorStyle(score) {
                 let val = parseFloat(score);
