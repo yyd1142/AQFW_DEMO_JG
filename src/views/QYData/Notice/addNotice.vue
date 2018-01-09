@@ -3,8 +3,10 @@
         <div class="placeholder-item"></div>
         <mko-header title="通知内容" left-icon-text="取消" @handleLeftClick="back" right-icon-text="发送" @handleRightClick="send"></mko-header>
         <div class="page-wrap">
-            <mko-form-cell title="标题" v-model="formData.title" holder-text="请输入通知标题" edit></mko-form-cell>
-            <mko-textarea v-model="formData.content" :val="formData.content" placeholder="请输入通知正文"></mko-textarea>
+            <div class="form-card">
+                <mko-form-cell title="标题" v-model="formData.title" holder-text="请输入通知标题" :edit="true" type="text"></mko-form-cell>
+                <mko-textarea v-model="formData.content" :val="formData.content" placeholder="请输入通知正文"></mko-textarea>
+            </div>
         </div>
     </div>
 </template>
@@ -41,5 +43,19 @@ export default {
 <style lang="less">
 .qy-addnotice-model {
     padding-top: 10px;
+    .page-wrap {
+        .form-card {
+            background-color: #ffffff;
+            .mko-text-area {
+                background: none;
+                .body {
+                    background: #f2f2f2;
+                    textarea {
+                        background: #f2f2f2;
+                    }
+                }
+            }
+        }
+    }
 }
 </style>

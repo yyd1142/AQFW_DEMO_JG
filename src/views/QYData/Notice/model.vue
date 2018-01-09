@@ -39,7 +39,10 @@ export default {
         },
         history() {
             this.$MKOPush({
-                path: '/notice_history'
+                path: '/notice',
+                query: {
+                    isHistory: true
+                }
             })
         }
     }
