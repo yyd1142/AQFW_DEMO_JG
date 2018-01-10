@@ -14,7 +14,8 @@
                     <div class="breath abs-middle"></div>
                     <div class="loading-end abs-middle" v-show="isLoadingEnd"></div>
                     <div class="score abs-middle">{{score}}</div>
-                    <div class="score-text abs-middle">{{calcScoreText(score)}}级</div>
+                    <div class="score-text abs-middle" v-show="score">{{calcScoreText(score)}}级</div>
+                    <div class="score-text abs-middle" v-show="!score">-</div>
                     <div class="title no-overflow abs-middle">{{title}}</div>
                     <div class="refresh-wrap abs-middle">
                         <div class="btn icon-refresh" :class="isRefresh?'rotate':null"></div>
@@ -44,7 +45,7 @@
     import { calcScoreText } from 'filters'
     let theme = 'macarons';
     let _refreshTime = 100;
-    let _loadingTime = 3000;
+    let _loadingTime = 1500;
     let _loadingEndTime = 3000;
     let _timer1 = null;
     let _timer2 = null;
