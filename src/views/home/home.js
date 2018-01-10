@@ -73,13 +73,13 @@ export default {
             })
         },
         routerLink(item) {
-            if (item.url == '/fw_list') {
-                Toast({
-                    message: '功能未开放',
-                    duration: 1000
-                });
-                return;
-            }
+            // if (item.url == '/fw_list') {
+            //     Toast({
+            //         message: '功能未开放',
+            //         duration: 1000
+            //     });
+            //     return;
+            // }
             this.$nextTick(() => {
                 this.$MKOPush(item.url);
             })
