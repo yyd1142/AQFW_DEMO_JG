@@ -13,10 +13,8 @@ export default {
         return {
             list: [],
             notices: [],
-            autoFill: false,
-            bottomAllLoaded: false,
+            noLoadMore: false,
             notData: false,
-            bottomStatus: '',
             page: 1,
             pageItem: {},
             notReadIcon:`<i class="not-read-item"></i>`,
@@ -24,7 +22,6 @@ export default {
         }
     },
     activated() {
-        window.addEventListener('scroll', this.handleScroll);
         if (new Date(sessionStorage.getItem(`KEEP_ALIVE_RESET_TIME_notice`)) < new Date() || _userName != this.$store.getters.userName) {
             this.noticeList();
             // this.notices=[
@@ -39,13 +36,10 @@ export default {
         }
     },
     deactivated() {
-        window.removeEventListener('scroll', this.handleScroll)
+        
     },
     methods: {
         linkPath(item) {
-            if (this.bottomStatus == 'drop' || this.bottomStatus == 'loading' || this.topStatus == 'drop' || this.topStatus == 'loading') {
-                return false;
-            }
             this.$MKOPush({
                 path: `/notice/${item.id}`,
                 query: {
@@ -63,7 +57,6 @@ export default {
             this.notices = []
             api.getNoticesList(params).then(result => {
                 _userName = this.$store.getters.userName
-                this.$refs.loadmore.onTopLoaded();
                 if (!result) {
                     this.notData = true;
                     Indicator.close()
@@ -75,6 +68,7 @@ export default {
                         updateDatas = [];
                         this.notices = [];
                         this.notData = true;
+                        this.noLoadMore = true;
                     } else {
                         updateDatas = result.response.datas;
                         this.pageItem = {
@@ -82,6 +76,7 @@ export default {
                         }
                         this.notices = result.response.datas;
                         this.notData = false;
+                        this.noLoadMore = false;
                     }
                 } else {
                     this.notData = true;
@@ -90,55 +85,52 @@ export default {
                 Indicator.close()
             })
         },
-        handleBottomChange(status) {
-            this.bottomStatus = status;
-        },
         // 分页
         loadBottom() {
-            setTimeout(() => {
-                if (this.pageItem.pageCount == this.pageItem.page) {   //总页数少于1页，不支持分页功能
-                    Toast({
-                        message: '暂无更多数据',
-                        position: 'middle',
-                        duration: 1500
-                    });
-                    this.$refs.loadmore.onBottomLoaded();
-                    return;
-                }
-                this.pageItem.page = this.pageItem.page + 1
-                let params = {
-                    userName: this.$store.getters.userName,
-                    page: this.pageItem.page,
-                    count: count
-                }
-                api.getNoticesList(params).then(result => {
-                    this.bottomAllLoaded = true;
-                    this.$refs.loadmore.onBottomLoaded();
-                    if (result.code == 0) {
-                        if (result.response.datas.length <= 0) {
-                            Toast({
-                                message: '暂无更多数据',
-                                position: 'middle',
-                                duration: 1500
-                            });
-                        } else {
-                            Toast({
-                                message: '加载完成',
-                                position: 'middle',
-                                duration: 1500
-                            });
-                            if (!needUpdate) {
-                                updateDatas = updateDatas.concat(result.response.datas);
-                                this.notices = updateDatas;
-                            } else {
-                                this.notices = this.notices.concat(result.response.datas);
-                            }
-                        }
+            if (this.pageItem.pageCount == this.pageItem.page) {   //总页数少于1页，不支持分页功能
+                Toast({
+                    message: '暂无更多数据',
+                    position: 'middle',
+                    duration: 1500
+                });
+                this.noLoadMore = true;
+                return;
+            }
+            this.pageItem.page = this.pageItem.page + 1
+            let params = {
+                userName: this.$store.getters.userName,
+                page: this.pageItem.page,
+                count: count
+            }
+            Indicator.open({ spinnerType: 'fading-circle' });
+            api.getNoticesList(params).then(result => {
+                if (result.code == 0) {
+                    Indicator.close()
+                    if (result.response.datas.length <= 0) {
+                        Toast({
+                            message: '暂无更多数据',
+                            position: 'middle',
+                            duration: 1500
+                        });
+                        this.noLoadMore = true;
                     } else {
-
+                        Toast({
+                            message: '加载完成',
+                            position: 'middle',
+                            duration: 1500
+                        });
+                        if (!needUpdate) {
+                            updateDatas = updateDatas.concat(result.response.datas);
+                            this.notices = updateDatas;
+                        } else {
+                            this.notices = this.notices.concat(result.response.datas);
+                        }
+                        this.noLoadMore = false;
                     }
-                })
-            }, 1500);
+                } else {
+                    Indicator.close()
+                }
+            })
         },
         loadTop() {
             setTimeout(() => {
@@ -147,9 +139,6 @@ export default {
                 this.noticeList();
             }, 1500)
         },
-        handleTopChange(status) {
-            this.topStatus = status;
-        },
         back() {
             this.$MKOPop()
         },
@@ -157,7 +146,7 @@ export default {
             Indicator.open({ spinnerType: 'fading-circle' });
             setTimeout(() => {
                 sessionStorage.removeItem('NOTICEDETAIL_READ_STATUS')
-                this.bottomAllLoaded = false
+                this.noLoadMore = false
                 this.notices = [];
                 this.noticeList()
                 Toast({
@@ -166,20 +155,6 @@ export default {
                     duration: 1500
                 });
             }, 1500)
-        },
-        handleScroll() {
-            this.$nextTick(() => {
-                let totalHeight = document.getElementById('pageWrapper').offsetHeight;
-                let scrollTop = document.documentElement && document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
-                let clientHeight = 0;
-                if (document.body.clientHeight && document.documentElement.clientHeight) {
-                    clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
-                } else {
-                    clientHeight = (document.body.clientHeight > document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
-                }
-                let scrollBottom = totalHeight - scrollTop - clientHeight;
-                this.bottomAllLoaded = scrollBottom <= 0 ? false : true;
-            })
         }
     },
     components: {

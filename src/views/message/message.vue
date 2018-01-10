@@ -3,11 +3,10 @@
         <div class="placeholder-item"></div>
         <mko-header title="消息列表" left-icon="icon-back" @handleLeftClick="back" right-icon-text="刷新" @handleRightClick="refresh"></mko-header>
         <div class="page-wrap message-page-wrap" id="pageWrapper">
-            <mt-loadmore :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="bottomAllLoaded" ref="loadmore" :auto-fill="autoFill">
-                <mko-cell :class="index == systemMessages.length - 1 ? 'no-border' : ''" v-for="item, index in systemMessages" :title="titleFilters(item)" @click="linkPath(item)" main="left" is-link>
-                    <div style="color: #666666">{{item.createTime | formatDate('YYYY-MM-DD')}}</div>
-                </mko-cell>
-            </mt-loadmore>
+            <mko-cell :class="index == systemMessages.length - 1 ? 'no-border' : ''" v-for="item, index in systemMessages" :title="titleFilters(item)" @click="linkPath(item)" main="left" is-link>
+                <div style="color: #666666">{{item.createTime | formatDate('YYYY-MM-DD')}}</div>
+            </mko-cell>
+            <mko-load-more @click="loadBottom" :no-load-more="noLoadMore" v-if="!notData"></mko-load-more>
         </div>
         <no-data class="not-data-wrap" v-if="notData"></no-data>
         <res-error v-if="resError"></res-error>

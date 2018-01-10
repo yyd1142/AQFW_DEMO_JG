@@ -12,19 +12,14 @@
             <mko-nav-bar>
                 <mko-tab-item :label="item.text" :activied="item.actived" @handleTabClick="tab(item, index)" v-for="(item, index) in tabs"></mko-tab-item>
             </mko-nav-bar>
-
-            <mt-loadmore :bottom-method="loadBottom" @bottom-status-change="handleBottomChange"
-                         :bottom-all-loaded="bottomAllLoaded" ref="loadmore" :auto-fill="autoFill">
-                <ul class="notice-table-view">
-
-                    <mko-double-cell :title="item.yhDesc || '暂无风险描述'" is-link
-                                     :label="`上报人：${item.employeeName || '暂无'}（${item.sbDWName || '暂无上报单位'}）`"
-                                     v-for="item in hiddenDangers" @click="linkPath('/hidden_danger_info/' + item.id)">
-                        <div style="color: #666666">{{item.createDate | formatDate('YYYY-MM-DD HH:mm')}}</div>
-                    </mko-double-cell>
-
-                </ul>
-            </mt-loadmore>
+            <ul class="notice-table-view">
+                <mko-double-cell :title="item.yhDesc || '暂无风险描述'" is-link
+                                    :label="`上报人：${item.employeeName || '暂无'}（${item.sbDWName || '暂无上报单位'}）`"
+                                    v-for="item in hiddenDangers" @click="linkPath('/hidden_danger_info/' + item.id)">
+                    <div style="color: #666666">{{item.createDate | formatDate('YYYY-MM-DD HH:mm')}}</div>
+                </mko-double-cell>
+            </ul>
+            <mko-load-more @click="loadBottom" :no-load-more="noLoadMore" v-if="!notData"></mko-load-more>
         </div>
         <no-data class="not-data-wrap" v-if="notData"></no-data>
     </div>

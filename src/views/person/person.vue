@@ -4,8 +4,7 @@
         <mko-header title="我的"></mko-header>
         <div class="page-wrap person-page-wrap">
             <div ref="wrapper">
-                <mt-loadmore ref="loadmore" :top-method="loadTop" @top-status-change="handleTopChange"
-                             :auto-fill="autoFill">
+                <mt-loadmore ref="loadmore" :top-method="loadTop" @top-status-change="handleTopChange" :auto-fill="autoFill">
                     <div :style="{ height: wrapperHeight - 100 + 'px'}">
                         <div class="cell-wrap">
                             <mko-double-cell :title="`${personData.name || 'null'}（${JgRoleType(personData.role)}）`"

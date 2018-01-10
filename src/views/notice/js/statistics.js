@@ -14,28 +14,19 @@ export default {
         return {
             list: [],
             notices: [],
-            autoFill: false,
-            bottomAllLoaded: false,
+            noLoadMore: false,
             notData: false,
-            bottomStatus: '',
             page: 1,
             pageItem: {}
         }
     },
     activated() {
-        window.addEventListener('scroll', this.handleScroll);
         if (new Date(sessionStorage.getItem(`KEEP_ALIVE_RESET_TIME_statistics`)) < new Date() || _userName != this.$store.getters.userName) {
             this.noticeList();
         }
     },
-    deactivated() {
-        window.removeEventListener('scroll', this.handleScroll)
-    },
     methods: {
         linkPath(item) {
-            if (this.bottomStatus == 'drop' || this.bottomStatus == 'loading' || this.topStatus == 'drop' || this.topStatus == 'loading') {
-                return false;
-            }
             this.$MKOPush({
                 name: 'noticeReplyList',
                 params: {
@@ -51,9 +42,9 @@ export default {
                 count: count
             }
             this.notices = []
+            Indicator.open({ spinnerType: 'fading-circle' });
             api.getStatisticsList(params).then(result => {
                 _userName = this.$store.getters.userName
-                this.$refs.loadmore.onTopLoaded();
                 if (!result) {
                     this.notData = true;
                     Indicator.close()
@@ -80,58 +71,55 @@ export default {
                 Indicator.close()
             })
         },
-        handleBottomChange(status) {
-            this.bottomStatus = status;
-        },
         // 分页
         loadBottom() {
-            setTimeout(() => {
-                if (this.pageItem.pageCount == this.pageItem.page) {   //总页数少于1页，不支持分页功能
-                    Toast({
-                        message: '暂无更多数据',
-                        position: 'middle',
-                        duration: 1500
-                    });
-                    this.bottomAllLoaded = true;
-                    this.$refs.loadmore.onBottomLoaded();
-                    return;
-                }
-                this.pageItem.page = this.pageItem.page + 1
-                let params = {
-                    userName: this.$store.getters.userName,
-                    page: this.pageItem.page,
-                    count: count,
-                    groupId: this.$store.getters.groupId
-                }
-                api.getStatisticsList(params).then(result => {
-                    this.bottomAllLoaded = true;
-                    this.$refs.loadmore.onBottomLoaded();
-                    if (result.code == 0) {
-                        // count = this.page * loadMorecount;
-                        if (result.response.datas.length <= 0) {
-                            Toast({
-                                message: '暂无更多数据',
-                                position: 'middle',
-                                duration: 1500
-                            });
-                        } else {
-                            Toast({
-                                message: '加载完成',
-                                position: 'middle',
-                                duration: 1500
-                            });
-                            if (!needUpdate) {
-                                updateDatas = updateDatas.concat(result.response.datas);
-                                this.notices = updateDatas;
-                            } else {
-                                this.notices = this.notices.concat(result.response.datas);
-                            }
-                        }
+            if (this.pageItem.pageCount == this.pageItem.page) {   //总页数少于1页，不支持分页功能
+                Toast({
+                    message: '暂无更多数据',
+                    position: 'middle',
+                    duration: 1500
+                });
+                this.noLoadMore = true;
+                return;
+            }
+            this.pageItem.page = this.pageItem.page + 1
+            let params = {
+                userName: this.$store.getters.userName,
+                page: this.pageItem.page,
+                count: count,
+                groupId: this.$store.getters.groupId
+            }
+            Indicator.open({ spinnerType: 'fading-circle' });
+            api.getStatisticsList(params).then(result => {
+                if (result.code == 0) {
+                    Indicator.close()
+                    // count = this.page * loadMorecount;
+                    if (result.response.datas.length <= 0) {
+                        Toast({
+                            message: '暂无更多数据',
+                            position: 'middle',
+                            duration: 1500
+                        });
+                        this.noLoadMore = true;
                     } else {
-
+                        Toast({
+                            message: '加载完成',
+                            position: 'middle',
+                            duration: 1500
+                        });
+                        if (!needUpdate) {
+                            updateDatas = updateDatas.concat(result.response.datas);
+                            this.notices = updateDatas;
+                        } else {
+                            this.notices = this.notices.concat(result.response.datas);
+                        }
+                        this.noLoadMore = false;
                     }
-                })
-            }, 1500);
+                } else {
+                    Indicator.close()
+                    this.noLoadMore = false;
+                }
+            })
         },
         loadTop() {
             setTimeout(() => {
@@ -140,9 +128,6 @@ export default {
                 this.noticeList();
             }, 1500)
         },
-        handleTopChange(status) {
-            this.topStatus = status;
-        },
         back() {
             this.$MKOPop()
         },
@@ -150,7 +135,7 @@ export default {
             Indicator.open({ spinnerType: 'fading-circle' });
             setTimeout(() => {
                 sessionStorage.removeItem('NOTICEDETAIL_READ_STATUS')
-                this.bottomAllLoaded = false
+                this.noLoadMore = false
                 this.notices = [];
                 this.noticeList()
                 Toast({
@@ -167,20 +152,6 @@ export default {
             } else {
                 return item.isReadCount;
             }
-        },
-        handleScroll() {
-            this.$nextTick(() => {
-                let totalHeight = document.getElementById('pageWrapper').offsetHeight;
-                let scrollTop = document.documentElement && document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
-                let clientHeight = 0;
-                if (document.body.clientHeight && document.documentElement.clientHeight) {
-                    clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
-                } else {
-                    clientHeight = (document.body.clientHeight > document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
-                }
-                let scrollBottom = totalHeight - scrollTop - clientHeight;
-                this.bottomAllLoaded = scrollBottom <= 0 ? false : true;
-            })
         },
         formatDate(date) {
             return moment(date).format('YYYY-MM-DD');

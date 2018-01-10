@@ -8,15 +8,10 @@
         <div class="page-wrap hdc-sel-wrap" v-show="!resError">
             <mko-search-bar v-model="searchValue" v-show="showSearchBar"></mko-search-bar>
             <div v-show="!noData">
-                <mt-loadmore ref="loadmore" :top-method="loadTop" @top-status-change="handleTopChange"
-                             @bottom-status-change="handleBottomChange" :bottom-method="loadBottom"
-                             :bottom-all-loaded="bottomAllLoaded" :auto-fill="autoFill">
-                    <div class="data-wrap" ref="wrapper" :style="{minHeight:wrapperHeight+'px'}">
-
-                        <mko-cell :title="item.dwName" main="left" @click="selData(item)" v-for="item in dwList"></mko-cell>
-
-                    </div>
-                </mt-loadmore>
+                <div class="data-wrap" ref="wrapper" :style="{minHeight:wrapperHeight+'px'}">
+                    <mko-cell :title="item.dwName" main="left" @click="selData(item)" v-for="item in dwList"></mko-cell>
+                </div>
+                <mko-load-more @click="loadBottom" :no-load-more="noLoadMore"></mko-load-more>
             </div>
         </div>
     </div>
@@ -34,18 +29,13 @@
                 //提示
                 resError: false,
                 noData: false,
-                //loadMore
-                wrapperHeight: 0,
-                autoFill: false,
-                topStatus: '',
-                bottomStatus: '',
-                bottomAllLoaded: false,
                 //数据
                 page: 1,
                 dwList: [],
                 //搜索
                 showSearchBar: false,
                 searchValue: '',
+                noLoadMore: false
             }
         },
         watch: {
@@ -59,11 +49,10 @@
             this.$nextTick(() => {
                 req_page = 1;
                 this.getData();
-                this.wrapperHeight = Math.max(document.documentElement.clientHeight, document.body.clientHeight) - this.$refs.wrapper.getBoundingClientRect().top;
             });
         },
         activated(){
-            //
+            
         },
         destroyed() {
             this.searchValue = '';
@@ -80,8 +69,6 @@
                     search: this.searchValue
                 };
                 api.getQyList(params).then(res => {
-                    this.$refs.loadmore.onTopLoaded();
-                    this.$refs.loadmore.onBottomLoaded();
                     if (!res) {
                         this.resError = true;
                         Indicator.close();
@@ -98,9 +85,11 @@
                             this.dwList.push(item);
                         });
                         if (length < req_count) {
-                            this.bottomAllLoaded = true;
+                            this.noLoadMore = true;
                             if (req_page != 1)
                                 Toast({message: '暂无更多数据', position: 'middle', duration: 1500});
+                        } else {
+                            this.noLoadMore = false;
                         }
                     }
                     Indicator.close();
@@ -108,28 +97,20 @@
             },
             loadTop(){
                 req_page = 1;
-                this.bottomAllLoaded = false;
+                this.noLoadMore = false;
                 setTimeout(this.getData, 1000);
-            },
-            handleTopChange(status) {
-                this.topStatus = status;
             },
             loadBottom() {
                 req_page++;
                 this.getData();
             },
-            handleBottomChange(status) {
-                this.bottomStatus = status;
-            },
             selData(val){
-                if (this.topStatus != 'drop' && this.topStatus != 'loading' && this.bottomStatus != 'drop' && this.bottomStatus != 'loading') {
-                    let obj = {
-                        groupId: val.groupId,
-                        dwName: val.dwName
-                    };
-                    this.$emit('sel', obj);
-                    this.changePage();
-                }
+                let obj = {
+                    groupId: val.groupId,
+                    dwName: val.dwName
+                };
+                this.$emit('sel', obj);
+                this.changePage();
             },
             changePage(){
                 this.$MKOPop();
@@ -139,7 +120,8 @@
         },
         components: {
             NoData,
-            ResError, SearchBar
+            ResError, 
+            SearchBar
         }
     }
 </script>
@@ -148,7 +130,7 @@
     @import "../../config.less";
 
     .hdc-sel-wrap {
-        padding: 0;
+        padding: 10px 0 0 0;
         .search-wrap {
             height: auto;
             .mint-searchbar {

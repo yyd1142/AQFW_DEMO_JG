@@ -6,18 +6,17 @@
             <mko-nav-bar>
                 <mko-tab-item :label="item" :activied="tabI == i" @handleTabClick="tab" v-for="(item,i) in tabItems"></mko-tab-item>
             </mko-nav-bar>
-            <mt-loadmore :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="bottomAllLoaded" ref="loadmore" :auto-fill="autoFill">
-                <ul class="page-infinite-list">
-                    <li v-for="item in newsDatas" class="page-infinite-listitem" @click="goNewsInfo(item)">
-                        <div class="padding">
-                        <img v-lazy="domain + item.fileId"/>
-                        <div class="news-title" v-text="titleFilters(item.title)"></div>
-                        <div class="news-date">{{item.author}}<span style="margin-left: 10px;">{{item.createDate | formatDate('YYYY-MM-DD')}}</span></div>
-                        </div>
-                    </li>
-                    <li class="not-data-home"  v-if="newsDatas.length == 0">暂无内容</li>
-                </ul>
-            </mt-loadmore>
+            <ul class="page-infinite-list">
+                <li v-for="item in newsDatas" class="page-infinite-listitem" @click="goNewsInfo(item)">
+                    <div class="padding">
+                    <img v-lazy="domain + item.fileId"/>
+                    <div class="news-title" v-text="titleFilters(item.title)"></div>
+                    <div class="news-date">{{item.author}}<span style="margin-left: 10px;">{{item.createDate | formatDate('YYYY-MM-DD')}}</span></div>
+                    </div>
+                </li>
+            </ul>
+            <mko-load-more @click="loadBottom" :no-load-more="noLoadMore" v-if="newsDatas.length != 0"></mko-load-more>
+            <no-data v-if="newsDatas.length == 0"></no-data>
         </div>
     </div>
 </template>
@@ -25,15 +24,17 @@
 <script>
 var isloadTop = false;
 var page = 1;
+var count = 15;
 var needUpdate = [
     {},
-    { isupdate: true, datas: [], type: 1, bottomAllLoaded: false, page: 1 },
-    { isupdate: true, datas: [], type: 2, bottomAllLoaded: false, page: 1 },
-    { isupdate: true, datas: [], type: 3, bottomAllLoaded: false, page: 1 },
-    { isupdate: true, datas: [], type: 4, bottomAllLoaded: false, page: 1 }];
+    { isupdate: true, datas: [], type: 1, noLoadMore: false, page: 1 },
+    { isupdate: true, datas: [], type: 2, noLoadMore: false, page: 1 },
+    { isupdate: true, datas: [], type: 3, noLoadMore: false, page: 1 },
+    { isupdate: true, datas: [], type: 4, noLoadMore: false, page: 1 }];
 import api from 'api'
-import { Toast } from 'mint-ui'
+import { Toast, Indicator } from 'mint-ui'
 import apiconf from 'apiconf'
+import { NoData } from 'components'
 export default {
     data() {
         return {
@@ -41,15 +42,12 @@ export default {
             tabI: 0,
             tabItems: ['新闻通知', '安全知识', '法律法规', '经典案例'],
             newsDatas: [],
-            bottomStatus: '',
             newsType: 1,
-            bottomAllLoaded: false,
-            autoFill: false,
+            noLoadMore: false,
             resError: false
         }
     },
     activated() {
-        window.addEventListener('scroll', this.handleScroll);
         if (needUpdate[this.newsType].datas.length <= 0) {
             this.newsList(1, this.newsType);
         } else {
@@ -57,7 +55,7 @@ export default {
         }
     },
     deactivated() {
-        window.removeEventListener('scroll', this.handleScroll)
+        
     },
     methods: {
         back() {
@@ -73,9 +71,6 @@ export default {
             }
         },
         goNewsInfo(item) {
-            if (this.bottomStatus == 'drop' || this.bottomStatus == 'loading') {
-                return false;
-            }
             this.$MKOPush({
                 name: "newsInfo",
                 params: {
@@ -96,23 +91,26 @@ export default {
         newsList(page, type) {
             if (!needUpdate[type].isupdate && needUpdate[type].type == type) {
                 this.newsDatas = needUpdate[type].datas;
+                this.noLoadMore = needUpdate[type].noLoadMore;
                 return false;
             }
             let params = {
                 informationType: type,
                 page: needUpdate[type].page,
-                count: 15
+                count: count
             };
+            Indicator.open({ spinnerType: 'fading-circle' });
             api.getNewsList(params).then(result => {
                 if (!result) {
+                    Indicator.close()
                     if (localStorage.getItem('newsDatas')) {
                         this.newsDatas = JSON.parse(localStorage.getItem('newsDatas'))[type].datas;
                     }
                     return false;
                 }
                 if (result.code == 0) {
+                    Indicator.close()
                     if (isloadTop) {
-                        this.$refs.loadmore.onTopLoaded();
                         Toast({
                             message: '刷新成功',
                             position: 'middle',
@@ -125,9 +123,9 @@ export default {
                             datas: result.response.datas,
                             page: result.response.page,
                             pageCount: result.response.pageCount,
-                            bottomAllLoaded: false
+                            noLoadMore: false
                         };
-                        this.bottomAllLoaded = true;
+                        this.noLoadMore = false;
                         this.newsDatas = result.response.datas;
                     } else {
                         needUpdate[type] = {
@@ -136,88 +134,74 @@ export default {
                             datas: [],
                             page: result.response.page,
                             pageCount: result.response.pageCount,
-                            bottomAllLoaded: true
+                            noLoadMore: true
                         };
                         this.newsDatas = []
-                        this.bottomAllLoaded = true;
+                        this.noLoadMore = true;
                     }
                     localStorage.setItem('newsDatas', JSON.stringify(needUpdate));
                 } else {
+                    Indicator.close()
                     this.resError = true;
                 }
             })
         },
         // 分页
         loadBottom() {
-            setTimeout(() => {
-                if (needUpdate[this.newsType].page == needUpdate[this.newsType].pageCount) {
-                    Toast({
-                        message: '暂无更多数据',
-                        position: 'middle',
-                        duration: 1500
-                    });
-                    needUpdate[this.newsType].bottomAllLoaded = true
-                    this.bottomAllLoaded = true;
-                    this.$refs.loadmore.onBottomLoaded();
-                    return false;
-                }
-                needUpdate[this.newsType].page = needUpdate[this.newsType].page + 1
-                let params = {
-                    informationType: this.newsType,
-                    page: needUpdate[this.newsType].page,
-                    count: 15
-                };
-                api.getNewsList(params).then(result => {
-                    this.$refs.loadmore.onBottomLoaded();
-                    if (result.code == 0) {
-                        if (result.response.datas.length == 0) {
-                            Toast({
-                                message: '暂无更多数据',
-                                position: 'middle',
-                                duration: 1500
-                            });
-                            needUpdate[this.newsType].bottomAllLoaded = true;
-                            this.bottomAllLoaded = true;
-                        } else {
-                            Toast({
-                                message: '加载完成',
-                                position: 'middle',
-                                duration: 1500
-                            });
-                            this.newsDatas = this.newsDatas.concat(result.response.datas);
-                            this.bottomAllLoaded = true;
-                            needUpdate[this.newsType] = {
-                                isupdate: false,
-                                type: this.newsType,
-                                datas: this.newsDatas,
-                                page: result.response.page,
-                                pageCount: result.response.pageCount,
-                                bottomAllLoaded: false
-                            }
-                        }
+            if (needUpdate[this.newsType].page == needUpdate[this.newsType].pageCount) {
+                Toast({
+                    message: '暂无更多数据',
+                    position: 'middle',
+                    duration: 1500
+                });
+                needUpdate[this.newsType].noLoadMore = true
+                this.noLoadMore = true;
+                return false;
+            }
+            needUpdate[this.newsType].page = needUpdate[this.newsType].page + 1
+            let params = {
+                informationType: this.newsType,
+                page: needUpdate[this.newsType].page,
+                count: count
+            };
+            Indicator.open({ spinnerType: 'fading-circle' });
+            api.getNewsList(params).then(result => {
+                if (result.code == 0) {
+                    Indicator.close()
+                    if (result.response.datas.length == 0) {
+                        Toast({
+                            message: '暂无更多数据',
+                            position: 'middle',
+                            duration: 1500
+                        });
+                        needUpdate[this.newsType].noLoadMore = true;
+                        this.noLoadMore = true;
                     } else {
-                        this.resError = true;
+                        Toast({
+                            message: '加载完成',
+                            position: 'middle',
+                            duration: 1500
+                        });
+                        this.newsDatas = this.newsDatas.concat(result.response.datas);
+                        this.noLoadMore = false;
+                        needUpdate[this.newsType] = {
+                            isupdate: false,
+                            type: this.newsType,
+                            datas: this.newsDatas,
+                            page: result.response.page,
+                            pageCount: result.response.pageCount,
+                            noLoadMore: false
+                        }
                     }
-                })
-            }, 1500);
-        },
-        handleBottomChange(status) {
-            this.bottomStatus = status;
-        },
-        handleScroll() {
-            this.$nextTick(() => {
-                let totalHeight = document.getElementById('pageWrapper') ? document.getElementById('pageWrapper').offsetHeight : 0;
-                let scrollTop = document.documentElement && document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
-                let clientHeight = 0;
-                if (document.body.clientHeight && document.documentElement.clientHeight) {
-                    clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
                 } else {
-                    clientHeight = (document.body.clientHeight > document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+                    Indicator.close()
+                    this.resError = true;
                 }
-                let scrollBottom = totalHeight - scrollTop - clientHeight;
-                this.bottomAllLoaded = scrollBottom <= 0 ? false : true;
             })
         }
+    },
+    components: {
+        NoData
     }
 }
 </script>

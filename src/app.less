@@ -706,3 +706,31 @@ input, button, select, textarea {
         width: 70%;
     }
 }
+
+.header-right {
+    margin: 0 0 0 auto;
+    width: 80px;
+    float: right;
+    padding: 0;
+    height: @headerHeight;
+    position: relative;
+    .icon {
+        display: block;
+    }
+    .right-icon {
+        margin: auto;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 14px;
+    }
+    .right-text {
+        float: right;
+        vertical-align: middle;
+        height: @headerHeight;
+        line-height: @headerHeight;
+        text-align: right;
+        padding-right: 14px;
+        width: 100%;
+    }
+}

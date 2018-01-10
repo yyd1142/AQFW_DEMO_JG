@@ -1,11 +1,14 @@
 <template>
     <div class="notice-index">
         <div class="placeholder-item"></div>
-        <mko-header title="通知公告" left-icon="icon-back" @handleLeftClick="back" right-icon-text="统计" @handleRightClick="$MKOPush('/statisticsNotice')"></mko-header>
+        <mko-header :title="this.$route.query.isHistory ? '通知记录' : '通知公告'" left-icon="icon-back" @handleLeftClick="back">
+          <div class="header-right" slot="custom" v-if="!this.$route.query.isHistory" @click="$MKOPush('/statisticsNotice')">
+            <span class="right-text">统计</span>
+          </div>
+        </mko-header>
         <div class="page-wrap notice-list-wrap" id="pageWrapper">
-            <mt-loadmore :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="bottomAllLoaded" ref="loadmore" :auto-fill="autoFill">
-                <mko-double-cell :class="index == notices.length - 1 ? 'no-border' : ''" :title="`${item.status == 0 ? notReadIcon:''}${item.title || '标题为空'}`" :label="item.createTime | formatDate" is-link @click="linkPath(item)" v-for="item, index in notices"></mko-double-cell>
-            </mt-loadmore>
+            <mko-double-cell :class="index == notices.length - 1 ? 'no-border' : ''" :title="`${item.status == 0 ? notReadIcon:''}${item.title || '标题为空'}`" :label="item.createTime | formatDate" is-link @click="linkPath(item)" v-for="item, index in notices"></mko-double-cell>
+            <mko-load-more @click="loadBottom" :no-load-more="noLoadMore" v-if="!notData"></mko-load-more>
         </div>
         <no-data class="not-data-wrap" v-if="notData"></no-data>
     </div>

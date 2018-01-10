@@ -5,9 +5,9 @@ import { formatDate } from 'filters';
 
 var needUpdate = [
   {},
-  { isupdate: true, datas: [], type: 1, bottomAllLoaded: false, page: 1 },
-  { isupdate: true, datas: [], type: 2, bottomAllLoaded: false, page: 1 },
-  { isupdate: true, datas: [], type: 3, bottomAllLoaded: false, page: 1 }];
+  { isupdate: true, datas: [], type: 1, noLoadMore: false, page: 1 },
+  { isupdate: true, datas: [], type: 2, noLoadMore: false, page: 1 },
+  { isupdate: true, datas: [], type: 3, noLoadMore: false, page: 1 }];
 
 export default {
   data() {
@@ -18,19 +18,16 @@ export default {
       tabs: [{ actived: 'actived', text: '未处置', type: 1 }, { actived: '', text: '处置中', type: 3 }, { actived: '', text: '已处置', type: 2 }],
       hiddenDangersType: 1,
       hiddenDangersDatas: [],
-      autoFill: false,
-      bottomAllLoaded: false,
-      bottomStatus: ''
+      noLoadMore: false
     }
   },
   activated() {
-    window.addEventListener('scroll', this.handleScroll);
     this.$nextTick(() => {
       this.getData(1, this.hiddenDangersType);
     });
   },
   deactivated() {
-    window.removeEventListener('scroll', this.handleScroll)
+
   },
   methods: {
     getData(page, type, isloadTop) {
@@ -47,16 +44,17 @@ export default {
           this.resError = true;
           return;
         }
-        this.$refs.loadmore.onBottomLoaded();
         if (res.code === 0) {
           if (res.response && res.response.datas.length > 0) {
-            needUpdate[type] = { isupdate: false, type: type, datas: res.response.datas, bottomAllLoaded: false, page: res.response.page, pageCount: res.response.pageCount, count: res.response.count, countNumber: res.response.countNumber };
+            needUpdate[type] = { isupdate: false, type: type, datas: res.response.datas, noLoadMore: false, page: res.response.page, pageCount: res.response.pageCount, count: res.response.count, countNumber: res.response.countNumber };
             this.hiddenDangers = res.response.datas;
             this.notData = false;
+            this.noLoadMore = false;
           } else {
-            needUpdate[type] = { isupdate: false, type: type, datas: [], bottomAllLoaded: true, page: 1 };
+            needUpdate[type] = { isupdate: false, type: type, datas: [], noLoadMore: true, page: 1 };
             this.hiddenDangers = [];
             this.notData = true;
+            this.noLoadMore = true;
           }
         } else {
 
@@ -74,7 +72,7 @@ export default {
       // console.log(needUpdate)
       this.notData = false;
       this.hiddenDangersType = item.type;
-      this.bottomAllLoaded = needUpdate[item.type].bottomAllLoaded;
+      this.noLoadMore = needUpdate[item.type].noLoadMore;
       if (needUpdate[item.type].datas.length <= 0) {
         this.getData(1, this.hiddenDangersType);
       } else {
@@ -85,83 +83,61 @@ export default {
     },
     // 分页
     loadBottom() {
-      setTimeout(() => {
-        if (needUpdate[this.hiddenDangersType].page == needUpdate[this.hiddenDangersType].pageCount) {
-          Toast({
-            message: '暂无更多数据',
-            position: 'middle',
-            duration: 1500
-          });
-          this.$refs.loadmore.onBottomLoaded();
-          return;
-        }
-        let page = needUpdate[this.hiddenDangersType].page;
-        page = page + 1;
-        api.getYhkList({
-          m: this.$store.getters.userInfo.type === 1 ? 'gjList' : 'xtList',
-          groupId: this.$route.params.id,
-          status: this.hiddenDangersType,
-          page: page,
-          count: 10
-        }).then(result => {
-          this.bottomAllLoaded = true;
-          this.$refs.loadmore.onBottomLoaded();
-          if (result.code == 0) {
-            if (result.response.datas === undefined || result.response.datas.length == 0) {
-              Toast({
-                message: '暂无更多数据',
-                position: 'middle',
-                duration: 1500
-              });
-            } else {
-              Toast({
-                message: '加载完成',
-                position: 'middle',
-                duration: 1500
-              });
-              this.hiddenDangers = this.hiddenDangers.concat(result.response.datas);
-              needUpdate[this.hiddenDangersType] = {
-                isupdate: false,
-                type: this.hiddenDangersType,
-                datas: this.hiddenDangers,
-                bottomAllLoaded: false,
-                page: result.response.page,
-                pageCount: result.response.pageCount,
-                count: result.response.count,
-                countNumber: result.response.countNumber
-              };
-            }
+      if (needUpdate[this.hiddenDangersType].page == needUpdate[this.hiddenDangersType].pageCount) {
+        Toast({
+          message: '暂无更多数据',
+          position: 'middle',
+          duration: 1500
+        });
+        this.noLoadMore = true;
+        return;
+      }
+      Indicator.open({ spinnerType: 'fading-circle' });
+      let page = needUpdate[this.hiddenDangersType].page;
+      page = page + 1;
+      api.getYhkList({
+        m: this.$store.getters.userInfo.type === 1 ? 'gjList' : 'xtList',
+        groupId: this.$route.params.id,
+        status: this.hiddenDangersType,
+        page: page,
+        count: 10
+      }).then(result => {
+        if (result.code == 0) {
+          Indicator.close();
+          if (result.response.datas === undefined || result.response.datas.length == 0) {
+            Toast({
+              message: '暂无更多数据',
+              position: 'middle',
+              duration: 1500
+            });
           } else {
-
+            Toast({
+              message: '加载完成',
+              position: 'middle',
+              duration: 1500
+            });
+            this.hiddenDangers = this.hiddenDangers.concat(result.response.datas);
+            needUpdate[this.hiddenDangersType] = {
+              isupdate: false,
+              type: this.hiddenDangersType,
+              datas: this.hiddenDangers,
+              noLoadMore: false,
+              page: result.response.page,
+              pageCount: result.response.pageCount,
+              count: result.response.count,
+              countNumber: result.response.countNumber
+            };
           }
-        })
-      }, 1500);
-    },
-    handleBottomChange(status) {
-      this.bottomStatus = status;
+        } else {
+          Indicator.close();
+        }
+      })
     },
     back() {
       this.$MKOPop()
     },
     linkPath(path) {
-      if (this.bottomStatus == 'loading' || this.bottomStatus == 'drop') {
-        return false;
-      }
       this.$MKOPush(path)
-    },
-    handleScroll() {
-      this.$nextTick(() => {
-        let totalHeight = document.getElementById('pageWrapper').offsetHeight;
-        let scrollTop = document.documentElement && document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
-        let clientHeight = 0;
-        if (document.body.clientHeight && document.documentElement.clientHeight) {
-          clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
-        } else {
-          clientHeight = (document.body.clientHeight > document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
-        }
-        let scrollBottom = totalHeight - scrollTop - clientHeight;
-        this.bottomAllLoaded = scrollBottom <= 0 ? false : true;
-      })
     }
   },
   components: {

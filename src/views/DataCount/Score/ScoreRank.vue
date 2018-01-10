@@ -14,17 +14,13 @@
                     <div class="icon-tick-blue-1 fr" v-show="i==tabI"></div>
                 </mko-cell>
             </div>
+            <div class="list-wrap">
+                <mko-cell class="title-cell" title="企业名称" val="得分"></mko-cell>
 
+                <mko-cell :title="item.dwName" main="left" :val="item.dwSafeScore" non-text="0" v-for="item in list"></mko-cell>
 
-            <mt-loadmore ref="loadmore" :bottom-method="loadBottom" @bottom-status-change="handleBottomChange"
-                         :bottom-all-loaded="bottomAllLoaded" :auto-fill="autoFill">
-                <div class="list-wrap">
-                    <mko-cell class="title-cell" title="企业名称" val="得分"></mko-cell>
-
-                    <mko-cell :title="item.dwName" main="left" :val="item.dwSafeScore" non-text="0" v-for="item in list"></mko-cell>
-
-                </div>
-            </mt-loadmore>
+            </div>
+            <mko-load-more @click="loadBottom" :no-load-more="noLoadMore" v-if="list.length != 0"></mko-load-more>
         </div>
     </div>
 </template>
@@ -76,18 +72,14 @@
                     [], []
                 ],
                 total: 0,
-                //load-more
-                autoFill: false,
-                bottomAllLoaded: false,
-                topStatus: '',
-                bottomStatus: '',
+                noLoadMore: false
 
             }
         },
         watch: {
             tabI(){
                 _page = 1;
-                this.bottomAllLoaded = false;
+                this.noLoadMore = false;
                 this.getData();
             }
         },
@@ -101,7 +93,7 @@
         },
         activated(){
             _page = 1;
-            this.bottomAllLoaded = false;
+            this.noLoadMore = false;
             this.tabI = 0;
             this.month = this.$route.query.month || '';
             this.getData();
@@ -130,7 +122,6 @@
                     sort: this.tabItems[this.tabI].value
                 };
                 api.getQyDwRanking(pas).then(res => {
-                    this.$refs.loadmore.onBottomLoaded();
                     if (res && res.code == 0) {
                         if (_page <= 1) {
                             this.list = res.response.datas;
@@ -151,30 +142,11 @@
                         position: 'middle',
                         duration: 1500
                     });
-                    this.bottomAllLoaded = true;
-                    this.$refs.loadmore.onBottomLoaded();
+                    this.noLoadMore = true;
                     return false;
                 }
                 _page++;
                 setTimeout(this.getData, 500);
-            },
-            handleBottomChange(status) {
-                this.bottomStatus = status;
-            },
-            handleScroll() {
-//                this.scoTop = document.documentElement.scrollTop || document.body.scrollTop;
-                this.$nextTick(() => {
-                    let totalHeight = this.$refs['pageWrapper'].offsetHeight;
-                    let scrollTop = document.documentElement && document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
-                    let clientHeight = 0;
-                    if (document.body.clientHeight && document.documentElement.clientHeight) {
-                        clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
-                    } else {
-                        clientHeight = (document.body.clientHeight > document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
-                    }
-                    let scrollBottom = totalHeight - scrollTop - clientHeight;
-                    this.bottomAllLoaded = scrollBottom <= 0 ? false : true;
-                })
             },
             back(){
                 this.$MKOPop();

@@ -7,16 +7,15 @@
                 <mko-tab-item :label="item.text" :activied="item.actived" @handleTabClick="tab(item, index)" v-for="(item, index) in tabs"></mko-tab-item>
             </mko-nav-bar>
             <div ref="wrapper">
-                <mt-loadmore :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="autoFill">
-                    <mko-double-cell 
-                        :class="index == replyDatas.length - 1 ? 'no-border' : ''"
-                        :title="item.dwName" 
-                        :label="`${item.replyName || '暂无'}`" 
-                        :val="replyStatus(item)"
-                        @click="linkPath(item)" 
-                        v-for="item, index in replyDatas" is-link>
-                    </mko-double-cell>
-                </mt-loadmore>
+              <mko-double-cell 
+                  :class="index == replyDatas.length - 1 ? 'no-border' : ''"
+                  :title="item.dwName" 
+                  :label="`${item.replyName || '暂无'}`" 
+                  :val="replyStatus(item)"
+                  @click="linkPath(item)" 
+                  v-for="item, index in replyDatas" is-link>
+              </mko-double-cell>
+              <mko-load-more @click="loadBottom" :no-load-more="noLoadMore" v-if="!notData"></mko-load-more>
             </div>
         </div>
         <no-data class="not-data-wrap"  v-if="notData"></no-data>
@@ -52,50 +51,18 @@ export default {
         isReply: "isRead"
       },
       replyText: "",
-      autoFill: false,
-      allLoaded: true,
-      topStatus: "",
-      bottomStatus: "",
       page: 1,
       pageItem: {},
       scrollBottom: 0
     };
   },
   activated() {
-    window.addEventListener("scroll", this.handleScroll);
     this.getNoticeReplyList();
   },
   deactivated() {
-    window.removeEventListener("scroll", this.handleScroll);
+    
   },
   methods: {
-    handleScroll() {
-      this.$nextTick(() => {
-        let totalHeight =
-          document.getElementById("replyPage").offsetHeight + 40;
-        let scrollTop =
-          document.documentElement && document.documentElement.scrollTop
-            ? document.documentElement.scrollTop
-            : document.body.scrollTop;
-        let clientHeight = 0;
-        if (
-          document.body.clientHeight &&
-          document.documentElement.clientHeight
-        ) {
-          clientHeight =
-            document.body.clientHeight < document.documentElement.clientHeight
-              ? document.body.clientHeight
-              : document.documentElement.clientHeight;
-        } else {
-          clientHeight =
-            document.body.clientHeight > document.documentElement.clientHeight
-              ? document.body.clientHeight
-              : document.documentElement.clientHeight;
-        }
-        let scrollBottom = totalHeight - scrollTop - clientHeight;
-        this.allLoaded = scrollBottom <= 0 ? false : true;
-      });
-    },
     back() {
       this.$MKOPop();
     },
@@ -131,15 +98,16 @@ export default {
         params["isReply"] = this.formData.isReply;
       }
       api.getNoticeReplyList(params).then(result => {
-        this.$refs.loadmore.onTopLoaded();
         Indicator.close();
         if (!result) return false;
         if (result.code == 0) {
           this.$APPUpdateTime("reply");
           if (result.response.datas.length < 0) {
             this.notData = true;
+            this.noLoadMore = true;
           } else {
             this.notData = false;
+            this.noLoadMore = false;
           }
           this.pageItem = {
             page: result.response.page,
@@ -160,14 +128,6 @@ export default {
       }
     },
     linkPath(item) {
-      if (
-        this.bottomStatus == "drop" ||
-        this.bottomStatus == "loading" ||
-        this.topStatus == "drop" ||
-        this.topStatus == "loading"
-      ) {
-        return false;
-      }
       this.$MKOPush({
         path: "/noticeReplyDetail",
         query: {
@@ -175,63 +135,58 @@ export default {
         }
       });
     },
-    handleBottomChange(status) {
-      this.bottomStatus = status;
-    },
     // 分页
     loadBottom() {
-      setTimeout(() => {
-        if (this.pageItem.pageCount == this.pageItem.page) {
-          //总页数少于1页，不支持分页功能
-          Toast({
-            message: "暂无更多数据",
-            position: "middle",
-            duration: 1500
-          });
-          this.allLoaded = true;
-          this.$refs.loadmore.onBottomLoaded();
-          return;
-        }
-        this.pageItem.page = this.pageItem.page + 1;
-        let params = {
-          m: "replyList",
-          noticeId: this.$route.params.pid,
-          page: this.pageItem.page,
-          count: count
-        };
-        if (this.formData.isReply != "isRead") {
-          params["isReply"] = this.formData.isReply;
-        }
-        api.getNoticeReplyList(params).then(result => {
-          this.$refs.loadmore.onBottomLoaded();
-          this.allLoaded = true;
-          if (result.code == 0) {
-            if (result.response.datas.length <= 0) {
-              Toast({
-                message: "暂无更多数据",
-                position: "middle",
-                duration: 1500
-              });
-            } else {
-              Toast({
-                message: "加载完成",
-                position: "middle",
-                duration: 1500
-              });
-              this.replyDatas = this.replyDatas.concat(result.response.datas);
-              updateDatas = this.replyDatas;
-            }
-          }
+      if (this.pageItem.pageCount == this.pageItem.page) {
+        //总页数少于1页，不支持分页功能
+        Toast({
+          message: "暂无更多数据",
+          position: "middle",
+          duration: 1500
         });
-      }, 1500);
-    },
-    handleTopChange(status) {
-      this.topStatus = status;
+        this.noLoadMore = true;
+        return;
+      }
+      this.pageItem.page = this.pageItem.page + 1;
+      let params = {
+        m: "replyList",
+        noticeId: this.$route.params.pid,
+        page: this.pageItem.page,
+        count: count
+      };
+      if (this.formData.isReply != "isRead") {
+        params["isReply"] = this.formData.isReply;
+      }
+      Indicator.open({ spinnerType: 'fading-circle' });
+      api.getNoticeReplyList(params).then(result => {
+        if (result.code == 0) {
+          Indicator.close()
+          if (result.response.datas.length <= 0) {
+            Toast({
+              message: "暂无更多数据",
+              position: "middle",
+              duration: 1500
+            });
+            this.noLoadMore = true;
+          } else {
+            Toast({
+              message: "加载完成",
+              position: "middle",
+              duration: 1500
+            });
+            this.replyDatas = this.replyDatas.concat(result.response.datas);
+            updateDatas = this.replyDatas;
+            this.noLoadMore = false;
+          }
+        } else {
+          Indicator.close()
+        }
+      });
     },
     refresh() {
       Indicator.open({ spinnerType: "fading-circle" });
       setTimeout(() => {
-        this.allLoaded = true;
+        this.noLoadMore = true;
         this.replyDatas = [];
         this.isSelected = false;
         this.formData.isReply = "isRead";
