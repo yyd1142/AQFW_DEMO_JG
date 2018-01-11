@@ -93,11 +93,19 @@
         },
         deactivated() {
             this.isRefresh = false;
+            this.isLoading = false;
+            this.isLoadingEnd = false;
             clearTimeout(_timer1);
             clearTimeout(_timer2);
             clearTimeout(_timer3);
         },
         destroyed(){
+            this.isRefresh = false;
+            this.isLoading = false;
+            this.isLoadingEnd = false;
+            clearTimeout(_timer1);
+            clearTimeout(_timer2);
+            clearTimeout(_timer3);
         },
         methods: {
             calcScoreText,
