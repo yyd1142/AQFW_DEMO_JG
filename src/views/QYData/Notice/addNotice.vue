@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import api from 'api'
+import { Toast } from 'mint-ui'
 export default {
     data() {
         return {
@@ -44,7 +46,30 @@ export default {
                 cancelText: '取消'
             }).then(msg => {
                 if (msg == 'confirm') {
-                    
+                    this.addMessage()
+                }
+            })
+        },
+        addMessage() {
+            api.addMessage({
+                title: this.formData.title,
+                type: "message",
+                receipt: "1",
+                content: `<p>${this.formData.content}</p>`,
+                summary: this.formData.content,
+                attachment: "",
+                receive: "5",
+                dxDwName: this.$route.query.dwName,
+                dxGroupId: this.$route.query.groupId,
+                extendData: "社会单位(主管单位)",
+                releaseDW: this.$store.getters.userInfo.dwName
+            }).then(result => {
+                if(!result) return false;
+                if(result && result.code == 0) {
+                    Toast({message: '发布成功', duration: 1500});
+                    this.back();
+                } else {
+                    Toast({message: `code: ${result.code}`, duration: 1500});
                 }
             })
         }

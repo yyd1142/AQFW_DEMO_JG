@@ -263,7 +263,8 @@
                 this.$MKOPush({
                     path: '/qy_notice_model',
                     query: {
-                        groupId: this.$route.params.id
+                        groupId: this.$route.params.id,
+                        dwName: this.$route.query.name
                     }
                 })
             }

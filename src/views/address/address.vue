@@ -91,6 +91,7 @@
             }
         },
         activated() {
+            this.resError = false;
             this.onBackButtonEvent();
             this.$nextTick(() => {
                 this.getData();

@@ -41,6 +41,8 @@ export default {
     noticeReply: httpPost('/dwNotice?m=reply', Conf.domain),
     getReplyInfo: httpGet('/dwNotice', Conf.domain),
     getNoticeReplyList: httpGet('/dwNotice', Conf.domain),
+    addMessage: httpPost('/messages/message/add', Conf.loginDomain),
+    getNoticeModel: httpGet('/dwNotice', Conf.platformDomain),
     //风险管理
     getYhkList: httpGet('/yhk', Conf.domain),
     getYhkInfo: httpGet('/yhk?m=info', Conf.qyApiDomain),
