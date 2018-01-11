@@ -1,18 +1,17 @@
 <template>
-    <div>
+    <div class="hdc-sel-dw-wrap" :class="{'search-bar-is-focus':searchBarIsFocus||searchValue}">
         <div class="placeholder-item"></div>
-        <mko-header title="风险单位" left-icon="icon-back" @handleLeftClick="changePage" right-icon="icon-search-l"
-                    @handleRightClick="showSearchBar = !showSearchBar"></mko-header>
+        <mko-header title="风险单位" left-icon="icon-back" @handleLeftClick="changePage"></mko-header>
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
-        <div class="page-wrap hdc-sel-wrap" v-show="!resError">
-            <mko-search-bar v-model="searchValue" v-show="showSearchBar"></mko-search-bar>
-            <div v-show="!noData">
-                <div class="data-wrap" ref="wrapper" :style="{minHeight:wrapperHeight+'px'}">
-                    <mko-cell :title="item.dwName" main="left" @click="selData(item)" v-for="item in dwList"></mko-cell>
-                </div>
-                <mko-load-more @click="loadBottom" :no-load-more="noLoadMore"></mko-load-more>
+        <div class="page-wrap" v-show="!resError">
+            <mko-search-bar v-model="searchValue" hint-text="搜索单位名称" ref="search-bar" fill
+                            @onFocus="searchBarHandleFn($event,true)" @onBlur="searchBarHandleFn($event,false)">
+            </mko-search-bar>
+            <div class="list-wrap" ref="wrapper">
+                <mko-cell :title="item.dwName" main="left" @click="selData(item)" v-for="item in dwList"></mko-cell>
             </div>
+            <mko-load-more @click="loadBottom" :no-load-more="noLoadMore" v-if="dwList.length"></mko-load-more>
         </div>
     </div>
 </template>
@@ -32,10 +31,10 @@
                 //数据
                 page: 1,
                 dwList: [],
+                noLoadMore: false,
                 //搜索
-                showSearchBar: false,
+                searchBarIsFocus: false,
                 searchValue: '',
-                noLoadMore: false
             }
         },
         watch: {
@@ -52,12 +51,15 @@
             });
         },
         activated(){
-            
+
         },
         destroyed() {
             this.searchValue = '';
         },
         methods: {
+            searchBarHandleFn(type, bool){
+                this.searchBarIsFocus = bool;
+            },
             getData(){
                 this.noData = false;
                 Indicator.open({spinnerType: 'fading-circle'});
@@ -89,6 +91,7 @@
                             if (req_page != 1)
                                 Toast({message: '暂无更多数据', position: 'middle', duration: 1500});
                         } else {
+                            if (this.page == 1) this.dwList = [];
                             this.noLoadMore = false;
                         }
                     }
@@ -120,7 +123,7 @@
         },
         components: {
             NoData,
-            ResError, 
+            ResError,
             SearchBar
         }
     }
@@ -129,22 +132,31 @@
 <style lang="less" rel="stylesheet/less">
     @import "../../config.less";
 
-    .hdc-sel-wrap {
-        padding: 10px 0 0 0;
-        .search-wrap {
-            height: auto;
-            .mint-searchbar {
-                z-index: 0;
+    @searchBarHeight: 44px;
+
+    .hdc-sel-dw-wrap {
+        &.search-bar-is-focus {
+            .mko-header {
+                display: none;
+            }
+            .mko-search-wrap {
+                top: @headerTop;
+            }
+            .mko-light-nav-bar-wrap {
+                top: @headerTop + @searchBarHeight;
+            }
+            .list-wrap {
+                margin-top: 0;
             }
         }
-        .data-wrap {
-            .mko-basic-cell {
-                .value.main-left {
-                    flex: 0;
-                    -webkit-flex: 0;
-                    width: 0;
-                }
-            }
+        .mko-search-wrap {
+            position: fixed;
+            width: 100%;
+            top: @headerHeight + @headerTop - 1;
+            z-index: 1;
+        }
+        .list-wrap {
+            margin-top: @searchBarHeight - 1;
         }
         .footer-wrap {
             position: fixed;

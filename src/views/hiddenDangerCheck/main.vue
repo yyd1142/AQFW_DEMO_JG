@@ -1,7 +1,7 @@
 <template>
     <div class="hidden-danger-check">
         <div class="placeholder-item"></div>
-        <mko-header title="风险上报" left-icon="icon-back" @handleLeftClick="back"></mko-header>
+        <mko-header title="风险上报" left-icon="icon-back" @handleLeftClick="back" v-show="onPage==='main'"></mko-header>
         <div class="page-wrap hdc-main-wrap" v-show="onPage==='main'">
             <div class="info-wrap">
                 <mko-form-cell title="风险单位" :val="formData.dwName || '请选择风险单位'" edit type="sel" @click="changePage('selDw')"></mko-form-cell>
@@ -18,10 +18,10 @@
                         <span class="word-number">{{wordNumber}}/140个字</span>
                     </div>
                 </div>
-                <photo-box 
-                    :photo-list="photoList" 
-                    @removePhotoEvent="removePhoto" 
-                    @addPhotoEvent="sheetShow = true" 
+                <photo-box
+                    :photo-list="photoList"
+                    @removePhotoEvent="removePhoto"
+                    @addPhotoEvent="sheetShow = true"
                     :user-camera="true"
                     btn-class="yellow-btn">
                 </photo-box>
