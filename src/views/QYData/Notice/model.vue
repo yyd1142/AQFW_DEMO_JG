@@ -64,7 +64,7 @@ export default {
                 m: 'templateList',
                 page: 1,
                 count: count
-            }).then(result => {
+            }, {}, 'TEST').then(result => {
                 if(!result) {
                     Indicator.close();
                     return false;
@@ -147,5 +147,16 @@ export default {
 <style lang="less">
 .qy-notice-model {
     padding-top: 10px;
+    .page-wrap {
+        .mko-basic-cell {
+            .cell {
+                .title {
+                    p {
+                        display: inline;
+                    }
+                }
+            }
+        }
+    }
 }
 </style>
