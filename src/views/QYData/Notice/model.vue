@@ -1,7 +1,7 @@
 <template>
   <div class="qy-notice-model">
         <div class="placeholder-item"></div>
-        <mko-header title="通知模板" left-icon="icon-back" @handleLeftClick="back" right-icon-text="通知记录" @handleRightClick="history"></mko-header>
+        <mko-header title="通知模板" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
             <mko-cell :title="`${item.title}:${item.content}`" main="left" @click="linkPath(item)" v-for="item in datas" is-link></mko-cell>
             <mko-load-more @click="loadBottom" :no-load-more="noLoadMore" v-if="!noData"></mko-load-more>
@@ -40,15 +40,11 @@ export default {
             this.$MKOPop();
         },
         linkPath(item) {
-            this.$MKOPush({
-                path: '/add_notice',
-                query: {
-                    title: item.title,
-                    content: item.content,
-                    groupId: this.$route.query.groupId,
-                    dwName: this.$route.query.dwName
-                }
-            })
+            sessionStorage.setItem('chooseModelDatas', JSON.stringify({
+                title: item.title,
+                content: item.content
+            }))
+            this.back();
         },
         history() {
             this.$MKOPush({

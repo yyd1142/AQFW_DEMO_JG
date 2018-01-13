@@ -6,8 +6,8 @@ import { NoData } from 'components'
 var updateDatas = [];
 var needUpdate = true;
 var _userName = ''
-var count = 10;
-var loadMorecount = 10;
+var count = 20;
+var loadMorecount = 20;
 export default {
     data() {
         return {
@@ -17,8 +17,7 @@ export default {
             notData: false,
             page: 1,
             pageItem: {},
-            notReadIcon:`<i class="not-read-item"></i>`,
-
+            notReadIcon:`<i class="not-read-item"></i>`
         }
     },
     activated() {

@@ -7,8 +7,8 @@ import moment from 'moment'
 var updateDatas = [];
 var needUpdate = true;
 var _userName = ''
-var count = 10;
-var loadMorecount = 10;
+var count = 20;
+var loadMorecount = 20;
 export default {
     data() {
         return {

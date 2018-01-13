@@ -1,7 +1,7 @@
 <template>
     <div class="qy-info">
         <div class="placeholder-item" :style="{ backgroundColor: scoreHeadColor($route.query.score || dwScore.totalScore) }"></div>
-        <mko-header :title="this.$route.query.name || '社会单位'" :background-color="scoreHeadColor($route.query.score || dwScore.totalScore)" left-icon="icon-back" @handleLeftClick="back" right-icon-text="通知入口" @handleRightClick="goNotice"></mko-header> 
+        <mko-header :title="this.$route.query.name || '社会单位'" :background-color="scoreHeadColor($route.query.score || dwScore.totalScore)" left-icon="icon-back" @handleLeftClick="back" right-icon-text="新建通知" @handleRightClick="goNotice"></mko-header> 
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
         <div class="page-wrap qy-info-wrap" v-if="!noData&&!resError">
@@ -29,6 +29,10 @@
                 </mko-cell>
                 <mko-cell title="监督执法记录" :is-link="recoredCount.jdResult != 0" @click="goRecord(2)">
                     <div :style="{color: recoredCount.jdResult === 0 ? '#333' : '#666'}">{{recoredCount.jdResult}}条记录
+                    </div>
+                </mko-cell>
+                <mko-cell title="通知记录" :is-link="noticeCount != 0" @click="goNoticeList">
+                    <div :style="{color: noticeCount === 0 ? '#333' : '#666'}">{{noticeCount}}条记录
                     </div>
                 </mko-cell>
             </div>
@@ -121,7 +125,8 @@
                     user: false,
                     basic: false,
                     contact: false
-                }
+                },
+                noticeCount: 0
             };
         },
         mounted() {
@@ -134,6 +139,7 @@
                 contact: false
             };
             this.getRecords();
+            this.getNoticeCount();
         },
         methods: {
             dwJJSYZ,
@@ -260,12 +266,36 @@
             },
             goNotice() {
                 this.$MKOPush({
-                    path: '/qy_notice_model',
+                    path: '/add_notice',
                     query: {
-                        groupId: this.$route.params.id,
-                        dwName: this.$route.query.name
+                        groupId: this.dwInfo.groupId,
+                        dwName: this.dwInfo.dwName
                     }
                 })
+            },
+            goNoticeList() {
+                this.$MKOPush({
+                    path: '/notice_history'
+                })
+            },
+            getNoticeCount() {
+                let params = {
+                    userName: this.$store.getters.userName,
+                    page: 1,
+                    count: 20,
+                    groupId: this.$store.getters.groupId
+                }
+                api.getStatisticsList(params).then(result => {
+                    if(!result) {
+                        this.noticeCount = 0;
+                        return false;
+                    }
+                    if(result && result.code == 0) {
+                        this.noticeCount = result.response.countNumber;
+                    } else {
+                        this.noticeCount = 0;
+                    }
+                });
             }
         },
         components: {
