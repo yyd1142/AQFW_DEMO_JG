@@ -26,32 +26,7 @@
                     <photo-box max="8" :photo-list="files" :read-only="true"></photo-box>
                 </div>
             </div>
-            <!--已读-->
-            <mko-button class="footer-btn" size="large" no-radius v-if="receiptType==1&&(!noticeItem.isRead||changeReceiptType())" @click="checkNotice(noticeItem)">我已阅读该通知</mko-button>
-            <!--回复-->
-            <div v-show="receiptType==2&&(!noticeItem.isReply||changeReceiptType())" class="footer reply">
-                <input class="ipt" v-model="replyContent" type="text">
-                <mt-button class="btn" type="primary" size="small" @click="replyNotice(noticeItem)">回复</mt-button>
-            </div>
-            <!--回复且上传附件-->
-            <div v-show="receiptType == 2 && (!noticeItem.isReply||changeReceiptType()) && needUploadPhoto">
-                <photo-box max="8" :photo-list="photos" @removePhotoEvent="removePhoto"
-                           @addPhotoEvent="sheetShow = true">
-                </photo-box>
-            </div>
-            <!--只有上传附件-->
-            <div v-show="receiptType == 3 && (!noticeItem.isReply||changeReceiptType()) && needUploadPhoto">
-                <photo-box max="8" :photo-list="photos" @removePhotoEvent="removePhoto"
-                           @addPhotoEvent="sheetShow = true">
-                </photo-box>
-                <mko-button class="footer-btn" size="large" no-radius @click="uploadPhoto()">上传附件</mko-button>
-                <!--<mt-button class="footer btn" type="primary" size="large" @click="uploadPhoto()">上传附件</mt-button>-->
-            </div>
-            <!--所有已完成-->
-            <mko-button class="footer-btn" size="large" no-radius disabled v-show="receiptType==100">我已{{receiptText}}
-            </mko-button>
         </div>
-        <mt-actionsheet :actions="actions" v-model="sheetShow"></mt-actionsheet>
     </div>
 </template>
 
@@ -88,31 +63,9 @@ export default {
       checkTime: ""
     };
   },
-  mounted() {
-    this.actions = [
-      {
-        name: "拍照",
-        method: this.takePhoto
-      },
-      {
-        name: "从相册中选择",
-        method: this.choosePhoto
-      }
-    ];
-  },
   activated() {
     this.$nextTick(() => {
-      let params = {
-        m: "info",
-        userName: this.$store.getters.userName
-      };
-      if (this.$route.query.from == "notification") {
-        params["noticeId"] = this.$route.params.pid;
-      } else {
-        params["id"] = this.$route.params.pid;
-      }
-
-      api.getNoticesDetail(params).then(result => {
+      api.getReceiveNoticesDetail(this.$route.params.pid).then(result => {
         if (result.code == 0) {
           this.noticeItem = result.response;
           this.contentFiles = [];
@@ -457,7 +410,7 @@ export default {
 </script>
 
 <style lang="less" rel="stylesheet/less">
-@import "../../config.less";
+@import "../../../config.less";
 .notice-info {
   .message-detail-wrap {
     /*padding-bottom: 0;*/

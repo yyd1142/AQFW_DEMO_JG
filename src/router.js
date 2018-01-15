@@ -23,6 +23,7 @@ const messageDetail = resolve => require(['views/message/info.vue'], resolve);
 //通知公告
 const noticeList = resolve => require(['views/notice/noticeList.vue'], resolve);
 const noticeDetail = resolve => require(['views/notice/info.vue'], resolve);
+const NoticeInfo = resolve => require(['views/QYData/Notice/noticeInfo.vue'], resolve);
 //通讯录
 const mailList = resolve => require(['views/address/address.vue'], resolve);
 const addressDetail = resolve => require(['views/address/addressDetail.vue'], resolve);
@@ -483,6 +484,11 @@ const routers = {
             path: '/notice_history',
             name: 'NoticeHistory',
             component: NoticeHistory
+        },
+        {
+            path: '/notice_info/:pid',
+            name: 'NoticeInfo',
+            component: NoticeInfo
         }
     ]
 };

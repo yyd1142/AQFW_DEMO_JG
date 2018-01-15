@@ -17,7 +17,7 @@ MKOAPPState.install = function (Vue, options) {
         var t = new Date()
         var t_s = t.getTime()
         var nt = new Date()
-        nt.setTime(t_s + 1000 * 60)   //设置keep-alive状态保持为1分钟
+        nt.setTime(t_s + 1000 * 10)   //设置keep-alive状态保持为10s
         console.log(`下次${name}_keepalive更新时间为：${moment(nt).format("YYYY-MM-DD HH:mm:ss")}`)
         sessionStorage.setItem(`KEEP_ALIVE_RESET_TIME_${name}`, nt)
     }

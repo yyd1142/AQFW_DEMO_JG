@@ -8,14 +8,14 @@ import Axios from 'axios'
 import Conf from '../apiconf'
 
 const Http = (path, method, domain, bHandleError, mode) => {
-    return (data, params) => {
+    return (data, params, environment) => {
         return Axios({
             method: method,
             url: (domain || Conf.domain) + '' + path,
             data: method === 'post' ? data : null,
             params: method === 'get' ? data : params,
             timeout: 150000,
-            headers: { 'MKOTEAM-ACCESS-TOKEN': window.localStorage.getItem('jg_token'), 'MKOTEAM-USER-ENVIRONMENT': mode }
+            headers: { 'MKOTEAM-ACCESS-TOKEN': window.localStorage.getItem('jg_token'), 'MKOTEAM-USER-ENVIRONMENT': environment ? environment : mode }
         }).then(function (response) {
             if (response.data.code == 0) {
                 return response.data
@@ -76,10 +76,13 @@ export function httpPost(path, domain, bHandleError) {
 }
 
 export function httpPath(path, domain) {
-    return (paths) => {
+    let mode = (domain == 'http://www.aqfwy.com/api/qy' || domain == 'http://www.aqfwy.com/api/platform' || domain == 'http://www.aqfwy.com/api/jg') ? 'DEMO' : 'TEST';
+    return (paths, environment) => {
         return Axios({
             method: 'get',
-            url: (domain || Conf.domain) + '' + path + '' + paths
+            url: (domain || Conf.domain) + '' + path + '' + paths,
+            timeout: 150000,
+            headers: { 'MKOTEAM-ACCESS-TOKEN': window.localStorage.getItem('jg_token'), 'MKOTEAM-USER-ENVIRONMENT': environment ? environment : mode }
         }).then(function (response) {
             let res = response.data
             if (res.code != 0) {
