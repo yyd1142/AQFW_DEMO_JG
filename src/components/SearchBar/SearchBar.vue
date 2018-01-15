@@ -61,7 +61,7 @@
         position: relative;
         height: 44px;
         padding: 8px 14px 8px 14px;
-        background: #3399ff;
+        background: @mainBlue;
         .box {
             height: 28px;
             padding: 0 5px;
@@ -113,7 +113,7 @@
             height: 44px;
             line-height: 44px;
             text-align: center;
-            background: #3399ff;
+            background: @mainBlue;
             color: #ffffff;
         }
     }

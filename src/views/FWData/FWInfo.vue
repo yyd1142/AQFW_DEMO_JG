@@ -192,7 +192,7 @@
             }
             .blue-font {
                 font-size: 14px;
-                color: #3399FF;
+                color: @mainBlue;
                 letter-spacing: 0;
             }
         }

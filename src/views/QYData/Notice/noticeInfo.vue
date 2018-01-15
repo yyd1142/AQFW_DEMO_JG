@@ -569,7 +569,7 @@ export default {
         margin-bottom: 20px;
       }
       .title-table {
-        color: #3399ff;
+        color: @mainBlue;
         font-size: 12px;
         span {
           font-size: 12px;

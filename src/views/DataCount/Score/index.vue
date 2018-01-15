@@ -167,7 +167,7 @@
                         x: 'center',
                         y: '14px',
                         textStyle: {
-                            color: ' #3399ff',
+                            color: conf.mainBlue,
                             fontSize: 14,
                         }
                     },
@@ -183,7 +183,7 @@
                         feature: {}
                     },
                     calculable: true,
-                    color: ['#3399FF', '#55DD66', '#F5A623', '#50E3C2 ', '#F8E71C', '#FF336B'],
+                    color: [conf.mainBlue, '#55DD66', '#F5A623', '#50E3C2 ', '#F8E71C', '#FF336B'],
                     series: [
                         {
                             name: '安全评级分布',
@@ -306,7 +306,7 @@
                             data: x,
                             itemStyle: {
                                 normal: {
-                                    barBorderColor: '#3399ff'
+                                    barBorderColor: conf.mainBlue
                                 }
                             },
                             barMaxWidth: 30

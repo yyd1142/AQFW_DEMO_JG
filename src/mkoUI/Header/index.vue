@@ -1,6 +1,6 @@
 <template>
     <div class="mko-header">
-        <header class="mko-header-wrap" :class="borderBtm ? 'header-btm' : ''" :style="{ backgroundColor: backgroundColor ? backgroundColor : '#3399FF', borderBottom: `1px solid ${borderColor}` }">
+        <header class="mko-header-wrap" :class="borderBtm ? 'header-btm' : ''" :style="{ backgroundColor: backgroundColor ? backgroundColor : mainBlue, borderBottom: `1px solid ${borderColor}` }">
             <div class="header-left" @click="onLeftClickEvent" v-if="leftIconText || leftIcon">
                 <i class="left-icon icon" :class="leftIcon" v-if="leftIcon"></i>
                 <span class="left-text" v-text="leftIconText" v-if="leftIconText"></span>
@@ -16,109 +16,116 @@
 </template>
 
 <script>
-export default {
-    props: ['title', 'leftIcon', 'rightIcon', 'leftIconText', 'rightIconText', 'type', 'backgroundColor', 'rightFontColor', 'titleColor', 'border-color', 'border-btm'],
-    methods: {
-        onRightClickEvent() {
-            this.$emit("handleRightClick");
+    import conf from 'config'
+    export default {
+        props: ['title', 'leftIcon', 'rightIcon', 'leftIconText', 'rightIconText', 'type', 'backgroundColor', 'rightFontColor', 'titleColor', 'border-color', 'border-btm'],
+        data () {
+            return {
+                mainBlue: conf.mainBlue
+            }
         },
-        onLeftClickEvent() {
-            this.$emit("handleLeftClick");
+        methods: {
+            onRightClickEvent() {
+                this.$emit("handleRightClick");
+            },
+            onLeftClickEvent() {
+                this.$emit("handleLeftClick");
+            }
         }
     }
-}
 </script>
 
 <style lang="less" scoped>
-@import "../../config.less";
-@headerTitleFontSize: 18px;
-@headerFontSize: 14px;
-.mko-header {
-    position: relative;
-    .mko-header-wrap {
-        top: 0 + @headerTop;
-        right: 0;
-        left: 0;
-        position: fixed;
-        z-index: 25;
-        color: #fff;
-        height: @headerHeight;
-        padding-top: 0px;
-        &.header-btm {
-            .border-btm(#Eeeeee);
-            &:after {
-                bottom: -1px;
-            }
-        }
-        .header-left {
-            margin: 0;
-            width: 80px;
-            float: left;
-            padding: 0;
+    @import "../../config.less";
+
+    @headerTitleFontSize: 18px;
+    @headerFontSize: 14px;
+    .mko-header {
+        position: relative;
+        .mko-header-wrap {
+            top: 0 + @headerTop;
+            right: 0;
+            left: 0;
+            position: fixed;
+            z-index: 25;
+            color: #fff;
             height: @headerHeight;
-            position: relative;
-            .icon {
-                display: block;
+            padding-top: 0px;
+            &.header-btm {
+                .border-btm(@baseBorder);
+                &:after {
+                    bottom: -1px;
+                }
             }
-            .left-icon {
-                margin: auto;
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                left: 14px;
-            }
-            .left-text {
+            .header-left {
+                margin: 0;
+                width: 80px;
                 float: left;
-                vertical-align: middle;
+                padding: 0;
+                height: @headerHeight;
+                position: relative;
+                .icon {
+                    display: block;
+                }
+                .left-icon {
+                    margin: auto;
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    left: 14px;
+                }
+                .left-text {
+                    float: left;
+                    vertical-align: middle;
+                    height: @headerHeight;
+                    line-height: @headerHeight;
+                    padding-left: 14px;
+                    width: 100%;
+                }
+            }
+            .title {
+                text-align: center;
+                font-size: @headerTitleFontSize;
+                position: absolute;
+                left: 80px;
+                right: 80px;
                 height: @headerHeight;
                 line-height: @headerHeight;
-                padding-left: 14px;
-                width: 100%;
-            }
-        }
-        .title {
-            text-align: center;
-            font-size: @headerTitleFontSize;
-            position: absolute;
-            left: 80px;
-            right: 80px;
-            height: @headerHeight;
-            line-height: @headerHeight;
-            width: auto;
-            top: 0;
-            bottom: 0;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-        .header-right {
-            margin: 0 0 0 auto;
-            width: 80px;
-            float: right;
-            padding: 0;
-            height: @headerHeight;
-            position: relative;
-            .icon {
-                display: block;
-            }
-            .right-icon {
-                margin: auto;
-                position: absolute;
+                width: auto;
                 top: 0;
                 bottom: 0;
-                right: 14px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
             }
-            .right-text {
+            .header-right {
+                margin: 0 0 0 auto;
+                width: 80px;
                 float: right;
-                vertical-align: middle;
+                padding: 0;
                 height: @headerHeight;
-                line-height: @headerHeight;
-                text-align: right;
-                padding-right: 14px;
-                width: 100%;
+                position: relative;
+                .icon {
+                    display: block;
+                }
+                .right-icon {
+                    margin: auto;
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    right: 14px;
+                }
+                .right-text {
+                    float: right;
+                    vertical-align: middle;
+                    height: @headerHeight;
+                    line-height: @headerHeight;
+                    text-align: right;
+                    padding-right: 14px;
+                    width: 100%;
+                }
             }
         }
     }
-}
 </style>
 

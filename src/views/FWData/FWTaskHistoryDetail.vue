@@ -168,7 +168,7 @@
                         }
                         .cancel-btn {
                             font-size: 14px;
-                            color: #3399FF;
+                            color: @mainBlue;
                             letter-spacing: 0px;
                             position: absolute;
                             z-index: 22;

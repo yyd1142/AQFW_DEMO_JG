@@ -22,6 +22,7 @@
 
 <script>
     import api from 'api';
+    import conf from 'config'
     import { MonthNavBar } from 'components'
     import echarts from 'echarts';
     import { formatDate } from 'filters';
@@ -129,7 +130,7 @@
                         x: 'center',
                         y: 10,
                         textStyle: {
-                            color: ' #3399ff',
+                            color: conf.mainBlue,
                             fontSize: 14,
                         }
 
@@ -146,7 +147,7 @@
                         feature: {}
                     },
                     calculable: true,
-                    color: ['#3399ff'],
+                    color: [conf.mainBlue],
                     xAxis: [
                         {
                             type: 'category',

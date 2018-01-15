@@ -26,12 +26,13 @@
 
     import echarts from 'echarts';
     import api from 'api';
+    import conf from 'config'
     import { allQyRoleType } from 'filters'
     import { Indicator, Toast } from 'mint-ui';
 
 
     let theme = 'macarons';
-    let color = ['#3399FF', '#55DD66', '#F5A623', '#50E3C2 ', '#AD6DFF', '#F8E71C', '#FF336B', '#7E80FF'];
+    let color = [conf.mainBlue, '#55DD66', '#F5A623', '#50E3C2 ', '#AD6DFF', '#F8E71C', '#FF336B', '#7E80FF'];
     let itemStyle = {
         normal: {
             label: {

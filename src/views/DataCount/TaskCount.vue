@@ -108,7 +108,7 @@
                     },
 
                     calculable: true,
-                    color: ['#3399FF', '#55DD66', '#F5A623', '#50E3C2 ', '#F8E71C', '#FF336B'],
+                    color: [conf.mainBlue, '#55DD66', '#F5A623', '#50E3C2 ', '#F8E71C', '#FF336B'],
                     series: [
                         {
                             name: '任务执行数量',

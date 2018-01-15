@@ -26,11 +26,12 @@
 <script>
     import echarts from 'echarts';
     import api from 'api';
+    import conf from 'config'
     import { ResError } from 'components'
     import { Indicator } from 'mint-ui';
 
     let theme = 'macarons';
-    let color = ['#3399FF', '#55DD66', '#F5A623', '#50E3C2 ', '#AD6DFF', '#F8E71C', '#FF336B', '#7E80FF', '#38b48b', '#96514b', '#ED6D35', '#824880'];
+    let color = [conf.mainBlue, '#55DD66', '#F5A623', '#50E3C2 ', '#AD6DFF', '#F8E71C', '#FF336B', '#7E80FF', '#38b48b', '#96514b', '#ED6D35', '#824880'];
     let itemStyle = {
         normal: {
 

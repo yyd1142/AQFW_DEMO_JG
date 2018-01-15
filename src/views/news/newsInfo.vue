@@ -1,8 +1,8 @@
 <template>
     <div class="news-info">
         <div class="placeholder-item" style="background-color: #ffffff;"></div>
-        <mko-header :title="newsTitles[$route.query.type]" 
-            background-color="#ffffff" 
+        <mko-header :title="newsTitles[$route.query.type]"
+            background-color="#ffffff"
             title-color="#333333"
             left-icon="icon-back-black"
             @handleLeftClick="back" :border-btm="true"></mko-header>
@@ -175,7 +175,7 @@ export default {
             margin-bottom: 20px;
         }
         .title-table {
-            color: #3399ff;
+            color: @mainBlue;
             font-size: 12px;
             span {
                 font-size: 12px;

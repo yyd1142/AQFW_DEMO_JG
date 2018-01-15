@@ -175,7 +175,7 @@ export default {
     }
     .blue-font {
       font-size: 14px;
-      color: #3399ff;
+      color: @mainBlue;
       letter-spacing: 0;
     }
   }

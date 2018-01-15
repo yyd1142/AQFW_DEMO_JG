@@ -10,7 +10,7 @@
                 <mko-cell title="合同签订日期" :val="zrdwItem.contractDate||'未知'"></mko-cell>
                 <mko-cell title="合同起止日期" :val="(zrdwItem.contractStartDate+zrdwItem.contractEndDate)?(zrdwItem.contractStartDate||'未知') + '至' + (zrdwItem.contractEndDate||'未知'):'未知'"></mko-cell>
                 <mko-cell :title="item.filename" main="left" v-for="item in files" @click="downloadFile(item)">
-                    <div style="color: #3399ff">下载</div>
+                    <div :style="`color: ${mainBlue}`">下载</div>
                 </mko-cell>
             </div>
         </div>
@@ -22,11 +22,13 @@
     import moment from 'moment'
     import api from 'api'
     import apiconf from 'apiconf'
-    import {Indicator} from 'mint-ui'
+    import conf from 'config'
+    import { Indicator } from 'mint-ui'
     var _id = '';
     export default {
         data() {
             return {
+                mainBlue: conf.mainBlue,
                 notData: false,
                 zrdwItem: {},
                 files: []
@@ -87,10 +89,10 @@
 </script>
 
 <style lang="less">
-.unit-info {
-    .page-wrap {
-        padding-top: 10px;
+    .unit-info {
+        .page-wrap {
+            padding-top: 10px;
+        }
     }
-}
 </style>
 

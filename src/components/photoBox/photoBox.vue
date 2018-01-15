@@ -117,7 +117,7 @@ export default {
                 margin: 14px 0 0 14px;
             }
             &.camera-btn {
-                background-color: #3399ff;
+                background-color: @mainBlue;
                 border-radius: 3px;
                 &:active {
                     background-color: #2e8ae6;
