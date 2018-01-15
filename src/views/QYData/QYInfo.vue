@@ -1,7 +1,7 @@
 <template>
     <div class="qy-info">
         <div class="placeholder-item" :style="{ backgroundColor: scoreHeadColor($route.query.score || dwScore.totalScore) }"></div>
-        <mko-header :title="this.$route.query.name || '社会单位'" :background-color="scoreHeadColor($route.query.score || dwScore.totalScore)" left-icon="icon-back" @handleLeftClick="back" right-icon-text="新建通知" @handleRightClick="goNotice"></mko-header> 
+        <mko-header :title="this.$route.query.name || '社会单位'" :background-color="scoreHeadColor($route.query.score || dwScore.totalScore)" left-icon="icon-back" @handleLeftClick="back" right-icon-text="发送通知" @handleRightClick="goNotice"></mko-header> 
         <res-error v-if="resError"></res-error>
         <no-data v-if="noData"></no-data>
         <div class="page-wrap qy-info-wrap" v-if="!noData&&!resError">
@@ -31,10 +31,10 @@
                     <div :style="{color: recoredCount.jdResult === 0 ? '#333' : '#666'}">{{recoredCount.jdResult}}条记录
                     </div>
                 </mko-cell>
-                <mko-cell title="通知记录" :is-link="noticeCount != 0" @click="goNoticeList">
+                <!-- <mko-cell title="通知记录" :is-link="noticeCount != 0" @click="goNoticeList">
                     <div :style="{color: noticeCount === 0 ? '#333' : '#666'}">{{noticeCount}}条记录
                     </div>
-                </mko-cell>
+                </mko-cell> -->
             </div>
             <div class="data-wrap">
                 <mko-cell title="风险管理" is-link @click="go('/hidden_danger/'+$route.params.id)"></mko-cell>
