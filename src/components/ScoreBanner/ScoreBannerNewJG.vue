@@ -219,6 +219,8 @@
     @top: 28px + @headerHeight;
 
     .score-banner-wrap {
+        position: relative;
+        height: 300px;
         @keyframes rotate {
             from {
                 transform: rotate(0deg);
@@ -275,7 +277,6 @@
                 opacity: 0.1;
             }
         }
-
         @keyframes loading-end {
             .blur(@px) {
                 -webkit-filter: blur(@px); /* Chrome, Opera */
