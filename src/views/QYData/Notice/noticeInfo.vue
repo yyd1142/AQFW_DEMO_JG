@@ -15,6 +15,7 @@
                 </div>
                 <div id="contentMsg" class="content-msg" v-html="noticeItem.content"></div>
             </div>
+            <!-- <mko-button class="footer-btn" size="large" no-radius>我已阅读该通知</mko-button> -->
             <!--回复内容-->
             <div class="reply-main" v-if="noticeItem.isReply == 1">
                 <div class="reply-title">回复内容：</div>
