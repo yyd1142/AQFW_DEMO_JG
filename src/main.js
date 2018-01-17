@@ -16,15 +16,7 @@ import store from './store'
 import MkoUI from 'mko-ui'
 var canExitApp = false;
 FastClick.attach(document.body)
-
 Vue.config.productionTip = false
-
-Validator.updateDictionary({
-  zh_CN: {
-    messages
-  }
-});
-
 const config = {
   errorBagName: 'errors', // change if property conflicts.
   delay: 0,
