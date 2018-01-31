@@ -120,7 +120,7 @@ export default {
                 background-color: @mainBlue;
                 border-radius: 3px;
                 &:active {
-                    background-color: #2e8ae6;
+                    background-color: #004de6;
                 }
             }
             &.no-camera-btn {

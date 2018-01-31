@@ -91,7 +91,7 @@ export default {
             let postbody = {
                 title: this.formData.title,
                 type: "message",
-                receipt: "1",
+                receipt: "1,2",
                 content: `<p>${this.formData.content}</p>`,
                 summary: this.formData.title,
                 attachment: "",
