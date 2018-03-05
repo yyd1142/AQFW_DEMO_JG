@@ -11,7 +11,7 @@
           <i class="icon-xiajiantou"></i>
         </div>
         <input type="text" name="用户名" class="form-control" placeholder="用户名" v-model="account.username" v-validate data-vv-rules="required" />
-        <p class="help-block">{{errors.first('用户名')}}</p>
+        <!-- <p class="help-block">{{errors.first('用户名')}}</p> -->
       </div>
       <div class="user-table-hidden" @click="userTableShow = false;" v-if="userTableShow"></div>
       <div class="user-table-wrap" v-if="userLocalStorages.length > 0 && userTableShow">

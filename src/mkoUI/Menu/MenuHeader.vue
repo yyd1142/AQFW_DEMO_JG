@@ -38,8 +38,10 @@
         activated(){
         },
         deactivated() {
+            this.show = false;
         },
         destroyed(){
+            this.show = false;
         },
         methods: {
             clickIconFn(){
