@@ -6,7 +6,8 @@ import 'mint-ui/lib/style.css'
 import App from './App.vue'
 import router from './router'
 import VeeValidate, { Validator } from 'vee-validate'
-import messages from './language/zh_CN'
+import VueI18n from 'vue-i18n';
+import zh_CN from 'vee-validate/dist/locale/zh_CN';
 import './filters'
 import FastClick from 'fastclick'
 import MKOMessagePlugin from './plugins/MKOMessagePlugin'
@@ -17,15 +18,19 @@ import MkoUI from 'mko-ui'
 var canExitApp = false;
 FastClick.attach(document.body)
 Vue.config.productionTip = false
-const config = {
-  errorBagName: 'errors', // change if property conflicts.
-  delay: 0,
-  locale: 'zh_CN',
-  messages: null,
-  strict: true
-};
 
-Vue.use(VeeValidate, config);
+Vue.use(VueI18n)
+const i18n = new VueI18n({
+    locale: 'zh_CN',
+})
+const config = {
+    i18n,
+    i18nRootKey: 'validation',
+    dictionary: {
+        zh_CN
+    }
+};
+Vue.use(VeeValidate, config)
 Vue.use(MintUI);
 Vue.use(MkoUI);
 Vue.use(MKOMessagePlugin)

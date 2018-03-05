@@ -34,6 +34,7 @@
     "vee-validate": "^2.0.3",
     "vue": "^2.1.10",
     "vue-form": "^0.3.1",
+    "vue-i18n": "^7.4.2",
     "vue-router": "^2.2.0",
     "vue-touch": "^2.0.0-beta.4",
     "vuex": "^2.2.1"
