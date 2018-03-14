@@ -3,8 +3,8 @@
         <div class="placeholder-item"></div>
         <mko-header title="通知模板" left-icon="icon-back" @handleLeftClick="back"></mko-header>
         <div class="page-wrap">
-            <mko-cell :title="`${item.title}:${item.content}`" main="left" @click="linkPath(item)" v-for="item in datas" is-link></mko-cell>
-            <mko-load-more @click="loadBottom" :no-load-more="noLoadMore" v-if="!noData"></mko-load-more>
+            <mko-cell :title="`${item.title}`" main="left" @click="linkPath(item)" v-for="item in datas" is-link></mko-cell>
+            <mko-load-more @click="loadBottom" :no-load-more="noLoadMore" v-if="needLoadMore"></mko-load-more>
         </div>
         <no-data v-if="noData"></no-data>
   </div>
@@ -16,12 +16,17 @@ import { Indicator, Toast } from 'mint-ui'
 import { NoData } from 'components'
 var count = 20;
 var page = 1;
+String.prototype.stripHTML = function() {
+    let reTag = /<(?:.|\s)*?>/g;
+    return this.replace(reTag,"");
+}
 export default {
     data() {
         return {
             datas: [],
             noData: false,
             noLoadMore: false,
+            needLoadMore: true,
             pageItem: {
                 page: 0,
                 pageCount: 0
@@ -68,6 +73,12 @@ export default {
                 if(result && result.code == 0) {
                     Indicator.close();
                     if(result.response && result.response.datas.length > 0) {
+                        result.response.datas.map(item => {
+                            if(item.content.indexOf('</p>') >= 0) {
+                                item.content = item.content.stripHTML();
+                            }
+                            return item;
+                        })
                         this.datas = result.response.datas;
                         this.noData = false;
                         this.noLoadMore = false;
@@ -79,6 +90,11 @@ export default {
                     this.pageItem = {
                         page: result.response.page,
                         pageCount: result.response.pageCount
+                    }
+                    if(result.response.pageCount === 1) {
+                        this.needLoadMore = false;
+                    } else {
+                        this.needLoadMore = true;
                     }
                 } else {
                     Indicator.close();
