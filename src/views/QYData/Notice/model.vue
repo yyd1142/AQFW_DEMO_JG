@@ -91,7 +91,7 @@ export default {
                         page: result.response.page,
                         pageCount: result.response.pageCount
                     }
-                    if(result.response.pageCount === 1) {
+                    if(result.response.pageCount <= 1) {
                         this.needLoadMore = false;
                     } else {
                         this.needLoadMore = true;

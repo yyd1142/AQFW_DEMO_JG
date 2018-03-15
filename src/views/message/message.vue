@@ -6,7 +6,7 @@
             <mko-cell :class="index == systemMessages.length - 1 ? 'no-border' : ''" v-for="item, index in systemMessages" :title="titleFilters(item)" @click="linkPath(item)" main="left" is-link>
                 <div style="color: #666666">{{item.createTime | formatDate('YYYY-MM-DD')}}</div>
             </mko-cell>
-            <mko-load-more @click="loadBottom" :no-load-more="noLoadMore" v-if="!notData"></mko-load-more>
+            <mko-load-more @click="loadBottom" :no-load-more="noLoadMore" v-if="needLoadMore"></mko-load-more>
         </div>
         <no-data class="not-data-wrap" v-if="notData"></no-data>
         <res-error v-if="resError"></res-error>
