@@ -8,7 +8,7 @@
         </mko-header>
         <div class="page-wrap notice-list-wrap" id="pageWrapper">
             <mko-double-cell :class="index == notices.length - 1 ? 'no-border' : ''" :title="`${item.status == 0 ? notReadIcon:''}${item.title || '标题为空'}`" :label="item.createTime | formatDate" is-link @click="linkPath(item)" v-for="item, index in notices"></mko-double-cell>
-            <mko-load-more @click="loadBottom" :no-load-more="noLoadMore" v-if="!notData"></mko-load-more>
+            <mko-load-more @click="loadBottom" :no-load-more="noLoadMore" v-if="needLoadMore"></mko-load-more>
         </div>
         <no-data class="not-data-wrap" v-if="notData"></no-data>
     </div>

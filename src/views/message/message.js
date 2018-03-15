@@ -15,7 +15,8 @@ export default {
       resError: false,
       notData: false,
       noLoadMore: false,
-      pageItem: {}
+      pageItem: {},
+      needLoadMore: true
     }
   },
   activated() {
@@ -45,16 +46,19 @@ export default {
         Indicator.close();
         if (!res) {
           this.resError = true;
+          this.needLoadMore = false;
           return;
         }
         if (res.code === 0) {
           this.$APPUpdateTime('message') //记录该页面本次请求接口的时间
           if (res.response.datas === undefined || res.response.datas.length == 0) {
+            this.needLoadMore = false;
             this.notData = true;
           } else {
             this.systemMessages = res.response.datas
             this.pageItem = { "page": res.response.page, "pageCount": res.response.pageCount, "count": res.response.count, "countNumber": res.response.countNumber }
             this.notData = false;
+            this.needLoadMore = res.response.pageCount <= 1 ? false : true;
           }
         }
       })

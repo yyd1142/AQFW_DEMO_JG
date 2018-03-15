@@ -15,7 +15,7 @@
                   @click="linkPath(item)" 
                   v-for="item, index in replyDatas" is-link>
               </mko-double-cell>
-              <mko-load-more @click="loadBottom" :no-load-more="noLoadMore" v-if="!notData"></mko-load-more>
+              <mko-load-more @click="loadBottom" :no-load-more="noLoadMore" v-if="needLoadMore"></mko-load-more>
             </div>
         </div>
         <no-data class="not-data-wrap"  v-if="notData"></no-data>
@@ -53,7 +53,9 @@ export default {
       replyText: "",
       page: 1,
       pageItem: {},
-      scrollBottom: 0
+      scrollBottom: 0,
+      needLoadMore: true,
+      noLoadMore: false
     };
   },
   activated() {
@@ -99,12 +101,16 @@ export default {
       }
       api.getNoticeReplyList(params).then(result => {
         Indicator.close();
-        if (!result) return false;
+        if (!result) {
+          this.needLoadMore = false;
+          return false
+        };
         if (result.code == 0) {
           this.$APPUpdateTime("reply");
-          if (result.response.datas.length < 0) {
+          if (result.response.datas.length <= 0) {
             this.notData = true;
             this.noLoadMore = true;
+            this.needLoadMore = false;
           } else {
             this.notData = false;
             this.noLoadMore = false;
@@ -115,6 +121,7 @@ export default {
             count: result.response.count,
             countNumber: result.response.countNumber
           };
+          this.needLoadMore = result.response.pageCount <= 1 ? false : true;
           this.replyDatas = result.response.datas;
           updateDatas = this.replyDatas;
         }

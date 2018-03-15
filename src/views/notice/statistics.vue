@@ -11,7 +11,7 @@
                 :label="`${item.releaseDW || '未知'} ${item.releaseCount || 0}家已接收 ${isProcessCount(item)}家已处理`"
                 :val="formatDate(item.createTime)" is-link> 
             </mko-double-cell>
-            <mko-load-more @click="loadBottom" :no-load-more="noLoadMore" v-if="!notData"></mko-load-more>
+            <mko-load-more @click="loadBottom" :no-load-more="noLoadMore" v-if="needLoadMore"></mko-load-more>
         </div>
         <no-data class="not-data-wrap" v-if="notData"></no-data>
     </div>

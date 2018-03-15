@@ -86,7 +86,7 @@ export default {
         return "查看风险";
       } else if (this.extentData.name == "notice") {
         this.messageType = 2;
-        return "查看通知公告";
+        return "查看回复列表";
       } else {
         this.messageType = 0;
       }
@@ -97,12 +97,12 @@ export default {
           path: `/hidden_danger_info/${this.extentData.id}`
         });
       } else if (this.messageType == 2) {
-        this.linkPath({
-          path: `/notice/${this.extentData.noticeId}`,
-          query: {
-            from: "notification"
+        this.$MKOPush({
+          name: 'noticeReplyList',
+          params: {
+              pid: this.extentData.noticeId
           }
-        });
+        })
       } else {
       }
     }

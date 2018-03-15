@@ -17,7 +17,8 @@ export default {
             notData: false,
             page: 1,
             pageItem: {},
-            notReadIcon:`<i class="not-read-item"></i>`
+            notReadIcon:`<i class="not-read-item"></i>`,
+            needLoadMore: true
         }
     },
     activated() {
@@ -58,7 +59,8 @@ export default {
                 _userName = this.$store.getters.userName
                 if (!result) {
                     this.notData = true;
-                    Indicator.close()
+                    Indicator.close();
+                    this.needLoadMore = false;
                     return false;
                 }
                 if (result.code == 0) {
@@ -68,6 +70,7 @@ export default {
                         this.notices = [];
                         this.notData = true;
                         this.noLoadMore = true;
+                        this.needLoadMore = false;
                     } else {
                         updateDatas = result.response.datas;
                         this.pageItem = {
@@ -76,6 +79,7 @@ export default {
                         this.notices = result.response.datas;
                         this.notData = false;
                         this.noLoadMore = false;
+                        this.needLoadMore = result.response.pageCount <= 1 ? false : true;
                     }
                 } else {
                     this.notData = true;
