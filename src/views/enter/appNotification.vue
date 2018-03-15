@@ -28,8 +28,11 @@ export default {
             if (val.name == 'yhk') {
                 this.linkPath({ path: `/hidden_danger_info/${val.id}` })
             } else if (val.name == 'notice') {
-                this.linkPath({
-                    path: `/notice/${val.noticeId}?from=notification`
+                this.$MKOPush({
+                    name: 'noticeReplyList',
+                    params: {
+                        pid: val.noticeId
+                    }
                 })
             } else {
                 this.$MKOJump(fromPath)

@@ -18,7 +18,8 @@ export default {
       tabs: [{ actived: 'actived', text: '未处置', type: 1 }, { actived: '', text: '处置中', type: 3 }, { actived: '', text: '已处置', type: 2 }],
       hiddenDangersType: 1,
       hiddenDangersDatas: [],
-      noLoadMore: false
+      noLoadMore: false,
+      needLoadMore: true
     }
   },
   activated() {
@@ -42,19 +43,22 @@ export default {
         Indicator.close();
         if (!res) {
           this.resError = true;
+          this.needLoadMore = false;
           return;
         }
         if (res.code === 0) {
-          if (res.response && res.response.datas.length > 0) {
+          if (res.response && res.response.datas.length >= 0) {
             needUpdate[type] = { isupdate: false, type: type, datas: res.response.datas, noLoadMore: false, page: res.response.page, pageCount: res.response.pageCount, count: res.response.count, countNumber: res.response.countNumber };
             this.hiddenDangers = res.response.datas;
-            this.notData = false;
+            this.notData = true;
             this.noLoadMore = false;
+            this.needLoadMore = false;
           } else {
             needUpdate[type] = { isupdate: false, type: type, datas: [], noLoadMore: true, page: 1 };
             this.hiddenDangers = [];
-            this.notData = true;
+            this.notData = false;
             this.noLoadMore = true;
+            this.needLoadMore = res.response.pageCount <= 0 ? false : true;
           }
         } else {
 
@@ -69,16 +73,12 @@ export default {
           item.actived = ''
         }
       });
-      // console.log(needUpdate)
-      this.notData = false;
       this.hiddenDangersType = item.type;
       this.noLoadMore = needUpdate[item.type].noLoadMore;
       if (needUpdate[item.type].datas.length <= 0) {
         this.getData(1, this.hiddenDangersType);
       } else {
         this.hiddenDangers = needUpdate[item.type].datas;
-        if (this.hiddenDangers.length <= 0)
-          this.notData = true;
       }
     },
     // 分页
