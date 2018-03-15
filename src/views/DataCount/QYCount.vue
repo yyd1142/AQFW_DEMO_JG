@@ -14,8 +14,8 @@
             <div class="chart-wrap" ref="chart"></div>
             <div class="list-wrap">
                 <mko-cell :title="item.name" main="left" v-for="item in datas[tabItems[tabI].key]">
-                    <span v-show="tabI==0&&type==0">{{item.score == '未知' ? '未知分数' : (item.score || '0') + '分'}}, {{item.value || 0}}家</span>
-                    <span v-show="tabI!=0||type!=0">{{item.value || 0}}</span>
+                    <span v-show="type==0">{{item.score == '未知' ? '未知分数' : (item.score || '0') + '分'}}, {{item.value || 0}}家</span>
+                    <span v-show="type!=0">{{item.value || 0}}</span>
                 </mko-cell>
             </div>
             <!--<mko-cell title="数据列表" is-link @click="goList"></mko-cell>-->
@@ -128,8 +128,8 @@
                                         value: item.count,
                                         name: item[names[key]],
                                     };
-                                    if (item.qyScoreAverage)
-                                        obj.score = item.qyScoreAverage;
+                                    if (item.qyScoreAverage || item.average)
+                                        obj.score = item.qyScoreAverage || item.average;
                                     return obj;
                                 });
                                 //将剩余归为其他类
