@@ -50,15 +50,15 @@ export default {
           if (res.response && res.response.datas.length >= 0) {
             needUpdate[type] = { isupdate: false, type: type, datas: res.response.datas, noLoadMore: false, page: res.response.page, pageCount: res.response.pageCount, count: res.response.count, countNumber: res.response.countNumber };
             this.hiddenDangers = res.response.datas;
-            this.notData = true;
+            this.notData = false;
             this.noLoadMore = false;
-            this.needLoadMore = false;
+            this.needLoadMore = res.response.pageCount <= 1 ? false : true;
           } else {
             needUpdate[type] = { isupdate: false, type: type, datas: [], noLoadMore: true, page: 1 };
             this.hiddenDangers = [];
-            this.notData = false;
+            this.notData = true;
             this.noLoadMore = true;
-            this.needLoadMore = res.response.pageCount <= 0 ? false : true;
+            this.needLoadMore = false;
           }
         } else {
 
@@ -78,6 +78,7 @@ export default {
       if (needUpdate[item.type].datas.length <= 0) {
         this.getData(1, this.hiddenDangersType);
       } else {
+        this.needLoadMore = needUpdate[item.type].pageCount <= 1 ? false : true;
         this.hiddenDangers = needUpdate[item.type].datas;
       }
     },
