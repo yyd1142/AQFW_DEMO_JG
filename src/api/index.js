@@ -60,7 +60,7 @@ export default {
     examScoreDetail: httpGet('/exam', Conf.qyApiDomain),
     //安全评分
     getScoreList: httpGet('/dwScore?m=list', Conf.scoreDomain),
-    getAllScoreList: httpGet('/dwScore?m=qydwScoreList', Conf.scoreDomain),
+    getAllScoreList: httpGet('/new/dwScore?m=qydwScoreListByJg', Conf.scoreDomain),
     getHistoryScoreList: httpGet('/dwScore', Conf.scoreDomain),
     getHistoryScoreDetail: httpGet('/dwScore', Conf.scoreDomain),
     //社会单位

@@ -9,7 +9,7 @@
             </mko-nav-bar>
             <div class="data-wrap">
                 <mko-cell :title="item.dwName" :val="`${item.dwSafeScore}分`" v-for="item in qyLevelList[tabIndex].list" @click="go(`/score/${item.groupId}?name=${item.dwName}`)" main="left" is-link></mko-cell>
-                <no-data v-if="qyLevelList[tabIndex].list.length == 0"></no-data>
+                <no-data v-if="(qyLevelList[tabIndex].list && qyLevelList[tabIndex].list.length <= 0) || !qyLevelList[tabIndex].list"></no-data>
             </div>
         </div>
     </div>
@@ -19,6 +19,7 @@
     import api from 'api'
     import {NoData, ResError} from 'components';
     import {Indicator} from 'mint-ui';
+    const count = 15;
     export default {
         data() {
             return {
@@ -26,11 +27,9 @@
                 resError: false,
                 qyList: [],
                 qyLevelList: [
-                    {text: '优秀', id: '1', list: [], actived: ''},
-                    {text: '良好', id: '2', list: [], actived: ''},
-                    {text: '中等', id: '3', list: [], actived: ''},
-                    {text: '较低', id: '4', list: [], actived: ''},
-                    {text: '极低', id: '5', list: [], actived: ''}
+                    { text: '高', id: 0, actived: '', list: [], needLoadMore: true, page: 1, pageCount: 0 },
+                    { text: '中', id: 1, actived: '', list: [], needLoadMore: true, page: 1, pageCount: 0 },
+                    { text: '低', id: 2, actived: '', list: [], needLoadMore: true, page: 1, pageCount: 0 }
                 ],
                 tabIndex: 0
             }
@@ -40,9 +39,21 @@
                 let from = {
                     path: '/enter/home'
                 }
-                let path = `/score_list?type=${val}`
+                let path = {
+                    path: '/score_list',
+                    query: {
+                        type: val
+                    }
+                }
                 if (this.$route.query.groupId && this.$route.query.from) {
-                    path = `/score_list?type=${val}&groupId=${this.$route.query.groupId}&from=${this.$route.query.from}`;
+                    path = {
+                        path: '/score_list',
+                        query: {
+                            type: val,
+                            groupId: this.$route.query.groupId,
+                            from: this.$route.query.from
+                        }
+                    }
                     from = {
                         path: this.$route.query.from
                     }
@@ -58,11 +69,11 @@
         },
         activated() {
             this.$nextTick(() => {
-                this.getData();
-                this.selected = this.$route.query.type || '1';
+                this.selected = parseInt(this.$route.query.type) || 0;
+                this.getData(1, this.selected);
                 for(let index in this.qyLevelList) {
-                    if(parseInt(this.selected) - 1 == index) {
-                        this.tabIndex = index;
+                    if(this.selected === parseInt(index)) {
+                        this.tabIndex = parseInt(index);
                         this.qyLevelList[index].actived = 'actived';
                     } else {
                         this.qyLevelList[index].actived = '';
@@ -71,12 +82,16 @@
             });
         },
         methods: {
-            getData() {
+            getData(page, level) {
                 Indicator.open({spinnerType: 'fading-circle'});
                 let groupId = this.$store.getters.groupId;
+                let lv = ['good', 'special', 'low'];
                 if (this.$route.query.groupId) groupId = this.$route.query.groupId;
                 let params = {
-                    groupId: groupId
+                    groupId: groupId,
+                    level: lv[level],
+                    page: page,
+                    count: count
                 };
                 api.getAllScoreList(params).then(res => {
                     if (!res) {
@@ -85,8 +100,10 @@
                         return;
                     }
                     if (res.code == 0) {
-                        this.qyList = res.response;
-                        this.calcScoreLevel(res.response);
+                        this.qyLevelList[level]['page'] = res.response.page;
+                        this.qyLevelList[level]['pageCount'] = res.response.pageCount;
+                        this.qyLevelList[level]['list'] = res.response.datas;
+                        this.qyLevelList[level]['needLoadMore'] = res.response.pageCount <= 1 ? false : true
                     }
                     Indicator.close();
                 });
@@ -132,14 +149,15 @@
                 this.tabIndex = index;
                 this.selected = item.id;
                 for(let index in this.qyLevelList) {
-                    if(parseInt(this.selected) - 1 == index) {
-                        this.tabIndex = index;
+                    if(parseInt(this.selected) == parseInt(index)) {
+                        this.tabIndex = parseInt(index);
                         this.qyLevelList[index].actived = 'actived';
                     } else {
                         this.qyLevelList[index].actived = '';
                     }
                 }
                 this.$MKOPush(`/score_list?type=${item.id}`);
+                this.getData(1, this.tabIndex)
             }
         },
         components: {
