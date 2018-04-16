@@ -298,7 +298,7 @@
                     matchData(item, index);
                 });
                 //处理当前分数
-//                matchData(currentScore, pastScore.length);
+                matchData(currentScore, pastScore.length);
 
                 chart.setOption({
                     legend: {
