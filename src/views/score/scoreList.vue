@@ -9,6 +9,7 @@
             </mko-nav-bar>
             <div class="data-wrap">
                 <mko-cell :title="item.dwName" :val="`${item.dwSafeScore}分`" v-for="item in qyLevelList[tabIndex].list" @click="go(`/score/${item.groupId}?name=${item.dwName}`)" main="left" is-link></mko-cell>
+                <mko-load-more @click="loadBottom" :no-load-more="qyLevelList[tabIndex].noLoadMore" v-if="qyLevelList[tabIndex].needLoadMore"></mko-load-more>
                 <no-data v-if="(qyLevelList[tabIndex].list && qyLevelList[tabIndex].list.length <= 0) || !qyLevelList[tabIndex].list"></no-data>
             </div>
         </div>
@@ -17,8 +18,8 @@
 
 <script>
     import api from 'api'
-    import {NoData, ResError} from 'components';
-    import {Indicator} from 'mint-ui';
+    import { NoData, ResError } from 'components';
+    import { Indicator, Toast } from 'mint-ui';
     const count = 15;
     export default {
         data() {
@@ -27,9 +28,9 @@
                 resError: false,
                 qyList: [],
                 qyLevelList: [
-                    { text: '高', id: 0, actived: '', list: [], needLoadMore: true, page: 1, pageCount: 0 },
-                    { text: '中', id: 1, actived: '', list: [], needLoadMore: true, page: 1, pageCount: 0 },
-                    { text: '低', id: 2, actived: '', list: [], needLoadMore: true, page: 1, pageCount: 0 }
+                    { text: '高', id: 0, actived: '', list: [], needLoadMore: true, page: 1, pageCount: 0, noLoadMore: false },
+                    { text: '中', id: 1, actived: '', list: [], needLoadMore: true, page: 1, pageCount: 0, noLoadMore: false },
+                    { text: '低', id: 2, actived: '', list: [], needLoadMore: true, page: 1, pageCount: 0, noLoadMore: false }
                 ],
                 tabIndex: 0
             }
@@ -102,8 +103,9 @@
                     if (res.code == 0) {
                         this.qyLevelList[level]['page'] = res.response.page;
                         this.qyLevelList[level]['pageCount'] = res.response.pageCount;
-                        this.qyLevelList[level]['list'] = res.response.datas;
-                        this.qyLevelList[level]['needLoadMore'] = res.response.pageCount <= 1 ? false : true
+                        this.qyLevelList[level]['list'] = this.qyLevelList[level]['list'].concat(res.response.datas);
+                        this.qyLevelList[level]['needLoadMore'] = res.response.pageCount <= 1 ? false : true;
+                        this.qyLevelList[level]['noLoadMore'] = res.response.datas.length <= 0 ? true : false;
                     }
                     Indicator.close();
                 });
@@ -157,7 +159,23 @@
                     }
                 }
                 this.$MKOPush(`/score_list?type=${item.id}`);
-                this.getData(1, this.tabIndex)
+                if(this.qyLevelList[index].list.length <= 0) {
+                    this.getData(1, this.tabIndex)
+                } 
+            },
+            loadBottom() {
+                let data = this.qyLevelList[this.tabIndex];
+                if (data.page == data.pageCount) {
+                    Toast({
+                        message: '暂无更多数据',
+                        position: 'middle',
+                        duration: 1500
+                    });
+                    data.noLoadMore = true;
+                    return;
+                }
+                let page = data.page + 1;
+                this.getData(page, this.tabIndex);
             }
         },
         components: {
