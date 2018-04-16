@@ -15,6 +15,7 @@
                     {{item.score}}分
                 </div>
             </div>
+
             <!--总分-->
             <div class="total">
                 <div class="label">社会单位安全评分构成 (共100分)</div>
@@ -30,30 +31,28 @@
             </div>
 
             <!--消防设施管理得分-->
-            <mko-menu-header title="消防设施管理评分 (共16分)" icon="icon-info" @clickIcon="showScoreDesc('xfsssb')"
+            <mko-menu-header title="消防设施管理评分 (共20分)" icon="icon-info" @clickIcon="showScoreDesc('xfsssb')"
                              @show="showDetail.xfsssb=!showDetail.xfsssb">
-                {{xfsssbScore | scoreFilter}}分
+                {{score.xfsssbScore | scoreFilter}}分
             </mko-menu-header>
             <div v-show="showDetail.xfsssb">
-                <mko-menu-cell title="消防设施完好率 (共4分)">{{score.xfsssbFullScore | scoreFilter}}分</mko-menu-cell>
-                <mko-menu-cell title="消防设施安装情况 (共12分)">{{score.xfsssbInstallScore | scoreFilter}}分</mko-menu-cell>
+                <mko-menu-cell title="消防设施完好率 (共20分)">{{score.xfsssbScore | scoreFilter}}分</mko-menu-cell>
             </div>
 
             <!--消防安全管理得分-->
-            <mko-menu-header title="消防安全管理得分 (共64分)" icon="icon-info" @clickIcon="showScoreDesc('xfaqgl')"
+            <mko-menu-header title="消防安全管理得分 (共60分)" icon="icon-info" @clickIcon="showScoreDesc('xfaqgl')"
                              @show="showDetail.xfaqgl=!showDetail.xfaqgl">
-                {{xfaqglScore | scoreFilter}}分
+                {{score.xfaqglScore | scoreFilter}}分
             </mko-menu-header>
             <div v-show="showDetail.xfaqgl">
-                <mko-menu-cell title="基本信息完善率 (共16分)">{{basicInfoScore | scoreFilter}}分</mko-menu-cell>
+                <mko-menu-cell title="基本信息完善率 (共20分)">{{basicInfoScore | scoreFilter}}分</mko-menu-cell>
                 <mko-menu-cell title="消控中心在岗率 (共2分)">{{score.ryzbScore | scoreFilter}}分</mko-menu-cell>
-                <mko-menu-cell title="人员履职率 (共8分)">{{score.ryxcScore | scoreFilter}}分</mko-menu-cell>
-                <mko-menu-cell title="检查项目达标率 (共5分)">{{(score.checkScore + score.wbScore) | scoreFilter}}分
-                </mko-menu-cell>
-                <mko-menu-cell title="安全管理执行率 (共15分)">{{aqglScore | scoreFilter}}分</mko-menu-cell>
-                <mko-menu-cell title="学习培训覆盖率 (共4分)">{{xuexipeixunScore | scoreFilter}}分</mko-menu-cell>
-                <mko-menu-cell title="第三方服务签约率 (共4分)">{{disanfangScore | scoreFilter}}分</mko-menu-cell>
-                <mko-menu-cell title="物联网设备接入率 (共10分)">{{wuliuScore | scoreFilter}}分</mko-menu-cell>
+                <mko-menu-cell title="人员履职率 (共10分)">{{score.ryxcScore | scoreFilter}}分</mko-menu-cell>
+                <mko-menu-cell title="检查项目达标率 (共5分)">{{score.sssbCheckScore | scoreFilter}}分</mko-menu-cell>
+                <mko-menu-cell title="安全管理执行率 (共10分)">{{aqglScore | scoreFilter}}分</mko-menu-cell>
+                <mko-menu-cell title="学习培训覆盖率 (共8分)">{{xuexipeixunScore | scoreFilter}}分</mko-menu-cell>
+                <mko-menu-cell title="第三方服务签约率 (共3分)">{{disanfangScore | scoreFilter}}分</mko-menu-cell>
+                <mko-menu-cell title="物联网设备接入率 (共2分)">{{wuliuScore | scoreFilter}}分</mko-menu-cell>
             </div>
 
             <div class="data-count-wrap">
@@ -77,7 +76,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -97,14 +95,14 @@
     export default {
         data() {
             return {
-                unitInfo: {},
+                unitInfo: '',
                 score: {},
                 barData: [
-                    {text: '低', score: '0-80', minScore: 1, maxScore: 79, active: false},
-                    // {text: '较低', score: '60-69', minScore: 60, maxScore: 69, active: false},
-                    {text: '中', score: '80-89', minScore: 80, maxScore: 89, active: false},
-                    // {text: '良好', score: '80-89', minScore: 80, maxScore: 89, active: false},
-                    {text: '高', score: '90-100', minScore: 90, maxScore: 100, active: false}
+                    {text: '极低', score: '0-59', minScore: 1, maxScore: 59, active: false},
+                    {text: '较低', score: '60-69', minScore: 60, maxScore: 69, active: false},
+                    {text: '中等', score: '70-79', minScore: 70, maxScore: 79, active: false},
+                    {text: '良好', score: '80-89', minScore: 80, maxScore: 89, active: false},
+                    {text: '优秀', score: '90-100', minScore: 90, maxScore: 100, active: false}
                 ],
                 showDetail: {jzhz: false, xfsssb: false, xfaqgl: false},
                 scoreDesc: conf.scoreDesc
@@ -113,87 +111,59 @@
         activated() {
             this.$nextTick(() => {
                 this.unitInfo = this.$route.query.name;
-                this.getScoreInfo();
-                this.getHistoryScoreList();
+                this.getScoreList();
             });
         },
         deactivated() {
             this.showDetail = {jzhz: false, xfsssb: false, xfaqgl: false};
         },
         computed: {
-            xfsssbScore(){
-                let score = this.score;
-                return score.xfsssbFullScore + score.xfsssbInstallScore;
-            },
-            xfaqglScore(){
-                let score = this.score;
-                return this.basicInfoScore + score.ryzbScore + score.ryxcScore + score.checkScore + score.wbScore + this.aqglScore + this.xuexipeixunScore + this.disanfangScore + this.wuliuScore;
-            },
             basicInfoScore() {
-                //基本信息完善率
                 return this.score.dwInfoScore + this.score.ryInfoScore + this.score.jzInfoScore + this.score.xfsssbInfoScore
             },
             aqglScore() {
-                //安全管理执行率
                 return this.score.xfgzryScore + this.score.xfaqzdScore + this.score.xfgzjhScore + this.score.xfgzlhScore + this.score.yjyaScore + this.score.yjssylScore + this.score.zyxfdScore
             },
             xuexipeixunScore() {
-                //学习培训覆盖率
                 return this.score.dqzgpxScore + this.score.xfaqpxqkScore + this.score.yggqpxScore
             },
             disanfangScore() {
-                //第三方服务签约率
                 return this.score.sfqywbScore + this.score.sfqyjcScore + this.score.sfqybxScore
             },
             wuliuScore() {
-                //物联网设备接入率
-                return this.score.physnetScore + this.score.miniFirehouseScore + this.score.citynetScore;
+                return this.score.spjkfxScore + this.score.dqjcScore + this.score.ywgjcScore + this.score.sxtjcScore + this.score.krqtjcScore
             },
-            // 火灾风险评级
-            hzfxLevel() {
-                let value = this.score.jzhzScore
-                let level = '';
-                if (value >= 0 && value < 10) {
-                    level = '超严重级'
-                } else if (value >= 10 && value < 20) {
-                    level = '严重级'
-                } else if (value >= 20 && value < 30) {
-                    level = '中级'
-                } else if (value >= 30) {
-                    level = '轻级'
-                }
-                return level;
-            },
-            userInfo() {
-                return JSON.parse(localStorage.getItem('USER_DATA'))
-            }
         },
         methods: {
-//            scoreFilter,
             showScoreDesc(type){
                 this.$MKODialog({
                     title: this.scoreDesc[type].title,
-                    msg: this.scoreDesc[type].desc,
+                    msg: this.scoreDesc[type].desc
                 }).then(res => {
+//          console.log(res)
                 });
             },
-            back() {
-                this.$MKOPop()
-            },
-            getScoreInfo() {
+            getScoreList() {
                 Indicator.open({spinnerType: 'fading-circle'});
                 let params = {
-                    m: 'homePageScore',
                     groupId: this.$route.params.id
                 };
-                api.getHistoryScoreDetail(params).then(result => {
+                api.getScoreList(params).then(result => {
+                    Indicator.close();
                     if (result.code == 0) {
-                        Indicator.close();
-                        if (result.msg.length <= 0) {
-                            return false;
+                        let data = result.msg[result.msg.length - 1];
+                        let xfaqglScore = 0;
+                        for (let key in data) {
+                            for (let i = 0; i < keys.length; i++) {
+                                if (key == keys[i]) {
+                                    xfaqglScore = xfaqglScore + data[key]
+                                    data[key] = Math.floor(data[key] * 100) / 100;
+                                }
+                            }
                         }
-                        this.score = result.msg;
-                        currentScore = result.msg;
+                        data['xfaqglScore'] = Math.floor(xfaqglScore * 100) / 100;
+                        this.score = result.msg[result.msg.length - 1];
+                        currentScore = result.msg[0];
                         this.calcScoreBar();
                         this.DrawChart1(echarts);
                         this.getHistoryScoreList();
@@ -202,9 +172,10 @@
             },
             getHistoryScoreList() {
                 let params = {
-                    m: 'list', //往期评分列表
+                    m: 'historyList',
                     groupId: this.$route.params.id,
-                    count: 5,
+//        count: count,
+                    type: 1
                 };
                 api.getHistoryScoreList(params).then(result => {
                     if (result.code == 0) {
@@ -229,31 +200,15 @@
             },
             calcHeadColor,
             calcScoreStyle,
+            back() {
+                this.$MKOPop()
+            },
             //数据统计
             DrawChart1(ec) {
                 var chart = ec.init(document.getElementById('chart1'), theme);
-                let total = this.score.totalScore;
-                let data = [
-                    {
-                        value: this.score.jzhzScore,
-                        name: '建筑火灾风险评分'
-                    },
-                    {
-                        value: this.xfsssbScore,
-                        name: '消防设施管理评分'
-                    },
-                    {
-                        value: this.xfaqglScore,
-                        name: '消防安全管理评分'
-                    }
-                ];
-                for (let i = 0; i < data.length; i++) {
-                    if (data[i].value == 0) {
-                        data.splice(i, 1);
-                        i--;
-                    }
-                }
                 chart.setOption({
+
+
                     calculable: true,
                     series: [{
 
@@ -266,12 +221,24 @@
                                 label: {
                                     show: true,
                                     formatter: function (params) {
-                                        return params.name + '\n' + parseInt(params.value * 100 / total) + '%'
+                                        return params.name + '\n' + params.value + '%'
                                     }
                                 }
                             }
                         },
-                        data: data
+                        data: [{
+                            value: this.score.xfaqglScore,
+                            name: '消防安全管理评分'
+                        },
+                            {
+                                value: this.score.jzhzScore,
+                                name: '建筑火灾风险评分'
+                            },
+                            {
+                                value: this.score.xfsssbScore,
+                                name: '消防设施管理评分'
+                            }
+                        ]
                     }]
                 });
             },
@@ -298,7 +265,7 @@
                     matchData(item, index);
                 });
                 //处理当前分数
-//                matchData(currentScore, pastScore.length);
+                matchData(currentScore, pastScore.length);
 
                 chart.setOption({
                     legend: {
@@ -316,20 +283,19 @@
                             formatter: '{value} '
                         }
                     }],
-                    series: [
-                        {
-                            name: '往期分数',
-                            type: 'line',
-                            data: scoreList,
-                            markPoint: {
-                                data: Data
-                            },
+                    series: [{
+                        name: '当月分数',
+                        type: 'line',
+                        data: scoreList,
+                        markPoint: {
+                            data: Data
                         },
-                    ]
+                    },]
                 });
             },
             DrawChart3(ec) {
                 var chart = ec.init(document.getElementById('chart3'), theme);
+
                 var builderJson = {
                     "all": 100,
                     "charts": {
@@ -446,7 +412,7 @@
             .item {
                 position: relative;
                 float: left;
-                width: 100% / 3;
+                width: 20%;
                 height: 36px;
                 line-height: 36px;
                 letter-spacing: 0.5px;

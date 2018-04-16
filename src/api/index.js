@@ -44,7 +44,7 @@ export default {
     messagePublish: httpPath('/messages/message/publish/', Conf.loginDomain),
     getNoticesList: httpGet('/dwNotice', Conf.domain),
     getNoticesDetail: httpGet('/dwNotice', Conf.domain),
-    getReceiveNoticesDetail: httpPath('/messages/message/info/', Conf.loginDomain), 
+    getReceiveNoticesDetail: httpPath('/messages/message/info/', Conf.loginDomain),
     //风险管理
     getYhkList: httpGet('/yhk', Conf.domain),
     getYhkInfo: httpGet('/yhk?m=info', Conf.qyApiDomain),
@@ -59,10 +59,11 @@ export default {
     getPastScoreList: httpGet('/exam', Conf.qyApiDomain),
     examScoreDetail: httpGet('/exam', Conf.qyApiDomain),
     //安全评分
-    getScoreList: httpGet('/dwScore?m=list', Conf.scoreDomain),
-    getAllScoreList: httpGet('/dwScore?m=qydwScoreList', Conf.scoreDomain),
-    getHistoryScoreList: httpGet('/dwScore', Conf.scoreDomain),
-    getHistoryScoreDetail: httpGet('/dwScore', Conf.scoreDomain),
+    getScoreList: httpGet('/new/dwScore?m=list', Conf.scoreDomain),
+    // getAllScoreList: httpGet('/dwScore?m=qydwScoreList', Conf.scoreDomain),
+    getAllScoreList: httpGet('/new/dwScore?m=qydwScoreListByJg', Conf.scoreDomain),
+    getHistoryScoreList: httpGet('/new/dwScore', Conf.scoreDomain),
+    getHistoryScoreDetail: httpGet('/new/dwScore', Conf.scoreDomain),
     //社会单位
     getQyList: httpGet('/jg/user/jurisdiction', Conf.jgApiDomain),
     getQyInfo: httpGet('/dwInfo?m=info', Conf.domain),
@@ -87,7 +88,7 @@ export default {
     lowerDw: httpGet('/jg/lowerDw', Conf.jgApiDomain),
     jgPersons: httpGet('/jg/user/list', Conf.jgApiDomain),
     getPersonItem: httpGet('/jg/user/jurisdiction', Conf.jgApiDomain),
-    getJGScoreTypes: httpGet('/dwScore', Conf.scoreDomain), //社会单位 分数等级模块
+    getJGScoreTypes: httpGet('/new/dwScore', Conf.scoreDomain), //社会单位 分数等级模块
     getAppState: httpGet('/'), //获取APP状态
 
     //数据统计

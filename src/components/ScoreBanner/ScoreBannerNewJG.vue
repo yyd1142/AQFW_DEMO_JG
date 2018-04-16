@@ -124,7 +124,7 @@
                 }
             },
             DrawChart(ec){
-                let total = this.datas.count;
+                let total = this.datas.count || 1;
                 let data = this.datas;
                 for (let key in data) {
                     if (key == 'count') break;
@@ -145,11 +145,11 @@
                     polar: [
                         {
                             indicator: [
-                                {text: '优秀', max: total},
-                                {text: '中等', max: total},
-                                {text: '极低', max: total},
-                                {text: '较低', max: total},
-                                {text: '良好', max: total},
+                                {text: '高', max: total},
+//                                {text: '中等', max: total},
+                                {text: '中', max: total},
+//                                {text: '较低', max: total},
+                                {text: '低', max: total},
                             ],
                             radius: 90,
                             name: {
@@ -178,7 +178,7 @@
                             },
                             data: [
                                 {
-                                    value: [data.excellent, data.good, data.special, data.low, data.veryLow],
+                                    value: [data.good, data.special, data.low],
 //                                    value: [0, 0, 1, 6, 1],
                                     name: '',
                                     itemStyle: {

@@ -58,8 +58,9 @@ export default {
             this.jgName = data.dwJC || data.dwName || '';
             this.score = data.qyScoreAverage || 0;
             this.score = Math.round(this.score);
+
             let params = {
-                m: 'qydwScore',
+                m: 'qydwScoreGrade',
                 groupId: this.$store.getters.groupId,
                 type: data.type
             };

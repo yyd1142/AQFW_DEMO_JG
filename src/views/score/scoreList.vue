@@ -17,8 +17,8 @@
 
 <script>
     import api from 'api'
-    import {NoData, ResError} from 'components';
-    import {Indicator} from 'mint-ui';
+    import { NoData, ResError } from 'components';
+    import { Indicator } from 'mint-ui';
     export default {
         data() {
             return {
@@ -26,11 +26,11 @@
                 resError: false,
                 qyList: [],
                 qyLevelList: [
-                    {text: '优秀', id: '1', list: [], actived: ''},
-                    {text: '良好', id: '2', list: [], actived: ''},
-                    {text: '中等', id: '3', list: [], actived: ''},
-                    {text: '较低', id: '4', list: [], actived: ''},
-                    {text: '极低', id: '5', list: [], actived: ''}
+                    {text: '高', id: '1', list: [], actived: ''},
+                    {text: '中', id: '2', list: [], actived: ''},
+                    {text: '低', id: '3', list: [], actived: ''},
+//                    {text: '较低', id: '4', list: [], actived: ''},
+//                    {text: '极低', id: '5', list: [], actived: ''}
                 ],
                 tabIndex: 0
             }
@@ -60,8 +60,8 @@
             this.$nextTick(() => {
                 this.getData();
                 this.selected = this.$route.query.type || '1';
-                for(let index in this.qyLevelList) {
-                    if(parseInt(this.selected) - 1 == index) {
+                for (let index in this.qyLevelList) {
+                    if (parseInt(this.selected) - 1 == index) {
                         this.tabIndex = index;
                         this.qyLevelList[index].actived = 'actived';
                     } else {
@@ -76,7 +76,9 @@
                 let groupId = this.$store.getters.groupId;
                 if (this.$route.query.groupId) groupId = this.$route.query.groupId;
                 let params = {
-                    groupId: groupId
+                    groupId: groupId,
+                    count: 1000,
+//                    isPage:0
                 };
                 api.getAllScoreList(params).then(res => {
                     if (!res) {
@@ -85,8 +87,8 @@
                         return;
                     }
                     if (res.code == 0) {
-                        this.qyList = res.response;
-                        this.calcScoreLevel(res.response);
+                        this.qyList = res.response.datas;
+                        this.calcScoreLevel(res.response.datas);
                     }
                     Indicator.close();
                 });
@@ -106,12 +108,8 @@
                             allList[0].list.push(item);
                         } else if (val >= 80) {
                             allList[1].list.push(item);
-                        } else if (val >= 70) {
-                            allList[2].list.push(item);
-                        } else if (val >= 60) {
-                            allList[3].list.push(item);
                         } else {
-                            allList[4].list.push(item);
+                            allList[2].list.push(item);
                         }
                     }
                 });
@@ -131,8 +129,8 @@
             tab(item, index) {
                 this.tabIndex = index;
                 this.selected = item.id;
-                for(let index in this.qyLevelList) {
-                    if(parseInt(this.selected) - 1 == index) {
+                for (let index in this.qyLevelList) {
+                    if (parseInt(this.selected) - 1 == index) {
                         this.tabIndex = index;
                         this.qyLevelList[index].actived = 'actived';
                     } else {
