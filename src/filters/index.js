@@ -102,16 +102,12 @@ export const calcScoreStyle = function (val) {
 };
 
 export const calcScoreText = function (val) {
-    let text = ['极低', '较低', '中等', '良好', '优秀'];
+    let text = ['低', '中', '高'];
     if (!val || !parseFloat(val))
         return '';
     if (val >= 90) {
-        return text[4]
-    } else if (val >= 80) {
-        return text[3]
-    } else if (val >= 70) {
         return text[2]
-    } else if (val >= 60) {
+    } else if (val >= 80) {
         return text[1]
     } else {
         return text[0]
@@ -129,14 +125,8 @@ export const calcHeadColor = function (val, color) {
         return color[0]
     } else if (val >= 80) {
         return color[1]
-    } else if (val >= 70) {
-        return color[2]
-    } else if (val >= 60) {
-        return color[3]
-    } else if (val > 0) {
-        return color[4]
     } else {
-        return '#ab89f0'
+        return color[4]
     }
 };
 

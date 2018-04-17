@@ -71,11 +71,9 @@
                         qyCount: 0,
                         qyScoreAverage: 0,
                         list: [
-                            {key: '优秀', value: 0, type: 1},
-                            {key: '良好', value: 0, type: 2},
-                            {key: '中等', value: 0, type: 3},
-                            {key: '较低', value: 0, type: 4},
-                            {key: '极低', value: 0, type: 5}]
+                            {key: '高', value: 0, type: 0},
+                            {key: '中', value: 0, type: 1},
+                            {key: '低', value: 0, type: 2}]
                     }
                 }
             }
@@ -117,11 +115,12 @@
                 this.data.title = jgDetail.dwName;
                 this.data.groupId = groupId;
                 let data = JSON.parse(localStorage['USER_DATA']);
-                api.getJGScoreTypes({
-                    m: 'qydwScore',
-                    groupId: groupId,
-                    type: data.type
-                }).then(res => {
+                let params = {
+                    m: 'qydwScoreGrade',
+                    groupId: jgDetail.groupId,
+                    type: 1
+                };
+                api.getJGScoreTypes(params).then(res => {
                     if (!res) {
                         this.data.resError = true;
                         return false;
@@ -131,11 +130,9 @@
                             qyCount: res.response.count,
                             qyScoreAverage: jgDetail.qyScoreAverage || 0,
                             list: [
-                                {key: '优秀', value: res.response.excellent, type: 1},
-                                {key: '良好', value: res.response.good, type: 2},
-                                {key: '中等', value: res.response.special, type: 3},
-                                {key: '较低', value: res.response.low, type: 4},
-                                {key: '极低', value: res.response.veryLow, type: 5}]
+                                {key: '高', value: res.response.good, type: 0},
+                                {key: '中', value: res.response.special, type: 1},
+                                {key: '低', value: res.response.low, type: 2}]
                         }
                         this.data.resError = false;
                     } else {
@@ -302,7 +299,7 @@
                 color: #fff;
                 .item {
                     float: left;
-                    width: 20%;
+                    width: 100% / 3;
                     /* For old syntax, otherwise collapses. */
                     min-height: 110px;
                     position: relative;
