@@ -15,7 +15,8 @@ const Http = (path, method, domain, bHandleError, mode) => {
             data: method === 'post' ? data : null,
             params: method === 'get' ? data : params,
             timeout: 150000,
-            headers: { 'MKOTEAM-ACCESS-TOKEN': window.localStorage.getItem('jg_token'), 'MKOTEAM-USER-ENVIRONMENT': 'TEST' }
+            // headers: { 'MKOTEAM-ACCESS-TOKEN': window.localStorage.getItem('jg_token'), 'MKOTEAM-USER-ENVIRONMENT': 'TEST' }
+            headers: { 'MKOTEAM-ACCESS-TOKEN': window.localStorage.getItem('jg_token') }
         }).then(function (response) {
             if (response.data.code == 0) {
                 return response.data
@@ -66,17 +67,17 @@ const Http = (path, method, domain, bHandleError, mode) => {
 }
 
 export function httpGet(path, domain, bHandleError) {
-    let mode = (domain == 'http://www.aqfwy.com/api/qy' || domain == 'http://www.aqfwy.com/api/platform' || domain == 'http://www.aqfwy.com/api/jg') ? 'DEMO' : 'TEST';
+    let mode = (domain == 'http://www.aqfwy.com/api/qy' || domain == 'http://www.aqfwy.com/api/platform' || domain == 'http://www.aqfwy.com/api/jg') ? '' : 'TEST';
     return Http(path, 'get', domain, bHandleError, mode)
 }
 
 export function httpPost(path, domain, bHandleError) {
-    let mode = (domain == 'http://www.aqfwy.com/api/qy' || domain == 'http://www.aqfwy.com/api/platform' || domain == 'http://www.aqfwy.com/api/jg') ? 'DEMO' : 'TEST';
+    let mode = (domain == 'http://www.aqfwy.com/api/qy' || domain == 'http://www.aqfwy.com/api/platform' || domain == 'http://www.aqfwy.com/api/jg') ? '' : 'TEST';
     return Http(path, 'post', domain, bHandleError, mode)
 }
 
 export function httpPath(path, domain) {
-    let mode = (domain == 'http://www.aqfwy.com/api/qy' || domain == 'http://www.aqfwy.com/api/platform' || domain == 'http://www.aqfwy.com/api/jg') ? 'DEMO' : 'TEST';
+    let mode = (domain == 'http://www.aqfwy.com/api/qy' || domain == 'http://www.aqfwy.com/api/platform' || domain == 'http://www.aqfwy.com/api/jg') ? '' : 'TEST';
     return (paths, environment) => {
         return Axios({
             method: 'get',

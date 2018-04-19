@@ -187,8 +187,8 @@
                     groupId: this.$route.params.id
                 };
                 api.getHistoryScoreDetail(params).then(result => {
-                    if (result.code == 0) {
-                        Indicator.close();
+                    Indicator.close();
+                    if (result.code == 0 && result.msg) {
                         if (result.msg.length <= 0) {
                             return false;
                         }
