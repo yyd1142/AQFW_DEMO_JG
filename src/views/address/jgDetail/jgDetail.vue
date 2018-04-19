@@ -36,7 +36,6 @@
                           main="left" is-link @click="goJGinfo(item)" v-for="item in data.lowerDws"></mko-cell>
                 <mko-cell title="暂无" val="暂无" v-if="data.noData"></mko-cell>
             </div>
-
             <div class="data-wrap">
                 <task-build-title title="人员组成（角色）" value="联系电话"></task-build-title>
                 <mko-cell :title="`${item.name}（${JgRoleType(item.role)}）`"
