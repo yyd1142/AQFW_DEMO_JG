@@ -7,7 +7,7 @@ import {Toast} from 'mint-ui'
 import Axios from 'axios'
 import Conf from '../apiconf'
 
-const Http = (path, method, domain, bHandleError, mode) => {
+const Http = (path, method, domain, bHandleError) => {
     return (data, params, environment) => {
         return Axios({
             method: method,
@@ -67,23 +67,20 @@ const Http = (path, method, domain, bHandleError, mode) => {
 }
 
 export function httpGet(path, domain, bHandleError) {
-    let mode = (domain == 'http://www.aqfwy.com/api/qy' || domain == 'http://www.aqfwy.com/api/platform' || domain == 'http://www.aqfwy.com/api/jg') ? '' : 'TEST';
-    return Http(path, 'get', domain, bHandleError, mode)
+    return Http(path, 'get', domain, bHandleError)
 }
 
 export function httpPost(path, domain, bHandleError) {
-    let mode = (domain == 'http://www.aqfwy.com/api/qy' || domain == 'http://www.aqfwy.com/api/platform' || domain == 'http://www.aqfwy.com/api/jg') ? '' : 'TEST';
-    return Http(path, 'post', domain, bHandleError, mode)
+    return Http(path, 'post', domain, bHandleError)
 }
 
 export function httpPath(path, domain) {
-    let mode = (domain == 'http://www.aqfwy.com/api/qy' || domain == 'http://www.aqfwy.com/api/platform' || domain == 'http://www.aqfwy.com/api/jg') ? '' : 'TEST';
     return (paths, environment) => {
         return Axios({
             method: 'get',
             url: (domain || Conf.domain) + '' + path + '' + paths,
             timeout: 150000,
-            headers: { 'MKOTEAM-ACCESS-TOKEN': window.localStorage.getItem('jg_token'), 'MKOTEAM-USER-ENVIRONMENT': environment ? environment : mode }
+            headers: { 'MKOTEAM-ACCESS-TOKEN': window.localStorage.getItem('jg_token') }
         }).then(function (response) {
             let res = response.data
             if (res.code != 0) {
