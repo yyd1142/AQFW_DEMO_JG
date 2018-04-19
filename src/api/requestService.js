@@ -67,20 +67,24 @@ const Http = (path, method, domain, bHandleError) => {
 }
 
 export function httpGet(path, domain, bHandleError) {
-    return Http(path, 'get', domain, bHandleError)
+    let mode = (domain == 'http://www.aqfwy.com/api/qy' || domain == 'http://www.aqfwy.com/api/platform' || domain == 'http://www.aqfwy.com/api/jg') ? '' : '';
+    return Http(path, 'get', domain, bHandleError, mode)
 }
 
 export function httpPost(path, domain, bHandleError) {
-    return Http(path, 'post', domain, bHandleError)
+    let mode = (domain == 'http://www.aqfwy.com/api/qy' || domain == 'http://www.aqfwy.com/api/platform' || domain == 'http://www.aqfwy.com/api/jg') ? '' : '';
+    return Http(path, 'post', domain, bHandleError, mode)
 }
 
 export function httpPath(path, domain) {
+    let mode = (domain == 'http://www.aqfwy.com/api/qy' || domain == 'http://www.aqfwy.com/api/platform' || domain == 'http://www.aqfwy.com/api/jg') ? '' : '';
     return (paths, environment) => {
         return Axios({
             method: 'get',
             url: (domain || Conf.domain) + '' + path + '' + paths,
             timeout: 150000,
-            headers: { 'MKOTEAM-ACCESS-TOKEN': window.localStorage.getItem('jg_token') }
+            // headers: { 'MKOTEAM-ACCESS-TOKEN': window.localStorage.getItem('jg_token'), 'MKOTEAM-USER-ENVIRONMENT': environment ? environment : mode }
+            headers: { 'MKOTEAM-ACCESS-TOKEN': window.localStorage.getItem('jg_token')}
         }).then(function (response) {
             let res = response.data
             if (res.code != 0) {
