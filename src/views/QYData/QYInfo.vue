@@ -174,11 +174,13 @@
                     this.dwInfo = res.response || "";
                 });
                 api.getScoreList(params).then(res => {
-                    if (!res) {
-                        return;
+                    if (!res) return;
+                    if (res.code == 0 && res.msg) {
+                        this.dwScore = res.msg.length ? res.msg[res.msg.length - 1] : {};
+                        if (!this.dwScore.totalScore) this.dwScore.totalScore = 0;
+                    } else {
+
                     }
-                    this.dwScore = res.msg.length ? res.msg[res.msg.length - 1] : {};
-                    if (!this.dwScore.totalScore) this.dwScore.totalScore = 0;
                 });
             },
             calcScoreText,

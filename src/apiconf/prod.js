@@ -2,6 +2,7 @@ export default {
     domain: 'http://www.aqfwy.com/api/qy', // 社会端API
     taskDomain: 'http://www.aqfwy.com/api/task',
     jgApiDomain: 'http://www.aqfwy.com/api/jg',
+    _jgApiDomain: 'http://10.0.1.11:5873',
     directoriesDomain: 'http://www.aqfwy.com/api/directories',
     // directoriesDomain:'http://10.0.1.11:8060',
     qyApiDomain: 'http://www.aqfwy.com/app/api/qy',
