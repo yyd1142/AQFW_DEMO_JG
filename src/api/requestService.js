@@ -67,17 +67,17 @@ const Http = (path, method, domain, bHandleError, mode) => {
 }
 
 export function httpGet(path, domain, bHandleError) {
-    let mode = (domain == 'http://www.aqfwy.com/api/qy' || domain == 'http://www.aqfwy.com/api/platform' || domain == 'http://www.aqfwy.com/api/jg') ? '' : 'TEST';
+    let mode = (domain == 'http://www.aqfwy.com/api/qy' || domain == 'http://www.aqfwy.com/api/platform' || domain == 'http://www.aqfwy.com/api/jg') ? '' : '';
     return Http(path, 'get', domain, bHandleError, mode)
 }
 
 export function httpPost(path, domain, bHandleError) {
-    let mode = (domain == 'http://www.aqfwy.com/api/qy' || domain == 'http://www.aqfwy.com/api/platform' || domain == 'http://www.aqfwy.com/api/jg') ? '' : 'TEST';
+    let mode = (domain == 'http://www.aqfwy.com/api/qy' || domain == 'http://www.aqfwy.com/api/platform' || domain == 'http://www.aqfwy.com/api/jg') ? '' : '';
     return Http(path, 'post', domain, bHandleError, mode)
 }
 
 export function httpPath(path, domain) {
-    let mode = (domain == 'http://www.aqfwy.com/api/qy' || domain == 'http://www.aqfwy.com/api/platform' || domain == 'http://www.aqfwy.com/api/jg') ? '' : 'TEST';
+    let mode = (domain == 'http://www.aqfwy.com/api/qy' || domain == 'http://www.aqfwy.com/api/platform' || domain == 'http://www.aqfwy.com/api/jg') ? '' : '';
     return (paths, environment) => {
         return Axios({
             method: 'get',
