@@ -182,6 +182,7 @@
             },
             getScoreInfo() {
                 Indicator.open({spinnerType: 'fading-circle'});
+                this.score = '';
                 let params = {
                     m: 'homePageScore',
                     groupId: this.$route.params.id
