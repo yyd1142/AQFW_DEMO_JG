@@ -113,6 +113,7 @@
         activated() {
             this.$nextTick(() => {
                 this.unitInfo = this.$route.query.name;
+                this.score = '';
                 this.getScoreInfo();
                 this.getHistoryScoreList();
             });
@@ -182,19 +183,17 @@
             },
             getScoreInfo() {
                 Indicator.open({spinnerType: 'fading-circle'});
-                this.score = '';
                 let params = {
                     m: 'homePageScore',
                     groupId: this.$route.params.id
                 };
                 api.getHistoryScoreDetail(params).then(result => {
                     Indicator.close();
-                    if (result.code == 0 && result.msg) {
-                        if (result.msg.length <= 0) {
-                            return false;
+                    if (result.code == 0) {
+                        if (result.msg) {
+                            this.score = result.msg;
+                            currentScore = result.msg;
                         }
-                        this.score = result.msg;
-                        currentScore = result.msg;
                         this.calcScoreBar();
                         this.DrawChart1(echarts);
                         this.getHistoryScoreList();
@@ -237,19 +236,19 @@
                 let data = [
                     {
                         value: this.score.jzhzScore,
-                        name: '建筑火灾风险评分'
+                        name: '建筑火灾风险'
                     },
                     {
                         value: this.xfsssbScore,
-                        name: '消防设施管理评分'
+                        name: '消防设施管理'
                     },
                     {
                         value: this.xfaqglScore,
-                        name: '消防安全管理评分'
+                        name: '消防安全管理'
                     }
                 ];
                 for (let i = 0; i < data.length; i++) {
-                    if (data[i].value == 0) {
+                    if (!data[i].value || data[i].value == NaN) {
                         data.splice(i, 1);
                         i--;
                     }
@@ -257,7 +256,6 @@
                 chart.setOption({
                     calculable: true,
                     series: [{
-
                         type: 'pie',
                         radius: [40, 100],
                         center: ['50%', '50%'],
@@ -267,12 +265,14 @@
                                 label: {
                                     show: true,
                                     formatter: function (params) {
-                                        return params.name + '\n' + parseInt(params.value * 100 / total) + '%'
+                                        let name = params.name;
+                                        if (!total) return params.name + '0%';
+                                        return name.slice(0, 2) + '\n' + name.slice(2, name.length) + '\n' + parseInt(params.value * 100 / total) + '%'
                                     }
                                 }
                             }
                         },
-                        data: data
+                        data: data.length <= 0 ? [{value: 0, name: '无数据'}] : data
                     }]
                 });
             },
@@ -281,13 +281,16 @@
                 let dateList = [];
                 let scoreList = [];
                 let Data = [];
+                let non = '-';
 
                 let matchData = function (item, x) {
                     let score = item.totalScore;
-                    dateList.push(moment(item.createDate).format("YYYY年MM月DD日"));
+                    let date = moment(item.createDate).format("YYYY年MM月DD日");
+                    if (date == 'Invalid date') date = non;
+                    dateList.push(date);
                     scoreList.push(score);
                     Data.push({
-                        name: moment(item.createDate).format("YYYY年MM月DD日"),
+                        name: date,
                         value: score,
                         xAxis: x,
                         yAxis: score
@@ -295,11 +298,20 @@
                 };
 
                 //处理往期分数
+                if (pastScore.length <= 0) {
+                    dateList.push(non);
+                    Data.push({
+                        name: non,
+                        value: 0,
+                        xAxis: 0,
+                        yAxis: 0
+                    });
+                }
                 pastScore.forEach((item, index) => {
                     matchData(item, index);
                 });
                 //处理当前分数
-                matchData(currentScore, pastScore.length);
+//                matchData(currentScore, pastScore.length);
 
                 chart.setOption({
                     legend: {
@@ -315,7 +327,7 @@
                         type: 'value',
                         axisLabel: {
                             formatter: '{value} '
-                        }
+                        },
                     }],
                     series: [
                         {
