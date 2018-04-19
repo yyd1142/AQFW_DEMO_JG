@@ -83,7 +83,8 @@ export function httpPath(path, domain) {
             method: 'get',
             url: (domain || Conf.domain) + '' + path + '' + paths,
             timeout: 150000,
-            headers: { 'MKOTEAM-ACCESS-TOKEN': window.localStorage.getItem('jg_token'), 'MKOTEAM-USER-ENVIRONMENT': environment ? environment : mode }
+            // headers: { 'MKOTEAM-ACCESS-TOKEN': window.localStorage.getItem('jg_token'), 'MKOTEAM-USER-ENVIRONMENT': environment ? environment : mode }
+            headers: { 'MKOTEAM-ACCESS-TOKEN': window.localStorage.getItem('jg_token')}
         }).then(function (response) {
             let res = response.data
             if (res.code != 0) {
