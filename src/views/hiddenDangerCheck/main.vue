@@ -142,17 +142,21 @@
                 this.formData.xtDWName = form.xtName.join(',');
             },
             changePage(page) {
-                this.$MKOPush(`/hidden_danger_check?page=${page}`);
+                if(this.formData.groupId || page === 'selDw') {
+                    this.$MKOPush(`/hidden_danger_check?page=${page}`);
+                } 
                 //        this.onPage = page;
 
             },
             onXtPage() {
                 this.changePage('selXt');
-                let xtPage = this.$refs.selXtPage;
-                if (xtPage.xtList.length === 0) {
-                    xtPage.getData();
-                } else {
-                    xtPage.checkSelItem();
+                if(this.formData.groupId) {
+                    let xtPage = this.$refs.selXtPage;
+                    if (xtPage.xtList.length === 0) {
+                        xtPage.getData();
+                    } else {
+                        xtPage.checkSelItem();
+                    }
                 }
             },
             ctrlDatePicker() {

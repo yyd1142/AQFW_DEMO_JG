@@ -77,8 +77,8 @@
                 let labelsDatas = [];
                 api.getAllLabels({
                     m: 'attribute',
-                    dep: this.$store.getters.userInfo.zgHy,
-                    type: this.$store.getters.userInfo.type
+                    dep: this.$store.getters.userInfo.zgHy
+                    // type: this.$store.getters.userInfo.type
                 }).then(result => {
                     if (!result) return false;
                     if (result.code === 0) {
