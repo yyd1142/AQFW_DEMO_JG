@@ -54,8 +54,8 @@
                 ],
                 type: 0,
                 counts: {
-                    scoreXfSafetyCount: {name: '消防安全管理', score: 0, total: 60},
-                    scoreXfSSSbScoreCount: {name: '消防设备管理', score: 0, total: 20},
+                    scoreXfSafetyCount: {name: '消防安全管理', score: 0, total: 64},
+                    scoreXfSSSbScoreCount: {name: '消防设备管理', score: 0, total: 16},
                     scoreJzHzScoreCount: {name: '建筑火灾风险', score: 0, total: 20},
                 },
                 scoreInfoDatas: {

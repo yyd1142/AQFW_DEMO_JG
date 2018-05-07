@@ -50,8 +50,8 @@
                 <mko-menu-cell title="人员履职率 (共8分)">{{score.ryxcScore | scoreFilter}}分</mko-menu-cell>
                 <mko-menu-cell title="检查项目达标率 (共5分)">{{(score.checkScore + score.wbScore) | scoreFilter}}分
                 </mko-menu-cell>
-                <mko-menu-cell title="安全管理执行率 (共15分)">{{aqglScore | scoreFilter}}分</mko-menu-cell>
-                <mko-menu-cell title="学习培训覆盖率 (共4分)">{{xuexipeixunScore | scoreFilter}}分</mko-menu-cell>
+                <mko-menu-cell title="安全管理执行率 (共5分)">{{aqglScore | scoreFilter}}分</mko-menu-cell>
+                <mko-menu-cell title="学习培训覆盖率 (共14分)">{{xuexipeixunScore | scoreFilter}}分</mko-menu-cell>
                 <mko-menu-cell title="第三方服务签约率 (共4分)">{{disanfangScore | scoreFilter}}分</mko-menu-cell>
                 <mko-menu-cell title="物联网设备接入率 (共10分)">{{wuliuScore | scoreFilter}}分</mko-menu-cell>
             </div>
