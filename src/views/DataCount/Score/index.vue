@@ -24,7 +24,7 @@
             </div>
 
             <div class="list-wrap" v-show="tabI==0">
-                <mko-cell class="title-cell" title="安全评级" val="平均分"></mko-cell>
+                <mko-cell class="title-cell" title="安全评级" val="占比"></mko-cell>
                 <mko-cell :title="item.name" :val="item.average" v-for="(item,i) in scoreInfoDatas.scoreSafetyRatingCount"></mko-cell>
             </div>
 
@@ -95,8 +95,8 @@
             getScoreInfo(){
                 Indicator.open({spinnerType: 'fading-circle'});
                 let pas = {
-                    dwId: this.$store.getters.userInfo.dwId,
-//                    createDate: this.month
+                    groupId: this.$store.getters.groupId,
+                    date: this.month
                 };
                 api.getQyDwScoreInfo(pas).then(res => {
                     if (res && res.code == 0) {
