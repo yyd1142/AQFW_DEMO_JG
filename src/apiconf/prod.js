@@ -8,6 +8,7 @@ export default {
     qyApiDomain: 'http://www.aqfwy.com/app/api/qy',
     newsDomain: 'http://www.aqfwy.com/api/news', // 新闻资讯
     platformDomain: 'http://www.aqfwy.com/api/platform',//平台端
+    _platformDomain: 'http://www.aqfwy.com/api/platform',//平台端
     loginDomain: 'http://www.aqfwy.com/api',
     resourcesDomain: 'http://resources.aqfwy.com', // 资源服务
     scoreDomain: 'http://www.aqfwy.com/api/scoresystem', //安全评分系统

@@ -96,8 +96,9 @@
             getTotalData(){
                 Indicator.open({spinnerType: 'fading-circle'});
                 let pas = {
-                    dwId: this.$store.getters.userInfo.dwId,
-                    createDate: this.month
+//                    dwId: this.$store.getters.userInfo.dwId,
+                    date: this.month,
+                    groupId: this.$store.getters.groupId
                 };
                 api.getAllTotalCount(pas).then(res => {
                     if (res && res.code == 0 && res.response) {

@@ -108,8 +108,7 @@
                 Indicator.open({spinnerType: 'fading-circle'});
                 let pas = {
                     groupId: this.$store.getters.groupId,
-                    dwId: this.$store.getters.userInfo.dwId || '',
-                    createDate: this.month,
+                    date: this.month,
                 };
                 api.getUserCountByJg(pas).then(res => {
                     if (res && res.code == 0) {
