@@ -92,13 +92,13 @@ export default {
     getAppState: httpGet('/'), //获取APP状态
 
     //数据统计
-    getAllTotalCount: httpGet('/dataCount?m=allTotalCount', Conf._platformDomain), //数据统计-首页总数
-    getUserCountByJg: httpGet('/dataCount?m=userCountByJg', Conf._platformDomain), //数据统计-用户数据
-    getQyCountByJg: httpGet('/dataCount?m=qydwTypeCountByJg', Conf._platformDomain), //数据统计-社会单位数据
+    getAllTotalCount: httpGet('/dataCount?m=allTotalCount', Conf.platformDomain), //数据统计-首页总数
+    getUserCountByJg: httpGet('/dataCount?m=userCountByJg', Conf.platformDomain), //数据统计-用户数据
+    getQyCountByJg: httpGet('/dataCount?m=qydwTypeCountByJg', Conf.platformDomain), //数据统计-社会单位数据
     getQyDwRanking: httpGet('/dataCount?m=qyDwRanking', Conf.platformDomain), //数据统计-单位排名
-    getQytaskCount: httpGet('/dataCount?m=taskCount', Conf._platformDomain), //数据统计-任务数据统计
-    getQyDwScoreInfo: httpGet('/dataCount?m=qyDwScoreInfo', Conf._platformDomain), //数据统计-评分详情
-    getQyDataCount: httpGet('/dataCount?m=qyDataCount', Conf._platformDomain), //数据统计-生成数据
+    getQytaskCount: httpGet('/dataCount?m=taskCount', Conf.platformDomain), //数据统计-任务数据统计
+    getQyDwScoreInfo: httpGet('/dataCount?m=qyDwScoreInfo', Conf.platformDomain), //数据统计-评分详情
+    getQyDataCount: httpGet('/dataCount?m=qyDataCount', Conf.platformDomain), //数据统计-生成数据
 
     getAllLabels: httpGet('/label', Conf.platformDomain), //根据类型获取标签
     // PATH 形式访问
