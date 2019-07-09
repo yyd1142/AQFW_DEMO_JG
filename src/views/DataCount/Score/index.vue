@@ -117,7 +117,7 @@
 
                                         } else {
                                             data.push({
-                                                average: item.average,
+                                                average: item.average || '0',
                                                 value: item.count,
                                                 name: conf.scoreTypeList[itemKey],
                                             });
