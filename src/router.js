@@ -87,6 +87,7 @@ const scoreInfo = resolve => require(['./views/train/info.vue'], resolve)
 const simulationExam = resolve => require(['./views/train/simulationExam.vue'], resolve)
 const examRule = resolve => require(['./views/train/examRule.vue'], resolve)
 const examResult = resolve => require(['./views/train/examResult.vue'], resolve)
+const trainDefault = resolve => require(['./views/train/default.vue'], resolve)
 //风险管理
 const hiddenDangerList = resolve => require(['views/hiddenDanger/hiddenDangerList.vue'], resolve);
 const hiddenDangerDetail = resolve => require(['views/hiddenDanger/info.vue'], resolve);
@@ -489,6 +490,11 @@ const routers = {
             path: '/notice_info/:pid',
             name: 'NoticeInfo',
             component: NoticeInfo
+        },
+        {
+            path: '/trainDefault',
+            name: 'trainDefault',
+            component: trainDefault
         }
     ]
 };

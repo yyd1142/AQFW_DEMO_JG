@@ -13,9 +13,9 @@ export default {
             //新闻模块
             actions: [
                 [
-                    {class: 'icon-index-qy-data', text: '社会单位', url: '/qy_list'},
-                    {class: 'icon-index-fw-data', text: '服务单位', url: '/fw_list'},
-                    {class: 'icon-index-data-count', text: '数据统计', url: '/data_count'},
+                    { class: 'icon-index-qy-data', text: '社会单位', url: '/qy_list' },
+                    { class: 'icon-index-fw-data', text: '服务单位', url: '/fw_list' },
+                    { class: 'icon-index-data-count', text: '数据统计', url: '/data_count' },
                     {
                         class: 'icon-index-hidden-danger', text: '风险管理',
                         url: `/hidden_danger/${this.$store.getters.groupId}?is_jg=1`,
@@ -23,12 +23,12 @@ export default {
                     },
                 ],
                 [
-                    {class: 'icon-index-notice', text: '通知公告', url: '/notice', new: 0, desc: '条消息未读'},
-                    {class: 'icon-index-train', text: '教育培训', url: '/train'},
+                    { class: 'icon-index-notice', text: '通知公告', url: '/notice', new: 0, desc: '条消息未读' },
+                    { class: 'icon-index-train', text: '教育培训', url: '/trainDefault' },
                 ],
                 [
-                    {class: 'icon-index-news-info', text: '资讯科普', url: '/newsList'},
-                    {class: '', text: '', url: ''},
+                    { class: 'icon-index-news-info', text: '资讯科普', url: '/newsList' },
+                    { class: '', text: '', url: '' },
                 ],
             ],
             hasMessageDataClass: '',
@@ -74,13 +74,6 @@ export default {
             })
         },
         routerLink(item) {
-            // if (item.url == '/fw_list') {
-            //     Toast({
-            //         message: '功能未开放',
-            //         duration: 1000
-            //     });
-            //     return;
-            // }
             this.$nextTick(() => {
                 this.$MKOPush(item.url);
             })
