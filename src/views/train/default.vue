@@ -1,9 +1,21 @@
 <template>
     <div class="train-default-list">
         <div class="placeholder-item"></div>
-        <mko-header title="教育培训" left-icon="icon-back" @handleLeftClick="back"></mko-header>
+        <mko-header 
+            title="教育培训" 
+            left-icon="icon-back" 
+            leftIconText="关闭" 
+            @handleLeftClick="back"
+            @handlePressIconText="close">
+        </mko-header>
         <div class="page-wrap train-wrap">
-            <iframe class="html" frameborder="no" :src="url" width="100%" :height="height + 'px'"></iframe>
+            <iframe 
+                id="iframe1" 
+                frameborder="no" 
+                :src="url" 
+                width="100%" 
+                :height="height + 'px'">
+            </iframe>
         </div>
     </div>
 </template>
@@ -21,8 +33,19 @@
                 this.height = document.documentElement.clientHeight - 44;
             })
             this.init();
+            this.onInputData();
         },
         methods: {
+            onInputData() {
+                let that = this;
+                window.mkoBackButton = {};
+                window.mkoBackButton.bInputData = true;
+                window.mkoBackButton.callback = function () {
+                    window.mkoBackButton.bInputData = false;
+                    that.$destroy();
+                    that.back();
+                }
+            },
             init() {
                 const yksCode = `7ada5da83f8673ed5c84746417826912`
                 const { userName } = this.$store.getters.userInfo;
@@ -30,8 +53,11 @@
                 this.url = `https://www.youkaoshi.cn/index.php?option=com_exams&task=api.newStudentSSO&format=raw&code=${yksCode}&loginValue=${userName}&password=${password}`
             },
             back() {
-                this.$MKOPop()
+                window.history.back();   
             },
+            close() {
+                this.$MKOPop();
+            }
         },
     }
 </script>

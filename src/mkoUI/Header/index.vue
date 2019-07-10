@@ -3,7 +3,7 @@
         <header class="mko-header-wrap" :class="borderBtm ? 'header-btm' : ''" :style="{ backgroundColor: backgroundColor ? backgroundColor : mainBlue, borderBottom: `1px solid ${borderColor}` }">
             <div class="header-left" @click="onLeftClickEvent" v-if="leftIconText || leftIcon">
                 <i class="left-icon icon" :class="leftIcon" v-if="leftIcon"></i>
-                <span class="left-text" v-text="leftIconText" v-if="leftIconText"></span>
+                <div class="left-text" v-text="leftIconText" v-if="leftIconText" @click.stop="handlePressIconText"></div>
             </div>
             <div class="title" :style="{color: titleColor}" v-text="title" v-if="title"></div>
             <div class="header-right" @click="onRightClickEvent" v-if="rightIconText || rightIcon">
@@ -30,6 +30,9 @@
             },
             onLeftClickEvent() {
                 this.$emit("handleLeftClick");
+            },
+            handlePressIconText() {
+                this.$emit("handlePressIconText");
             }
         }
     }
@@ -79,7 +82,7 @@
                     vertical-align: middle;
                     height: @headerHeight;
                     line-height: @headerHeight;
-                    padding-left: 14px;
+                    padding-left: 44px;
                     width: 100%;
                 }
             }
