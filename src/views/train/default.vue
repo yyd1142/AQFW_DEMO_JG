@@ -14,7 +14,7 @@
                 frameborder="no" 
                 :src="url" 
                 width="100%" 
-                :height="height + 'px'">
+                height="100%">
             </iframe>
         </div>
     </div>
@@ -25,13 +25,9 @@
         data() {
             return {
                 url: '',
-                height: 100
             }
         },
         activated() {
-            this.$nextTick(() => {
-                this.height = document.documentElement.clientHeight - 44;
-            })
             this.init();
             this.onInputData();
         },
@@ -63,19 +59,21 @@
 </script>
 
 <style lang="less">
+@import url('../../config.less');
     .train-default-list {
         width: 100%;
         display: flex;
         display: -webkit-flex;
-        flex: 1;
+        height: 100vh;
         .train-wrap {
-            .html {
-                .contentpane {
-                    .stu-dashboard-head {
-                        display: none;
-                    }
-                }
-            }
+            -webkit-overflow-scrolling: touch;
+            overflow-y: scroll;
+            display: flex;
+            display: -webkit-flex;
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            padding-bottom: 44px + @headerTop;
         }
     }
 </style>
